@@ -1,0 +1,30 @@
+.help-top-container {
+  background-color: #fff;
+  .help-top{
+    color: #666;
+    height:66px;
+    font-size: 20px;
+    margin-left: 25px;
+  }
+  .action-container {
+    padding: 20px 0;
+    button {
+      margin-left: 25px;
+    }
+  }
+  .table {
+    padding: 0 25px;
+  }
+}
+
+.help-top-remove-confirm {
+  .ant-modal-title {
+    text-align: center;
+    color: red;
+  }
+}
+.help-top-modal {
+  .ant-modal-title {
+    text-align: center;
+  }
+}

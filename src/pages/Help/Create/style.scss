@@ -1,0 +1,23 @@
+.help-edit-container {
+  background-color: #fff;
+  padding: 15px;
+  .help-edit-form {
+    margin-top: 50px;
+    h3 {
+      text-indent: 4em;
+      font-size: 20px;
+    }
+    .ant-row {
+      .ant-select {
+        width: 100% !important;
+      }
+    }
+  }
+  .button{
+    margin-left: 230px;
+    .buttonLen{
+      margin-right: 50px;
+    }
+  }
+
+}
