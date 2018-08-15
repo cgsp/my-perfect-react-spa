@@ -3,7 +3,7 @@
  * @Author: John.Guan
  * @Date: 2018-05-29 23:01:41
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-07-24 14:29:33
+ * @Last Modified time: 2018-08-15 16:26:42
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
@@ -151,14 +151,187 @@ var Stock = /** @class */ (function () {
   return Stock;
 }());
 exports.Stock = Stock;
-var stocks = [
-  new Stock(1, '第1个股票', 1, 1, 'gsp第1个股票', ['IT', '互联网', '金融']),
-  new Stock(2, '第2个股票', 2, 2, 'gsp第2个股票', ['IT', '互联网']),
-  new Stock(3, '第3个股票', 3, 3, 'gsp第3个股票', ['金融']),
-  new Stock(4, '第4个股票', 4, 4.3, 'gsp第4个股票', ['IT', '互联网']),
-  new Stock(5, '第5个股票', 5, 5.3, 'gsp第5个股票', ['IT', '互联网'])
-];
 
-app.get('/stock', function (req, res) {
-  res.json(stocks);
+
+
+
+
+// 整个导航的数据
+const appNavList = {
+  code: '0',
+  msg: '请求成功',
+  data: [
+    {
+      id: '1',
+      type: 'nav1',
+      name: '主站内容',
+      path: '',
+      icon: 'video-camera',
+      children: [
+        {
+          id: '1-1',
+          type: 'nav2',
+          name: '专辑管理',
+          path: 'mainAlbum',
+          icon: '',
+          children: []
+        },
+        {
+          id: '1-2',
+          type: 'nav2',
+          name: '焦点图管理',
+          path: 'mainAlbum1',
+          icon: '',
+          children: []
+        },
+        {
+          id: '1-3',
+          type: 'nav2',
+          name: '听单管理',
+          path: '',
+          icon: '',
+          children: []
+        },
+        {
+          id: '1-4',
+          type: 'nav2',
+          name: '分类管理',
+          path: '',
+          icon: '',
+          children: []
+        },
+        {
+          id: '1-5',
+          type: 'nav2',
+          name: '榜单管理',
+          path: '',
+          icon: '',
+          children: []
+        }
+      ]
+
+    },
+    {
+      id: '2',
+      type: 'nav1',
+      name: '自运营内容',
+      path: '',
+      icon: 'mail',
+      children: [
+        {
+          id: '2-1',
+          type: 'nav2',
+          name: '专辑管理',
+          path: '',
+          icon: '',
+          children: []
+        },
+        {
+          id: '2-2',
+          type: 'nav2',
+          name: '焦点图管理',
+          path: '',
+          icon: '',
+          children: []
+        },
+        {
+          id: '2-3',
+          type: 'nav2',
+          name: '听单管理',
+          path: '',
+          icon: '',
+          children: []
+        },
+        {
+          id: '2-4',
+          type: 'nav2',
+          name: '分类管理',
+          path: '',
+          icon: '',
+          children: []
+        },
+        {
+          id: '2-5',
+          type: 'nav2',
+          name: '标签管理',
+          path: '',
+          icon: '',
+          children: [
+            {
+              id: '2-5-1',
+              type: 'nav3',
+              name: '标签管理',
+              path: '',
+              icon: '',
+              children: []
+            },
+            {
+              id: '2-5-2',
+              type: 'nav3',
+              name: '维度管理',
+              path: '',
+              icon: '',
+              children: []
+            }
+          ]
+        }
+      ]
+
+    },
+    {
+      id: '3',
+      type: 'nav1',
+      name: '子站管理',
+      icon: 'trophy',
+      path: '',
+      children: [
+        {
+          id: '3-1',
+          type: 'nav2',
+          name: '子站管理',
+          path: '',
+          icon: '',
+          children: []
+        }
+      ]
+    },
+    {
+      id: '4',
+      type: 'nav1',
+      name: '权限管理',
+      icon: 'setting',
+      path: '',
+      children: [
+        {
+          id: '4-1',
+          type: 'nav3',
+          name: '账户维护',
+          path: '',
+          icon: '',
+          children: []
+        },
+        {
+          id: '4-2',
+          type: 'nav3',
+          name: '角色维护',
+          path: '',
+          icon: '',
+          children: []
+        },
+        {
+          id: '4-3',
+          type: 'nav3',
+          name: '权限维护',
+          path: '',
+          icon: '',
+          children: []
+        }
+      ]
+    }
+
+  ]
+}
+
+app.get('/open-self-admin/appNavList', function (req, res) {
+  res.json(appNavList);
 });

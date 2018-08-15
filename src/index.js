@@ -1,3 +1,6 @@
+// 兼容性处理，兼容低版本浏览器
+import 'babel-polyfill'
+import 'raf/polyfill'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'

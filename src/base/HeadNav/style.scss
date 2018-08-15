@@ -6,14 +6,21 @@
     max-width: 100%;
     height: 100%;
     margin: 0 auto;
+    padding-right: 40px;
     h1 {
       color: #fff;
       float: left;
       margin-bottom: 0;
+      background-color: #428ec1;
+      width: 260px;
+      text-align: center;
+      font-size: 16px;
+      letter-spacing: 2px;
     }
   }
   .user-panel {
-    & > a {
+    height: 64px;
+    &>a {
       margin-left: 20px;
     }
     .user {
@@ -22,13 +29,12 @@
       }
     }
     float: right;
-    .nav-right-menu{
-      .account-name{
+    .nav-right-menu {
+      .account-name {
         float: left;
       }
-      .account-logout{
+      .account-logout {
         margin-left: 15px;
-
       }
     }
   }

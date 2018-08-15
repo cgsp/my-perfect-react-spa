@@ -10,6 +10,7 @@
     "babel-eslint": "7.2.3",
     "babel-jest": "20.0.3",
     "babel-loader": "7.1.2",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-react-app": "^3.1.1",
     "babel-runtime": "6.26.0",
     "case-sensitive-paths-webpack-plugin": "2.1.1",
@@ -27,6 +28,7 @@
     "extract-text-webpack-plugin": "3.0.2",
     "file-loader": "1.1.5",
     "fs-extra": "3.0.1",
+    "good-storage": "^1.0.1",
     "html-webpack-plugin": "2.29.0",
     "jest": "20.0.4",
     "js-cookie": "^2.2.0",
@@ -36,11 +38,15 @@
     "postcss-flexbugs-fixes": "3.2.0",
     "postcss-loader": "2.0.8",
     "promise": "8.0.1",
-    "raf": "3.4.0",
+    "qs": "^6.5.2",
+    "raf": "^3.4.0",
     "react": "^16.4.0",
     "react-dev-utils": "^5.0.1",
     "react-dom": "^16.4.0",
+    "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
+    "redux": "^4.0.0",
+    "redux-thunk": "^2.3.0",
     "resolve": "1.6.0",
     "style-loader": "0.19.0",
     "sw-precache-webpack-plugin": "0.11.4",
@@ -113,8 +119,8 @@
     "pe_prebuild": "node scripts/build.js"
   },
   "proxy": {
-    "/openapi-admin": {
-      "target": "http://cms.test.9nali.com",
+    "/open-self-admin": {
+      "target": "http://localhost:8888",
       "secure": true,
       "changeOrigin": true
     }
