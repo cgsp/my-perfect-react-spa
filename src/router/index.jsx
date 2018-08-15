@@ -12,7 +12,7 @@ export default class RootRoutes extends Component {
     return (
       <MainFrame>
         <Switch>
-          <Route path="/open-self-admin" render={() => <Redirect to="/mainAlbum" />} exact key="/" />
+          <Route path="/" render={() => <Redirect to="/mainAlbum" />} exact key="/" />
           <Route path="/mainAlbum" component={MainAlbum} key="/mainAlbum" />
           <Route path="/noMatch404" component={NoMatch404} key="/noMatch404" />
           <Redirect to="/noMatch404" />
