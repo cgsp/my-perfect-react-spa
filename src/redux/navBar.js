@@ -2,13 +2,13 @@ import { apiGetNavList } from '@Api'
 
 const NAV_BAR_SUCCESS = 'NAV_BAR_SUCCESS'
 const initState = {
-  data: []
+  appNavListData: []
 }
 
 export function navBarReducer(state = initState, action) {
   switch (action.type) {
     case NAV_BAR_SUCCESS:
-      return { ...state, data: action.payload }
+      return { ...state, appNavListData: action.payload }
     default:
       return state
   }

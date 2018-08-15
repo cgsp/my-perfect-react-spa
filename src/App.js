@@ -32,8 +32,9 @@ const store = createStore(reducers, compose(
 // 查看初始的store的数据
 // console.log(store.getState());
 
-
+// 引入全局的样式
 import './assets/style/reset'
+import './assets/style/app'
 
 // 引入根路由
 import RootRoutes from './router'

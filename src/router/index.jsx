@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import MainFrame from '../base/MainFrame'
+import MainFrame from '../dashboard/main-frame'
 import { Route, withRouter, Switch, Redirect } from 'react-router-dom'
 
 import MainAlbum from '@Pages/main-album'
