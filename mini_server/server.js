@@ -3,7 +3,7 @@
  * @Author: John.Guan
  * @Date: 2018-05-29 23:01:41
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-15 23:26:23
+ * @Last Modified time: 2018-08-16 13:13:58
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
@@ -156,7 +156,7 @@ exports.Stock = Stock;
 
 
 
-// 整个导航的数据
+// 整个导航的数据1
 const appNavList = {
   code: '0',
   msg: '请求成功',
