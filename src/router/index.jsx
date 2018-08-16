@@ -6,8 +6,7 @@ import { connect } from 'react-redux'
 import { asyncComponent } from './asyncComponent'
 
 // 让路由对应的组件都是异步加载
-const NoMatch404 = asyncComponent(() => import('@Pages/no-match-404'))
-const NoContent = asyncComponent(() => import('@Pages/no-content'))
+// const NoMatch404 = asyncComponent(() => import('@Pages/no-match-404'))
 const MainAlbum = asyncComponent(() => import('@Pages/main-album'))
 const MainFocus = asyncComponent(() => import('@Pages/main-focus'))
 const MainListen = asyncComponent(() => import('@Pages/main-listen'))
@@ -115,24 +114,16 @@ export default class RootRoutes extends Component {
       }
     ]
     const hasAuthNavList = navList.filter(item => item.hide)
-    console.log(hasAuthNavList)
+    // console.log(hasAuthNavList)
+    const toUrl = this.props.appRoutesList[0] ? this.props.appRoutesList[0] : ''
     return (
       <MainFrame>
         <Switch>
-          {
-            hasAuthNavList.length
-              ?
-              <Route path="/" render={() => <Redirect to="/main-album" />} exact key="/" />
-              :
-              <Route path="/" render={() => <Redirect to="/noContent" />} exact key="/" />
-          }
-
+          <Route path="/" render={() => <Redirect to={`/${toUrl}`} />} exact key="/" />
           {hasAuthNavList.map(item => (
             <Route path={item.path} component={item.component} key={item.path} />
           ))}
-          <Route path="/noMatch404" component={NoMatch404} key="/noMatch404" />
-          <Route path="/noContent" component={NoContent} key="/noContent" />
-          <Redirect to="/noMatch404" />
+          {/* <Route path="/noMatch404" component={NoMatch404} key="/noMatch404" /> */}
           {/* <Route path="/*" component={NoMatch404} key="/noMatch404" /> */}
         </Switch>
       </MainFrame>

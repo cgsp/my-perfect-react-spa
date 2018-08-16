@@ -1,9 +1,10 @@
 import { apiGetNavList } from '@Api'
+import { mySessionStorageGet, mySessionStorageSet } from '@Utils/myStorages'
 
 const NAV_BAR_SUCCESS = 'NAV_BAR_SUCCESS'
 const initState = {
-  appNavListData: [],
-  appRoutesList: []
+  appNavListData: mySessionStorageGet('app-nav-list', []),
+  appRoutesList: mySessionStorageGet('app-route-list', []),
 }
 
 export function navBarReducer(state = initState, action) {
@@ -39,13 +40,14 @@ function screenRoutesList(arr) {
   return routesList
 }
 
-export function getNavBarData(data) {
+export function getNavBarData() {
   return (dispatch) => {
     // 发送请求
     apiGetNavList()
       .then((res) => {
-        console.log(screenRoutesList(res))
         dispatch(getSuccess(res))
+        mySessionStorageSet('app-nav-list', res)
+        mySessionStorageSet('app-route-list', screenRoutesList(res))
       })
   }
 }

@@ -3,7 +3,7 @@
  * @Author: John.Guan
  * @Date: 2018-05-29 23:01:41
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-16 17:22:03
+ * @Last Modified time: 2018-08-16 19:59:16
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
@@ -12,8 +12,8 @@ var ws_1 = require("ws");
 var app = express();
 var axios = require('axios');
 var apiRoutes = express.Router()
-var server = app.listen(8888, 'localhost', function () {
-  console.log('服务启动，地址8888');
+var server = app.listen(9999, 'localhost', function () {
+  console.log('服务启动，地址9999');
 });
 
 //设置跨域访问
@@ -407,8 +407,8 @@ const appNavList = {
 
 app.get('/open-self-admin/appNavList', function (req, res) {
   console.log(res);
-  console.log('11111');
+  // console.log('11111');
   setTimeout(() => {
     res.json(appNavList);
-  }, 3000);
+  }, 1000);
 });

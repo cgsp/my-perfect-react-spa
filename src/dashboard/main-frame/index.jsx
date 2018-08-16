@@ -28,8 +28,6 @@ export default class MainFrame extends Component {
       this.props.getNavBarData()
       this.refs.mask.show()
     }
-
-
   }
 
   // componentWillUpdate() {
