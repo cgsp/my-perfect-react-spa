@@ -18,12 +18,18 @@ const { Header, Sider, Content } = Layout
 @withRouter
 export default class MainFrame extends Component {
   static propTypes = {
-    getNavBarData: PropTypes.func.isRequired
+    getNavBarData: PropTypes.func.isRequired,
+    appNavListData: PropTypes.array,
+    location: PropTypes.object
   }
 
   componentDidMount() {
-    this.props.getNavBarData()
-    this.refs.mask.show()
+    if (!this.props.appNavListData.length) {
+      this.props.getNavBarData()
+      this.refs.mask.show()
+    }
+
+
   }
 
   // componentWillUpdate() {

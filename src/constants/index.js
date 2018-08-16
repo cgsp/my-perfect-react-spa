@@ -50,7 +50,7 @@
 const BASEURL = {
   dev: '/open-self-admin',
   // 生产的必须加上http或者https
-  pro: 'https://kcodeddw.phicomm.com/',
+  pro: 'http://192.168.123.68:8888/open-slef-admin/',
 }
 const ERR_OK = '0'
 

@@ -67,7 +67,7 @@
     "react-hot-loader": "^4.2.0",
     "sass-loader": "^7.0.1"
   },
-  "homepage": "http://static2.test.9nali.com/lib/open-admin/last/build",
+  "homepage": ".",
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,mjs}"

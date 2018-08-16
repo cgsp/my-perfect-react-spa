@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { hot } from 'react-hot-loader'
 import { BrowserRouter as Router } from 'react-router-dom'
+// import { HashRouter as Router } from 'react-router-dom'
 import { LocaleProvider } from 'antd'
 import zhCN from 'antd/lib/locale-provider/zh_CN'
 import moment from 'moment'

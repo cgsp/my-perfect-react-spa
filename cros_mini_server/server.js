@@ -3,7 +3,7 @@
  * @Author: John.Guan
  * @Date: 2018-05-29 23:01:41
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-07-24 14:29:25
+ * @Last Modified time: 2018-08-16 17:22:03
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
@@ -12,8 +12,8 @@ var ws_1 = require("ws");
 var app = express();
 var axios = require('axios');
 var apiRoutes = express.Router()
-var server = app.listen(9999, 'localhost', function () {
-  console.log('服务启动，地址9999');
+var server = app.listen(8888, 'localhost', function () {
+  console.log('服务启动，地址8888');
 });
 
 //设置跨域访问
@@ -229,4 +229,186 @@ app.get('/api/stock/:id', function (req, res) {
 
 app.get('/api/paihang', function (req, res) {
   res.json(paihang);
+});
+const appNavList = {
+  code: '0',
+  msg: '请求成功',
+  data: [
+    {
+      id: '1',
+      type: 'nav1',
+      name: '主站内容',
+      path: 'main',
+      icon: 'video-camera',
+      children: [
+        {
+          id: '1-1',
+          type: 'nav2',
+          name: '专辑管理',
+          path: 'main-album',
+          icon: '',
+          children: []
+        },
+        {
+          id: '1-2',
+          type: 'nav2',
+          name: '焦点图管理',
+          path: 'main-focus',
+          icon: '',
+          children: []
+        },
+        {
+          id: '1-3',
+          type: 'nav2',
+          name: '听单管理',
+          path: 'main-listen',
+          icon: '',
+          children: []
+        },
+        {
+          id: '1-4',
+          type: 'nav2',
+          name: '分类管理',
+          path: 'main-classfiy',
+          icon: '',
+          children: []
+        },
+        {
+          id: '1-5',
+          type: 'nav2',
+          name: '榜单管理',
+          path: 'main-list',
+          icon: '',
+          children: []
+        }
+      ]
+
+    },
+    {
+      id: '2',
+      type: 'nav1',
+      name: '自运营内容',
+      path: 'self',
+      icon: 'mail',
+      children: [
+        {
+          id: '2-1',
+          type: 'nav2',
+          name: '专辑管理',
+          path: 'self-album',
+          icon: '',
+          children: []
+        },
+        {
+          id: '2-2',
+          type: 'nav2',
+          name: '焦点图管理',
+          path: 'self-focus',
+          icon: '',
+          children: []
+        },
+        {
+          id: '2-3',
+          type: 'nav2',
+          name: '听单管理',
+          path: 'self-listen',
+          icon: '',
+          children: []
+        },
+        {
+          id: '2-4',
+          type: 'nav2',
+          name: '分类管理',
+          path: 'self-classfiy',
+          icon: '',
+          children: []
+        },
+        {
+          id: '2-5',
+          type: 'nav2',
+          name: '标签管理',
+          path: 'self-tag',
+          icon: '',
+          children: [
+            {
+              id: '2-5-1',
+              type: 'nav3',
+              name: '标签管理',
+              path: 'self-tag-tag',
+              icon: '',
+              children: []
+            },
+            {
+              id: '2-5-2',
+              type: 'nav3',
+              name: '维度管理',
+              path: 'self-tag-dimension',
+              icon: '',
+              children: []
+            }
+          ]
+        }
+      ]
+
+    },
+    {
+      id: '3',
+      type: 'nav1',
+      name: '子站管理',
+      icon: 'trophy',
+      path: 'child',
+      children: [
+        {
+          id: '3-1',
+          type: 'nav2',
+          name: '子站管理',
+          path: 'child-table',
+          icon: '',
+          children: []
+        }
+      ]
+    },
+    {
+      id: '4',
+      type: 'nav1',
+      name: '权限管理',
+      icon: 'setting',
+      path: 'auth',
+      children: [
+        {
+          id: '4-1',
+          type: 'nav3',
+          name: '账户维护',
+          path: 'auth-account',
+          icon: '',
+          children: []
+        },
+        {
+          id: '4-2',
+          type: 'nav3',
+          name: '角色维护',
+          path: 'auth-role',
+          icon: '',
+          children: []
+        },
+        {
+          id: '4-3',
+          type: 'nav3',
+          name: '菜单与功能维护',
+          path: 'auth-menu',
+          icon: '',
+          children: []
+        }
+      ]
+    }
+
+  ]
+}
+
+app.get('/open-self-admin/appNavList', function (req, res) {
+  console.log(res);
+  console.log('11111');
+  setTimeout(() => {
+    res.json(appNavList);
+  }, 3000);
 });

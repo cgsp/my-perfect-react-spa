@@ -2,13 +2,16 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { PropTypes } from 'prop-types'
 import { Menu, Icon } from 'antd'
+import { withRouter } from 'react-router-dom'
 
 
 const { SubMenu } = Menu
 
+@withRouter
 export default class NavList extends Component {
   static propTypes = {
-    navListData: PropTypes.array.isRequired
+    navListData: PropTypes.array.isRequired,
+    location: PropTypes.object
   }
 
   constructor() {
@@ -31,6 +34,7 @@ export default class NavList extends Component {
   }
 
   render() {
+    console.log(this.props.location)
     // console.log(this.props.navListData)
     if (!this.timer && this.props.navListData.length) {
       this.timer = setTimeout(() => {

@@ -3,7 +3,7 @@
  * @Author: John.Guan
  * @Date: 2018-05-29 23:01:41
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-16 13:13:58
+ * @Last Modified time: 2018-08-16 17:28:38
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
@@ -165,30 +165,23 @@ const appNavList = {
       id: '1',
       type: 'nav1',
       name: '主站内容',
-      path: '',
+      path: 'main',
       icon: 'video-camera',
       children: [
         {
           id: '1-1',
           type: 'nav2',
           name: '专辑管理',
-          path: 'mainAlbum',
+          path: 'main-album',
           icon: '',
           children: []
         },
-        {
-          id: '1-2',
-          type: 'nav2',
-          name: '焦点图管理',
-          path: 'mainAlbum1',
-          icon: '',
-          children: []
-        },
+        
         {
           id: '1-3',
           type: 'nav2',
           name: '听单管理',
-          path: '',
+          path: 'main-listen',
           icon: '',
           children: []
         },
@@ -196,7 +189,7 @@ const appNavList = {
           id: '1-4',
           type: 'nav2',
           name: '分类管理',
-          path: '',
+          path: 'main-classfiy',
           icon: '',
           children: []
         },
@@ -204,7 +197,7 @@ const appNavList = {
           id: '1-5',
           type: 'nav2',
           name: '榜单管理',
-          path: '',
+          path: 'main-list',
           icon: '',
           children: []
         }
@@ -215,14 +208,14 @@ const appNavList = {
       id: '2',
       type: 'nav1',
       name: '自运营内容',
-      path: '',
+      path: 'self',
       icon: 'mail',
       children: [
         {
           id: '2-1',
           type: 'nav2',
           name: '专辑管理',
-          path: '',
+          path: 'self-album',
           icon: '',
           children: []
         },
@@ -230,7 +223,7 @@ const appNavList = {
           id: '2-2',
           type: 'nav2',
           name: '焦点图管理',
-          path: '',
+          path: 'self-focus',
           icon: '',
           children: []
         },
@@ -238,7 +231,7 @@ const appNavList = {
           id: '2-3',
           type: 'nav2',
           name: '听单管理',
-          path: '',
+          path: 'self-listen',
           icon: '',
           children: []
         },
@@ -246,7 +239,7 @@ const appNavList = {
           id: '2-4',
           type: 'nav2',
           name: '分类管理',
-          path: '',
+          path: 'self-classfiy',
           icon: '',
           children: []
         },
@@ -254,14 +247,14 @@ const appNavList = {
           id: '2-5',
           type: 'nav2',
           name: '标签管理',
-          path: '',
+          path: 'self-tag',
           icon: '',
           children: [
             {
               id: '2-5-1',
               type: 'nav3',
               name: '标签管理',
-              path: '',
+              path: 'self-tag-tag',
               icon: '',
               children: []
             },
@@ -269,7 +262,7 @@ const appNavList = {
               id: '2-5-2',
               type: 'nav3',
               name: '维度管理',
-              path: '',
+              path: 'self-tag-dimension',
               icon: '',
               children: []
             }
@@ -283,13 +276,13 @@ const appNavList = {
       type: 'nav1',
       name: '子站管理',
       icon: 'trophy',
-      path: '',
+      path: 'child',
       children: [
         {
           id: '3-1',
           type: 'nav2',
           name: '子站管理',
-          path: '',
+          path: 'child-table',
           icon: '',
           children: []
         }
@@ -300,13 +293,13 @@ const appNavList = {
       type: 'nav1',
       name: '权限管理',
       icon: 'setting',
-      path: '',
+      path: 'auth',
       children: [
         {
           id: '4-1',
           type: 'nav3',
           name: '账户维护',
-          path: '',
+          path: 'auth-account',
           icon: '',
           children: []
         },
@@ -314,15 +307,15 @@ const appNavList = {
           id: '4-2',
           type: 'nav3',
           name: '角色维护',
-          path: '',
+          path: 'auth-role',
           icon: '',
           children: []
         },
         {
           id: '4-3',
           type: 'nav3',
-          name: '权限维护',
-          path: '',
+          name: '菜单与功能维护',
+          path: 'auth-menu',
           icon: '',
           children: []
         }

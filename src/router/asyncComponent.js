@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
 // export function asyncComponent(importComponent) {
 //   class AsyncComponent extends Component {
