@@ -3,7 +3,7 @@
  * @Author: John.Guan
  * @Date: 2018-05-29 23:01:41
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-17 10:41:53
+ * @Last Modified time: 2018-08-17 11:28:15
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
@@ -173,6 +173,14 @@ const appNavList = {
           type: 'nav2',
           name: '专辑管理',
           path: 'main-album',
+          icon: '',
+          children: []
+        },
+        {
+          id: '1-2',
+          type: 'nav2',
+          name: '焦点图管理',
+          path: 'main-focus',
           icon: '',
           children: []
         },
