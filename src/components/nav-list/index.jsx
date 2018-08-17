@@ -37,16 +37,12 @@ export default class NavList extends Component {
   }
 
   render() {
-    // console.log(this.props.navListData)
-    // if (!this.timer && this.props.appRoutesList.length) {
-    //   const path = this.props.location.pathname.substr(1)
-    //   console.log('path', path)
-    //   this.timer = setTimeout(() => {
-    //     this.setState({
-    //       currentKey: path
-    //     })
-    //   }, 0)
-    // }
+    const currentPath = this.props.location.pathname ? this.props.location.pathname.substr(1) : ''
+
+    const defaultNav1 = this.props.appRoutesList.length ? this.props.appRoutesList[0] : ''
+
+    const nav1 = currentPath ? currentPath.split('-')[0] : defaultNav1
+
     return (
 
       <Menu
@@ -54,8 +50,8 @@ export default class NavList extends Component {
         theme={this.state.theme}
         onClick={this.handleClick}
         style={{ width: 256 }}
-        defaultOpenKeys={['1']}
-        selectedKeys={[this.state.currentKey || this.props.location.pathname.substr(1)]}
+        defaultOpenKeys={[nav1]}
+        selectedKeys={[this.state.currentKey || currentPath]}
         mode="inline"
       >
 
