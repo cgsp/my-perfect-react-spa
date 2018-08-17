@@ -3,7 +3,7 @@
  * @Author: John.Guan
  * @Date: 2018-05-29 23:01:41
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-16 20:09:15
+ * @Last Modified time: 2018-08-17 10:41:53
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
@@ -328,5 +328,5 @@ const appNavList = {
 app.get('/open-self-admin/appNavList', function (req, res) {
   setTimeout(() => {
     res.json(appNavList);
-  }, 3000);
+  }, 800);
 });
