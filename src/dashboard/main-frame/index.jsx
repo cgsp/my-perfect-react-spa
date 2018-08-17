@@ -51,15 +51,19 @@ export default class MainFrame extends Component {
     // const { isLogin } = this.props.index
 
     return (
-      <Layout style={{ minHeight: '100%' }}>
+      <Layout style={{ height: '100%', width: '100%' }}>
         <Header>
           <HeadNav />
         </Header>
-        <Layout>
-          <Sider style={{ background: '#fff' }} width={260}>
+        <Layout style={{ background: '#041527', maxHeight: '100%' }}>
+          <Sider style={{ background: '#041527', maxHeight: '100%', overflow: 'scroll', marginBottom: '30px' }} width={260}>
             <NavList navListData={this.props.appNavListData} />
           </Sider>
-          <Content style={{ padding: 20 }}>{children}</Content>
+          <Content style={{ padding: 20, background: '#fff' }}>
+            <div style={{ background: '#f0f2f5', height: '100%', width: '100%', overflowY: 'scroll', }}>
+              {children}
+            </div>
+          </Content>
         </Layout>
         <MaskLoading ref="mask" />
       </Layout>
