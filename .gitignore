@@ -8,7 +8,6 @@
 
 /mini_server/node_modules
 
-/build
 
 # testing
 /coverage
