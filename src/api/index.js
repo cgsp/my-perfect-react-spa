@@ -1,5 +1,13 @@
+/*
+ * @Author: John.Guan 
+ * @Date: 2018-08-18 22:25:46 
+ * @Last Modified by: John.Guan
+ * @Last Modified time: 2018-08-20 15:14:48
+ */
 import { myAxios } from '@Utils/myAxios'
 import { defaultHeader } from './config'
+import jsonp from 'fetch-jsonp'
+import querystring from 'querystring'
 
 // 获取用户信息
 // export const getUserInfo = () => myAxios({ url: 'user/info', headers: defaultHeader })
@@ -18,3 +26,104 @@ import { defaultHeader } from './config'
 
 // 获取导航和按钮权限功能
 export const apiGetNavList = () => myAxios({ url: 'appNavList', method: 'get', headers: defaultHeader })
+
+/*
+ * 账号维护=====================================================
+ */
+
+// 获取用户
+export const apiGetUserList = (value) => {
+  const str = querystring.encode({
+    code: 'utf-8',
+    q: value,
+  })
+
+  return jsonp(`https://suggest.taobao.com/sug?${str}`)
+}
+
+// 获取角色
+export const apiGetAuthAccountPageRolesList = () => {
+  return myAxios(
+    {
+      url: 'authAccountPageRoleList',
+      method: 'get',
+      params: {},
+      headers: defaultHeader
+    })
+}
+
+// 获取列表数据
+export const apiGetAuthAccountList = ({ page, pageSize, rolename, username }) => {
+  return myAxios(
+    {
+      url: 'authAccountList',
+      method: 'get',
+      params: { page, pageSize, rolename, username },
+      headers: defaultHeader
+    })
+}
+// 新增
+export const apiGetAuthAccountPageAddLine = ({ username, roleArr }) => {
+  return myAxios(
+    {
+      url: 'authAccountAdd',
+      method: 'post',
+      params: {},
+      data: {
+        username,
+        roleArr
+      },
+      headers: defaultHeader
+    })
+}
+// 删除
+export const apiGetAuthAccountPageDeleteLine = ({ id }) => {
+  console.log(id)
+  return myAxios(
+    {
+      url: 'authAccountDelete',
+      method: 'post',
+      params: {},
+      data: {
+        id
+      },
+      headers: defaultHeader
+    })
+}
+
+/*
+ * 角色维护=====================================================
+ */
+
+// 获取角色列表数据
+export const apiGetAuthRolePageList = ({ page, pageSize, rolename }) => {
+  return myAxios(
+    {
+      url: 'authRolePageList',
+      method: 'get',
+      params: { page, pageSize, rolename },
+      headers: defaultHeader
+    })
+}
+
+// 删除
+export const authRolePageListDelete = ({ roleid }) => {
+  return myAxios(
+    {
+      url: 'authRolePageListDelete',
+      method: 'post',
+      data: { roleid },
+      headers: defaultHeader
+    })
+}
+
+export const authRolePageNavAndAuthList = () => {
+  return myAxios(
+    {
+      url: 'authRolePageNavAndAuthList',
+      method: 'get',
+      data: {},
+      headers: defaultHeader
+    })
+}
+
