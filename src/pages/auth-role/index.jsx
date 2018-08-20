@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-20 18:32:19
+ * @Last Modified time: 2018-08-20 23:04:07
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Modal } from 'antd'
@@ -10,7 +10,7 @@ import AuthRoleListTable from './list-table'
 import AddOrEditRole from './add-or-edit-role'
 import MaskLoading from '@Components/mask-loading'
 import { myTrim } from '@Utils/myTrim'
-import { apiGetAuthRolePageList, authRolePageListDelete } from '@Api'
+import { apiGetAuthRolePageList, authRolePageListDelete, authRolePageListAdd, authRolePageNavAndAuthSomeRole } from '@Api'
 
 const FormItem = Form.Item
 const confirm = Modal.confirm
@@ -31,7 +31,9 @@ class AuthRole extends Component {
       modalRoleName: '',
       modalRoleDesc: '',
       modalCheckedKeys: [],
-      modalCheckedNodes: []
+      modalCheckedNodes: [],
+      modalAlertMessage: '',
+      modalAlertVisible: false
     }
     this.onTableShowSizeChange = this.onTableShowSizeChange.bind(this)
     this.onTablePageChange = this.onTablePageChange.bind(this)
@@ -143,28 +145,139 @@ class AuthRole extends Component {
   addRole() {
     this.setState({
       modalTitle: '新增角色',
-      modalVisible: true
+      modalVisible: true,
+      modalRoleName: '',
+      modalRoleDesc: '',
+      modalConfirmLoading: false,
+      modalCheckedKeys: [],
+      modalCheckedNodes: []
     })
   }
 
   // 编辑
   tableLineEdit(line) {
-    console.log(line)
-    this.setState({
-      modalTitle: '编辑角色',
-      modalVisible: true
-    })
+    this.refs.mask.show()
+    const { roleid, rolename, roledesc } = line
+    authRolePageNavAndAuthSomeRole({ roleid })
+      .then(res => {
+        this.refs.mask.hide()
+        let checked = []
+        let checkedAndHalf = []
+        for (let i = 0; i < res.length; i++) {
+          const item = res[i]
+          if (item.checked) {
+            checkedAndHalf.push(item.id)
+            let itemChildrenAllChecked = true
+            for (let j = 0; j < res.length; j++) {
+              const ele = res[j]
+              if (ele.pid === item.id && !ele.checked) {
+                itemChildrenAllChecked = false
+                break
+              }
+            }
+            if (itemChildrenAllChecked) {
+              checked.push(item.id)
+            }
+          }
+        }
+        console.log(checked)
+        this.setState({
+          modalTitle: '编辑角色',
+          modalVisible: true,
+          modalRoleName: rolename,
+          modalRoleDesc: roledesc,
+          modalConfirmLoading: false,
+          modalCheckedKeys: checked,
+          modalCheckedNodes: checkedAndHalf
+        })
+      })
+
   }
 
   modalOk(title) {
-    console.log(title)
     this.setState({
-      modalConfirmLoading: true,
     }, () => {
-      console.log('角色名称', this.state.modalRoleName)
-      console.log('角色描述', this.state.modalRoleDesc)
-      console.log('勾选的节点', this.state.modalCheckedNodes)
+      if (!this.state.modalRoleName) {
+        this.showModalTip('请输入角色名称')
+        return
+      }
+      if (!this.state.modalRoleDesc) {
+        this.showModalTip('请输入角色描述')
+        return
+      }
+      if (!this.state.modalCheckedNodes.length) {
+        this.showModalTip('请设置角色权限')
+        return
+      }
+      const { modalRoleName, modalRoleDesc, modalCheckedNodes } = this.state
+      if (title === '新增角色') {
+        this.setState({
+          modalConfirmLoading: true
+        })
+        authRolePageListAdd(
+          {
+            rolename: myTrim(modalRoleName),
+            roledesc: myTrim(modalRoleDesc),
+            checkedIds: modalCheckedNodes
+          }
+        )
+          .then(res => {
+            this.setState({
+              modalVisible: false,
+            }, () => {
+              // 刷新列表页面
+              this.getListData({
+                page: 1,
+                pageSize: this.state.pageSize,
+                rolename: myTrim(this.state.rolename)
+              })
+            })
+
+          })
+      }
+      if (title === '编辑角色') {
+        this.setState({
+          modalConfirmLoading: true
+        })
+        authRolePageListAdd(
+          {
+            rolename: myTrim(modalRoleName),
+            roledesc: myTrim(modalRoleDesc),
+            checkedIds: modalCheckedNodes
+          }
+        )
+          .then(res => {
+            this.setState({
+              modalVisible: false,
+            }, () => {
+              // 刷新列表页面
+              this.getListData({
+                page: 1,
+                pageSize: this.state.pageSize,
+                rolename: myTrim(this.state.rolename)
+              })
+            })
+
+          })
+      }
     })
+  }
+
+  showModalTip(tip) {
+    this.setState({
+      modalAlertVisible: true,
+      modalAlertMessage: tip
+    })
+    if (this.timer) {
+      clearTimeout(this.timer)
+      this.timer = null
+    }
+    this.timer = setTimeout(() => {
+      this.setState({
+        modalAlertVisible: false,
+        modalAlertMessage: ''
+      })
+    }, 2000)
   }
 
   modalCancel() {
@@ -186,8 +299,8 @@ class AuthRole extends Component {
   }
 
   modalOnCheck(checkedKeys, e) {
-    // console.log('onCheck', checkedKeys)
-    // console.log('halfChecked', e.halfCheckedKeys)
+    console.log('onCheck', checkedKeys)
+    console.log('halfChecked', e.halfCheckedKeys)
     this.setState({ modalCheckedKeys: checkedKeys, modalCheckedNodes: e.halfCheckedKeys.concat(checkedKeys) })
   }
 
@@ -214,7 +327,9 @@ class AuthRole extends Component {
       roledesc: this.state.modalRoleDesc,
       roleDescChange: this.modalRoleDescChange,
       checkedKeys: this.state.modalCheckedKeys,
-      onCheck: this.modalOnCheck
+      onCheck: this.modalOnCheck,
+      modalAlertMessage: this.state.modalAlertMessage,
+      modalAlertVisible: this.state.modalAlertVisible
     }
     return (
       <div className="auth-role">

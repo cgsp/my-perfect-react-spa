@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:46 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-20 16:12:04
+ * @Last Modified time: 2018-08-20 22:58:26
  */
 import { myAxios } from '@Utils/myAxios'
 import { defaultHeader } from './config'
@@ -128,12 +128,23 @@ export const authRolePageNavAndAuthList = () => {
     })
 }
 // 获取某个角色的权限和菜单
-export const authRolePageNavAndAuthSomeRole = () => {
+export const authRolePageNavAndAuthSomeRole = ({ roleid }) => {
   return myAxios(
     {
       url: 'authRolePageNavAndAuthSomeRole',
-      method: 'get',
-      data: {},
+      method: 'post',
+      data: { roleid },
+      headers: defaultHeader
+    })
+}
+
+// 新增或者编辑角色
+export const authRolePageListAdd = ({ rolename, roledesc, checkedIds }) => {
+  return myAxios(
+    {
+      url: 'authRolePageListAdd',
+      method: 'post',
+      data: { rolename, roledesc, checkedIds },
       headers: defaultHeader
     })
 }

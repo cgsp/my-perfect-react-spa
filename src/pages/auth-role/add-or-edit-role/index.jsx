@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
-import { Form, Row, Col, Input, Modal, Tree } from 'antd'
+import { Form, Row, Col, Input, Modal, Tree, Icon } from 'antd'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
 import { getNavAndAuthData } from '@Redux/navBarAndAuth'
@@ -23,6 +23,8 @@ export default class AddOrEditRole extends Component {
     modalConfirmLoading: PropTypes.bool,
     modalOk: PropTypes.func,
     modalCancel: PropTypes.func,
+    modalAlertMessage: PropTypes.string,
+    modalAlertVisible: PropTypes.bool,
     checkedKeys: PropTypes.array,
     onCheck: PropTypes.func,
     getNavAndAuthData: PropTypes.func.isRequired,
@@ -66,7 +68,16 @@ export default class AddOrEditRole extends Component {
         confirmLoading={this.props.modalConfirmLoading}
         onCancel={this.props.modalCancel}
       >
-
+        {
+          this.props.modalAlertVisible ? (
+            <div style={{ color: 'red' }}>
+              <Icon type="info-circle-o" style={{ fontSize: 14, color: 'red' }} />
+              <span style={{ marginLeft: 10 }}>
+                {this.props.modalAlertMessage}
+              </span>
+            </div>
+          ) : null
+        }
         <Row>
           <Col span={24}>
             <FormItem label="角色名称">

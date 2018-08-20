@@ -1,23 +1,17 @@
-import { authRolePageNavAndAuthList, authRolePageNavAndAuthSomeRole } from '@Api'
+import { authRolePageNavAndAuthList } from '@Api'
 import { mySessionStorageGet, mySessionStorageSet } from '@Utils/myStorages'
 import { myGetJsonTree } from '@Utils/myGetJsonTree'
 
 const NAV_AUTH_SUCCESS = 'NAV_AUTH_SUCCESS'
-const SOME_ROLE_NAV_AUTH_SUCCESS = 'SOME_ROLE_NAV_AUTH_SUCCESS'
 const initState = {
   appNavAndAuthPlain: mySessionStorageGet('app-nav-auth-plain', []),
-  appNavAndAuthQian: mySessionStorageGet('app-nav-auth-qian', []),
-  someRoleNavAndAuthPlain: [],
-  someRoleNavAndAuthQian: [],
-  someRoleNavAndAuthChecked: [],
+  appNavAndAuthQian: mySessionStorageGet('app-nav-auth-qian', [])
 }
 
 export function navBarAndAuthReducer(state = initState, action) {
   switch (action.type) {
     case NAV_AUTH_SUCCESS:
       return { ...state, appNavAndAuthPlain: action.payload, appNavAndAuthQian: handlePlainNavToQian(action.payload) }
-    case SOME_ROLE_NAV_AUTH_SUCCESS:
-      return { ...state, someRoleNavAndAuthPlain: action.payload, someRoleNavAndAuthQian: handleSomeRolePlainNavToQian(action.payload).qian, someRoleNavAndAuthChecked: handleSomeRolePlainNavToQian(action.payload).checked }
     default:
       return state
   }
@@ -28,9 +22,6 @@ function getSuccess(data) {
   return { type: NAV_AUTH_SUCCESS, payload: data }
 }
 
-function getSomeRoleSuccess(data) {
-  return { type: SOME_ROLE_NAV_AUTH_SUCCESS, payload: data }
-}
 
 // 根据平铺的数据，获取嵌套的数据
 function handlePlainNavToQian(arr) {
@@ -40,13 +31,6 @@ function handlePlainNavToQian(arr) {
   return result
 }
 
-function handleSomeRolePlainNavToQian(arr) {
-  let temp = {
-    qian: [],
-    checked: []
-  }
-  return temp
-}
 
 export function getNavAndAuthData() {
   return (dispatch) => {
@@ -60,14 +44,5 @@ export function getNavAndAuthData() {
   }
 }
 
-export function getSomeRoleNavAndAuthData({ roleid }) {
-  return (dispatch) => {
-    // 发送请求
-    authRolePageNavAndAuthSomeRole({ roleid })
-      .then((res) => {
-        dispatch(getSomeRoleSuccess(res))
-      })
-  }
-}
 
 

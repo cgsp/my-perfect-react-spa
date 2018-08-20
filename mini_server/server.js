@@ -3,7 +3,7 @@
  * @Author: John.Guan
  * @Date: 2018-05-29 23:01:41
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-20 16:39:51
+ * @Last Modified time: 2018-08-20 22:40:40
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
@@ -2157,8 +2157,18 @@ const appNavAndAuthListSomeRole = {
   ]
 }
 
-app.get('/open-self-admin/authRolePageNavAndAuthSomeRole', function (req, res) {
+app.post('/open-self-admin/authRolePageNavAndAuthSomeRole', function (req, res) {
   setTimeout(() => {
     res.json(appNavAndAuthListSomeRole);
+  }, 800);
+});
+
+app.post('/open-self-admin/authRolePageListAdd', function (req, res) {
+  setTimeout(() => {
+    res.json({
+      code: '0',
+      msg: '新增成功',
+      data: []
+    });
   }, 800);
 });

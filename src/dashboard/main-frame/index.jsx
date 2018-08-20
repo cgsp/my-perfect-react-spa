@@ -59,7 +59,7 @@ export default class MainFrame extends Component {
           <Sider style={{ background: '#041527', maxHeight: '100%', overflow: 'scroll', marginBottom: '30px' }} width={260}>
             <NavList navListData={this.props.appNavListData} />
           </Sider>
-          <Content style={{ padding: 20, background: '#fff' }}>
+          <Content style={{ padding: 10, background: '#fff', paddingRight: 0 }}>
             <div style={{ background: '#f0f2f5', height: '100%', width: '100%', overflowY: 'scroll', padding: 20 }}>
               {children}
             </div>

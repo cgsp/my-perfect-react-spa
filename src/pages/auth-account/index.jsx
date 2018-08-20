@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-19 22:08:57
+ * @Last Modified time: 2018-08-20 23:13:34
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Select, Modal } from 'antd'
@@ -421,9 +421,7 @@ class AuthAccount extends Component {
                   </Select>
                 </FormItem>
               </Col>
-            </Row>
-            <Row style={{ marginBottom: 10, marginTop: 10 }}>
-              <Col span={24} style={{ textAlign: 'center' }}>
+              <Col span={8} style={{ textAlign: 'left', marginTop: 14 }}>
                 <Button type="primary" htmlType="submit">查询</Button>
               </Col>
             </Row>
