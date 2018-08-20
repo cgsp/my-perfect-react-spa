@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-19 22:07:51
+ * @Last Modified time: 2018-08-20 18:32:19
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Modal } from 'antd'
@@ -25,9 +25,13 @@ class AuthRole extends Component {
       tableData: [],
       page: 1,
       pageSize: 10,
-      modalTitle: '权限设置',
+      modalTitle: '新增角色',
       modalVisible: false,
       modalConfirmLoading: false,
+      modalRoleName: '',
+      modalRoleDesc: '',
+      modalCheckedKeys: [],
+      modalCheckedNodes: []
     }
     this.onTableShowSizeChange = this.onTableShowSizeChange.bind(this)
     this.onTablePageChange = this.onTablePageChange.bind(this)
@@ -35,6 +39,9 @@ class AuthRole extends Component {
     this.tableLineEdit = this.tableLineEdit.bind(this)
     this.modalOk = this.modalOk.bind(this)
     this.modalCancel = this.modalCancel.bind(this)
+    this.modalRoleNameChange = this.modalRoleNameChange.bind(this)
+    this.modalRoleDescChange = this.modalRoleDescChange.bind(this)
+    this.modalOnCheck = this.modalOnCheck.bind(this)
   }
 
   componentDidMount() {
@@ -135,6 +142,7 @@ class AuthRole extends Component {
 
   addRole() {
     this.setState({
+      modalTitle: '新增角色',
       modalVisible: true
     })
   }
@@ -143,13 +151,19 @@ class AuthRole extends Component {
   tableLineEdit(line) {
     console.log(line)
     this.setState({
+      modalTitle: '编辑角色',
       modalVisible: true
     })
   }
 
   modalOk(title) {
+    console.log(title)
     this.setState({
-      modalConfirmLoading: true
+      modalConfirmLoading: true,
+    }, () => {
+      console.log('角色名称', this.state.modalRoleName)
+      console.log('角色描述', this.state.modalRoleDesc)
+      console.log('勾选的节点', this.state.modalCheckedNodes)
     })
   }
 
@@ -157,6 +171,24 @@ class AuthRole extends Component {
     this.setState({
       modalVisible: false
     })
+  }
+
+  modalRoleNameChange(e) {
+    this.setState({
+      modalRoleName: e.target.value
+    })
+  }
+
+  modalRoleDescChange(e) {
+    this.setState({
+      modalRoleDesc: e.target.value
+    })
+  }
+
+  modalOnCheck(checkedKeys, e) {
+    // console.log('onCheck', checkedKeys)
+    // console.log('halfChecked', e.halfCheckedKeys)
+    this.setState({ modalCheckedKeys: checkedKeys, modalCheckedNodes: e.halfCheckedKeys.concat(checkedKeys) })
   }
 
 
@@ -176,11 +208,16 @@ class AuthRole extends Component {
       modalVisible: this.state.modalVisible,
       modalOk: this.modalOk,
       modalConfirmLoading: this.state.modalConfirmLoading,
-      modalCancel: this.modalCancel
-
+      modalCancel: this.modalCancel,
+      rolename: this.state.modalRoleName,
+      roleNameChange: this.modalRoleNameChange,
+      roledesc: this.state.modalRoleDesc,
+      roleDescChange: this.modalRoleDescChange,
+      checkedKeys: this.state.modalCheckedKeys,
+      onCheck: this.modalOnCheck
     }
     return (
-      <div>
+      <div className="auth-role">
         {/* 搜索 */}
         <List bordered style={{ paddingLeft: 10, marginBottom: 30 }}>
           <Form
@@ -204,7 +241,7 @@ class AuthRole extends Component {
         <List style={{ marginBottom: 30 }}>
           <Row>
             <Col span={8} style={{ textAlign: 'left' }}>
-              <Button type="primary" onClick={() => this.addRole()}>新建用户</Button>
+              <Button type="primary" onClick={() => this.addRole()}>新建角色</Button>
             </Col>
           </Row>
         </List>

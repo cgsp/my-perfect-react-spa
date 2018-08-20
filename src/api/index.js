@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:46 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-20 15:14:48
+ * @Last Modified time: 2018-08-20 16:12:04
  */
 import { myAxios } from '@Utils/myAxios'
 import { defaultHeader } from './config'
@@ -117,6 +117,7 @@ export const authRolePageListDelete = ({ roleid }) => {
     })
 }
 
+// 获取某个整个app的权限和菜单
 export const authRolePageNavAndAuthList = () => {
   return myAxios(
     {
@@ -126,4 +127,16 @@ export const authRolePageNavAndAuthList = () => {
       headers: defaultHeader
     })
 }
+// 获取某个角色的权限和菜单
+export const authRolePageNavAndAuthSomeRole = () => {
+  return myAxios(
+    {
+      url: 'authRolePageNavAndAuthSomeRole',
+      method: 'get',
+      data: {},
+      headers: defaultHeader
+    })
+}
+
+
 
