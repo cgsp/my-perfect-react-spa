@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-21 11:26:12
+ * @Last Modified time: 2018-08-21 11:52:44
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Modal, Select } from 'antd'
@@ -10,7 +10,7 @@ import AuthRoleListTable from './list-table'
 // import AddOrEditRole from './add-or-edit-role'
 import MaskLoading from '@Components/mask-loading'
 import { myTrim } from '@Utils/myTrim'
-import { apiGetAuthMenuPageList } from '@Api'
+import { apiGetAuthMenuPageList, authMenuPageListDelete } from '@Api'
 
 const FormItem = Form.Item
 const confirm = Modal.confirm
@@ -31,7 +31,7 @@ class AuthMenu extends Component {
     }
     this.onTableShowSizeChange = this.onTableShowSizeChange.bind(this)
     this.onTablePageChange = this.onTablePageChange.bind(this)
-    // this.tableLineDelete = this.tableLineDelete.bind(this)
+    this.tableLineDelete = this.tableLineDelete.bind(this)
     // this.tableLineEdit = this.tableLineEdit.bind(this)
     // this.modalOk = this.modalOk.bind(this)
     // this.modalCancel = this.modalCancel.bind(this)
@@ -74,18 +74,22 @@ class AuthMenu extends Component {
       content: '',
       onOk() {
         that.refs.mask.show()
-        // authRolePageListDelete({ roleid: line.id })
-        //   .then(res => {
-        //     // 将列表页面重新刷新
-        //     that.setState({
-        //     }, () => {
-        //       that.getListData({
-        //         page: 1,
-        //         pageSize: that.state.pageSize,
-        //         rolename: myTrim(that.state.rolename),
-        //       })
-        //     })
-        //   })
+        authMenuPageListDelete({ id: line.id })
+          .then(res => {
+            // 将列表页面重新刷新
+            that.setState({
+            }, () => {
+              const name = myTrim(that.state.name)
+              const { type, level } = that.state
+              that.getListData({
+                page: 1,
+                pageSize: that.state.pageSize,
+                name,
+                type,
+                level
+              })
+            })
+          })
       },
       onCancel() { },
     })
@@ -363,8 +367,10 @@ class AuthMenu extends Component {
                         type = '功能'
                         level = ''
                       }
-                      console.log(type)
-                      console.log(level)
+                      this.setState({
+                        type,
+                        level
+                      })
                     }}
                   >
                     <Option value="1级菜单">1级菜单</Option>

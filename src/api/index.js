@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:46 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-21 10:50:32
+ * @Last Modified time: 2018-08-21 11:51:47
  */
 import { myAxios } from '@Utils/myAxios'
 import { defaultHeader } from './config'
@@ -160,6 +160,17 @@ export const apiGetAuthMenuPageList = ({ page, pageSize, name, type, level }) =>
       url: 'authMenuPageList',
       method: 'get',
       params: { page, pageSize, name, type, level },
+      headers: defaultHeader
+    })
+}
+// 删除
+export const authMenuPageListDelete = ({ id }) => {
+  return myAxios(
+    {
+      url: 'authMenuPageListDelete',
+      method: 'post',
+      params: {},
+      data: { id },
       headers: defaultHeader
     })
 }
