@@ -3,7 +3,7 @@
  * @Author: John.Guan
  * @Date: 2018-05-29 23:01:41
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-21 09:46:07
+ * @Last Modified time: 2018-08-21 11:35:11
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
@@ -2169,6 +2169,59 @@ app.post('/open-self-admin/authRolePageListAdd', function (req, res) {
       code: '0',
       msg: '新增成功',
       data: []
+    });
+  }, 800);
+});
+
+app.get('/open-self-admin/authMenuPageList', function (req, res) {
+  setTimeout(() => {
+    res.json({
+      code: '0',
+      msg: '成功',
+      data: [
+        {
+          id: '1',
+          pid: '0',
+          pname: '',
+          name: '主站内容',
+          type: '菜单',
+          level: 1,
+          icon: 'video-camera',
+          code: ''
+        },
+        {
+          id: '1-1',
+          pid: '1',
+          pname: '主站内容',
+          name: '专辑管理',
+          type: '菜单',
+          level: 2,
+          icon: '',
+          code: ''
+        },
+        {
+          id: '1-1-1',
+          pid: '1-1',
+          pname: '专辑管理',
+          type: '功能按钮',
+          level: null,
+          name: '专辑批量导出',
+          path: null,
+          icon: '',
+          code: 'main-album:album-export',
+        },
+        {
+          id: '2-5-2',
+          pid: '2-5',
+          pname: '标签管理',
+          type: '菜单',
+          level: 3,
+          name: '维度管理',
+          path: 'self-tag-dimension',
+          icon: '',
+          code: '',
+        },
+      ]
     });
   }, 800);
 });

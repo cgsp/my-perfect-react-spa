@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:46 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-20 22:58:26
+ * @Last Modified time: 2018-08-21 10:50:32
  */
 import { myAxios } from '@Utils/myAxios'
 import { defaultHeader } from './config'
@@ -145,6 +145,21 @@ export const authRolePageListAdd = ({ rolename, roledesc, checkedIds }) => {
       url: 'authRolePageListAdd',
       method: 'post',
       data: { rolename, roledesc, checkedIds },
+      headers: defaultHeader
+    })
+}
+
+/*
+ * 菜单维护=====================================================
+ */
+
+// 获取菜单与按钮数据
+export const apiGetAuthMenuPageList = ({ page, pageSize, name, type, level }) => {
+  return myAxios(
+    {
+      url: 'authMenuPageList',
+      method: 'get',
+      params: { page, pageSize, name, type, level },
       headers: defaultHeader
     })
 }
