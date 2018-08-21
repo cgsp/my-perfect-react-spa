@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
-import { Form, Row, Col, Input, Modal, Tree, Icon } from 'antd'
+import { Modal, Tree, } from 'antd'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
 import { getNavAndAuthData } from '@Redux/navBarAndAuth'
 const TreeNode = Tree.TreeNode
-const FormItem = Form.Item
 
 @connect(
   state => state.navBarAndAuthReducer,

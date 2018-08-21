@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-21 20:21:29
+ * @Last Modified time: 2018-08-21 20:25:17
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Modal, Select } from 'antd'
@@ -244,7 +244,7 @@ class AuthMenu extends Component {
       default:
         break
     }
-    const { id, pid, level, type, code, icon } = line
+    const { id, pid, code, icon } = line
     console.log(line)
     const newname = line.name
     const url = line.path
@@ -281,7 +281,7 @@ class AuthMenu extends Component {
         break
     }
     const { id } = line
-    const newname = line.name
+    // const newname = line.name
     const name = line.name
     this.setState({
       id: null,
