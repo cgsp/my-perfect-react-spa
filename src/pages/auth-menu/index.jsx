@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-21 17:58:19
+ * @Last Modified time: 2018-08-21 20:21:29
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Modal, Select } from 'antd'
@@ -10,7 +10,9 @@ import { connect } from 'react-redux'
 import { getNodeSort } from '@Utils/getNodeSort'
 import AuthMenuListTable from './list-table'
 import AddOrEditMenu from './add-or-edit-menu'
+import TreeModal from './tree-modal'
 import MaskLoading from '@Components/mask-loading'
+import TopTip from '@Components/top-tip'
 import { myTrim } from '@Utils/myTrim'
 import { getNavAndAuthData } from '@Redux/navBarAndAuth'
 import { apiGetAuthMenuPageList, authMenuPageListDelete, authMenuPageListAddorEdit } from '@Api'
@@ -39,6 +41,12 @@ class AuthMenu extends Component {
       modalRoleName: '',
       modalRoleDesc: '',
       modalConfirmLoading: false,
+      treeModalVisible: false,
+      topTipOptions: {
+        show: false,
+        msg: '',
+        type: 'success'
+      }
     }
     this.onTableShowSizeChange = this.onTableShowSizeChange.bind(this)
     this.onTablePageChange = this.onTablePageChange.bind(this)
@@ -94,7 +102,7 @@ class AuthMenu extends Component {
             that.setState({
             }, () => {
               // 更新导航的redux数据
-              this.props.getNavAndAuthData()
+              that.props.getNavAndAuthData()
               const searchname = myTrim(that.state.searchname)
               const { searchtype, searchlevel } = that.state
               that.getListData({
@@ -102,7 +110,8 @@ class AuthMenu extends Component {
                 pageSize: that.state.pageSize,
                 searchname,
                 searchtype,
-                searchlevel
+                searchlevel,
+                tag: '删除'
               })
             })
           })
@@ -153,7 +162,7 @@ class AuthMenu extends Component {
   }
 
   // 获取列表页面的数据
-  getListData({ page, pageSize, searchname, searchtype, searchlevel }) {
+  getListData({ page, pageSize, searchname, searchtype, searchlevel, tag }) {
     this.refs.mask.show()
     apiGetAuthMenuPageList({ page, pageSize, searchname, searchtype, searchlevel })
       .then(res => {
@@ -164,9 +173,41 @@ class AuthMenu extends Component {
         })
         this.setState({
           tableData: tableData,
-          tableTotal: tableData.length
+          tableTotal: tableData.length,
         })
+        if (tag === '新增') {
+          this.showTopTip('success', '新增节点成功')
+        } else if (tag === '编辑') {
+          this.showTopTip('success', '编辑节点成功')
+        } else if (tag === '删除') {
+          this.showTopTip('success', '删除节点成功')
+        }
+
       })
+  }
+
+  showTopTip(type, msg) {
+    this.setState({
+      topTipOptions: {
+        show: true,
+        msg,
+        type
+      }
+    })
+    if (this.timer) {
+      clearTimeout(this.timer)
+      this.timer = null
+    }
+    setTimeout(() => {
+      this.setState({
+        topTipOptions: {
+          show: false,
+          msg,
+          type
+        }
+      })
+    }, 1500)
+
   }
 
   addLevel1Menu() {
@@ -341,7 +382,8 @@ class AuthMenu extends Component {
               pageSize: this.state.pageSize,
               searchname,
               searchtype,
-              searchlevel
+              searchlevel,
+              tag: this.state.handleType
             })
           })
 
@@ -395,13 +437,24 @@ class AuthMenu extends Component {
     })
   }
 
+  showTree() {
+    this.setState({
+      treeModalVisible: true
+    })
+  }
 
-  // modalOnCheck(checkedKeys, e) {
-  //   console.log('onCheck', checkedKeys)
-  //   console.log('halfChecked', e.halfCheckedKeys)
-  //   this.setState({ modalCheckedKeys: checkedKeys, modalCheckedNodes: e.halfCheckedKeys.concat(checkedKeys) })
-  // }
 
+  treeModalOk = () => {
+    this.setState({
+      treeModalVisible: false
+    })
+  }
+
+  treeModalCancel = () => {
+    this.setState({
+      treeModalVisible: false
+    })
+  }
 
   render() {
     const tableOptions = {
@@ -435,8 +488,15 @@ class AuthMenu extends Component {
       modalAlertMessage: this.state.modalAlertMessage
     }
 
+    const treeModalOptions = {
+      treeModalVisible: this.state.treeModalVisible,
+      treeModalOk: this.treeModalOk,
+      treeModalCancel: this.treeModalCancel,
+    }
+
     return (
       <div className="auth-role">
+        <TopTip item={this.state.topTipOptions} />
         {/* 搜索 */}
         <List bordered style={{ paddingLeft: 10, marginBottom: 30 }}>
           <Form
@@ -497,15 +557,17 @@ class AuthMenu extends Component {
         {/* 表头功能按钮 */}
         <List style={{ marginBottom: 30 }}>
           <Row>
-            <Col span={8} style={{ textAlign: 'left' }}>
+            <Col span={24} style={{ textAlign: 'left' }}>
               <Button type="primary" onClick={() => this.addLevel1Menu()}>新增一级菜单</Button>
+              <Button style={{ marginLeft: 20 }} type="primary" onClick={() => this.showTree()}>树状权限预览</Button>
             </Col>
           </Row>
         </List>
         <AuthMenuListTable {...tableOptions} />
+        <TreeModal {...treeModalOptions} />
         <AddOrEditMenu {...modalOptions} />
         <MaskLoading ref="mask" />
-      </div>
+      </div >
 
     )
   }
