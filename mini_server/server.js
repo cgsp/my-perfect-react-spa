@@ -3,7 +3,7 @@
  * @Author: John.Guan
  * @Date: 2018-05-29 23:01:41
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-20 22:40:40
+ * @Last Modified time: 2018-08-21 09:46:07
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
@@ -1360,7 +1360,7 @@ app.get('/open-self-admin/authRolePageNavAndAuthList', function (req, res) {
 
 const appNavAndAuthListSomeRole = {
   code: '0',
-  msg: '请求成功',
+  msg: '请求成功11',
   data: [
     {
       pid: '0',
