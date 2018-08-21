@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:46 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-21 16:36:09
+ * @Last Modified time: 2018-08-21 17:43:13
  */
 import { myAxios } from '@Utils/myAxios'
 import { defaultHeader } from './config'
@@ -177,6 +177,7 @@ export const authMenuPageListDelete = ({ id }) => {
 
 //  新增或者修改节点
 export const authMenuPageListAddorEdit = ({
+  id,
   pid,
   newnamem,
   icon,
@@ -192,6 +193,7 @@ export const authMenuPageListAddorEdit = ({
       method: 'post',
       params: {},
       data: {
+        id,
         pid,
         newnamem,
         icon,

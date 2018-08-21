@@ -3,7 +3,7 @@
  * @Author: John.Guan
  * @Date: 2018-05-29 23:01:41
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-21 16:31:48
+ * @Last Modified time: 2018-08-21 17:26:15
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
@@ -2185,9 +2185,10 @@ app.get('/open-self-admin/authMenuPageList', function (req, res) {
           pname: '',
           name: '主站内容',
           type: '菜单',
-          level: 1,
+          level: '1',
           icon: 'video-camera',
-          code: ''
+          code: '',
+          path: 'main'
         },
         {
           id: '1-1',
@@ -2195,9 +2196,10 @@ app.get('/open-self-admin/authMenuPageList', function (req, res) {
           pname: '主站内容',
           name: '专辑管理',
           type: '菜单',
-          level: 2,
+          level: '2',
           icon: '',
-          code: ''
+          code: '',
+          path: 'main-album'
         },
         {
           id: '1-1-1',
@@ -2215,7 +2217,7 @@ app.get('/open-self-admin/authMenuPageList', function (req, res) {
           pid: '2-5',
           pname: '标签管理',
           type: '菜单',
-          level: 3,
+          level: '3',
           name: '维度管理',
           path: 'self-tag-dimension',
           icon: '',

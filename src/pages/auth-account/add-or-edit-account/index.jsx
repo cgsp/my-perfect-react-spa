@@ -36,24 +36,7 @@ export default class AddOrEditAccount extends Component {
             layout="vertical"
           >
             <Row>
-              <Col span={24}>
-                <FormItem label="角色名称" style={{ marginBottom: 10, marginTop: 10 }}>
-                  <Select
-                    style={{ width: '100%', marginTop: 4 }}
-                    placeholder="请选择角色"
-                    allowClear={true}
-                    value={this.props.modalRoleValue}
-                    onChange={this.props.modalHandleRoleSelectChange}
-                    mode="multiple"
-                  >
-                    {
-                      this.props.modalRoleSelectOptionsData.map(item => (
-                        <Option key={item.key}>{item.text}</Option>
-                      ))
-                    }
-                  </Select>
-                </FormItem>
-              </Col>
+
               <Col span={24}>
                 <FormItem label="用户名称" style={{ marginBottom: 0, marginTop: 10 }}>
                   <Select
@@ -72,6 +55,24 @@ export default class AddOrEditAccount extends Component {
                     {
                       this.props.modalUserSelectOptionsData.map(item => (
                         <Option key={item.value}>{item.text}</Option>
+                      ))
+                    }
+                  </Select>
+                </FormItem>
+              </Col>
+              <Col span={24}>
+                <FormItem label="角色名称" style={{ marginBottom: 10, marginTop: 10 }}>
+                  <Select
+                    style={{ width: '100%', marginTop: 4 }}
+                    placeholder="请选择角色"
+                    allowClear={true}
+                    value={this.props.modalRoleValue}
+                    onChange={this.props.modalHandleRoleSelectChange}
+                    mode="multiple"
+                  >
+                    {
+                      this.props.modalRoleSelectOptionsData.map(item => (
+                        <Option key={item.key}>{item.text}</Option>
                       ))
                     }
                   </Select>

@@ -17,6 +17,7 @@ export default class AddOrEditMenu extends Component {
     code: PropTypes.string,
     codeChange: PropTypes.func,
     name: PropTypes.string,
+    handleType: PropTypes.string,
     modalTitle: PropTypes.string,
     modalVisible: PropTypes.bool,
     modalConfirmLoading: PropTypes.bool,
@@ -31,7 +32,7 @@ export default class AddOrEditMenu extends Component {
   render() {
     return (
       <Modal
-        title={`新增${this.props.modalTitle}`}
+        title={`${this.props.handleType}${this.props.modalTitle}`}
         visible={this.props.modalVisible}
         onOk={() => this.props.modalOk(this.props.modalTitle)}
         confirmLoading={this.props.modalConfirmLoading}
@@ -72,7 +73,7 @@ export default class AddOrEditMenu extends Component {
             ) : null
           }
           <Col span={24}>
-            <FormItem label="新增节点的类型">
+            <FormItem label={`${this.props.handleType}节点的类型`}>
               <Select
                 style={{ width: '100% ' }}
                 disabled
@@ -105,22 +106,17 @@ export default class AddOrEditMenu extends Component {
             </FormItem>
           </Col>
           {
-            this.props.modalTitle === '一级菜单' || '二级菜单' || '三级菜单' ? (
+            this.props.modalTitle === '一级菜单' || this.props.modalTitle === '二级菜单' || this.props.modalTitle === '三级菜单' ? (
               <Col span={24}>
                 <FormItem label="url路径">
                   <Input value={this.props.url} placeholder="请输入菜单的url路径" onChange={this.props.urlChange} />
                 </FormItem>
               </Col>
-            ) : null
-          }
-          {
-            this.props.modalTitle === '一级菜单' || '二级菜单' || '三级菜单' ? null : (
-              <Col span={24}>
+            ) : <Col span={24}>
                 <FormItem label="权限字符串">
                   <Input value={this.props.code} placeholder="请输入该功能的权限字符串" onChange={this.props.codeChange} />
                 </FormItem>
               </Col>
-            )
           }
         </Row>
       </Modal >

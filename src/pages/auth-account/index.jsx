@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-20 23:13:34
+ * @Last Modified time: 2018-08-21 18:33:21
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Select, Modal } from 'antd'
@@ -382,22 +382,7 @@ class AuthAccount extends Component {
             layout="inline"
           >
             <Row>
-              <Col span={8}>
-                <FormItem label="角色名称" style={{ marginBottom: 10, marginTop: 10 }}>
-                  <Select
-                    style={{ width: 200, marginTop: 4 }}
-                    placeholder="请选择角色"
-                    allowClear={true}
-                    onChange={this.handleRoleSelectChange}
-                  >
-                    {
-                      this.state.roleSelectOptionsData.map(item => (
-                        <Option key={item.key}>{item.text}</Option>
-                      ))
-                    }
-                  </Select>
-                </FormItem>
-              </Col>
+
               <Col span={8}>
                 <FormItem label="用户名称" style={{ marginBottom: 0, marginTop: 10 }}>
                   <Select
@@ -416,6 +401,22 @@ class AuthAccount extends Component {
                     {
                       this.state.userSelectOptionsData.map(item => (
                         <Option key={item.value}>{item.text}</Option>
+                      ))
+                    }
+                  </Select>
+                </FormItem>
+              </Col>
+              <Col span={8}>
+                <FormItem label="角色名称" style={{ marginBottom: 10, marginTop: 10 }}>
+                  <Select
+                    style={{ width: 200, marginTop: 4 }}
+                    placeholder="请选择角色"
+                    allowClear={true}
+                    onChange={this.handleRoleSelectChange}
+                  >
+                    {
+                      this.state.roleSelectOptionsData.map(item => (
+                        <Option key={item.key}>{item.text}</Option>
                       ))
                     }
                   </Select>

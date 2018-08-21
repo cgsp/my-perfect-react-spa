@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-21 16:39:59
+ * @Last Modified time: 2018-08-21 17:58:19
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Modal, Select } from 'antd'
@@ -12,6 +12,7 @@ import AuthMenuListTable from './list-table'
 import AddOrEditMenu from './add-or-edit-menu'
 import MaskLoading from '@Components/mask-loading'
 import { myTrim } from '@Utils/myTrim'
+import { getNavAndAuthData } from '@Redux/navBarAndAuth'
 import { apiGetAuthMenuPageList, authMenuPageListDelete, authMenuPageListAddorEdit } from '@Api'
 
 const FormItem = Form.Item
@@ -20,7 +21,7 @@ const Option = Select.Option
 
 @connect(
   state => state.navBarAndAuthReducer,
-  {}
+  { getNavAndAuthData }
 )
 class AuthMenu extends Component {
   constructor() {
@@ -43,6 +44,7 @@ class AuthMenu extends Component {
     this.onTablePageChange = this.onTablePageChange.bind(this)
     this.tableLineDelete = this.tableLineDelete.bind(this)
     this.tableLineEdit = this.tableLineEdit.bind(this)
+    this.tableLineAdd = this.tableLineAdd.bind(this)
     this.modalOk = this.modalOk.bind(this)
     this.modalCancel = this.modalCancel.bind(this)
     // this.modalOnCheck = this.modalOnCheck.bind(this)
@@ -91,6 +93,8 @@ class AuthMenu extends Component {
             // 将列表页面重新刷新
             that.setState({
             }, () => {
+              // 更新导航的redux数据
+              this.props.getNavAndAuthData()
               const searchname = myTrim(that.state.searchname)
               const { searchtype, searchlevel } = that.state
               that.getListData({
@@ -168,6 +172,7 @@ class AuthMenu extends Component {
   addLevel1Menu() {
     this.setState({
       newname: '',
+      name: '',
       url: '',
       icon: '',
       code: '',
@@ -175,47 +180,81 @@ class AuthMenu extends Component {
       modalTitle: '一级菜单',
       modalVisible: true,
       modalConfirmLoading: false,
+      handleType: '新增'
     })
   }
 
   // 编辑
   tableLineEdit(line) {
-    this.refs.mask.show()
-    const { roleid, rolename, roledesc } = line
-    // authRolePageNavAndAuthSomeRole({ roleid })
-    //   .then(res => {
-    //     this.refs.mask.hide()
-    //     let checked = []
-    //     let checkedAndHalf = []
-    //     for (let i = 0; i < res.length; i++) {
-    //       const item = res[i]
-    //       if (item.checked) {
-    //         checkedAndHalf.push(item.id)
-    //         let itemChildrenAllChecked = true
-    //         for (let j = 0; j < res.length; j++) {
-    //           const ele = res[j]
-    //           if (ele.pid === item.id && !ele.checked) {
-    //             itemChildrenAllChecked = false
-    //             break
-    //           }
-    //         }
-    //         if (itemChildrenAllChecked) {
-    //           checked.push(item.id)
-    //         }
-    //       }
-    //     }
-    //     console.log(checked)
-    //     this.setState({
-    //       modalTitle: '编辑角色',
-    //       modalVisible: true,
-    //       modalRoleName: rolename,
-    //       modalRoleDesc: roledesc,
-    //       modalConfirmLoading: false,
-    //       modalCheckedKeys: checked,
-    //       modalCheckedNodes: checkedAndHalf
-    //     })
-    //   })
+    let modalTitle
+    switch (line.level) {
+      case '1':
+        modalTitle = '一级菜单'
+        break
+      case '2':
+        modalTitle = '二级菜单'
+        break
+      case '3':
+        modalTitle = '三级菜单'
+        break
+      case null:
+        modalTitle = '功能'
+        break
+      default:
+        break
+    }
+    const { id, pid, level, type, code, icon } = line
+    console.log(line)
+    const newname = line.name
+    const url = line.path
+    const name = line.pname
+    this.setState({
+      id,
+      newname,
+      name,
+      url,
+      icon,
+      code,
+      pid,
+      modalTitle,
+      modalVisible: true,
+      modalConfirmLoading: false,
+      handleType: '编辑'
+    })
 
+  }
+
+  tableLineAdd(line) {
+    let modalTitle
+    switch (line.level) {
+      case '1':
+        modalTitle = '二级菜单'
+        break
+      case '2':
+        modalTitle = '三级菜单'
+        break
+      case '3':
+        modalTitle = '功能'
+        break
+      default:
+        break
+    }
+    const { id } = line
+    const newname = line.name
+    const name = line.name
+    this.setState({
+      id: null,
+      newname: '',
+      name,
+      url: '',
+      icon: '',
+      code: '',
+      pid: id,
+      modalTitle,
+      modalVisible: true,
+      modalConfirmLoading: false,
+      handleType: '新增'
+    })
   }
 
   modalOk(title) {
@@ -240,8 +279,22 @@ class AuthMenu extends Component {
       }
 
       const { newname, icon, url, code, pid } = this.state
-      // 写一个函数根据pid来获取sort
-      const sort = getNodeSort(pid, this.props.appNavAndAuthPlain)
+
+      let id
+      let sort
+      if (this.state.handleType === '编辑') {
+        id = this.state.id
+        // 写一个函数根据pid来获取sort
+        sort = getNodeSort(pid, this.props.appNavAndAuthPlain, '编辑')
+        // debugger
+        console.log(id)
+      }
+      else {
+        id = null
+        // 写一个函数根据pid来获取sort
+        sort = getNodeSort(pid, this.props.appNavAndAuthPlain, '新增')
+      }
+
       let type
       let level
       if (title === '一级菜单') {
@@ -264,6 +317,7 @@ class AuthMenu extends Component {
       })
       authMenuPageListAddorEdit(
         {
+          id,
           pid,
           newname: myTrim(newname),
           icon: myTrim(icon),
@@ -278,6 +332,8 @@ class AuthMenu extends Component {
           this.setState({
             modalVisible: false,
           }, () => {
+            // 更新导航的redux数据
+            this.props.getNavAndAuthData()
             const searchname = myTrim(this.state.searchname)
             const { searchtype, searchlevel } = this.state
             this.getListData({
@@ -351,6 +407,7 @@ class AuthMenu extends Component {
     const tableOptions = {
       tableLineEdit: this.tableLineEdit,
       tableLineDelete: this.tableLineDelete,
+      tableLineAdd: this.tableLineAdd,
       onShowSizeChange: this.onTableShowSizeChange,
       onChange: this.onTablePageChange,
       total: this.state.tableTotal,
@@ -364,6 +421,7 @@ class AuthMenu extends Component {
       modalOk: this.modalOk,
       modalConfirmLoading: this.state.modalConfirmLoading,
       modalCancel: this.modalCancel,
+      name: this.state.name,
       newname: this.state.newname,
       newnameChange: this.newnameChange,
       url: this.state.url,
@@ -372,6 +430,7 @@ class AuthMenu extends Component {
       iconChange: this.iconChange,
       code: this.state.code,
       codeChange: this.codeChange,
+      handleType: this.state.handleType,
       modalAlertVisible: this.state.modalAlertVisible,
       modalAlertMessage: this.state.modalAlertMessage
     }
