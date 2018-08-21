@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Table, Divider, Pagination } from 'antd'
 import { PropTypes } from 'prop-types'
 
-export default class AuthRoleListTable extends Component {
+export default class AuthMenuListTable extends Component {
   static propTypes = {
     total: PropTypes.number,
     tableLineEdit: PropTypes.func,

@@ -3,7 +3,7 @@
  * @Author: John.Guan
  * @Date: 2018-05-29 23:01:41
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-21 11:51:54
+ * @Last Modified time: 2018-08-21 16:31:48
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
@@ -2235,3 +2235,13 @@ app.post('/open-self-admin/authMenuPageListDelete', function (req, res) {
     });
   }, 800);
 });
+app.post('/open-self-admin/authMenuPageListAddorEdit', function (req, res) {
+  setTimeout(() => {
+    res.json({
+      code: '0',
+      msg: '新增或者修改成功',
+      data: []
+    });
+  }, 800);
+});
+

@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:46 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-21 11:51:47
+ * @Last Modified time: 2018-08-21 16:36:09
  */
 import { myAxios } from '@Utils/myAxios'
 import { defaultHeader } from './config'
@@ -154,12 +154,12 @@ export const authRolePageListAdd = ({ rolename, roledesc, checkedIds }) => {
  */
 
 // 获取菜单与按钮数据
-export const apiGetAuthMenuPageList = ({ page, pageSize, name, type, level }) => {
+export const apiGetAuthMenuPageList = ({ page, pageSize, searchname, searchtype, searchlevel }) => {
   return myAxios(
     {
       url: 'authMenuPageList',
       method: 'get',
-      params: { page, pageSize, name, type, level },
+      params: { page, pageSize, searchname, searchtype, searchlevel },
       headers: defaultHeader
     })
 }
@@ -174,6 +174,38 @@ export const authMenuPageListDelete = ({ id }) => {
       headers: defaultHeader
     })
 }
+
+//  新增或者修改节点
+export const authMenuPageListAddorEdit = ({
+  pid,
+  newnamem,
+  icon,
+  url,
+  code,
+  type,
+  level,
+  sort
+}) => {
+  return myAxios(
+    {
+      url: 'authMenuPageListAddorEdit',
+      method: 'post',
+      params: {},
+      data: {
+        pid,
+        newnamem,
+        icon,
+        url,
+        code,
+        type,
+        level,
+        sort
+      },
+      headers: defaultHeader
+    })
+}
+
+
 
 
 
