@@ -33,6 +33,7 @@
     "import/first": 0,
     "react/jsx-boolean-value": 0,
     "react/no-string-refs": 0,
-    "react/jsx-closing-bracket-location": 0
+    "react/jsx-closing-bracket-location": 0,
+    "no-mixed-operators": 0
   }
 }

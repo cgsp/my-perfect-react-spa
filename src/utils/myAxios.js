@@ -2,7 +2,7 @@
  * @Author: John.Guan
  * @Date: 2018-07-24 15:01:37
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-15 18:02:57
+ * @Last Modified time: 2018-08-22 16:56:53
  */
 import axios from 'axios'
 import qs from 'qs'
@@ -84,6 +84,12 @@ function myAxios(options) {
   const time = Date.now()
   const params = { ...{ _: time }, ...options.params }
 
+  for (const key in params) {
+    if (params[key] === null || params[key] === '' || params[key] === undefined) {
+      delete params[key]
+    }
+  }
+
   const headers = options.headers || {
     'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
     // 'Content-Type': 'application/json;charset=UTF-8',
@@ -91,13 +97,25 @@ function myAxios(options) {
   }
 
   let data
-  if (method === 'get') {
-    data = null
-  } else if (method === 'post' && headers['Content-Type'] === 'application/json;charset=UTF-8') {
-    data = options.data || {}
-  } else if (method === 'post' && headers['Content-Type'] === 'application/x-www-form-urlencoded;charset=UTF-8') {
-    data = qs.stringify(options.data) || qs.stringify({})
+
+  const optionsData = options.data
+
+  for (const key in optionsData) {
+    if (optionsData[key] === null || optionsData[key] === '' || optionsData[key] === undefined) {
+      delete optionsData[key]
+    }
   }
+
+
+  if (method === 'get' || method === 'delete' || method === 'head') {
+    data = null
+  } else if (method === 'post' || method === 'put' || method === 'patch' && headers['Content-Type'] === 'application/json;charset=UTF-8') {
+    data = optionsData || {}
+
+  } else if (method === 'post' || method === 'put' || method === 'patch' && headers['Content-Type'] === 'application/x-www-form-urlencoded;charset=UTF-8') {
+    data = qs.stringify(optionsData) || qs.stringify({})
+  }
+
 
 
   return new Promise((resolve, reject) => {

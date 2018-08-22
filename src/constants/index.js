@@ -54,4 +54,6 @@ const BASEURL = {
 }
 const ERR_OK = '0'
 
-export { BASEURL, ERR_OK }
+const DOWN_LOAD_URL = 'https://www.baidu.com'
+
+export { BASEURL, ERR_OK, DOWN_LOAD_URL }
