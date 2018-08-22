@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-22 18:45:25
+ * @Last Modified time: 2018-08-22 23:08:41
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Modal, Select, DatePicker } from 'antd'
@@ -13,6 +13,7 @@ import { DOWN_LOAD_URL } from '@Constants'
 import AuthMenuListTable from './list-table'
 import AddOrEditMenu from './add-or-edit-menu'
 import MaskLoading from '@Components/mask-loading'
+import SortList from '@Components/sort-list'
 import TopTip from '@Components/top-tip'
 import { myTrim } from '@Utils/myTrim'
 import { apiGetAuthMenuPageList, authMenuPageListDelete, authMenuPageListAddorEdit } from '@Api'
@@ -37,6 +38,7 @@ class MainListen extends Component {
       searchCreateTimeEnd: null,
       searchUpdateTimeBegin: null,
       searchUpdateTimeEnd: null,
+      searchSortBy: '创建时间正序',
       tableTotal: 0,
       tableData: [],
       page: 1,
@@ -60,6 +62,7 @@ class MainListen extends Component {
     this.tableSelect = this.tableSelect.bind(this)
     this.modalOk = this.modalOk.bind(this)
     this.modalCancel = this.modalCancel.bind(this)
+    this.tableLineShowDetails = this.tableLineShowDetails.bind(this)
     // this.modalOnCheck = this.modalOnCheck.bind(this)
     this.urlChange = this.urlChange.bind(this)
     this.codeChange = this.codeChange.bind(this)
@@ -128,6 +131,10 @@ class MainListen extends Component {
     console.log('另存为', line)
   }
 
+  tableLineShowDetails(line) {
+    console.log('查看详情', line)
+  }
+
   tableSelect(selectedRowKeys) {
     console.log('selectedRowKeys changed: ', selectedRowKeys)
     this.setState({
@@ -180,44 +187,58 @@ class MainListen extends Component {
       }
 
       console.log(str.slice(0, -1))
+
+      // let a = document.createElement('a')
+      // document.body.appendChild(a)
+      // a.setAttribute('style', 'display:none')
+      // a.setAttribute('href', str)
+      // a.setAttribute('download', '订单列表')
+      // a.click()
     })
   }
 
 
   onTableShowSizeChange(current, pageSize) {
     console.log(current, pageSize)
+    this.pageOrPageSizeChange(current, pageSize)
+  }
+
+  pageOrPageSizeChange(current, pageSize) {
     this.setState({
       page: current,
       pageSize
     }, () => {
-      const searchname = myTrim(this.state.searchname)
-      const { searchtype, searchlevel } = this.state
+      const {
+        searchMainId,
+        searchSelfId,
+        searchListenName,
+        searchListenType,
+        searchSmallType,
+        searchState,
+        searchCreateTimeBegin,
+        searchCreateTimeEnd,
+        searchUpdateTimeBegin,
+        searchUpdateTimeEnd, } = this.state
       this.getListData({
         page: this.state.page,
         pageSize: this.state.pageSize,
-        searchname,
-        searchtype,
-        searchlevel
+        searchMainId,
+        searchSelfId,
+        searchListenName,
+        searchListenType,
+        searchSmallType,
+        searchState,
+        searchCreateTimeBegin,
+        searchCreateTimeEnd,
+        searchUpdateTimeBegin,
+        searchUpdateTimeEnd
       })
     })
   }
 
   onTablePageChange(current, pageSize) {
     console.log(current, pageSize)
-    this.setState({
-      page: current,
-      pageSize
-    }, () => {
-      const searchname = myTrim(this.state.searchname)
-      const { searchtype, searchlevel } = this.state
-      this.getListData({
-        page: this.state.page,
-        pageSize: this.state.pageSize,
-        searchname,
-        searchtype,
-        searchlevel
-      })
-    })
+    this.pageOrPageSizeChange(current, pageSize)
   }
 
   showTableTotal(total) {
@@ -446,6 +467,7 @@ class MainListen extends Component {
       tableLineSave: this.tableLineSave,
       tableSelect: this.tableSelect,
       selectedRowKeys: this.state.selectedRowKeys,
+      tableLineShowDetails: this.tableLineShowDetails,
       onShowSizeChange: this.onTableShowSizeChange,
       onChange: this.onTablePageChange,
       total: this.state.tableTotal,
@@ -472,6 +494,8 @@ class MainListen extends Component {
       modalAlertVisible: this.state.modalAlertVisible,
       modalAlertMessage: this.state.modalAlertMessage
     }
+
+
 
     return (
       <div className="auth-role">
@@ -616,6 +640,10 @@ class MainListen extends Component {
             <Col span={24} style={{ textAlign: 'left' }}>
               <Button type="primary" onClick={() => this.exportListen()}>听单批量导出</Button>
               <Button style={{ marginLeft: 20 }} type="primary" onClick={() => this.exportContent()}>内容批量导出</Button>
+              <div style={{ float: 'right' }}>
+                <span>排序方式：</span>
+                <SortList />
+              </div>
             </Col>
           </Row>
         </List>

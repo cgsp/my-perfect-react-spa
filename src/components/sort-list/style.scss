@@ -1,0 +1,17 @@
+.sort-list {
+  display: inline-block;
+  .sort-item {
+    display: inline-block;
+    margin-right: 10px;
+    color: #A1A1A1;
+    &:last-child {
+      margin-right: 0;
+    }
+    .sort-name {
+      float: left;
+    }
+    .sort-icon {
+      float: right;
+    }
+  }
+}

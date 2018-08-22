@@ -7,6 +7,7 @@ export default class AuthMenuListTable extends Component {
   static propTypes = {
     total: PropTypes.number,
     tableLineSave: PropTypes.func,
+    tableLineShowDetails: PropTypes.func,
     tableSelect: PropTypes.func,
     onShowSizeChange: PropTypes.func,
     onChange: PropTypes.func,
@@ -52,10 +53,11 @@ export default class AuthMenuListTable extends Component {
           )
         } else {
           img = (
-            <img width={50} height={50} src={text} alt="听单封面" />
+            <a href={text} target="_blank" style={{ width: 50, height: 50, display: 'inline-block', cursor: 'pointer' }}>
+              <img width={50} height={50} src={text} alt="听单封面" />
+            </a>
           )
         }
-
         return img
       }
     },
@@ -73,6 +75,9 @@ export default class AuthMenuListTable extends Component {
       title: '内容数',
       dataIndex: 'contentNum',
       key: 'contentNum',
+      render: (text, record) => (
+        <span style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.props.tableLineShowDetails(record)}>{text}</span>
+      )
     },
     {
       title: '状态',
