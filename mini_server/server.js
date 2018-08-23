@@ -3,7 +3,7 @@
  * @Author: John.Guan
  * @Date: 2018-05-29 23:01:41
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-23 11:07:26
+ * @Last Modified time: 2018-08-23 19:26:24
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
@@ -2268,7 +2268,8 @@ app.put('/open-self-admin/mainListenList', function (req, res) {
             contentNum: 18,
             state: '已上架',
             createTime: 1534925202887,
-            updateTime: 1534925202887
+            updateTime: 1534925202887,
+            voiceIds: '393,392,391'
           },
           {
             mainId: '2',
@@ -2280,7 +2281,8 @@ app.put('/open-self-admin/mainListenList', function (req, res) {
             contentNum: 20,
             state: '已下架',
             createTime: 1534925202887,
-            updateTime: 1534925202887
+            updateTime: 1534925202887,
+            voiceIds: '393,392,391'
           },
           {
             mainId: '3',
@@ -2292,7 +2294,8 @@ app.put('/open-self-admin/mainListenList', function (req, res) {
             contentNum: 20,
             state: '已下架',
             createTime: 1534925202887,
-            updateTime: 1534925202887
+            updateTime: 1534925202887,
+            voiceIds: '393,392,391'
           },
           {
             mainId: '4',
@@ -2304,7 +2307,8 @@ app.put('/open-self-admin/mainListenList', function (req, res) {
             contentNum: 20,
             state: '已下架',
             createTime: 1534925202887,
-            updateTime: 1534925202887
+            updateTime: 1534925202887,
+            voiceIds: '393,392,391'
           },
           {
             mainId: '5',
@@ -2316,7 +2320,8 @@ app.put('/open-self-admin/mainListenList', function (req, res) {
             contentNum: 20,
             state: '已下架',
             createTime: 1534925202887,
-            updateTime: 1534925202887
+            updateTime: 1534925202887,
+            voiceIds: '393,392,391'
           },
           {
             mainId: '6',
@@ -2328,7 +2333,8 @@ app.put('/open-self-admin/mainListenList', function (req, res) {
             contentNum: 20,
             state: '已下架',
             createTime: 1534925202887,
-            updateTime: 1534925202887
+            updateTime: 1534925202887,
+            voiceIds: '393,392,391'
           }, {
             mainId: '7',
             selfId: '7',
@@ -2339,7 +2345,8 @@ app.put('/open-self-admin/mainListenList', function (req, res) {
             contentNum: 20,
             state: '已下架',
             createTime: 1534925202887,
-            updateTime: 1534925202887
+            updateTime: 1534925202887,
+            voiceIds: '393,392,391'
           },
           {
             mainId: '8',
@@ -2351,7 +2358,8 @@ app.put('/open-self-admin/mainListenList', function (req, res) {
             contentNum: 20,
             state: '已下架',
             createTime: 1534925202887,
-            updateTime: 1534925202887
+            updateTime: 1534925202887,
+            voiceIds: '393,392,391'
           },
           {
             mainId: '9',
@@ -2363,7 +2371,8 @@ app.put('/open-self-admin/mainListenList', function (req, res) {
             contentNum: 20,
             state: '已下架',
             createTime: 1534925202887,
-            updateTime: 1534925202887
+            updateTime: 1534925202887,
+            voiceIds: '393,392,391'
           },
           {
             mainId: '10',
@@ -2375,7 +2384,8 @@ app.put('/open-self-admin/mainListenList', function (req, res) {
             contentNum: 20,
             state: '已下架',
             createTime: 1534925202887,
-            updateTime: 1534925202887
+            updateTime: 1534925202887,
+            voiceIds: '393,392,391'
           }
         ]
       }
@@ -2398,8 +2408,36 @@ app.post('/open-self-admin/mainListenTableList', function (req, res) {
             voiceName: 50,
             state: '已上架',
             createTime: 1534925202887,
-            updateTime: 1534925202887
+            updateTime: 1534925202887,
+            voiceIds: '393,392,391',
+
           }
+        ]
+      }
+    });
+  }, 800);
+});
+
+app.post('/open-self-admin/commonSmallTypes', function (req, res) {
+  setTimeout(() => {
+    res.json({
+      code: '0',
+      msg: '成功',
+      data: {
+        total: 50,
+        list: [
+          {
+            'name': '咨询',
+            'id': '1'
+          },
+          {
+            'name': '音乐',
+            'id': '2'
+          },
+          {
+            'name': '有声书',
+            'id': '3'
+          },
         ]
       }
     });

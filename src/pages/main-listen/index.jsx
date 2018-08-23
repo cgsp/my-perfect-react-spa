@@ -2,29 +2,32 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-23 11:47:46
+ * @Last Modified time: 2018-08-23 19:49:35
  */
 import React, { Component } from 'react'
-import { List, Form, Row, Col, Button, Input, Modal, Select, DatePicker } from 'antd'
+import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal } from 'antd'
 import moment from 'moment'
 import { myGetStampTime } from '@Utils/myGetTime'
-import { getNodeSort } from '@Utils/getNodeSort'
 import { DOWN_LOAD_URL } from '@Constants'
 import AuthMenuListTable from './list-table'
-import AddOrEditMenu from './add-or-edit-menu'
+import WrapperMainListenAddOrEdit from './add-or-edit'
 import MainListenModalTable from './modal-table'
 import MaskLoading from '@Components/mask-loading'
 import SortList from '@Components/sort-list'
 import TopTip from '@Components/top-tip'
 import { myTrim } from '@Utils/myTrim'
-import { apiGetAuthMenuPageList, authMenuPageListDelete, authMenuPageListAddorEdit } from '@Api'
 import { mainListenList, mainListenTableList } from '@Api/main-listen'
+import { connect } from 'react-redux'
+import { getCommonSmallTypes } from '@Redux/commonSmallType'
 
 const FormItem = Form.Item
-const confirm = Modal.confirm
 const Option = Select.Option
 
 
+@connect(
+  state => state.commonSmallTypesReducer,
+  { getCommonSmallTypes }
+)
 class MainListen extends Component {
   constructor() {
     super()
@@ -51,11 +54,9 @@ class MainListen extends Component {
       modalTableTotal: 0,
       modalTableData: [],
 
-      modalTitle: '',
-      modalVisible: false,
-      modalRoleName: '',
-      modalRoleDesc: '',
-      modalConfirmLoading: false,
+      addOrEditVisible: false,
+      addOrEditInitValues: {},
+
       topTipOptions: {
         show: false,
         msg: '',
@@ -66,19 +67,13 @@ class MainListen extends Component {
     this.onTablePageChange = this.onTablePageChange.bind(this)
     this.tableLineSave = this.tableLineSave.bind(this)
     this.tableSelect = this.tableSelect.bind(this)
-    this.modalOk = this.modalOk.bind(this)
-    this.modalCancel = this.modalCancel.bind(this)
     this.tableLineShowDetails = this.tableLineShowDetails.bind(this)
     this.clickSort = this.clickSort.bind(this)
     this.modalTableCancel = this.modalTableCancel.bind(this)
     this.modalTableOnShowSizeChange = this.modalTableOnShowSizeChange.bind(this)
     this.modalTableOnChange = this.modalTableOnChange.bind(this)
-
-    // this.modalOnCheck = this.modalOnCheck.bind(this)
-    this.urlChange = this.urlChange.bind(this)
-    this.codeChange = this.codeChange.bind(this)
-    this.iconChange = this.iconChange.bind(this)
-    this.newnameChange = this.newnameChange.bind(this)
+    this.addOrEditOk = this.addOrEditOk.bind(this)
+    this.addOrEditCancel = this.addOrEditCancel.bind(this)
   }
 
   componentDidMount() {
@@ -99,11 +94,7 @@ class MainListen extends Component {
       sortIndex: 0,
       sortDirection: 'down'
     })
-  }
-
-  onChange(dates, dateStrings) {
-    console.log('From: ', dates[0], ', to: ', dates[1])
-    console.log('From: ', dateStrings[0], ', to: ', dateStrings[1])
+    this.props.getCommonSmallTypes('主站内容')
   }
 
   clickSort(sortIndex, sortDirection) {
@@ -155,7 +146,38 @@ class MainListen extends Component {
   }
 
   tableLineSave(line) {
-    console.log('另存为', line)
+    // console.log('另存为', line)
+    this.setState({
+      addOrEditVisible: true,
+      addOrEditInitValues: line
+    })
+    this.props.getCommonSmallTypes(line.bigType)
+  }
+  addOrEditOk(values) {
+    console.log(values)
+    const content = (
+      <div>
+        <p style={{ textAlign: 'center' }}>成功了5条</p>
+        <p style={{ textAlign: 'center' }}>失败了4条</p>
+        <p style={{ textAlign: 'center' }}>
+          <a href="">查看统计结果</a>
+        </p>
+      </div>
+    )
+    Modal.confirm({
+      title: '统计结果',
+      content: content,
+      okText: '确认',
+      footer: null
+    })
+    this.setState({
+      addOrEditVisible: false
+    })
+  }
+  addOrEditCancel() {
+    this.setState({
+      addOrEditVisible: false
+    })
   }
 
   tableLineShowDetails(line) {
@@ -224,7 +246,6 @@ class MainListen extends Component {
         searchSelfId: !searchSelfId ? '' : myTrim(searchSelfId),
         searchListenName: !searchListenName ? '' : myTrim(searchListenName),
         searchListenType,
-        searchListenType,
         searchSmallType,
         searchState,
         searchCreateTimeBegin: !searchCreateTimeBegin ? null : myGetStampTime(searchCreateTimeBegin),
@@ -253,9 +274,6 @@ class MainListen extends Component {
       // a.click()
     })
   }
-
-
-
 
   pageOrPageSizeChange(current, pageSize) {
     this.setState({
@@ -303,13 +321,7 @@ class MainListen extends Component {
     console.log(current, pageSize)
     this.pageOrPageSizeChange(current, pageSize)
   }
-  modalTableOnChange(current, pageSize) {
-    this.modalPageOrPageSizeChange(current, pageSize)
-  }
 
-  modalTableOnShowSizeChange(current, pageSize) {
-    this.modalPageOrPageSizeChange(current, pageSize)
-  }
   modalPageOrPageSizeChange(current, pageSize) {
     console.log(this.modalMainId)
     this.getModalListData({
@@ -318,6 +330,21 @@ class MainListen extends Component {
       mainId: this.modalMainId
     })
   }
+
+  modalTableOnChange(current, pageSize) {
+    this.modalPageOrPageSizeChange(current, pageSize)
+  }
+
+  modalTableOnShowSizeChange(current, pageSize) {
+    this.modalPageOrPageSizeChange(current, pageSize)
+  }
+
+  modalTableCancel() {
+    this.setState({
+      modalTableVisible: false
+    })
+  }
+
 
   showTableTotal(total) {
     return `共 ${total} 条`
@@ -408,149 +435,6 @@ class MainListen extends Component {
 
   }
 
-  modalOk(title) {
-    this.setState({
-    }, () => {
-      if (!this.state.newname) {
-        this.showModalTip(`请输入${title}名称`)
-        return
-      }
-      if (!this.state.icon && title === '一级菜单') {
-        this.showModalTip('请输入一级菜单图标')
-        return
-      }
-      if (!this.state.url && title !== '功能') {
-        this.showModalTip('请输入url路径')
-        return
-      }
-
-      if (!this.state.code && title === '功能') {
-        this.showModalTip('请输入权限字符串')
-        return
-      }
-
-      const { newname, icon, url, code, pid } = this.state
-
-      let id
-      let sort
-      if (this.state.handleType === '编辑') {
-        id = this.state.id
-        // 写一个函数根据pid来获取sort
-        sort = getNodeSort(pid, this.props.appNavAndAuthPlain, '编辑')
-        // debugger
-        console.log(id)
-      }
-      else {
-        id = null
-        // 写一个函数根据pid来获取sort
-        sort = getNodeSort(pid, this.props.appNavAndAuthPlain, '新增')
-      }
-
-      let type
-      let level
-      if (title === '一级菜单') {
-        type = '菜单'
-        level = '1'
-      } else if (title === '二级菜单') {
-        type = '菜单'
-        level = '2'
-      } else if (title === '三级菜单') {
-        type = '菜单'
-        level = '3'
-      } else if (title === '功能') {
-        type = '功能'
-        level = ''
-      }
-
-      console.log({ newname, icon, url, code, type, level, sort })
-      this.setState({
-        modalConfirmLoading: true
-      })
-      authMenuPageListAddorEdit(
-        {
-          id,
-          pid,
-          newname: myTrim(newname),
-          icon: myTrim(icon),
-          url: myTrim(url),
-          code: myTrim(code),
-          type,
-          level,
-          sort
-        }
-      )
-        .then(res => {
-          this.setState({
-            modalVisible: false,
-          }, () => {
-            // 更新导航的redux数据
-            this.props.getNavAndAuthData()
-            const searchname = myTrim(this.state.searchname)
-            const { searchtype, searchlevel } = this.state
-            this.getListData({
-              page: this.state.page,
-              pageSize: this.state.pageSize,
-              searchname,
-              searchtype,
-              searchlevel,
-              tag: this.state.handleType
-            })
-          })
-
-        })
-    })
-  }
-
-  showModalTip(tip) {
-    this.setState({
-      modalAlertVisible: true,
-      modalAlertMessage: tip
-    })
-    if (this.timer) {
-      clearTimeout(this.timer)
-      this.timer = null
-    }
-    this.timer = setTimeout(() => {
-      this.setState({
-        modalAlertVisible: false,
-        modalAlertMessage: ''
-      })
-    }, 2000)
-  }
-
-  modalCancel() {
-    this.setState({
-      modalVisible: false
-    })
-  }
-  modalTableCancel() {
-    this.setState({
-      modalTableVisible: false
-    })
-  }
-
-  newnameChange(e) {
-    this.setState({
-      newname: e.target.value
-    })
-  }
-  codeChange(e) {
-    this.setState({
-      code: e.target.value
-    })
-  }
-
-  iconChange(e) {
-    this.setState({
-      icon: e.target.value
-    })
-  }
-
-  urlChange(e) {
-    this.setState({
-      url: e.target.value
-    })
-  }
 
   render() {
     const tableOptions = {
@@ -575,24 +459,11 @@ class MainListen extends Component {
       modalTableShowTotal: this.modalTableShowTotal,
     }
 
-    const modalOptions = {
-      modalTitle: this.state.modalTitle,
-      modalVisible: this.state.modalVisible,
-      modalOk: this.modalOk,
-      modalConfirmLoading: this.state.modalConfirmLoading,
-      modalCancel: this.modalCancel,
-      name: this.state.name,
-      newname: this.state.newname,
-      newnameChange: this.newnameChange,
-      url: this.state.url,
-      urlChange: this.urlChange,
-      icon: this.state.icon,
-      iconChange: this.iconChange,
-      code: this.state.code,
-      codeChange: this.codeChange,
-      handleType: this.state.handleType,
-      modalAlertVisible: this.state.modalAlertVisible,
-      modalAlertMessage: this.state.modalAlertMessage
+    const addOrEditOptions = {
+      addOrEditVisible: this.state.addOrEditVisible,
+      addOrEditInitValues: this.state.addOrEditInitValues,
+      addOrEditOk: this.addOrEditOk,
+      addOrEditCancel: this.addOrEditCancel,
     }
 
 
@@ -646,9 +517,11 @@ class MainListen extends Component {
                     allowClear
                     onChange={value => this.setState({ searchSmallType: value })}
                   >
-                    <Option value="资讯">资讯</Option>
-                    <Option value="音乐">音乐</Option>
-                    <Option value="有声书">有声书</Option>
+                    {
+                      this.props.commonSmallTypes.map((item) => (
+                        <Option key={item.id} value={item.id}>{item.name}</Option>
+                      ))
+                    }
                   </Select>
                 </FormItem>
               </Col>
@@ -749,7 +622,7 @@ class MainListen extends Component {
         </List>
         <AuthMenuListTable {...tableOptions} />
         <MainListenModalTable {...modalTableOptions} />
-        <AddOrEditMenu {...modalOptions} />
+        <WrapperMainListenAddOrEdit {...addOrEditOptions} />
         <MaskLoading ref="mask" />
       </div >
 

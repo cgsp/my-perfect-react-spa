@@ -45,15 +45,26 @@
 //   0: '已激活',
 //   1: '设备激活过期'
 // }
-
 // 整个项目的配置文件
+
 const BASEURL = {
   dev: '/open-self-admin',
   // 生产的必须加上http或者https
   pro: 'http://192.168.123.68:8888/open-slef-admin/',
 }
+
+const DOWN_LOAD_URL = {
+  dev: 'https://www.baidu.com',
+  // 生产的必须加上http或者https
+  pro: 'https://www.baidu.com',
+}
+
+const UP_IMG_ACTION = {
+  dev: '//jsonplaceholder.typicode.com/posts/',
+  // 生产的必须加上http或者https
+  pro: '//jsonplaceholder.typicode.com/posts/',
+}
+
 const ERR_OK = '0'
 
-const DOWN_LOAD_URL = 'https://www.baidu.com'
-
-export { BASEURL, ERR_OK, DOWN_LOAD_URL }
+export { BASEURL, ERR_OK, DOWN_LOAD_URL, UP_IMG_ACTION }

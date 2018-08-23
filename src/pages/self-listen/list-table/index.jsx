@@ -3,7 +3,7 @@ import { Table, Pagination } from 'antd'
 import { myGetStrTime } from '@Utils/myGetTime'
 import { PropTypes } from 'prop-types'
 
-export default class AuthMenuListTable extends Component {
+export default class SelfListenListTable extends Component {
   static propTypes = {
     total: PropTypes.number,
     tableLineSave: PropTypes.func,
