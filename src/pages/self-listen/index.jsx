@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-23 19:54:56
+ * @Last Modified time: 2018-08-23 20:26:44
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal } from 'antd'
@@ -61,7 +61,10 @@ class SelfListen extends Component {
         show: false,
         msg: '',
         type: 'success'
-      }
+      },
+      startValue: null,
+      endValue: null,
+      endOpen: false,
     }
     this.onTableShowSizeChange = this.onTableShowSizeChange.bind(this)
     this.onTablePageChange = this.onTablePageChange.bind(this)
@@ -152,6 +155,14 @@ class SelfListen extends Component {
       addOrEditInitValues: line
     })
     this.props.getCommonSmallTypes(line.bigType)
+  }
+
+  addListen() {
+    this.setState({
+      addOrEditVisible: true,
+      addOrEditInitValues: {}
+    })
+    this.props.getCommonSmallTypes('自运营')
   }
   addOrEditOk(values) {
     console.log(values)
@@ -435,6 +446,48 @@ class SelfListen extends Component {
 
   }
 
+  disabledStartDate = (startValue) => {
+    const endValue = this.state.endValue
+    if (!startValue || !endValue) {
+      return false
+    }
+    return startValue.valueOf() > endValue.valueOf()
+  }
+
+  disabledEndDate = (endValue) => {
+    const startValue = this.state.startValue
+    if (!endValue || !startValue) {
+      return false
+    }
+    return endValue.valueOf() <= startValue.valueOf()
+  }
+
+  onDateChange = (field, value) => {
+    this.setState({
+      [field]: value,
+    })
+  }
+
+
+
+  onStartChange = (value) => {
+    this.onDateChange('startValue', value)
+  }
+
+  onEndChange = (value) => {
+    this.onDateChange('endValue', value)
+  }
+
+  handleStartOpenChange = (open) => {
+    if (!open) {
+      this.setState({ endOpen: true })
+    }
+  }
+
+  handleEndOpenChange = (open) => {
+    this.setState({ endOpen: open })
+  }
+
 
   render() {
     const tableOptions = {
@@ -465,6 +518,8 @@ class SelfListen extends Component {
       addOrEditOk: this.addOrEditOk,
       addOrEditCancel: this.addOrEditCancel,
     }
+
+    const { startValue, endValue, endOpen } = this.state
 
 
 
@@ -545,11 +600,13 @@ class SelfListen extends Component {
                       { defaultValue: moment().startOf('day') }
                     }
                     showToday={false}
+                    value={startValue}
                     format="YYYY-MM-DD HH:mm:ss"
                     placeholder="请选择开始时间"
-                    onChange={(data, str) => this.setState({
-                      searchCreateTimeBegin: str
-                    })}
+                    disabledDate={this.disabledStartDate}
+                    disabledTime={this.disabledStartDate}
+                    onChange={this.onStartChange}
+                    onOpenChange={this.handleStartOpenChange}
                   />
                 </FormItem>
 
@@ -561,11 +618,14 @@ class SelfListen extends Component {
                       { defaultValue: moment().endOf('day') }
                     }
                     showToday={false}
+                    value={endValue}
                     format="YYYY-MM-DD HH:mm:ss"
                     placeholder="请选择结束时间"
-                    onChange={(data, str) => this.setState({
-                      searchCreateTimeEnd: str
-                    })}
+                    disabledDate={this.disabledEndDate}
+                    disabledTime={this.disabledEndDate}
+                    onChange={this.onEndChange}
+                    open={endOpen}
+                    onOpenChange={this.handleEndOpenChange}
                   />
                 </FormItem>
               </Col>
@@ -611,7 +671,8 @@ class SelfListen extends Component {
         <List style={{ marginBottom: 30 }}>
           <Row>
             <Col span={24} style={{ textAlign: 'left' }}>
-              <Button type="primary" onClick={() => this.exportListen()}>听单批量导出</Button>
+              <Button type="primary" onClick={() => this.addListen()}>新增听单</Button>
+              <Button style={{ marginLeft: 20 }} type="primary" onClick={() => this.exportListen()}>听单批量导出</Button>
               <Button style={{ marginLeft: 20 }} type="primary" onClick={() => this.exportContent()}>内容批量导出</Button>
               <div style={{ float: 'right' }}>
                 <span style={{ position: 'relative', top: -9 }}>排序方式：</span>
