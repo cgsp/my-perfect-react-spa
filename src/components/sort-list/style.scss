@@ -4,14 +4,40 @@
     display: inline-block;
     margin-right: 10px;
     color: #A1A1A1;
-    &:last-child {
-      margin-right: 0;
-    }
+    position: relative;
+    width: 80px;
+    height: 30px;
+    cursor: pointer;
+    user-select:none;
     .sort-name {
-      float: left;
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 30px;
+      line-height: 30px;
+      &.active {
+        color: #1890ff;
+      }
     }
-    .sort-icon {
-      float: right;
+    .sort-icon-up {
+      position: absolute;
+      right: 0;
+      height: 10px;
+      line-height: 10px;
+      top: 4px;
+      &.active {
+        color: #1890ff;
+      }
+    }
+    .sort-icon-down {
+      position: absolute;
+      right: 0;
+      bottom: 4px;
+      height: 10px;
+      line-height: 10px;
+      &.active {
+        color: #1890ff;
+      }
     }
   }
 }

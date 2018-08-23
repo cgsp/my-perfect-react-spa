@@ -3,7 +3,7 @@
  * @Author: John.Guan
  * @Date: 2018-05-29 23:01:41
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-22 17:25:16
+ * @Last Modified time: 2018-08-23 11:07:26
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
@@ -2329,7 +2329,7 @@ app.put('/open-self-admin/mainListenList', function (req, res) {
             state: '已下架',
             createTime: 1534925202887,
             updateTime: 1534925202887
-          },{
+          }, {
             mainId: '7',
             selfId: '7',
             listenName: '2018喜马拉雅儿童绘本榜',
@@ -2374,6 +2374,29 @@ app.put('/open-self-admin/mainListenList', function (req, res) {
             classfiy: '其他111',
             contentNum: 20,
             state: '已下架',
+            createTime: 1534925202887,
+            updateTime: 1534925202887
+          }
+        ]
+      }
+    });
+  }, 800);
+});
+
+app.post('/open-self-admin/mainListenTableList', function (req, res) {
+  setTimeout(() => {
+    res.json({
+      code: '0',
+      msg: '成功',
+      data: {
+        total: 50,
+        list: [
+          {
+            albumId: '1',
+            albumName: '2018喜马拉雅儿童绘本榜',
+            url: 'http://img.zcool.cn/community/012cb757939a8e0000018c1b7482be.jpg@1280w_1l_2o_100sh.png',
+            voiceName: 50,
+            state: '已上架',
             createTime: 1534925202887,
             updateTime: 1534925202887
           }

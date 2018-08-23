@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-22 23:08:41
+ * @Last Modified time: 2018-08-23 11:47:46
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Modal, Select, DatePicker } from 'antd'
@@ -12,12 +12,13 @@ import { getNodeSort } from '@Utils/getNodeSort'
 import { DOWN_LOAD_URL } from '@Constants'
 import AuthMenuListTable from './list-table'
 import AddOrEditMenu from './add-or-edit-menu'
+import MainListenModalTable from './modal-table'
 import MaskLoading from '@Components/mask-loading'
 import SortList from '@Components/sort-list'
 import TopTip from '@Components/top-tip'
 import { myTrim } from '@Utils/myTrim'
 import { apiGetAuthMenuPageList, authMenuPageListDelete, authMenuPageListAddorEdit } from '@Api'
-import { mainListenList } from '@Api/main-listen'
+import { mainListenList, mainListenTableList } from '@Api/main-listen'
 
 const FormItem = Form.Item
 const confirm = Modal.confirm
@@ -38,12 +39,17 @@ class MainListen extends Component {
       searchCreateTimeEnd: null,
       searchUpdateTimeBegin: null,
       searchUpdateTimeEnd: null,
-      searchSortBy: '创建时间正序',
+      sortIndex: 0,
+      sortDirection: 'down',
       tableTotal: 0,
       tableData: [],
       page: 1,
       pageSize: 10,
       selectedRowKeys: [],
+
+      modalTableVisible: false,
+      modalTableTotal: 0,
+      modalTableData: [],
 
       modalTitle: '',
       modalVisible: false,
@@ -63,6 +69,11 @@ class MainListen extends Component {
     this.modalOk = this.modalOk.bind(this)
     this.modalCancel = this.modalCancel.bind(this)
     this.tableLineShowDetails = this.tableLineShowDetails.bind(this)
+    this.clickSort = this.clickSort.bind(this)
+    this.modalTableCancel = this.modalTableCancel.bind(this)
+    this.modalTableOnShowSizeChange = this.modalTableOnShowSizeChange.bind(this)
+    this.modalTableOnChange = this.modalTableOnChange.bind(this)
+
     // this.modalOnCheck = this.modalOnCheck.bind(this)
     this.urlChange = this.urlChange.bind(this)
     this.codeChange = this.codeChange.bind(this)
@@ -85,6 +96,8 @@ class MainListen extends Component {
       searchCreateTimeEnd: null,
       searchUpdateTimeBegin: null,
       searchUpdateTimeEnd: null,
+      sortIndex: 0,
+      sortDirection: 'down'
     })
   }
 
@@ -93,10 +106,20 @@ class MainListen extends Component {
     console.log('From: ', dateStrings[0], ', to: ', dateStrings[1])
   }
 
-
+  clickSort(sortIndex, sortDirection) {
+    this.setState({
+      sortIndex,
+      sortDirection
+    })
+    this.searchList()
+  }
 
   handleSearch = (e) => {
     e.preventDefault()
+    this.searchList()
+  }
+
+  searchList() {
     this.setState({
     }, () => {
       const {
@@ -109,7 +132,9 @@ class MainListen extends Component {
         searchCreateTimeBegin,
         searchCreateTimeEnd,
         searchUpdateTimeBegin,
-        searchUpdateTimeEnd, } = this.state
+        searchUpdateTimeEnd,
+        sortIndex,
+        sortDirection } = this.state
       this.getListData({
         page: this.state.page,
         pageSize: this.state.pageSize,
@@ -122,7 +147,9 @@ class MainListen extends Component {
         searchCreateTimeBegin,
         searchCreateTimeEnd,
         searchUpdateTimeBegin,
-        searchUpdateTimeEnd
+        searchUpdateTimeEnd,
+        sortIndex,
+        sortDirection
       })
     })
   }
@@ -133,6 +160,30 @@ class MainListen extends Component {
 
   tableLineShowDetails(line) {
     console.log('查看详情', line)
+    const { mainId } = line
+    this.modalMainId = mainId
+    this.getModalListData({
+      page: 1,
+      pageSize: 10,
+      mainId: this.modalMainId
+    })
+
+  }
+  getModalListData(options) {
+    this.refs.mask.show()
+    mainListenTableList(options)
+      .then(res => {
+        this.refs.mask.hide()
+        const modalTableData = res.list.map(item => {
+          item.key = item.albumId
+          return item
+        })
+        this.setState({
+          modalTableData,
+          modalTableTotal: res.total,
+          modalTableVisible: true
+        })
+      })
   }
 
   tableSelect(selectedRowKeys) {
@@ -141,6 +192,8 @@ class MainListen extends Component {
       selectedRowKeys
     })
   }
+
+
 
   exportListen() {
     this.export()
@@ -162,7 +215,9 @@ class MainListen extends Component {
         searchCreateTimeEnd,
         searchUpdateTimeBegin,
         searchUpdateTimeEnd,
-        selectedRowKeys } = this.state
+        selectedRowKeys,
+        sortIndex,
+        sortDirection, } = this.state
 
       const options = {
         searchMainId: !searchMainId ? '' : myTrim(searchMainId),
@@ -176,12 +231,14 @@ class MainListen extends Component {
         searchCreateTimeEnd: !searchCreateTimeEnd ? null : myGetStampTime(searchCreateTimeEnd),
         searchUpdateTimeBegin: !searchUpdateTimeBegin ? null : myGetStampTime(searchUpdateTimeBegin),
         searchUpdateTimeEnd: !searchUpdateTimeEnd ? null : myGetStampTime(searchUpdateTimeEnd),
-        selectedRowKeys: selectedRowKeys.join()
+        selectedRowKeys: selectedRowKeys.join(),
+        sortIndex,
+        sortDirection,
       }
 
       let str = DOWN_LOAD_URL + '/api?'
       for (const key in options) {
-        if (options[key]) {
+        if (options[key] || options[key] === 0) {
           str += `${key}=${options[key]}&`
         }
       }
@@ -198,10 +255,7 @@ class MainListen extends Component {
   }
 
 
-  onTableShowSizeChange(current, pageSize) {
-    console.log(current, pageSize)
-    this.pageOrPageSizeChange(current, pageSize)
-  }
+
 
   pageOrPageSizeChange(current, pageSize) {
     this.setState({
@@ -218,7 +272,9 @@ class MainListen extends Component {
         searchCreateTimeBegin,
         searchCreateTimeEnd,
         searchUpdateTimeBegin,
-        searchUpdateTimeEnd, } = this.state
+        searchUpdateTimeEnd,
+        sortIndex,
+        sortDirection, } = this.state
       this.getListData({
         page: this.state.page,
         pageSize: this.state.pageSize,
@@ -231,7 +287,9 @@ class MainListen extends Component {
         searchCreateTimeBegin,
         searchCreateTimeEnd,
         searchUpdateTimeBegin,
-        searchUpdateTimeEnd
+        searchUpdateTimeEnd,
+        sortIndex,
+        sortDirection,
       })
     })
   }
@@ -241,7 +299,30 @@ class MainListen extends Component {
     this.pageOrPageSizeChange(current, pageSize)
   }
 
+  onTableShowSizeChange(current, pageSize) {
+    console.log(current, pageSize)
+    this.pageOrPageSizeChange(current, pageSize)
+  }
+  modalTableOnChange(current, pageSize) {
+    this.modalPageOrPageSizeChange(current, pageSize)
+  }
+
+  modalTableOnShowSizeChange(current, pageSize) {
+    this.modalPageOrPageSizeChange(current, pageSize)
+  }
+  modalPageOrPageSizeChange(current, pageSize) {
+    console.log(this.modalMainId)
+    this.getModalListData({
+      page: current,
+      pageSize,
+      mainId: this.modalMainId
+    })
+  }
+
   showTableTotal(total) {
+    return `共 ${total} 条`
+  }
+  modalTableShowTotal(total) {
     return `共 ${total} 条`
   }
 
@@ -258,7 +339,9 @@ class MainListen extends Component {
     searchCreateTimeBegin,
     searchCreateTimeEnd,
     searchUpdateTimeBegin,
-    searchUpdateTimeEnd }) {
+    searchUpdateTimeEnd,
+    sortIndex,
+    sortDirection, }) {
 
     this.refs.mask.show()
 
@@ -275,6 +358,8 @@ class MainListen extends Component {
       searchCreateTimeEnd: !searchCreateTimeEnd ? null : myGetStampTime(searchCreateTimeEnd),
       searchUpdateTimeBegin: !searchUpdateTimeBegin ? null : myGetStampTime(searchUpdateTimeBegin),
       searchUpdateTimeEnd: !searchUpdateTimeEnd ? null : myGetStampTime(searchUpdateTimeEnd),
+      sortIndex,
+      sortDirection,
     }
 
     mainListenList(options)
@@ -438,6 +523,11 @@ class MainListen extends Component {
       modalVisible: false
     })
   }
+  modalTableCancel() {
+    this.setState({
+      modalTableVisible: false
+    })
+  }
 
   newnameChange(e) {
     this.setState({
@@ -473,6 +563,16 @@ class MainListen extends Component {
       total: this.state.tableTotal,
       showTotal: this.showTableTotal,
       tableData: this.state.tableData
+    }
+
+    const modalTableOptions = {
+      modalTableVisible: this.state.modalTableVisible,
+      modalTableTotal: this.state.modalTableTotal,
+      modalTableData: this.state.modalTableData,
+      modalTableCancel: this.modalTableCancel,
+      modalTableOnShowSizeChange: this.modalTableOnShowSizeChange,
+      modalTableOnChange: this.modalTableOnChange,
+      modalTableShowTotal: this.modalTableShowTotal,
     }
 
     const modalOptions = {
@@ -641,13 +741,14 @@ class MainListen extends Component {
               <Button type="primary" onClick={() => this.exportListen()}>听单批量导出</Button>
               <Button style={{ marginLeft: 20 }} type="primary" onClick={() => this.exportContent()}>内容批量导出</Button>
               <div style={{ float: 'right' }}>
-                <span>排序方式：</span>
-                <SortList />
+                <span style={{ position: 'relative', top: -9 }}>排序方式：</span>
+                <SortList clickSort={this.clickSort} />
               </div>
             </Col>
           </Row>
         </List>
         <AuthMenuListTable {...tableOptions} />
+        <MainListenModalTable {...modalTableOptions} />
         <AddOrEditMenu {...modalOptions} />
         <MaskLoading ref="mask" />
       </div >

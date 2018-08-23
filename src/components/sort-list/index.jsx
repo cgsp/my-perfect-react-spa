@@ -15,9 +15,10 @@ export default class SortList extends Component {
 
   constructor() {
     super()
-    this.setState({
-      sort: '1-up'
-    })
+    this.state = {
+      sortIndex: 0,
+      sortDirection: 'down'
+    }
   }
 
   render() {
@@ -27,12 +28,27 @@ export default class SortList extends Component {
           this.props.sortNameArr.map((item, index) => {
 
             return (
-              <div className="sort-item" key={index}>
-                <span className="sort-name">{item}</span>
-                <span className="sort-icon">
-                  <Icon type="caret-up" />
-                  <Icon type="caret-down" />
-                </span>
+              <div className="sort-item" key={index} onClick={() => {
+                let { sortIndex, sortDirection } = this.state
+                if (sortIndex === index) {
+                  if (sortDirection === 'down') {
+                    sortDirection = 'up'
+                  } else {
+                    sortDirection = 'down'
+                  }
+                } else {
+                  sortIndex = index
+                  sortDirection = 'down'
+                }
+                this.setState({
+                  sortIndex,
+                  sortDirection
+                })
+                this.props.clickSort(sortIndex, sortDirection)
+              }}>
+                <span className={this.state.sortIndex === index ? 'sort-name active' : 'sort-name'}>{item}</span>
+                <Icon className={this.state.sortIndex === index && this.state.sortDirection === 'up' ? 'sort-icon-up active' : 'sort-icon-up'} type="caret-up" />
+                <Icon className={this.state.sortIndex === index && this.state.sortDirection === 'down' ? 'sort-icon-down active' : 'sort-icon-down'} type="caret-down" />
               </div>
             )
           }

@@ -13,3 +13,17 @@ export const mainListenList = (options) => {
       headers: defaultHeader
     })
 }
+
+// 获取菜单与按钮数据
+export const mainListenTableList = (options) => {
+  return myAxios(
+    {
+      url: 'mainListenTableList',
+      method: 'post',
+      params: {},
+      data: options,
+      headers: defaultHeader
+    })
+}
+
+
