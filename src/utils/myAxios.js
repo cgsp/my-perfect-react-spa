@@ -2,7 +2,7 @@
  * @Author: John.Guan
  * @Date: 2018-07-24 15:01:37
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-22 16:56:53
+ * @Last Modified time: 2018-08-24 10:11:13
  */
 import axios from 'axios'
 import qs from 'qs'
@@ -71,6 +71,9 @@ axios.interceptors.response.use((response) => {
  * 3、下面这样写，没什么鸟用，还是得用qs这个库
  * axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
  */
+
+// 2、跨域的时候，允许服务端设置cookies
+axios.defaults.withCredentials = true
 
 
 /*

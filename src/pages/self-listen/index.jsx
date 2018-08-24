@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-23 20:26:44
+ * @Last Modified time: 2018-08-24 13:39:52
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal } from 'antd'
@@ -19,6 +19,7 @@ import { myTrim } from '@Utils/myTrim'
 import { mainListenList, mainListenTableList } from '@Api/main-listen'
 import { connect } from 'react-redux'
 import { getCommonSmallTypes } from '@Redux/commonSmallType'
+import TimeControlHoc from '@Components/time-control-hoc'
 
 const FormItem = Form.Item
 const Option = Select.Option
@@ -28,6 +29,7 @@ const Option = Select.Option
   state => state.commonSmallTypesReducer,
   { getCommonSmallTypes }
 )
+@TimeControlHoc
 class SelfListen extends Component {
   constructor() {
     super()
@@ -62,9 +64,6 @@ class SelfListen extends Component {
         msg: '',
         type: 'success'
       },
-      startValue: null,
-      endValue: null,
-      endOpen: false,
     }
     this.onTableShowSizeChange = this.onTableShowSizeChange.bind(this)
     this.onTablePageChange = this.onTablePageChange.bind(this)
@@ -446,47 +445,144 @@ class SelfListen extends Component {
 
   }
 
-  disabledStartDate = (startValue) => {
-    const endValue = this.state.endValue
-    if (!startValue || !endValue) {
+
+  // 控制时间插件的函数
+  disabledCreateBeginDate = (searchCreateTimeBegin) => {
+    const searchCreateTimeEnd = this.state.searchCreateTimeEnd
+    if (!searchCreateTimeBegin || !searchCreateTimeEnd) {
       return false
     }
-    return startValue.valueOf() > endValue.valueOf()
+    return searchCreateTimeBegin.valueOf() >= searchCreateTimeEnd.valueOf()
   }
 
-  disabledEndDate = (endValue) => {
-    const startValue = this.state.startValue
-    if (!endValue || !startValue) {
+  disabledCreateEndDate = (searchCreateTimeEnd) => {
+    const searchCreateTimeBegin = this.state.searchCreateTimeBegin
+    if (!searchCreateTimeEnd || !searchCreateTimeBegin) {
       return false
     }
-    return endValue.valueOf() <= startValue.valueOf()
+    return searchCreateTimeEnd.valueOf() <= searchCreateTimeBegin.valueOf()
   }
 
-  onDateChange = (field, value) => {
+
+
+  disabledCreateBeiginTime = (searchCreateTimeBegin) => {
+    const searchCreateTimeEnd = this.state.searchCreateTimeEnd
+    if (!searchCreateTimeEnd) {
+      return {
+        disabledHours: () => [],
+        disabledMinutes: () => [],
+        disabledSeconds: () => []
+      }
+    }
+    const endhour = searchCreateTimeEnd.hour() - 0
+    const endminute = searchCreateTimeEnd.minute() - 0
+    const endseconds = searchCreateTimeEnd.seconds() - 0
+
+
+    const beiginhour = searchCreateTimeBegin ? searchCreateTimeBegin.hour() - 0 : 0
+    const beiginminute = searchCreateTimeBegin ? searchCreateTimeBegin.minute() - 0 : 0
+    const beiginseconds = searchCreateTimeBegin ? searchCreateTimeBegin.seconds() - 0 : 0
+
+    let disabledHours = () => range(endhour + 1, 60)
+    let disabledMinutes
+    let disabledSeconds
+
+    if (beiginhour < endhour) {
+      disabledMinutes = () => []
+      disabledSeconds = () => []
+    } else {
+      if (beiginminute < endminute) {
+        disabledMinutes = () => range(endminute + 1, 60)
+        disabledSeconds = () => []
+      } else {
+        disabledMinutes = () => range(endminute + 1, 60)
+        disabledSeconds = () => range(endseconds + 1, 60)
+      }
+    }
+
+    function range(start, end) {
+      const result = []
+      for (let i = start; i < end; i++) {
+        result.push(i)
+      }
+      return result
+    }
+
+    return {
+      disabledHours,
+      disabledMinutes,
+      disabledSeconds
+    }
+  }
+
+
+
+
+  disabledCreateEndTime = (searchCreateTimeEnd) => {
+    const searchCreateTimeBegin = this.state.searchCreateTimeBegin
+    if (!searchCreateTimeBegin) {
+      return {
+        disabledHours: () => [],
+        disabledMinutes: () => [],
+        disabledSeconds: () => []
+      }
+    }
+    const endhour = searchCreateTimeEnd ? searchCreateTimeEnd.hour() - 0 : 0
+    const endminute = searchCreateTimeEnd ? searchCreateTimeEnd.minute() - 0 : 0
+    const endseconds = searchCreateTimeEnd ? searchCreateTimeEnd.seconds() - 0 : 0
+
+
+    const beiginhour = searchCreateTimeBegin.hour() - 0
+    const beiginminute = searchCreateTimeBegin.minute() - 0
+    const beiginseconds = searchCreateTimeBegin.seconds() - 0
+
+    let disabledHours = () => range(0, beiginhour)
+    let disabledMinutes
+    let disabledSeconds
+
+    if (endhour > beiginhour) {
+      disabledMinutes = () => []
+      disabledSeconds = () => []
+    } else {
+      if (endminute > beiginminute) {
+        disabledMinutes = () => range(0, beiginminute)
+        disabledSeconds = () => []
+      } else {
+        disabledMinutes = () => range(0, beiginminute)
+        disabledSeconds = () => range(0, beiginseconds)
+      }
+    }
+
+    function range(start, end) {
+      const result = []
+      for (let i = start; i < end; i++) {
+        result.push(i)
+      }
+      return result
+    }
+
+    return {
+      disabledHours,
+      disabledMinutes,
+      disabledSeconds
+    }
+  }
+
+  onDateAndTimeChange = (field, value) => {
     this.setState({
       [field]: value,
     })
   }
 
-
-
-  onStartChange = (value) => {
-    this.onDateChange('startValue', value)
+  onCreateBeginDateAndTimeChange = (value) => {
+    // console.log(value)
+    this.onDateAndTimeChange('searchCreateTimeBegin', value)
   }
 
-  onEndChange = (value) => {
-    this.onDateChange('endValue', value)
+  onCreateEndDateAndTimeChange = (value) => {
+    this.onDateAndTimeChange('searchCreateTimeEnd', value)
   }
 
-  handleStartOpenChange = (open) => {
-    if (!open) {
-      this.setState({ endOpen: true })
-    }
-  }
-
-  handleEndOpenChange = (open) => {
-    this.setState({ endOpen: open })
-  }
 
 
   render() {
@@ -519,7 +615,7 @@ class SelfListen extends Component {
       addOrEditCancel: this.addOrEditCancel,
     }
 
-    const { startValue, endValue, endOpen } = this.state
+    const { searchCreateTimeBegin, searchCreateTimeEnd } = this.state
 
 
 
@@ -597,16 +693,18 @@ class SelfListen extends Component {
                 <FormItem label="创建时间" style={{ marginBottom: 10, marginTop: 10 }}>
                   <DatePicker
                     showTime={
-                      { defaultValue: moment().startOf('day') }
+                      {
+                        defaultValue: moment().startOf('day'),
+                        hideDisabledOptions: true,
+                      }
                     }
                     showToday={false}
-                    value={startValue}
+                    value={searchCreateTimeBegin}
                     format="YYYY-MM-DD HH:mm:ss"
                     placeholder="请选择开始时间"
-                    disabledDate={this.disabledStartDate}
-                    disabledTime={this.disabledStartDate}
-                    onChange={this.onStartChange}
-                    onOpenChange={this.handleStartOpenChange}
+                    disabledDate={this.disabledCreateBeginDate}
+                    disabledTime={this.disabledCreateBeiginTime}
+                    onChange={this.onCreateBeginDateAndTimeChange}
                   />
                 </FormItem>
 
@@ -615,17 +713,18 @@ class SelfListen extends Component {
                 <FormItem label="创建时间" style={{ marginBottom: 10, marginTop: 10 }}>
                   <DatePicker
                     showTime={
-                      { defaultValue: moment().endOf('day') }
+                      {
+                        defaultValue: moment().endOf('day'),
+                        hideDisabledOptions: true,
+                      }
                     }
                     showToday={false}
-                    value={endValue}
+                    value={searchCreateTimeEnd}
                     format="YYYY-MM-DD HH:mm:ss"
                     placeholder="请选择结束时间"
-                    disabledDate={this.disabledEndDate}
-                    disabledTime={this.disabledEndDate}
-                    onChange={this.onEndChange}
-                    open={endOpen}
-                    onOpenChange={this.handleEndOpenChange}
+                    disabledDate={this.disabledCreateEndDate}
+                    disabledTime={this.disabledCreateEndTime}
+                    onChange={this.onCreateEndDateAndTimeChange}
                   />
                 </FormItem>
               </Col>
