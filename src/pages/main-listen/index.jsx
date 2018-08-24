@@ -2,16 +2,16 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-23 19:49:35
+ * @Last Modified time: 2018-08-24 15:54:19
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal } from 'antd'
 import moment from 'moment'
 import { myGetStampTime } from '@Utils/myGetTime'
 import { DOWN_LOAD_URL } from '@Constants'
-import AuthMenuListTable from './list-table'
-import WrapperMainListenAddOrEdit from './add-or-edit'
-import MainListenModalTable from './modal-table'
+import SelfListenListTable from './list-table'
+import WrapperSelfListenAddOrEdit from './add-or-edit'
+import SelfListenModalTable from './modal-table'
 import MaskLoading from '@Components/mask-loading'
 import SortList from '@Components/sort-list'
 import TopTip from '@Components/top-tip'
@@ -19,6 +19,7 @@ import { myTrim } from '@Utils/myTrim'
 import { mainListenList, mainListenTableList } from '@Api/main-listen'
 import { connect } from 'react-redux'
 import { getCommonSmallTypes } from '@Redux/commonSmallType'
+import TimeControlHoc from '@Components/time-control-hoc'
 
 const FormItem = Form.Item
 const Option = Select.Option
@@ -28,7 +29,8 @@ const Option = Select.Option
   state => state.commonSmallTypesReducer,
   { getCommonSmallTypes }
 )
-class MainListen extends Component {
+@TimeControlHoc
+class SelfListen extends Component {
   constructor() {
     super()
     this.state = {
@@ -38,11 +40,7 @@ class MainListen extends Component {
       searchListenType: '',
       searchSmallType: '',
       searchState: '',
-      searchCreateTimeBegin: null,
-      searchCreateTimeEnd: null,
-      searchUpdateTimeBegin: null,
-      searchUpdateTimeEnd: null,
-      sortIndex: 0,
+      sortIndex: 1,
       sortDirection: 'down',
       tableTotal: 0,
       tableData: [],
@@ -61,7 +59,7 @@ class MainListen extends Component {
         show: false,
         msg: '',
         type: 'success'
-      }
+      },
     }
     this.onTableShowSizeChange = this.onTableShowSizeChange.bind(this)
     this.onTablePageChange = this.onTablePageChange.bind(this)
@@ -91,7 +89,7 @@ class MainListen extends Component {
       searchCreateTimeEnd: null,
       searchUpdateTimeBegin: null,
       searchUpdateTimeEnd: null,
-      sortIndex: 0,
+      sortIndex: 1,
       sortDirection: 'down'
     })
     this.props.getCommonSmallTypes('主站内容')
@@ -120,12 +118,10 @@ class MainListen extends Component {
         searchListenType,
         searchSmallType,
         searchState,
-        searchCreateTimeBegin,
-        searchCreateTimeEnd,
-        searchUpdateTimeBegin,
-        searchUpdateTimeEnd,
         sortIndex,
         sortDirection } = this.state
+
+      const { searchCreateTimeBegin, searchCreateTimeEnd, searchUpdateTimeBegin, searchUpdateTimeEnd } = this.props.state
       this.getListData({
         page: this.state.page,
         pageSize: this.state.pageSize,
@@ -148,11 +144,14 @@ class MainListen extends Component {
   tableLineSave(line) {
     // console.log('另存为', line)
     this.setState({
+      addOrEditTitle: '另存为自运营听单',
       addOrEditVisible: true,
       addOrEditInitValues: line
     })
     this.props.getCommonSmallTypes(line.bigType)
   }
+
+
   addOrEditOk(values) {
     console.log(values)
     const content = (
@@ -233,13 +232,11 @@ class MainListen extends Component {
         searchListenType,
         searchSmallType,
         searchState,
-        searchCreateTimeBegin,
-        searchCreateTimeEnd,
-        searchUpdateTimeBegin,
-        searchUpdateTimeEnd,
         selectedRowKeys,
         sortIndex,
         sortDirection, } = this.state
+
+      const { searchCreateTimeBegin, searchCreateTimeEnd, searchUpdateTimeBegin, searchUpdateTimeEnd } = this.props.state
 
       const options = {
         searchMainId: !searchMainId ? '' : myTrim(searchMainId),
@@ -287,12 +284,10 @@ class MainListen extends Component {
         searchListenType,
         searchSmallType,
         searchState,
-        searchCreateTimeBegin,
-        searchCreateTimeEnd,
-        searchUpdateTimeBegin,
-        searchUpdateTimeEnd,
         sortIndex,
         sortDirection, } = this.state
+      const { searchCreateTimeBegin, searchCreateTimeEnd, searchUpdateTimeBegin, searchUpdateTimeEnd } = this.props.state
+
       this.getListData({
         page: this.state.page,
         pageSize: this.state.pageSize,
@@ -460,11 +455,14 @@ class MainListen extends Component {
     }
 
     const addOrEditOptions = {
+      addOrEditTitle: this.state.addOrEditTitle,
       addOrEditVisible: this.state.addOrEditVisible,
       addOrEditInitValues: this.state.addOrEditInitValues,
       addOrEditOk: this.addOrEditOk,
       addOrEditCancel: this.addOrEditCancel,
     }
+
+    const { searchCreateTimeBegin, searchCreateTimeEnd, searchUpdateTimeBegin, searchUpdateTimeEnd } = this.props.state
 
 
 
@@ -542,14 +540,18 @@ class MainListen extends Component {
                 <FormItem label="创建时间" style={{ marginBottom: 10, marginTop: 10 }}>
                   <DatePicker
                     showTime={
-                      { defaultValue: moment().startOf('day') }
+                      {
+                        defaultValue: moment().startOf('day'),
+                        hideDisabledOptions: true,
+                      }
                     }
                     showToday={false}
+                    value={searchCreateTimeBegin}
                     format="YYYY-MM-DD HH:mm:ss"
                     placeholder="请选择开始时间"
-                    onChange={(data, str) => this.setState({
-                      searchCreateTimeBegin: str
-                    })}
+                    disabledDate={this.props.disabledCreateBeginDate}
+                    disabledTime={this.props.disabledCreateBeiginTime}
+                    onChange={this.props.onCreateBeginDateAndTimeChange}
                   />
                 </FormItem>
 
@@ -558,14 +560,18 @@ class MainListen extends Component {
                 <FormItem label="创建时间" style={{ marginBottom: 10, marginTop: 10 }}>
                   <DatePicker
                     showTime={
-                      { defaultValue: moment().endOf('day') }
+                      {
+                        defaultValue: moment().endOf('day'),
+                        hideDisabledOptions: true,
+                      }
                     }
                     showToday={false}
+                    value={searchCreateTimeEnd}
                     format="YYYY-MM-DD HH:mm:ss"
                     placeholder="请选择结束时间"
-                    onChange={(data, str) => this.setState({
-                      searchCreateTimeEnd: str
-                    })}
+                    disabledDate={this.props.disabledCreateEndDate}
+                    disabledTime={this.props.disabledCreateEndTime}
+                    onChange={this.props.onCreateEndDateAndTimeChange}
                   />
                 </FormItem>
               </Col>
@@ -575,14 +581,16 @@ class MainListen extends Component {
                 <FormItem label="更新时间" style={{ marginBottom: 10, marginTop: 10 }}>
                   <DatePicker
                     showTime={
-                      { defaultValue: moment().startOf('day') }
+                      { defaultValue: moment().startOf('day'), hideDisabledOptions: true }
+
                     }
                     showToday={false}
                     format="YYYY-MM-DD HH:mm:ss"
                     placeholder="请选择开始时间"
-                    onChange={(data, str) => this.setState({
-                      searchUpdateTimeBegin: str
-                    })}
+                    value={searchUpdateTimeBegin}
+                    disabledDate={this.props.disabledUpdateBeginDate}
+                    disabledTime={this.props.disabledUpdateBeiginTime}
+                    onChange={this.props.onUpdateBeginDateAndTimeChange}
                   />
                 </FormItem>
               </Col>
@@ -590,14 +598,15 @@ class MainListen extends Component {
                 <FormItem label="更新时间" style={{ marginBottom: 10, marginTop: 10 }}>
                   <DatePicker
                     showTime={
-                      { defaultValue: moment().endOf('day') }
+                      { defaultValue: moment().endOf('day'), hideDisabledOptions: true }
                     }
                     showToday={false}
                     format="YYYY-MM-DD HH:mm:ss"
                     placeholder="请选择结束时间"
-                    onChange={(data, str) => this.setState({
-                      searchUpdateTimeEnd: str
-                    })}
+                    value={searchUpdateTimeEnd}
+                    disabledDate={this.props.disabledUpdateEndDate}
+                    disabledTime={this.props.disabledUpdateEndTime}
+                    onChange={this.props.onUpdateEndDateAndTimeChange}
                   />
                 </FormItem>
               </Col>
@@ -611,7 +620,7 @@ class MainListen extends Component {
         <List style={{ marginBottom: 30 }}>
           <Row>
             <Col span={24} style={{ textAlign: 'left' }}>
-              <Button type="primary" onClick={() => this.exportListen()}>听单批量导出</Button>
+              <Button style={{ marginLeft: 20 }} type="primary" onClick={() => this.exportListen()}>听单批量导出</Button>
               <Button style={{ marginLeft: 20 }} type="primary" onClick={() => this.exportContent()}>内容批量导出</Button>
               <div style={{ float: 'right' }}>
                 <span style={{ position: 'relative', top: -9 }}>排序方式：</span>
@@ -620,14 +629,14 @@ class MainListen extends Component {
             </Col>
           </Row>
         </List>
-        <AuthMenuListTable {...tableOptions} />
-        <MainListenModalTable {...modalTableOptions} />
-        <WrapperMainListenAddOrEdit {...addOrEditOptions} />
+        <SelfListenListTable {...tableOptions} />
+        <SelfListenModalTable {...modalTableOptions} />
+        <WrapperSelfListenAddOrEdit {...addOrEditOptions} />
         <MaskLoading ref="mask" />
       </div >
 
     )
   }
 }
-const WrappedAdvancedSearchForm = Form.create()(MainListen)
+const WrappedAdvancedSearchForm = Form.create()(SelfListen)
 export default WrappedAdvancedSearchForm

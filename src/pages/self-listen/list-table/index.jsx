@@ -6,7 +6,7 @@ import { PropTypes } from 'prop-types'
 export default class SelfListenListTable extends Component {
   static propTypes = {
     total: PropTypes.number,
-    tableLineSave: PropTypes.func,
+    tableLineEdit: PropTypes.func,
     tableLineShowDetails: PropTypes.func,
     tableSelect: PropTypes.func,
     onShowSizeChange: PropTypes.func,
@@ -111,7 +111,7 @@ export default class SelfListenListTable extends Component {
       key: 'action',
       render: (text, record) => {
         return (<span>
-          <i style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.props.tableLineSave(record)}>另存为</i>
+          <i style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.props.tableLineEdit(record)}>编辑</i>
         </span>)
       },
     }]

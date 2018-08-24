@@ -16,7 +16,7 @@ export default class SortList extends Component {
   constructor() {
     super()
     this.state = {
-      sortIndex: 0,
+      sortIndex: 1,
       sortDirection: 'down'
     }
   }

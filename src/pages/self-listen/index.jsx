@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-24 13:39:52
+ * @Last Modified time: 2018-08-24 15:52:25
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal } from 'antd'
@@ -40,11 +40,7 @@ class SelfListen extends Component {
       searchListenType: '',
       searchSmallType: '',
       searchState: '',
-      searchCreateTimeBegin: null,
-      searchCreateTimeEnd: null,
-      searchUpdateTimeBegin: null,
-      searchUpdateTimeEnd: null,
-      sortIndex: 0,
+      sortIndex: 1,
       sortDirection: 'down',
       tableTotal: 0,
       tableData: [],
@@ -67,7 +63,7 @@ class SelfListen extends Component {
     }
     this.onTableShowSizeChange = this.onTableShowSizeChange.bind(this)
     this.onTablePageChange = this.onTablePageChange.bind(this)
-    this.tableLineSave = this.tableLineSave.bind(this)
+    this.tableLineEdit = this.tableLineEdit.bind(this)
     this.tableSelect = this.tableSelect.bind(this)
     this.tableLineShowDetails = this.tableLineShowDetails.bind(this)
     this.clickSort = this.clickSort.bind(this)
@@ -93,7 +89,7 @@ class SelfListen extends Component {
       searchCreateTimeEnd: null,
       searchUpdateTimeBegin: null,
       searchUpdateTimeEnd: null,
-      sortIndex: 0,
+      sortIndex: 1,
       sortDirection: 'down'
     })
     this.props.getCommonSmallTypes('主站内容')
@@ -122,12 +118,10 @@ class SelfListen extends Component {
         searchListenType,
         searchSmallType,
         searchState,
-        searchCreateTimeBegin,
-        searchCreateTimeEnd,
-        searchUpdateTimeBegin,
-        searchUpdateTimeEnd,
         sortIndex,
         sortDirection } = this.state
+
+      const { searchCreateTimeBegin, searchCreateTimeEnd, searchUpdateTimeBegin, searchUpdateTimeEnd } = this.props.state
       this.getListData({
         page: this.state.page,
         pageSize: this.state.pageSize,
@@ -147,9 +141,10 @@ class SelfListen extends Component {
     })
   }
 
-  tableLineSave(line) {
-    // console.log('另存为', line)
+  tableLineEdit(line) {
+    console.log('编辑', line)
     this.setState({
+      addOrEditTitle: '编辑听单',
       addOrEditVisible: true,
       addOrEditInitValues: line
     })
@@ -158,6 +153,7 @@ class SelfListen extends Component {
 
   addListen() {
     this.setState({
+      addOrEditTitle: '新增听单',
       addOrEditVisible: true,
       addOrEditInitValues: {}
     })
@@ -243,13 +239,11 @@ class SelfListen extends Component {
         searchListenType,
         searchSmallType,
         searchState,
-        searchCreateTimeBegin,
-        searchCreateTimeEnd,
-        searchUpdateTimeBegin,
-        searchUpdateTimeEnd,
         selectedRowKeys,
         sortIndex,
         sortDirection, } = this.state
+
+      const { searchCreateTimeBegin, searchCreateTimeEnd, searchUpdateTimeBegin, searchUpdateTimeEnd } = this.props.state
 
       const options = {
         searchMainId: !searchMainId ? '' : myTrim(searchMainId),
@@ -297,12 +291,10 @@ class SelfListen extends Component {
         searchListenType,
         searchSmallType,
         searchState,
-        searchCreateTimeBegin,
-        searchCreateTimeEnd,
-        searchUpdateTimeBegin,
-        searchUpdateTimeEnd,
         sortIndex,
         sortDirection, } = this.state
+      const { searchCreateTimeBegin, searchCreateTimeEnd, searchUpdateTimeBegin, searchUpdateTimeEnd } = this.props.state
+
       this.getListData({
         page: this.state.page,
         pageSize: this.state.pageSize,
@@ -446,148 +438,9 @@ class SelfListen extends Component {
   }
 
 
-  // 控制时间插件的函数
-  disabledCreateBeginDate = (searchCreateTimeBegin) => {
-    const searchCreateTimeEnd = this.state.searchCreateTimeEnd
-    if (!searchCreateTimeBegin || !searchCreateTimeEnd) {
-      return false
-    }
-    return searchCreateTimeBegin.valueOf() >= searchCreateTimeEnd.valueOf()
-  }
-
-  disabledCreateEndDate = (searchCreateTimeEnd) => {
-    const searchCreateTimeBegin = this.state.searchCreateTimeBegin
-    if (!searchCreateTimeEnd || !searchCreateTimeBegin) {
-      return false
-    }
-    return searchCreateTimeEnd.valueOf() <= searchCreateTimeBegin.valueOf()
-  }
-
-
-
-  disabledCreateBeiginTime = (searchCreateTimeBegin) => {
-    const searchCreateTimeEnd = this.state.searchCreateTimeEnd
-    if (!searchCreateTimeEnd) {
-      return {
-        disabledHours: () => [],
-        disabledMinutes: () => [],
-        disabledSeconds: () => []
-      }
-    }
-    const endhour = searchCreateTimeEnd.hour() - 0
-    const endminute = searchCreateTimeEnd.minute() - 0
-    const endseconds = searchCreateTimeEnd.seconds() - 0
-
-
-    const beiginhour = searchCreateTimeBegin ? searchCreateTimeBegin.hour() - 0 : 0
-    const beiginminute = searchCreateTimeBegin ? searchCreateTimeBegin.minute() - 0 : 0
-    const beiginseconds = searchCreateTimeBegin ? searchCreateTimeBegin.seconds() - 0 : 0
-
-    let disabledHours = () => range(endhour + 1, 60)
-    let disabledMinutes
-    let disabledSeconds
-
-    if (beiginhour < endhour) {
-      disabledMinutes = () => []
-      disabledSeconds = () => []
-    } else {
-      if (beiginminute < endminute) {
-        disabledMinutes = () => range(endminute + 1, 60)
-        disabledSeconds = () => []
-      } else {
-        disabledMinutes = () => range(endminute + 1, 60)
-        disabledSeconds = () => range(endseconds + 1, 60)
-      }
-    }
-
-    function range(start, end) {
-      const result = []
-      for (let i = start; i < end; i++) {
-        result.push(i)
-      }
-      return result
-    }
-
-    return {
-      disabledHours,
-      disabledMinutes,
-      disabledSeconds
-    }
-  }
-
-
-
-
-  disabledCreateEndTime = (searchCreateTimeEnd) => {
-    const searchCreateTimeBegin = this.state.searchCreateTimeBegin
-    if (!searchCreateTimeBegin) {
-      return {
-        disabledHours: () => [],
-        disabledMinutes: () => [],
-        disabledSeconds: () => []
-      }
-    }
-    const endhour = searchCreateTimeEnd ? searchCreateTimeEnd.hour() - 0 : 0
-    const endminute = searchCreateTimeEnd ? searchCreateTimeEnd.minute() - 0 : 0
-    const endseconds = searchCreateTimeEnd ? searchCreateTimeEnd.seconds() - 0 : 0
-
-
-    const beiginhour = searchCreateTimeBegin.hour() - 0
-    const beiginminute = searchCreateTimeBegin.minute() - 0
-    const beiginseconds = searchCreateTimeBegin.seconds() - 0
-
-    let disabledHours = () => range(0, beiginhour)
-    let disabledMinutes
-    let disabledSeconds
-
-    if (endhour > beiginhour) {
-      disabledMinutes = () => []
-      disabledSeconds = () => []
-    } else {
-      if (endminute > beiginminute) {
-        disabledMinutes = () => range(0, beiginminute)
-        disabledSeconds = () => []
-      } else {
-        disabledMinutes = () => range(0, beiginminute)
-        disabledSeconds = () => range(0, beiginseconds)
-      }
-    }
-
-    function range(start, end) {
-      const result = []
-      for (let i = start; i < end; i++) {
-        result.push(i)
-      }
-      return result
-    }
-
-    return {
-      disabledHours,
-      disabledMinutes,
-      disabledSeconds
-    }
-  }
-
-  onDateAndTimeChange = (field, value) => {
-    this.setState({
-      [field]: value,
-    })
-  }
-
-  onCreateBeginDateAndTimeChange = (value) => {
-    // console.log(value)
-    this.onDateAndTimeChange('searchCreateTimeBegin', value)
-  }
-
-  onCreateEndDateAndTimeChange = (value) => {
-    this.onDateAndTimeChange('searchCreateTimeEnd', value)
-  }
-
-
-
   render() {
     const tableOptions = {
-      tableLineSave: this.tableLineSave,
+      tableLineEdit: this.tableLineEdit,
       tableSelect: this.tableSelect,
       selectedRowKeys: this.state.selectedRowKeys,
       tableLineShowDetails: this.tableLineShowDetails,
@@ -609,13 +462,14 @@ class SelfListen extends Component {
     }
 
     const addOrEditOptions = {
+      addOrEditTitle: this.state.addOrEditTitle,
       addOrEditVisible: this.state.addOrEditVisible,
       addOrEditInitValues: this.state.addOrEditInitValues,
       addOrEditOk: this.addOrEditOk,
       addOrEditCancel: this.addOrEditCancel,
     }
 
-    const { searchCreateTimeBegin, searchCreateTimeEnd } = this.state
+    const { searchCreateTimeBegin, searchCreateTimeEnd, searchUpdateTimeBegin, searchUpdateTimeEnd } = this.props.state
 
 
 
@@ -702,9 +556,9 @@ class SelfListen extends Component {
                     value={searchCreateTimeBegin}
                     format="YYYY-MM-DD HH:mm:ss"
                     placeholder="请选择开始时间"
-                    disabledDate={this.disabledCreateBeginDate}
-                    disabledTime={this.disabledCreateBeiginTime}
-                    onChange={this.onCreateBeginDateAndTimeChange}
+                    disabledDate={this.props.disabledCreateBeginDate}
+                    disabledTime={this.props.disabledCreateBeiginTime}
+                    onChange={this.props.onCreateBeginDateAndTimeChange}
                   />
                 </FormItem>
 
@@ -722,9 +576,9 @@ class SelfListen extends Component {
                     value={searchCreateTimeEnd}
                     format="YYYY-MM-DD HH:mm:ss"
                     placeholder="请选择结束时间"
-                    disabledDate={this.disabledCreateEndDate}
-                    disabledTime={this.disabledCreateEndTime}
-                    onChange={this.onCreateEndDateAndTimeChange}
+                    disabledDate={this.props.disabledCreateEndDate}
+                    disabledTime={this.props.disabledCreateEndTime}
+                    onChange={this.props.onCreateEndDateAndTimeChange}
                   />
                 </FormItem>
               </Col>
@@ -734,14 +588,16 @@ class SelfListen extends Component {
                 <FormItem label="更新时间" style={{ marginBottom: 10, marginTop: 10 }}>
                   <DatePicker
                     showTime={
-                      { defaultValue: moment().startOf('day') }
+                      { defaultValue: moment().startOf('day'), hideDisabledOptions: true }
+
                     }
                     showToday={false}
                     format="YYYY-MM-DD HH:mm:ss"
                     placeholder="请选择开始时间"
-                    onChange={(data, str) => this.setState({
-                      searchUpdateTimeBegin: str
-                    })}
+                    value={searchUpdateTimeBegin}
+                    disabledDate={this.props.disabledUpdateBeginDate}
+                    disabledTime={this.props.disabledUpdateBeiginTime}
+                    onChange={this.props.onUpdateBeginDateAndTimeChange}
                   />
                 </FormItem>
               </Col>
@@ -749,14 +605,15 @@ class SelfListen extends Component {
                 <FormItem label="更新时间" style={{ marginBottom: 10, marginTop: 10 }}>
                   <DatePicker
                     showTime={
-                      { defaultValue: moment().endOf('day') }
+                      { defaultValue: moment().endOf('day'), hideDisabledOptions: true }
                     }
                     showToday={false}
                     format="YYYY-MM-DD HH:mm:ss"
                     placeholder="请选择结束时间"
-                    onChange={(data, str) => this.setState({
-                      searchUpdateTimeEnd: str
-                    })}
+                    value={searchUpdateTimeEnd}
+                    disabledDate={this.props.disabledUpdateEndDate}
+                    disabledTime={this.props.disabledUpdateEndTime}
+                    onChange={this.props.onUpdateEndDateAndTimeChange}
                   />
                 </FormItem>
               </Col>

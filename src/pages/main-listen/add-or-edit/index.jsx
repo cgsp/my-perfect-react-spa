@@ -20,8 +20,9 @@ if (DEV) {
   state => state.commonSmallTypesReducer,
   { getCommonSmallTypes }
 )
-class MainListenAddOrEdit extends Component {
+class SelfListenAddOrEdit extends Component {
   static propTypes = {
+    addOrEditTitle: PropTypes.string,
     addOrEditVisible: PropTypes.bool,
     addOrEditInitValues: PropTypes.object,
     addOrEditOk: PropTypes.func,
@@ -113,7 +114,7 @@ class MainListenAddOrEdit extends Component {
 
     return (
       <Modal
-        title="另存为自运营听单"
+        title={this.props.addOrEditTitle}
         visible={this.props.addOrEditVisible}
         onCancel={this.props.addOrEditCancel}
         onOk={() => this.handleSubmit()}
@@ -250,5 +251,5 @@ class MainListenAddOrEdit extends Component {
   }
 }
 
-const WrapperMainListenAddOrEdit = Form.create()(MainListenAddOrEdit)
-export default WrapperMainListenAddOrEdit
+const WrapperSelfListenAddOrEdit = Form.create()(SelfListenAddOrEdit)
+export default WrapperSelfListenAddOrEdit

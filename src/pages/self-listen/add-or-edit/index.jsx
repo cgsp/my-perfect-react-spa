@@ -22,6 +22,7 @@ if (DEV) {
 )
 class SelfListenAddOrEdit extends Component {
   static propTypes = {
+    addOrEditTitle: PropTypes.string,
     addOrEditVisible: PropTypes.bool,
     addOrEditInitValues: PropTypes.object,
     addOrEditOk: PropTypes.func,
@@ -113,7 +114,7 @@ class SelfListenAddOrEdit extends Component {
 
     return (
       <Modal
-        title="另存为自运营听单"
+        title={this.props.addOrEditTitle}
         visible={this.props.addOrEditVisible}
         onCancel={this.props.addOrEditCancel}
         onOk={() => this.handleSubmit()}

@@ -50,7 +50,8 @@
 const BASEURL = {
   dev: '/open-self-admin',
   // 生产的必须加上http或者https
-  pro: 'http://192.168.123.68:8888/open-slef-admin/',
+  pro: 'http://cms.test.9nali.com/openapi-content-admin-app',
+  // pro: 'http://cms.9nali.com/openapi-content-admin-app',
 }
 
 const DOWN_LOAD_URL = {

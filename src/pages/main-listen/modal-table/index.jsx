@@ -4,7 +4,7 @@ import { myGetStrTime } from '@Utils/myGetTime'
 import { PropTypes } from 'prop-types'
 
 
-export default class MainListenModalTable extends Component {
+export default class SelfListenModalTable extends Component {
   static propTypes = {
     modalTableVisible: PropTypes.bool,
     modalTableCancel: PropTypes.func,

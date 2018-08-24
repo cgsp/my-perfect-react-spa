@@ -8,7 +8,7 @@
     width: 80px;
     height: 30px;
     cursor: pointer;
-    user-select:none;
+    user-select: none;
     .sort-name {
       position: absolute;
       left: 0;
@@ -24,7 +24,8 @@
       right: 0;
       height: 10px;
       line-height: 10px;
-      top: 4px;
+      top: 6px;
+      font-size: 10px;
       &.active {
         color: #1890ff;
       }
@@ -32,9 +33,10 @@
     .sort-icon-down {
       position: absolute;
       right: 0;
-      bottom: 4px;
+      bottom: 6px;
       height: 10px;
       line-height: 10px;
+      font-size: 10px;
       &.active {
         color: #1890ff;
       }
