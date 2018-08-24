@@ -114,6 +114,7 @@ export default class RootRoutes extends Component {
       }
     ]
     const hasAuthNavList = navList.filter(item => item.hide)
+    // const hasAuthNavList = navList.filter(item => !item.hide)
     // console.log(hasAuthNavList)
     const toUrl = this.props.appRoutesList[0] ? this.props.appRoutesList[0] : ''
     return (
