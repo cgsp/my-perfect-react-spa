@@ -3,7 +3,7 @@
  * @Author: John.Guan
  * @Date: 2018-05-29 23:01:41
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-23 19:26:24
+ * @Last Modified time: 2018-08-26 21:55:05
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
@@ -162,116 +162,185 @@ const appNavList = {
   msg: '请求成功',
   data: [
     {
+      pid: '0',
+      sort: '1',
       id: '1',
-      type: 'nav1',
+      type: '菜单',
+      level: '1',
       name: '主站内容',
       path: 'main',
       icon: 'video-camera',
+      checked: false,
+      code: null,
       children: [
         {
+          pid: '1',
+          sort: '1',
           id: '1-1',
-          type: 'nav2',
+          type: '菜单',
+          level: '2',
           name: '专辑管理',
           path: 'main-album',
           icon: '',
+          checked: false,
+          code: null,
           children: []
         },
         {
+          pid: '1',
+          sort: '2',
           id: '1-2',
-          type: 'nav2',
+          type: '菜单',
+          level: '2',
           name: '焦点图管理',
           path: 'main-focus',
           icon: '',
+          checked: false,
+          code: null,
           children: []
         },
-
         {
+          pid: '1',
+          sort: '3',
           id: '1-3',
-          type: 'nav2',
+          type: '菜单',
+          level: '2',
           name: '听单管理',
           path: 'main-listen',
           icon: '',
+          checked: false,
+          code: null,
           children: []
         },
         {
+          pid: '1',
+          sort: '4',
           id: '1-4',
-          type: 'nav2',
+          type: '菜单',
+          level: '2',
           name: '分类管理',
           path: 'main-classfiy',
           icon: '',
+          checked: false,
+          code: null,
           children: []
         },
         {
+          pid: '1',
+          sort: '5',
           id: '1-5',
-          type: 'nav2',
+          type: '菜单',
+          level: '2',
           name: '榜单管理',
           path: 'main-list',
           icon: '',
+          checked: false,
+          code: null,
           children: []
         }
       ]
 
     },
     {
+      pid: '0',
+      sort: '2',
       id: '2',
-      type: 'nav1',
+      type: '菜单',
+      level: '1',
       name: '自运营内容',
       path: 'self',
       icon: 'mail',
+      checked: false,
+      code: null,
       children: [
         {
+          pid: '2',
+          sort: '1',
           id: '2-1',
-          type: 'nav2',
+          type: '菜单',
+          level: '2',
           name: '专辑管理',
           path: 'self-album',
           icon: '',
+          checked: false,
+          code: null,
           children: []
         },
         {
+          pid: '2',
+          sort: '2',
           id: '2-2',
-          type: 'nav2',
+          type: '菜单',
+          level: '2',
           name: '焦点图管理',
           path: 'self-focus',
           icon: '',
+          checked: false,
+          code: null,
           children: []
         },
         {
+          pid: '2',
+          sort: '3',
           id: '2-3',
-          type: 'nav2',
+          type: '菜单',
+          level: '2',
           name: '听单管理',
           path: 'self-listen',
           icon: '',
+          code: null,
+          checked: false,
           children: []
         },
         {
+          pid: '2',
+          sort: '4',
           id: '2-4',
-          type: 'nav2',
+          type: '菜单',
+          level: '2',
           name: '分类管理',
           path: 'self-classfiy',
           icon: '',
+          code: null,
+          checked: false,
           children: []
         },
         {
+          pid: '2',
+          sort: '5',
           id: '2-5',
-          type: 'nav2',
+          type: '菜单',
+          level: '2',
           name: '标签管理',
           path: 'self-tag',
           icon: '',
+          checked: false,
+          code: null,
           children: [
             {
+              pid: '2-5',
+              sort: '1',
               id: '2-5-1',
-              type: 'nav3',
+              type: '菜单',
+              level: '3',
               name: '标签管理',
               path: 'self-tag-tag',
               icon: '',
+              checked: false,
+              code: null,
               children: []
             },
             {
+              pid: '2-5',
+              sort: '2',
               id: '2-5-2',
-              type: 'nav3',
+              type: '菜单',
+              level: '3',
               name: '维度管理',
               path: 'self-tag-dimension',
               icon: '',
+              checked: false,
+              code: null,
               children: []
             }
           ]
@@ -280,51 +349,81 @@ const appNavList = {
 
     },
     {
+      pid: '0',
+      sort: '3',
       id: '3',
-      type: 'nav1',
+      type: '菜单',
+      level: '1',
       name: '子站管理',
       icon: 'trophy',
       path: 'child',
+      code: null,
+      checked: false,
       children: [
         {
+          pid: '3',
+          sort: '1',
           id: '3-1',
-          type: 'nav2',
+          type: '菜单',
+          level: '2',
           name: '子站管理',
           path: 'child-table',
           icon: '',
+          checked: false,
+          code: null,
           children: []
         }
       ]
     },
     {
+      pid: '0',
+      sort: '4',
       id: '4',
-      type: 'nav1',
+      type: '菜单',
+      level: '1',
       name: '权限管理',
       icon: 'setting',
       path: 'auth',
+      code: null,
+      checked: false,
       children: [
         {
+          pid: '4',
+          sort: '1',
           id: '4-1',
-          type: 'nav3',
+          type: '菜单',
+          level: '2',
           name: '账户维护',
           path: 'auth-account',
           icon: '',
+          checked: false,
+          code: null,
           children: []
         },
         {
+          pid: '4',
+          sort: '2',
           id: '4-2',
-          type: 'nav3',
+          type: '菜单',
+          level: '2',
           name: '角色维护',
           path: 'auth-role',
           icon: '',
+          checked: false,
+          code: null,
           children: []
         },
         {
+          pid: '4',
+          sort: '3',
           id: '4-3',
-          type: 'nav3',
+          type: '菜单',
+          level: '2',
           name: '菜单与功能维护',
           path: 'auth-menu',
           icon: '',
+          checked: false,
+          code: null,
           children: []
         }
       ]
@@ -2443,4 +2542,202 @@ app.post('/open-self-admin/commonSmallTypes', function (req, res) {
     });
   }, 800);
 });
+
+app.post('/open-self-admin/commonDimesions', function (req, res) {
+  setTimeout(() => {
+    res.json({
+      code: '0',
+      msg: '成功',
+      data: {
+        total: 50,
+        list: [
+          {
+            dimensionName: '场景',
+            dimensionId: '1'
+          },
+          {
+            dimensionName: '人群',
+            dimensionId: '2'
+          },
+          {
+            dimensionName: '教育',
+            dimensionId: '3'
+          },
+          {
+            dimensionName: '其他',
+            dimensionId: '4'
+          },
+        ]
+      }
+    });
+  }, 800);
+});
+
+/*
+ * 标签管理=====================================================
+ */
+app.post('/open-self-admin/apiSelfTagTagList', function (req, res) {
+  setTimeout(() => {
+    res.json({
+      code: '0',
+      msg: '成功',
+      data: {
+        total: 50,
+        list: [
+          {
+            tagId: '1',
+            tagName: '睡前',
+            dimension: '场景',
+            dimensionId: '1',
+            mainAlbumsNum: 29,
+            selfAlbumsNum: 39,
+            createTime: 1534925202887,
+            updateTime: 1534925202887,
+            creator: '黄成'
+          },
+          {
+            tagId: '2',
+            tagName: '睡前',
+            dimension: '场景',
+            dimensionId: '1',
+            mainAlbumsNum: 29,
+            selfAlbumsNum: 39,
+            createTime: 1534925202887,
+            updateTime: 1534925202887,
+            creator: '黄成'
+          }
+        ]
+      }
+    });
+  }, 800);
+});
+
+app.post('/open-self-admin/apiSelfTagTagDetailList', function (req, res) {
+  setTimeout(() => {
+    res.json({
+      code: '0',
+      msg: '成功',
+      data: {
+        total: 200,
+        list: [
+          {
+            albumId: '392781',
+            albumName: '大暑：良夜，万物荣光',
+            state: '已上架',
+            voiceNum: 9,
+            createTime: 1534925202887,
+            updateTime: 1534925202887,
+            url: 'http://img.zcool.cn/community/012cb757939a8e0000018c1b7482be.jpg@1280w_1l_2o_100sh.png',
+          },
+          {
+            albumId: '3927089',
+            albumName: '大暑：良夜，万物荣光',
+            state: '已上架',
+            voiceNum: 9,
+            createTime: 1534925202887,
+            updateTime: 1534925202887,
+            url: 'http://img.zcool.cn/community/012cb757939a8e0000018c1b7482be.jpg@1280w_1l_2o_100sh.png',
+          }
+        ]
+      }
+    });
+  }, 800);
+});
+
+app.post('/open-self-admin/apiSelfTagTagDelete', function (req, res) {
+  setTimeout(() => {
+    res.json({
+      code: '0',
+      msg: '删除成功',
+      data: null
+    });
+  }, 800);
+});
+
+
+/*
+ * 维度管理=====================================================
+ */
+app.post('/open-self-admin/apiSelfTagDimensionList', function (req, res) {
+  setTimeout(() => {
+    res.json({
+      code: '0',
+      msg: '成功',
+      data: {
+        total: 50,
+        list: [
+          {
+            dimensionId: '1',
+            dimensionName: '场景',
+            moreTagOrSingleTag: 'more',
+            tagNameType: 'text',
+            tagNum: 29,
+            createTime: 1534925202887,
+            updateTime: 1534925202887,
+            creator: '黄成'
+          },
+          {
+            dimensionId: '2',
+            dimensionName: '人群',
+            moreTagOrSingleTag: 'single',
+            tagNameType: 'number',
+            tagNum: 10,
+            createTime: 1534925202887,
+            updateTime: 1534925202887,
+            creator: '黄成'
+          },
+          {
+            dimensionId: '3',
+            dimensionName: '家庭',
+            moreTagOrSingleTag: 'more',
+            tagNameType: 'numberRange',
+            tagNum: 10,
+            createTime: 1534925202887,
+            updateTime: 1534925202887,
+            creator: '黄成'
+          }
+        ]
+      }
+    });
+  }, 800);
+});
+
+app.post('/open-self-admin/apiSelfTagDimensionDetailList', function (req, res) {
+  setTimeout(() => {
+    res.json({
+      code: '0',
+      msg: '成功',
+      data: {
+        total: 200,
+        list: [
+          {
+            tagId: '1',
+            tagName: '睡前',
+            createTime: 1534925202887,
+            updateTime: 1534925202887,
+            creator: '黄成'
+          },
+          {
+            tagId: '2',
+            tagName: '午后',
+            createTime: 1534925202887,
+            updateTime: 1534925202887,
+            creator: '黄成'
+          }
+        ]
+      }
+    });
+  }, 800);
+});
+
+app.post('/open-self-admin/apiSelfTagDimensionDelete', function (req, res) {
+  setTimeout(() => {
+    res.json({
+      code: '0',
+      msg: '删除成功',
+      data: null
+    });
+  }, 800);
+});
+
 

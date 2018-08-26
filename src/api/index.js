@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:46 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-23 19:02:17
+ * @Last Modified time: 2018-08-25 21:09:25
  */
 import { myAxios } from '@Utils/myAxios'
 import { defaultHeader } from './config'
@@ -218,6 +218,21 @@ export const commonSmallTypes = (type) => {
       headers: defaultHeader
     })
 }
+
+// 获取公用的维度的接口
+export const commonDimesions = () => {
+  return myAxios(
+    {
+      url: 'commonDimesions',
+      method: 'post',
+      params: {},
+      data: {},
+      headers: defaultHeader
+    })
+}
+
+
+
 
 
 
