@@ -3,26 +3,40 @@ import MainFrame from '../dashboard/main-frame'
 import { Route, withRouter, Switch, Redirect } from 'react-router-dom'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
-import { asyncComponent } from './asyncComponent'
+// import { asyncComponent } from './asyncComponent'
 
 // 让路由对应的组件都是异步加载
 // const NoMatch404 = asyncComponent(() => import('@Pages/no-match-404'))
-const MainAlbum = asyncComponent(() => import('@Pages/main-album'))
-const MainFocus = asyncComponent(() => import('@Pages/main-focus'))
-const MainListen = asyncComponent(() => import('@Pages/main-listen'))
-const MainClassfiy = asyncComponent(() => import('@Pages/main-classfiy'))
-const MainList = asyncComponent(() => import('@Pages/main-list'))
-const SelfAlbum = asyncComponent(() => import('@Pages/self-album'))
-const SelfFocus = asyncComponent(() => import('@Pages/self-focus'))
-const SelfListen = asyncComponent(() => import('@Pages/self-listen'))
-const SelfClassfiy = asyncComponent(() => import('@Pages/self-classfiy'))
-const SelfTagTag = asyncComponent(() => import('@Pages/self-tag-tag'))
-const SelfTagDimension = asyncComponent(() => import('@Pages/self-tag-dimension'))
-const ChildTable = asyncComponent(() => import('@Pages/child-table'))
-const AuthAccount = asyncComponent(() => import('@Pages/auth-account'))
-const AuthRole = asyncComponent(() => import('@Pages/auth-role'))
-const AuthMenu = asyncComponent(() => import('@Pages/auth-menu'))
-
+// const MainAlbum = asyncComponent(() => import('@Pages/main-album'))
+import MainAlbum from '@Pages/main-album'
+// const MainFocus = asyncComponent(() => import('@Pages/main-focus'))
+import MainFocus from '@Pages/main-focus'
+// const MainListen = asyncComponent(() => import('@Pages/main-listen'))
+import MainListen from '@Pages/main-listen'
+// const MainClassfiy = asyncComponent(() => import('@Pages/main-classfiy'))
+import MainClassfiy from '@Pages/main-classfiy'
+// const MainList = asyncComponent(() => import('@Pages/main-list'))
+import MainList from '@Pages/main-list'
+// const SelfAlbum = asyncComponent(() => import('@Pages/self-album'))
+import SelfAlbum from '@Pages/self-album'
+// const SelfFocus = asyncComponent(() => import('@Pages/self-focus'))
+import SelfFocus from '@Pages/self-focus'
+// const SelfListen = asyncComponent(() => import('@Pages/self-listen'))
+import SelfListen from '@Pages/self-listen'
+// const SelfClassfiy = asyncComponent(() => import('@Pages/self-classfiy'))
+import SelfClassfiy from '@Pages/self-classfiy'
+// const SelfTagTag = asyncComponent(() => import('@Pages/self-tag-tag'))
+import SelfTagTag from '@Pages/self-tag-tag'
+// const SelfTagDimension = asyncComponent(() => import('@Pages/self-tag-dimension'))
+import SelfTagDimension from '@Pages/self-tag-dimension'
+// const ChildTable = asyncComponent(() => import('@Pages/child-table'))
+import ChildTable from '@Pages/child-table'
+// const AuthAccount = asyncComponent(() => import('@Pages/auth-account'))
+import AuthAccount from '@Pages/auth-account'
+// const AuthRole = asyncComponent(() => import('@Pages/auth-role'))
+import AuthRole from '@Pages/auth-role'
+// const AuthMenu = asyncComponent(() => import('@Pages/auth-menu'))
+import AuthMenu from '@Pages/auth-menu'
 
 
 @withRouter
@@ -113,8 +127,8 @@ export default class RootRoutes extends Component {
         hide: this.props.appRoutesList.length ? this.props.appRoutesList.indexOf('auth-menu') > -1 : false
       }
     ]
-    const hasAuthNavList = navList.filter(item => item.hide)
-    // const hasAuthNavList = navList.filter(item => !item.hide)
+    // const hasAuthNavList = navList.filter(item => item.hide)
+    const hasAuthNavList = navList.filter(item => !item.hide)
     // console.log(hasAuthNavList)
     const toUrl = this.props.appRoutesList[0] ? this.props.appRoutesList[0] : ''
     return (

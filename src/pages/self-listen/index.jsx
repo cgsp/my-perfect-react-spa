@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-27 15:09:32
+ * @Last Modified time: 2018-08-27 15:47:17
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal } from 'antd'
@@ -278,6 +278,7 @@ class SelfListen extends Component {
       if (options.selectedRowKeys) {
         options.ids = options.selectedRowKeys
       }
+      delete options.selectedRowKeys
 
       let str = baseURL + url + '?'
       for (const key in options) {

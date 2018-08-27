@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-27 15:09:20
+ * @Last Modified time: 2018-08-27 15:58:16
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal } from 'antd'
@@ -147,7 +147,7 @@ class SelfListen extends Component {
       addOrEditVisible: true,
       addOrEditInitValues: line
     })
-    this.props.getCommonSmallTypes(line.bigType)
+    // this.props.getCommonSmallTypes(line.bigType)
   }
 
 
@@ -275,6 +275,7 @@ class SelfListen extends Component {
       if (options.selectedRowKeys) {
         options.ids = options.selectedRowKeys
       }
+      delete options.selectedRowKeys
 
       let str = baseURL + url + '?'
       for (const key in options) {
@@ -607,7 +608,7 @@ class SelfListen extends Component {
         <List style={{ marginBottom: 30 }}>
           <Row>
             <Col span={24} style={{ textAlign: 'left' }}>
-              <Button style={{ marginLeft: 20 }} type="primary" onClick={() => this.exportListen()}>听单批量导出</Button>
+              <Button type="primary" onClick={() => this.exportListen()}>听单批量导出</Button>
               <Button style={{ marginLeft: 20 }} type="primary" onClick={() => this.exportContent()}>内容批量导出</Button>
               <div style={{ float: 'right' }}>
                 <span style={{ position: 'relative', top: -9 }}>排序方式：</span>
@@ -618,7 +619,12 @@ class SelfListen extends Component {
         </List>
         <SelfListenListTable {...tableOptions} />
         <SelfListenModalTable {...modalTableOptions} />
-        <WrapperSelfListenAddOrEdit {...addOrEditOptions} />
+        {
+          this.state.addOrEditVisible
+            ?
+            <WrapperSelfListenAddOrEdit {...addOrEditOptions} />
+            : null
+        }
         <MaskLoading ref="mask" />
       </div >
 

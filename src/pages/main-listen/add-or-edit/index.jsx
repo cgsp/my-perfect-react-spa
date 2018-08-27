@@ -79,14 +79,15 @@ class SelfListenAddOrEdit extends Component {
   render() {
     const { getFieldDecorator } = this.props.form
     let { previewVisible, previewImage, fileList } = this.state
-    if (this.props.addOrEditInitValues.pic && !this.timer) {
+    if (this.props.addOrEditInitValues.coverUrlLarge && !this.timer) {
       this.timer = setTimeout(() => {
+        console.log(111)
         this.setState({
           fileList: [{
             uid: '-1',
-            name: 'xxx.png',
+            name: '封面图.png',
             status: 'done',
-            url: this.props.addOrEditInitValues.pic,
+            url: this.props.addOrEditInitValues.coverUrlSmall,
           }]
         }, () => {
           fileList = this.state.fileList
@@ -130,7 +131,7 @@ class SelfListenAddOrEdit extends Component {
               label="听单名称"
             >
               {getFieldDecorator('listenName', {
-                initialValue: this.props.addOrEditInitValues.listenName,
+                initialValue: this.props.addOrEditInitValues.title,
                 rules: [
                   {
                     required: true, message: '请输入听单名称',

@@ -49,7 +49,7 @@
 
 const BASEURL = {
   dev: '/openapi-content-admin-app',
-  pro: 'http://cms.9nali.com/openapi-content-admin-app',
+  pro: 'http://cms.test.9nali.com/openapi-content-admin-app',
 }
 
 const DOWN_LOAD_URL = {
@@ -63,6 +63,11 @@ const UP_IMG_ACTION = {
   pro: '//jsonplaceholder.typicode.com/posts/',
 }
 
+const ROUTE_BASE = {
+  dev: '',
+  pro: 'openapi-content-admin-app'
+}
+
 const ERR_OK = 0
 
-export { BASEURL, ERR_OK, DOWN_LOAD_URL, UP_IMG_ACTION }
+export { BASEURL, ROUTE_BASE, ERR_OK, DOWN_LOAD_URL, UP_IMG_ACTION }
