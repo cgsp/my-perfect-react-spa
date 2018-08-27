@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-27 14:00:24
+ * @Last Modified time: 2018-08-27 15:09:20
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal } from 'antd'
@@ -272,6 +272,9 @@ class SelfListen extends Component {
         options.desc = true
       }
       delete options.sortDirection
+      if (options.selectedRowKeys) {
+        options.ids = options.selectedRowKeys
+      }
 
       let str = baseURL + url + '?'
       for (const key in options) {
@@ -279,8 +282,8 @@ class SelfListen extends Component {
           str += `${key}=${options[key]}&`
         }
       }
-
       str = str.slice(0, -1)
+      console.log(str)
       let a = document.createElement('a')
       document.body.appendChild(a)
       a.setAttribute('style', 'display:none')

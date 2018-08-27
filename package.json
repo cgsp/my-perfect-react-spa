@@ -70,7 +70,7 @@
     "react-hot-loader": "^4.2.0",
     "sass-loader": "^7.0.1"
   },
-  "homepage": ".",
+  "homepage": "http://static2.test.ximalaya.com/lib/open-self-admin/last/build/",
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,mjs}"

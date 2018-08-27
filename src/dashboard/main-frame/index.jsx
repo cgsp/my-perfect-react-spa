@@ -23,24 +23,24 @@ export default class MainFrame extends Component {
     location: PropTypes.object
   }
 
-  componentDidMount() {
-    if (!this.props.appNavListData.length) {
-      this.props.getNavBarData()
-      this.refs.mask.show()
-    }
-  }
+  // componentDidMount() {
+  //   if (!this.props.appNavListData.length) {
+  //     this.props.getNavBarData()
+  //     this.refs.mask.show()
+  //   }
+  // }
 
   // componentWillUpdate() {
   //   console.log(this.props.appNavListData)
   // }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    // console.log(nextProps)
-    if (nextProps.appNavListData.length) {
-      this.refs.mask.hide()
-    }
-    return true
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   // console.log(nextProps)
+  //   if (nextProps.appNavListData.length) {
+  //     this.refs.mask.hide()
+  //   }
+  //   return true
+  // }
 
   // showLoading() {
 
