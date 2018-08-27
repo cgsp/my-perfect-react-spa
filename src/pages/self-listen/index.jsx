@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-27 15:47:17
+ * @Last Modified time: 2018-08-27 19:26:37
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal } from 'antd'
@@ -15,7 +15,7 @@ import SelfListenModalTable from './modal-table'
 import MaskLoading from '@Components/mask-loading'
 import SortList from '@Components/sort-list'
 import { myTrim } from '@Utils/myTrim'
-import { selfListenList, mainListenTableList } from '@Api/self-listen'
+import { selfListenList, selfListenTableList } from '@Api/self-listen'
 import { connect } from 'react-redux'
 // import { getCommonSmallTypes } from '@Redux/commonSmallType'
 import TimeControlHoc from '@Components/time-control-hoc'
@@ -181,27 +181,33 @@ class SelfListen extends Component {
 
   tableLineShowDetails(line) {
     console.log('查看详情', line)
-    const { mainId } = line
-    this.modalMainId = mainId
+    if (line.contentType === 2) {
+      this.type = '声音'
+    } else {
+      this.type = '专辑'
+    }
+    this.id = line.id
     this.getModalListData({
       pageNo: 1,
       pageSize: 10,
-      mainId: this.modalMainId
+      id: this.id,
+      type: this.type
     })
 
   }
+
   getModalListData(options) {
     this.refs.mask.show()
-    mainListenTableList(options)
+    selfListenTableList(options)
       .then(res => {
         this.refs.mask.hide()
-        const modalTableData = res.list.map(item => {
-          item.key = item.albumId
+        const modalTableData = res.data.dataList.map(item => {
+          item.key = item.id
           return item
         })
         this.setState({
           modalTableData,
-          modalTableTotal: res.total,
+          modalTableTotal: res.data.totalNum,
           modalTableVisible: true
         })
       })
@@ -348,7 +354,8 @@ class SelfListen extends Component {
     this.getModalListData({
       pageNo: current,
       pageSize,
-      mainId: this.modalMainId
+      id: this.id,
+      type: this.type
     })
   }
 
@@ -364,6 +371,8 @@ class SelfListen extends Component {
     this.setState({
       modalTableVisible: false
     })
+    this.id = ''
+    this.type = ''
   }
 
 
@@ -487,8 +496,8 @@ class SelfListen extends Component {
                     allowClear
                     onChange={value => this.setState({ contentType: value })}
                   >
-                    <Option value="1">声音</Option>
-                    <Option value="2">专辑</Option>
+                    <Option value="1">专辑</Option>
+                    <Option value="2">声音</Option>
                   </Select>
                 </FormItem>
               </Col>

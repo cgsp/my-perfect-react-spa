@@ -47,6 +47,11 @@
 // }
 // 整个项目的配置文件
 
+const ROUTE_BASE = {
+  dev: '',
+  pro: 'openapi-content-admin-app'
+}
+
 const BASEURL = {
   dev: '/openapi-content-admin-app',
   pro: 'http://cms.test.9nali.com/openapi-content-admin-app',
@@ -61,11 +66,6 @@ const UP_IMG_ACTION = {
   dev: '//jsonplaceholder.typicode.com/posts/',
   // 生产的必须加上http或者https
   pro: '//jsonplaceholder.typicode.com/posts/',
-}
-
-const ROUTE_BASE = {
-  dev: '',
-  pro: 'openapi-content-admin-app'
 }
 
 const ERR_OK = 0

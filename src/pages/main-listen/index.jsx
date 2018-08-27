@@ -2,16 +2,16 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-27 15:58:16
+ * @Last Modified time: 2018-08-27 19:49:32
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal } from 'antd'
 import moment from 'moment'
 import { myGetStampTime } from '@Utils/myGetTime'
 import { DOWN_LOAD_URL } from '@Constants'
-import SelfListenListTable from './list-table'
-import WrapperSelfListenAddOrEdit from './add-or-edit'
-import SelfListenModalTable from './modal-table'
+import MainListenListTable from './list-table'
+import WrapperMainListenAddOrEdit from './add-or-edit'
+import MainListenModalTable from './modal-table'
 import MaskLoading from '@Components/mask-loading'
 import SortList from '@Components/sort-list'
 import { myTrim } from '@Utils/myTrim'
@@ -180,12 +180,17 @@ class SelfListen extends Component {
 
   tableLineShowDetails(line) {
     console.log('查看详情', line)
-    const { mainId } = line
-    this.modalMainId = mainId
+    if (line.contentType === 2) {
+      this.type = '声音'
+    } else {
+      this.type = '专辑'
+    }
+    this.id = line.id
     this.getModalListData({
       pageNo: 1,
       pageSize: 10,
-      mainId: this.modalMainId
+      id: this.id,
+      type: this.type
     })
 
   }
@@ -194,13 +199,13 @@ class SelfListen extends Component {
     mainListenTableList(options)
       .then(res => {
         this.refs.mask.hide()
-        const modalTableData = res.list.map(item => {
-          item.key = item.albumId
+        const modalTableData = res.data.dataList.map(item => {
+          item.key = item.id
           return item
         })
         this.setState({
           modalTableData,
-          modalTableTotal: res.total,
+          modalTableTotal: res.data.totalNum,
           modalTableVisible: true
         })
       })
@@ -330,12 +335,12 @@ class SelfListen extends Component {
   }
 
   onTablePageChange(current, pageSize) {
-    console.log(current, pageSize)
+    // console.log(current, pageSize)
     this.pageOrPageSizeChange(current, pageSize)
   }
 
   onTableShowSizeChange(current, pageSize) {
-    console.log(current, pageSize)
+    // console.log(current, pageSize)
     this.pageOrPageSizeChange(current, pageSize)
   }
 
@@ -344,7 +349,8 @@ class SelfListen extends Component {
     this.getModalListData({
       pageNo: current,
       pageSize,
-      mainId: this.modalMainId
+      id: this.id,
+      type: this.type
     })
   }
 
@@ -360,6 +366,8 @@ class SelfListen extends Component {
     this.setState({
       modalTableVisible: false
     })
+    this.id = ''
+    this.type = ''
   }
 
 
@@ -488,8 +496,8 @@ class SelfListen extends Component {
                     allowClear
                     onChange={value => this.setState({ contentType: value })}
                   >
-                    <Option value="1">声音</Option>
-                    <Option value="2">专辑</Option>
+                    <Option value="1">专辑</Option>
+                    <Option value="2">声音</Option>
                   </Select>
                 </FormItem>
               </Col>
@@ -617,12 +625,12 @@ class SelfListen extends Component {
             </Col>
           </Row>
         </List>
-        <SelfListenListTable {...tableOptions} />
-        <SelfListenModalTable {...modalTableOptions} />
+        <MainListenListTable {...tableOptions} />
+        <MainListenModalTable {...modalTableOptions} />
         {
           this.state.addOrEditVisible
             ?
-            <WrapperSelfListenAddOrEdit {...addOrEditOptions} />
+            <WrapperMainListenAddOrEdit {...addOrEditOptions} />
             : null
         }
         <MaskLoading ref="mask" />

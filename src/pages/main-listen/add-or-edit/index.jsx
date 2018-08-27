@@ -20,7 +20,7 @@ if (DEV) {
   state => state.commonSmallTypesReducer,
   { getCommonSmallTypes }
 )
-class SelfListenAddOrEdit extends Component {
+class MainListenAddOrEdit extends Component {
   static propTypes = {
     addOrEditTitle: PropTypes.string,
     addOrEditVisible: PropTypes.bool,
@@ -185,8 +185,8 @@ class SelfListenAddOrEdit extends Component {
                 ],
               })(
                 <Select allowClear onChange={(v) => this.bigTypeChange(v)}>
-                  <Option value="主站分类">主站分类</Option>
-                  <Option value="自运营分类">自运营分类</Option>
+                  <Option value="1">主站分类</Option>
+                  <Option value="2">自运营分类</Option>
                 </Select>
               )}
             </FormItem>
@@ -208,6 +208,7 @@ class SelfListenAddOrEdit extends Component {
                       <Option key={item.id} value={item.id}>{item.name}</Option>
                     ))
                   }
+                  
                 </Select>
               )}
             </FormItem>
@@ -252,5 +253,5 @@ class SelfListenAddOrEdit extends Component {
   }
 }
 
-const WrapperSelfListenAddOrEdit = Form.create()(SelfListenAddOrEdit)
-export default WrapperSelfListenAddOrEdit
+const WrapperMainListenAddOrEdit = Form.create()(MainListenAddOrEdit)
+export default WrapperMainListenAddOrEdit

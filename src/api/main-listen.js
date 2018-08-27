@@ -28,14 +28,23 @@ export const mainListenList = (options) => {
     })
 }
 
-// 获取菜单与按钮数据
+// 获取详情列表页面
 export const mainListenTableList = (options) => {
+  let url
+  if (options.type === '专辑') {
+    url = `/column/${options.id}/albums`
+  } else {
+    url = `/column/${options.id}/tracks`
+  }
   return myAxios(
     {
-      url: 'mainListenTableList',
-      method: 'post',
-      params: {},
-      data: options,
+      url,
+      method: 'get',
+      params: {
+        pageNo: options.pageNo,
+        pageSize: options.pageSize
+      },
+      data: {},
       headers: defaultHeader
     })
 }

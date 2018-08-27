@@ -36,6 +36,17 @@ export default class SelfListenListTable extends Component {
       title: '听单名称',
       dataIndex: 'title',
       key: 'title',
+      width: 150,
+      render: (text, record) => {
+        const old = text
+        let newtext
+        if (text.length > 15) {
+          newtext = text.substr(0, 14) + '...'
+        } else {
+          newtext = text
+        }
+        return <span style={{ display: 'inline-block', width: '100%', height: 40, cursor: 'pointer' }} title={old}>{newtext}</span>
+      }
     },
     {
       title: '听单封面',
@@ -64,11 +75,10 @@ export default class SelfListenListTable extends Component {
       render: (text, record) => {
         switch (text) {
           case 1:
-            text = '声音'
-            break
-          case 2:
             text = '专辑'
             break
+          case 2:
+            text = '声音'
           default:
             break
         }
@@ -85,7 +95,7 @@ export default class SelfListenListTable extends Component {
       dataIndex: 'contentNum',
       key: 'contentNum',
       render: (text, record) => (
-        <span style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.props.tableLineShowDetails(record)}>{text}</span>
+        <span style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.props.tableLineShowDetails(record)}>{text ? text : '25'}</span>
       )
     },
     {
@@ -110,6 +120,7 @@ export default class SelfListenListTable extends Component {
       title: '创建时间',
       dataIndex: 'createdAt',
       key: 'createdAt',
+      width: 120,
       render: (text, record) => {
         const str = myGetStrTime(text)
         return (
@@ -121,6 +132,7 @@ export default class SelfListenListTable extends Component {
       title: '更新时间',
       dataIndex: 'releasedAt',
       key: 'releasedAt',
+      width: 120,
       render: (text, record) => {
         const str = myGetStrTime(text)
         return (
@@ -139,7 +151,7 @@ export default class SelfListenListTable extends Component {
     }]
     return (
       <div>
-        <Table columns={columns} rowSelection={rowSelection} dataSource={this.props.tableData} pagination={false} scroll={{ x: 1500 }} />
+        <Table columns={columns} rowSelection={rowSelection} dataSource={this.props.tableData} pagination={false} />
         <div style={{ textAlign: 'right', marginTop: 30 }}>
           <Pagination
             showSizeChanger

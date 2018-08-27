@@ -19,33 +19,51 @@ export default class SelfListenModalTable extends Component {
   render() {
     const columns = [{
       title: '专辑Id',
-      dataIndex: 'albumId',
-      key: 'albumId',
+      dataIndex: 'id',
+      key: 'id',
+      width: 100,
       render: (text, record) =>
         (
-          <a href={record.url} target="_blank" style={{ width: 30, display: 'inline-block', cursor: 'pointer' }}>
+          <a href={record.url} target="_blank" style={{ display: 'inline-block', cursor: 'pointer' }}>
             {text}
           </a>
         )
     }, {
       title: '专辑名称',
-      dataIndex: 'albumName',
-      key: 'albumName',
+      dataIndex: 'title',
+      key: 'title',
+      width: 150
     },
     {
       title: '声音数',
-      dataIndex: 'voiceName',
-      key: 'voiceName',
+      dataIndex: 'tracksNum',
+      key: 'tracksNum',
+      width: 100
     },
     {
       title: '状态',
-      dataIndex: 'state',
-      key: 'state'
+      dataIndex: 'onlineStatus',
+      key: 'onlineStatus',
+      width: 100,
+      render: (text, record) => {
+        switch (text) {
+          case 1:
+            text = '已上架'
+            break
+          case 2:
+            text = '已下架'
+            break
+          default:
+            break
+        }
+        return <span>{text}</span>
+      }
     },
     {
       title: '创建时间',
       dataIndex: 'createTime',
       key: 'createTime',
+      width: 100,
       render: (text, record) => {
         const str = myGetStrTime(text)
         return (
@@ -57,6 +75,7 @@ export default class SelfListenModalTable extends Component {
       title: '更新时间',
       dataIndex: 'updateTime',
       key: 'updateTime',
+      width: 100,
       render: (text, record) => {
         const str = myGetStrTime(text)
         return (
@@ -73,7 +92,11 @@ export default class SelfListenModalTable extends Component {
         footer={null}
       >
         <div>
-          <Table columns={columns} dataSource={this.props.modalTableData} pagination={false} />
+          <Table columns={columns}
+            dataSource={this.props.modalTableData}
+            pagination={false}
+            scroll={{ x: 700, y: 400 }}
+          />
           <div style={{ textAlign: 'right', marginTop: 30 }}>
             <Pagination
               showSizeChanger
