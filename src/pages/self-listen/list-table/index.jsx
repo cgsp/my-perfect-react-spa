@@ -95,7 +95,7 @@ export default class SelfListenListTable extends Component {
       dataIndex: 'contentNum',
       key: 'contentNum',
       render: (text, record) => (
-        <span style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.props.tableLineShowDetails(record)}>{text ? text : '25'}</span>
+        <span style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.props.tableLineShowDetails(record)}>{text}</span>
       )
     },
     {

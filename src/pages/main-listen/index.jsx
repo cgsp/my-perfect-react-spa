@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-27 19:49:32
+ * @Last Modified time: 2018-08-27 20:26:50
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal } from 'antd'
@@ -141,12 +141,13 @@ class SelfListen extends Component {
   }
 
   tableLineSave(line) {
-    // console.log('另存为', line)
+    console.log('另存为', line)
     this.setState({
       addOrEditTitle: '另存为自运营听单',
       addOrEditVisible: true,
       addOrEditInitValues: line
     })
+
     // this.props.getCommonSmallTypes(line.bigType)
   }
 
@@ -290,6 +291,7 @@ class SelfListen extends Component {
       }
       str = str.slice(0, -1)
       console.log(str)
+
       let a = document.createElement('a')
       document.body.appendChild(a)
       a.setAttribute('style', 'display:none')
