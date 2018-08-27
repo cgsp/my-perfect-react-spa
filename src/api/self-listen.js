@@ -1,10 +1,10 @@
 import { myAxios } from '@Utils/myAxios'
 import { defaultHeader } from './config'
 
-// 获取主站听单列表
-export const mainListenList = (options) => {
+// 获取自运营听单列表
+export const selfListenList = (options) => {
   // console.log(options)
-  options.columnFrom = 1
+  options.columnFrom = 2
   if (options.sortIndex === 0) {
     options.orderBy = 'created_at'
   } else if (options.sortIndex === 1) {

@@ -2,7 +2,7 @@
  * @Author: John.Guan
  * @Date: 2018-07-24 15:01:37
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-24 10:11:13
+ * @Last Modified time: 2018-08-27 11:38:42
  */
 import axios from 'axios'
 import qs from 'qs'
@@ -84,8 +84,9 @@ function myAxios(options) {
 
   const url = options.url || ''
 
-  const time = Date.now()
-  const params = { ...{ _: time }, ...options.params }
+  // const time = Date.now()
+  // const params = { ...{ _: time }, ...options.params }
+  const params = { ...{}, ...options.params }
 
   for (const key in params) {
     if (params[key] === null || params[key] === '' || params[key] === undefined) {
@@ -131,7 +132,7 @@ function myAxios(options) {
     }).then((res) => {
       // debugger;
       if (res.data.code === ERR_OK) {
-        resolve(res.data.data)
+        resolve(res.data)
       } else {
         console.error(res.data.msg)
       }

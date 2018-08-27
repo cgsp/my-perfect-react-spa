@@ -29,22 +29,22 @@ export default class SelfListenListTable extends Component {
     }
     const columns = [{
       title: '主站Id',
-      dataIndex: 'mainId',
-      key: 'mainId'
+      dataIndex: 'syncColumnId',
+      key: 'syncColumnId'
     }, {
       title: '自运营Id',
-      dataIndex: 'selfId',
-      key: 'selfId',
+      dataIndex: 'id',
+      key: 'id',
     },
     {
       title: '听单名称',
-      dataIndex: 'listenName',
-      key: 'listenName',
+      dataIndex: 'title',
+      key: 'title',
     },
     {
       title: '听单封面',
-      dataIndex: 'pic',
-      key: 'pic',
+      dataIndex: 'coverUrlSmall',
+      key: 'coverUrlSmall',
       render: (text, record) => {
         let img
         if (!text) {
@@ -63,13 +63,26 @@ export default class SelfListenListTable extends Component {
     },
     {
       title: '听单类型',
-      dataIndex: 'type',
-      key: 'type',
+      dataIndex: 'contentType',
+      key: 'contentType',
+      render: (text, record) => {
+        switch (text) {
+          case 1:
+            text = '声音'
+            break
+          case 2:
+            text = '专辑'
+            break
+          default:
+            break
+        }
+        return <span>{text}</span>
+      }
     },
     {
       title: '分类',
-      dataIndex: 'classfiy',
-      key: 'classfiy',
+      dataIndex: 'categoryName',
+      key: 'categoryName',
     },
     {
       title: '内容数',
@@ -81,13 +94,26 @@ export default class SelfListenListTable extends Component {
     },
     {
       title: '状态',
-      dataIndex: 'state',
-      key: 'state',
+      dataIndex: 'onlineStatus',
+      key: 'onlineStatus',
+      render: (text, record) => {
+        switch (text) {
+          case 1:
+            text = '已上架'
+            break
+          case 2:
+            text = '已下架'
+            break
+          default:
+            break
+        }
+        return <span>{text}</span>
+      }
     },
     {
       title: '创建时间',
-      dataIndex: 'createTime',
-      key: 'createTime',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
       render: (text, record) => {
         const str = myGetStrTime(text)
         return (
@@ -97,8 +123,8 @@ export default class SelfListenListTable extends Component {
     },
     {
       title: '更新时间',
-      dataIndex: 'updateTime',
-      key: 'updateTime',
+      dataIndex: 'releasedAt',
+      key: 'releasedAt',
       render: (text, record) => {
         const str = myGetStrTime(text)
         return (

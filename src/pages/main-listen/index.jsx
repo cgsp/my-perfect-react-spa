@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-24 15:54:19
+ * @Last Modified time: 2018-08-27 13:17:33
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal } from 'antd'
@@ -14,11 +14,10 @@ import WrapperSelfListenAddOrEdit from './add-or-edit'
 import SelfListenModalTable from './modal-table'
 import MaskLoading from '@Components/mask-loading'
 import SortList from '@Components/sort-list'
-import TopTip from '@Components/top-tip'
 import { myTrim } from '@Utils/myTrim'
 import { mainListenList, mainListenTableList } from '@Api/main-listen'
 import { connect } from 'react-redux'
-import { getCommonSmallTypes } from '@Redux/commonSmallType'
+// import { getCommonSmallTypes } from '@Redux/commonSmallType'
 import TimeControlHoc from '@Components/time-control-hoc'
 
 const FormItem = Form.Item
@@ -27,24 +26,24 @@ const Option = Select.Option
 
 @connect(
   state => state.commonSmallTypesReducer,
-  { getCommonSmallTypes }
+  {}
 )
 @TimeControlHoc
 class SelfListen extends Component {
   constructor() {
     super()
     this.state = {
-      searchMainId: '',
-      searchSelfId: '',
-      searchListenName: '',
-      searchListenType: '',
-      searchSmallType: '',
-      searchState: '',
+      syncColumnId: '',
+      id: '',
+      title: '',
+      contentType: '',
+      categoryId: '',
+      onlineStatus: '',
       sortIndex: 1,
       sortDirection: 'down',
       tableTotal: 0,
       tableData: [],
-      page: 1,
+      pageNo: 1,
       pageSize: 10,
       selectedRowKeys: [],
 
@@ -77,14 +76,14 @@ class SelfListen extends Component {
   componentDidMount() {
     // 获取表格数据
     this.getListData({
-      page: 1,
+      pageNo: 1,
       pageSize: 10,
-      searchMainId: '',
-      searchSelfId: '',
-      searchListenName: '',
-      searchListenType: '',
-      searchSmallType: '',
-      searchState: '',
+      syncColumnId: '',
+      id: '',
+      title: '',
+      contentType: '',
+      categoryId: '',
+      onlineStatus: '',
       searchCreateTimeBegin: null,
       searchCreateTimeEnd: null,
       searchUpdateTimeBegin: null,
@@ -92,7 +91,7 @@ class SelfListen extends Component {
       sortIndex: 1,
       sortDirection: 'down'
     })
-    this.props.getCommonSmallTypes('主站内容')
+    // this.props.getCommonSmallTypes('主站内容')
   }
 
   clickSort(sortIndex, sortDirection) {
@@ -112,29 +111,29 @@ class SelfListen extends Component {
     this.setState({
     }, () => {
       const {
-        searchMainId,
-        searchSelfId,
-        searchListenName,
-        searchListenType,
-        searchSmallType,
-        searchState,
+        syncColumnId,
+        id,
+        title,
+        contentType,
+        categoryId,
+        onlineStatus,
         sortIndex,
         sortDirection } = this.state
 
       const { searchCreateTimeBegin, searchCreateTimeEnd, searchUpdateTimeBegin, searchUpdateTimeEnd } = this.props.state
       this.getListData({
-        page: this.state.page,
+        pageNo: this.state.pageNo,
         pageSize: this.state.pageSize,
-        searchMainId,
-        searchSelfId,
-        searchListenName,
-        searchListenType,
-        searchSmallType,
-        searchState,
-        searchCreateTimeBegin,
-        searchCreateTimeEnd,
-        searchUpdateTimeBegin,
-        searchUpdateTimeEnd,
+        syncColumnId,
+        id,
+        title,
+        contentType,
+        categoryId,
+        onlineStatus,
+        createTimeBegin: searchCreateTimeBegin,
+        createTimeEnd: searchCreateTimeEnd,
+        updateTimeBegin: searchUpdateTimeBegin,
+        updateTimeEnd: searchUpdateTimeEnd,
         sortIndex,
         sortDirection
       })
@@ -184,7 +183,7 @@ class SelfListen extends Component {
     const { mainId } = line
     this.modalMainId = mainId
     this.getModalListData({
-      page: 1,
+      pageNo: 1,
       pageSize: 10,
       mainId: this.modalMainId
     })
@@ -226,12 +225,12 @@ class SelfListen extends Component {
   export() {
     this.setState({}, () => {
       const {
-        searchMainId,
-        searchSelfId,
-        searchListenName,
-        searchListenType,
-        searchSmallType,
-        searchState,
+        syncColumnId,
+        id,
+        title,
+        contentType,
+        categoryId,
+        onlineStatus,
         selectedRowKeys,
         sortIndex,
         sortDirection, } = this.state
@@ -239,16 +238,16 @@ class SelfListen extends Component {
       const { searchCreateTimeBegin, searchCreateTimeEnd, searchUpdateTimeBegin, searchUpdateTimeEnd } = this.props.state
 
       const options = {
-        searchMainId: !searchMainId ? '' : myTrim(searchMainId),
-        searchSelfId: !searchSelfId ? '' : myTrim(searchSelfId),
-        searchListenName: !searchListenName ? '' : myTrim(searchListenName),
-        searchListenType,
-        searchSmallType,
-        searchState,
-        searchCreateTimeBegin: !searchCreateTimeBegin ? null : myGetStampTime(searchCreateTimeBegin),
-        searchCreateTimeEnd: !searchCreateTimeEnd ? null : myGetStampTime(searchCreateTimeEnd),
-        searchUpdateTimeBegin: !searchUpdateTimeBegin ? null : myGetStampTime(searchUpdateTimeBegin),
-        searchUpdateTimeEnd: !searchUpdateTimeEnd ? null : myGetStampTime(searchUpdateTimeEnd),
+        syncColumnId: !syncColumnId ? '' : myTrim(syncColumnId),
+        id: !id ? '' : myTrim(id),
+        title: !title ? '' : myTrim(title),
+        contentType,
+        categoryId,
+        onlineStatus,
+        createTimeBegin: !searchCreateTimeBegin ? null : myGetStampTime(searchCreateTimeBegin),
+        createTimeEnd: !searchCreateTimeEnd ? null : myGetStampTime(searchCreateTimeEnd),
+        updateTimeBegin: !searchUpdateTimeBegin ? null : myGetStampTime(searchUpdateTimeBegin),
+        updateTimeEnd: !searchUpdateTimeEnd ? null : myGetStampTime(searchUpdateTimeEnd),
         selectedRowKeys: selectedRowKeys.join(),
         sortIndex,
         sortDirection,
@@ -274,33 +273,33 @@ class SelfListen extends Component {
 
   pageOrPageSizeChange(current, pageSize) {
     this.setState({
-      page: current,
+      pageNo: current,
       pageSize
     }, () => {
       const {
-        searchMainId,
-        searchSelfId,
-        searchListenName,
-        searchListenType,
-        searchSmallType,
-        searchState,
+        syncColumnId,
+        id,
+        title,
+        contentType,
+        categoryId,
+        onlineStatus,
         sortIndex,
         sortDirection, } = this.state
       const { searchCreateTimeBegin, searchCreateTimeEnd, searchUpdateTimeBegin, searchUpdateTimeEnd } = this.props.state
 
       this.getListData({
-        page: this.state.page,
+        pageNo: this.state.pageNo,
         pageSize: this.state.pageSize,
-        searchMainId,
-        searchSelfId,
-        searchListenName,
-        searchListenType,
-        searchSmallType,
-        searchState,
-        searchCreateTimeBegin,
-        searchCreateTimeEnd,
-        searchUpdateTimeBegin,
-        searchUpdateTimeEnd,
+        syncColumnId,
+        id,
+        title,
+        contentType,
+        categoryId,
+        onlineStatus,
+        createTimeBegin: searchCreateTimeBegin,
+        createTimeEnd: searchCreateTimeEnd,
+        updateTimeBegin: searchUpdateTimeBegin,
+        updateTimeEnd: searchUpdateTimeEnd,
         sortIndex,
         sortDirection,
       })
@@ -320,7 +319,7 @@ class SelfListen extends Component {
   modalPageOrPageSizeChange(current, pageSize) {
     console.log(this.modalMainId)
     this.getModalListData({
-      page: current,
+      pageNo: current,
       pageSize,
       mainId: this.modalMainId
     })
@@ -350,36 +349,36 @@ class SelfListen extends Component {
 
   // 获取列表页面的数据
   getListData({
-    page,
+    pageNo,
     pageSize,
-    searchMainId,
-    searchSelfId,
-    searchListenName,
-    searchListenType,
-    searchSmallType,
-    searchState,
-    searchCreateTimeBegin,
-    searchCreateTimeEnd,
-    searchUpdateTimeBegin,
-    searchUpdateTimeEnd,
+    syncColumnId,
+    id,
+    title,
+    contentType,
+    categoryId,
+    onlineStatus,
+    createTimeBegin,
+    createTimeEnd,
+    updateTimeBegin,
+    updateTimeEnd,
     sortIndex,
     sortDirection, }) {
 
     this.refs.mask.show()
 
     const options = {
-      page,
+      pageNo,
       pageSize,
-      searchMainId: !searchMainId ? '' : myTrim(searchMainId),
-      searchSelfId: !searchSelfId ? '' : myTrim(searchSelfId),
-      searchListenName: !searchListenName ? '' : myTrim(searchListenName),
-      searchListenType,
-      searchSmallType,
-      searchState,
-      searchCreateTimeBegin: !searchCreateTimeBegin ? null : myGetStampTime(searchCreateTimeBegin),
-      searchCreateTimeEnd: !searchCreateTimeEnd ? null : myGetStampTime(searchCreateTimeEnd),
-      searchUpdateTimeBegin: !searchUpdateTimeBegin ? null : myGetStampTime(searchUpdateTimeBegin),
-      searchUpdateTimeEnd: !searchUpdateTimeEnd ? null : myGetStampTime(searchUpdateTimeEnd),
+      syncColumnId: !syncColumnId ? '' : myTrim(syncColumnId),
+      id: !id ? '' : myTrim(id),
+      title: !title ? '' : myTrim(title),
+      contentType,
+      categoryId,
+      onlineStatus,
+      createTimeBegin: !createTimeBegin ? null : myGetStampTime(createTimeBegin),
+      createTimeEnd: !createTimeEnd ? null : myGetStampTime(createTimeEnd),
+      updateTimeBegin: !updateTimeBegin ? null : myGetStampTime(updateTimeBegin),
+      updateTimeEnd: !updateTimeEnd ? null : myGetStampTime(updateTimeEnd),
       sortIndex,
       sortDirection,
     }
@@ -387,49 +386,16 @@ class SelfListen extends Component {
     mainListenList(options)
       .then(res => {
         this.refs.mask.hide()
-        const tableData = res.list.map(item => {
-          item.key = item.mainId
+        const tableData = res.data.dataList.map(item => {
+          item.key = item.id
           return item
         })
         this.setState({
           tableData: tableData,
-          tableTotal: res.total,
+          tableTotal: res.data.totalNum,
         })
-        // if (tag === '新增') {
-        //   this.showTopTip('success', '新增节点成功')
-        // } else if (tag === '编辑') {
-        //   this.showTopTip('success', '编辑节点成功')
-        // } else if (tag === '删除') {
-        //   this.showTopTip('success', '删除节点成功')
-        // }
-
       })
   }
-
-  showTopTip(type, msg) {
-    this.setState({
-      topTipOptions: {
-        show: true,
-        msg,
-        type
-      }
-    })
-    if (this.timer) {
-      clearTimeout(this.timer)
-      this.timer = null
-    }
-    setTimeout(() => {
-      this.setState({
-        topTipOptions: {
-          show: false,
-          msg,
-          type
-        }
-      })
-    }, 1500)
-
-  }
-
 
   render() {
     const tableOptions = {
@@ -468,7 +434,6 @@ class SelfListen extends Component {
 
     return (
       <div className="auth-role">
-        <TopTip item={this.state.topTipOptions} />
         {/* 搜索 */}
         <List bordered style={{ paddingLeft: 10, marginBottom: 30 }}>
           <Form
@@ -479,17 +444,17 @@ class SelfListen extends Component {
             <Row>
               <Col span={6}>
                 <FormItem label={<span style={{ minWidth: 57, display: 'inline-block', textAlign: 'left' }}>主站Id</span>} style={{ marginBottom: 10, marginTop: 10 }}>
-                  <Input placeholder="请输入主站Id" onChange={e => this.setState({ searchMainId: e.target.value })} />
+                  <Input placeholder="请输入主站Id" onChange={e => this.setState({ syncColumnId: e.target.value })} />
                 </FormItem>
               </Col>
               <Col span={6}>
                 <FormItem label={<span style={{ minWidth: 57, display: 'inline-block', textAlign: 'left' }}>自运营Id</span>} style={{ marginBottom: 10, marginTop: 10 }}>
-                  <Input placeholder="请输入自运营Id" onChange={e => this.setState({ searchSelfId: e.target.value })} />
+                  <Input placeholder="请输入自运营Id" onChange={e => this.setState({ id: e.target.value })} />
                 </FormItem>
               </Col>
               <Col span={6}>
                 <FormItem label="听单名称" style={{ marginBottom: 10, marginTop: 10 }}>
-                  <Input placeholder="请输入听单名称" onChange={e => this.setState({ searchListenName: e.target.value })} />
+                  <Input placeholder="请输入听单名称" onChange={e => this.setState({ title: e.target.value })} />
                 </FormItem>
               </Col>
               <Col span={6}>
@@ -498,10 +463,10 @@ class SelfListen extends Component {
                     placeholder="请选择听单类型"
                     style={{ minWidth: 171 }}
                     allowClear
-                    onChange={value => this.setState({ searchListenType: value })}
+                    onChange={value => this.setState({ contentType: value })}
                   >
-                    <Option value="专辑">专辑</Option>
-                    <Option value="声音">声音</Option>
+                    <Option value="1">声音</Option>
+                    <Option value="2">专辑</Option>
                   </Select>
                 </FormItem>
               </Col>
@@ -513,7 +478,7 @@ class SelfListen extends Component {
                     placeholder="请选择分类"
                     style={{ minWidth: 171 }}
                     allowClear
-                    onChange={value => this.setState({ searchSmallType: value })}
+                    onChange={value => this.setState({ categoryId: value })}
                   >
                     {
                       this.props.commonSmallTypes.map((item) => (
@@ -529,10 +494,10 @@ class SelfListen extends Component {
                     placeholder="请选择状态"
                     style={{ minWidth: 171 }}
                     allowClear
-                    onChange={value => this.setState({ searchState: value })}
+                    onChange={value => this.setState({ onlineStatus: value })}
                   >
-                    <Option value="已上架">已上架</Option>
-                    <Option value="已下架">已下架</Option>
+                    <Option value="1">已上架</Option>
+                    <Option value="2">已下架</Option>
                   </Select>
                 </FormItem>
               </Col>

@@ -48,10 +48,8 @@
 // 整个项目的配置文件
 
 const BASEURL = {
-  dev: '/open-self-admin',
-  // 生产的必须加上http或者https
-  pro: 'http://cms.test.9nali.com/openapi-content-admin-app',
-  // pro: 'http://cms.9nali.com/openapi-content-admin-app',
+  dev: '/openapi-content-admin-app',
+  pro: 'http://cms.9nali.com/openapi-content-admin-app',
 }
 
 const DOWN_LOAD_URL = {
@@ -67,6 +65,6 @@ const UP_IMG_ACTION = {
   pro: '//jsonplaceholder.typicode.com/posts/',
 }
 
-const ERR_OK = '0'
+const ERR_OK = 0
 
 export { BASEURL, ERR_OK, DOWN_LOAD_URL, UP_IMG_ACTION }

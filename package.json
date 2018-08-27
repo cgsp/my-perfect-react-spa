@@ -120,8 +120,8 @@
     "pe_prebuild": "node scripts/build.js"
   },
   "proxy": {
-    "/open-self-admin": {
-      "target": "http://localhost:8888",
+    "/openapi-content-admin-app": {
+      "target": "http://cms.test.9nali.com/",
       "secure": true,
       "changeOrigin": true
     }
