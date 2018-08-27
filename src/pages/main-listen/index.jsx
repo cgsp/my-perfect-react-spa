@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-27 13:17:33
+ * @Last Modified time: 2018-08-27 14:00:24
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal } from 'antd'
@@ -214,15 +214,22 @@ class SelfListen extends Component {
   }
 
 
-
   exportListen() {
-    this.export()
+    this.export('/column/export')
   }
   exportContent() {
     this.export()
   }
 
-  export() {
+  export(url) {
+    const DEV = process.env.NODE_ENV !== 'production'
+    console.log(process.env.NODE_ENV)
+    let baseURL
+    if (DEV) {
+      baseURL = DOWN_LOAD_URL.dev
+    } else {
+      baseURL = DOWN_LOAD_URL.pro
+    }
     this.setState({}, () => {
       const {
         syncColumnId,
@@ -238,6 +245,7 @@ class SelfListen extends Component {
       const { searchCreateTimeBegin, searchCreateTimeEnd, searchUpdateTimeBegin, searchUpdateTimeEnd } = this.props.state
 
       const options = {
+        columnFrom: 1,
         syncColumnId: !syncColumnId ? '' : myTrim(syncColumnId),
         id: !id ? '' : myTrim(id),
         title: !title ? '' : myTrim(title),
@@ -252,22 +260,33 @@ class SelfListen extends Component {
         sortIndex,
         sortDirection,
       }
+      if (options.sortIndex === 0) {
+        options.orderBy = 'created_at'
+      } else if (options.sortIndex === 1) {
+        options.orderBy = 'updated_at'
+      }
+      delete options.sortIndex
+      if (options.sortDirection === 'up') {
+        options.desc = false
+      } else {
+        options.desc = true
+      }
+      delete options.sortDirection
 
-      let str = DOWN_LOAD_URL + '/api?'
+      let str = baseURL + url + '?'
       for (const key in options) {
         if (options[key] || options[key] === 0) {
           str += `${key}=${options[key]}&`
         }
       }
 
-      console.log(str.slice(0, -1))
-
-      // let a = document.createElement('a')
-      // document.body.appendChild(a)
-      // a.setAttribute('style', 'display:none')
-      // a.setAttribute('href', str)
-      // a.setAttribute('download', '订单列表')
-      // a.click()
+      str = str.slice(0, -1)
+      let a = document.createElement('a')
+      document.body.appendChild(a)
+      a.setAttribute('style', 'display:none')
+      a.setAttribute('href', str)
+      a.setAttribute('download', '导出')
+      a.click()
     })
   }
 

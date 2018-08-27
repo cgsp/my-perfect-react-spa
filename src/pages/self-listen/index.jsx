@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-27 13:27:47
+ * @Last Modified time: 2018-08-27 14:12:45
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal } from 'antd'
@@ -217,13 +217,21 @@ class SelfListen extends Component {
 
 
   exportListen() {
-    this.export()
+    this.export('/column/export')
   }
   exportContent() {
     this.export()
   }
 
-  export() {
+  export(url) {
+    const DEV = process.env.NODE_ENV !== 'production'
+    console.log(process.env.NODE_ENV)
+    let baseURL
+    if (DEV) {
+      baseURL = DOWN_LOAD_URL.dev
+    } else {
+      baseURL = DOWN_LOAD_URL.pro
+    }
     this.setState({}, () => {
       const {
         syncColumnId,
@@ -239,6 +247,7 @@ class SelfListen extends Component {
       const { searchCreateTimeBegin, searchCreateTimeEnd, searchUpdateTimeBegin, searchUpdateTimeEnd } = this.props.state
 
       const options = {
+        columnFrom: 2,
         syncColumnId: !syncColumnId ? '' : myTrim(syncColumnId),
         id: !id ? '' : myTrim(id),
         title: !title ? '' : myTrim(title),
@@ -253,22 +262,34 @@ class SelfListen extends Component {
         sortIndex,
         sortDirection,
       }
+      if (options.sortIndex === 0) {
+        options.orderBy = 'created_at'
+      } else if (options.sortIndex === 1) {
+        options.orderBy = 'updated_at'
+      }
+      delete options.sortIndex
+      if (options.sortDirection === 'up') {
+        options.desc = false
+      } else {
+        options.desc = true
+      }
+      delete options.sortDirection
 
-      let str = DOWN_LOAD_URL + '/api?'
+      let str = baseURL + url + '?'
       for (const key in options) {
         if (options[key] || options[key] === 0) {
           str += `${key}=${options[key]}&`
         }
       }
 
-      console.log(str.slice(0, -1))
-
-      // let a = document.createElement('a')
-      // document.body.appendChild(a)
-      // a.setAttribute('style', 'display:none')
-      // a.setAttribute('href', str)
-      // a.setAttribute('download', '订单列表')
-      // a.click()
+      str = str.slice(0, -1)
+      // console.log(str)
+      let a = document.createElement('a')
+      document.body.appendChild(a)
+      a.setAttribute('style', 'display:none')
+      a.setAttribute('href', str)
+      a.setAttribute('download', '导出')
+      a.click()
     })
   }
 
@@ -444,11 +465,6 @@ class SelfListen extends Component {
           >
             <Row>
               <Col span={6}>
-                <FormItem label={<span style={{ minWidth: 57, display: 'inline-block', textAlign: 'left' }}>主站Id</span>} style={{ marginBottom: 10, marginTop: 10 }}>
-                  <Input placeholder="请输入主站Id" onChange={e => this.setState({ syncColumnId: e.target.value })} />
-                </FormItem>
-              </Col>
-              <Col span={6}>
                 <FormItem label={<span style={{ minWidth: 57, display: 'inline-block', textAlign: 'left' }}>自运营Id</span>} style={{ marginBottom: 10, marginTop: 10 }}>
                   <Input placeholder="请输入自运营Id" onChange={e => this.setState({ id: e.target.value })} />
                 </FormItem>
@@ -471,8 +487,6 @@ class SelfListen extends Component {
                   </Select>
                 </FormItem>
               </Col>
-            </Row>
-            <Row>
               <Col span={6}>
                 <FormItem label={<span style={{ minWidth: 57, display: 'inline-block', textAlign: 'left' }}>分类</span>} style={{ marginBottom: 10, marginTop: 10 }}>
                   <Select
@@ -489,6 +503,8 @@ class SelfListen extends Component {
                   </Select>
                 </FormItem>
               </Col>
+            </Row>
+            <Row>
               <Col span={6}>
                 <FormItem label={<span style={{ minWidth: 57, display: 'inline-block', textAlign: 'left' }}>状态</span>} style={{ marginBottom: 10, marginTop: 10 }}>
                   <Select
@@ -541,8 +557,6 @@ class SelfListen extends Component {
                   />
                 </FormItem>
               </Col>
-            </Row>
-            <Row>
               <Col span={6}>
                 <FormItem label="更新时间" style={{ marginBottom: 10, marginTop: 10 }}>
                   <DatePicker
@@ -560,6 +574,8 @@ class SelfListen extends Component {
                   />
                 </FormItem>
               </Col>
+            </Row>
+            <Row>
               <Col span={6}>
                 <FormItem label="更新时间" style={{ marginBottom: 10, marginTop: 10 }}>
                   <DatePicker

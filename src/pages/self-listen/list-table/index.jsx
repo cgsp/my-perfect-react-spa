@@ -28,10 +28,6 @@ export default class SelfListenListTable extends Component {
       onChange: this.props.tableSelect,
     }
     const columns = [{
-      title: '主站Id',
-      dataIndex: 'syncColumnId',
-      key: 'syncColumnId'
-    }, {
       title: '自运营Id',
       dataIndex: 'id',
       key: 'id',
@@ -43,8 +39,8 @@ export default class SelfListenListTable extends Component {
     },
     {
       title: '听单封面',
-      dataIndex: 'coverUrlSmall',
-      key: 'coverUrlSmall',
+      dataIndex: 'coverUrlLarge',
+      key: 'coverUrlLarge',
       render: (text, record) => {
         let img
         if (!text) {
