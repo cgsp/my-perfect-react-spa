@@ -1,3 +1,7 @@
 #root .ant-layout-sider-children {
-  background-color: #041527!important;
+  background-color: #041527 !important;
+}
+
+.ant-message {
+  z-index: 200000 !important;
 }

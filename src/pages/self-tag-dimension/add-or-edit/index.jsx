@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Modal, Form, Input, Radio, InputNumber } from 'antd'
+import { Modal, Form, Input, Radio, InputNumber, Row, Col, message } from 'antd'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
 import { getCommonDimesions } from '@Redux/commonTagAndDimesion'
@@ -21,11 +21,39 @@ class SelfTagDimensionAddOrEdit extends Component {
     addOrEditCancel: PropTypes.func,
   }
 
+  constructor() {
+    super()
+    this.state = {
+      num1: '',
+      num2: '',
+    }
+  }
+
   handleSubmit = () => {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         const title = this.props.addOrEditTitle
-        this.props.addOrEditOk(values, title)
+        if (this.props.addOrEditInitValues.valueType === 3) {
+          let num1
+          let num2
+          this.setState({}, () => {
+            num1 = this.state.num1 - 0
+            num2 = this.state.num2 - 0
+            if (num1 >= num2) {
+              message.error('后一个数值应该大于前一个数字')
+              return
+            }
+            if (typeof num1 !== 'number' || typeof num2 !== 'number') {
+              message.error('前后数值都应该是数字')
+              return
+            }
+            values.name = `${num1}-${num2}`
+            this.props.addOrEditOk(values, title)
+          })
+        } else {
+          console.log('提交', values)
+          this.props.addOrEditOk(values, title)
+        }
       }
     })
   }
@@ -43,18 +71,18 @@ class SelfTagDimensionAddOrEdit extends Component {
       },
     }
 
-    const limitDecimals = value => {
-      // 保留2位小数
-      const reg = /^(\-)*(\d+)\.(\d\d).*$/
-      console.log(value)
-      if (typeof value === 'string') {
-        return !isNaN(Number(value)) ? value.replace(reg, '$1$2.$3') : ''
-      } else if (typeof value === 'number') {
-        return !isNaN(value) ? String(value).replace(reg, '$1$2.$3') : ''
-      } else {
-        return ''
-      }
-    }
+    // const limitDecimals = value => {
+    //   // 保留2位小数
+    //   const reg = /^(\-)*(\d+)\.(\d\d).*$/
+    //   console.log(value)
+    //   if (typeof value === 'string') {
+    //     return !isNaN(Number(value)) ? value.replace(reg, '$1$2.$3') : ''
+    //   } else if (typeof value === 'number') {
+    //     return !isNaN(value) ? String(value).replace(reg, '$1$2.$3') : ''
+    //   } else {
+    //     return ''
+    //   }
+    // }
 
     return (
       <Modal
@@ -72,19 +100,19 @@ class SelfTagDimensionAddOrEdit extends Component {
             onSubmit={this.handleSubmit}
           >
             {
-              this.props.addOrEditTitle === '添加标签' || this.props.addOrEditTitle === '编辑标签' ?
+              (this.props.addOrEditTitle === '添加标签' || this.props.addOrEditTitle === '编辑标签') && this.props.addOrEditInitValues.valueType !== 3 ?
                 <div>
                   <FormItem
                     {...formItemLayout}
                     label="该维度下标签名称类型"
                   >
                     <RadioGroup
-                      defaultValue={this.props.addOrEditInitValues.tagNameType}
+                      defaultValue={this.props.addOrEditInitValues.valueType}
                       disabled
                     >
-                      <Radio value="text">文本</Radio>
-                      <Radio value="number">数值</Radio>
-                      <Radio value="numberRange">数值范围</Radio>
+                      <Radio value={1}>文本</Radio>
+                      <Radio value={2}>数值</Radio>
+                      <Radio value={3}>数值范围</Radio>
                     </RadioGroup>
                   </FormItem>
                   <FormItem
@@ -92,29 +120,81 @@ class SelfTagDimensionAddOrEdit extends Component {
                     label="标签名称"
                   >
                     {
-                      getFieldDecorator('tagName', {
-                        initialValue: this.props.addOrEditInitValues.tagName,
+                      getFieldDecorator('name', {
+                        initialValue: this.props.addOrEditInitValues.name,
                         rules: [
                           {
                             required: true, message: '请输入标签名称',
                           }
                         ],
                       })(
-                        this.props.addOrEditInitValues.tagNameType === 'text'
+                        this.props.addOrEditInitValues.valueType === 1
                           ?
                           <Input placeholder="请输入标签名称" />
                           :
                           <InputNumber
                             placeholder="请输入数字"
-                            min={0}
-                            max={100}
-                            step={0.01}
-                            formatter={limitDecimals}
-                            parser={limitDecimals}
                             style={{ width: 200 }}
                           />
                       )
                     }
+
+                  </FormItem>
+                </div>
+                : null
+            }
+            {
+              (this.props.addOrEditTitle === '添加标签' || this.props.addOrEditTitle === '编辑标签') && this.props.addOrEditInitValues.valueType === 3 ?
+                <div>
+                  <FormItem
+                    {...formItemLayout}
+                    label="该维度下标签名称类型"
+                  >
+                    <RadioGroup
+                      defaultValue={this.props.addOrEditInitValues.valueType}
+                      disabled
+                    >
+                      <Radio value={1}>文本</Radio>
+                      <Radio value={2}>数值</Radio>
+                      <Radio value={3}>数值范围</Radio>
+                    </RadioGroup>
+                  </FormItem>
+                  <FormItem
+                    {...formItemLayout}
+                    label="标签名称"
+                  >
+                    <Row>
+                      <Col span={10}>
+                        <InputNumber
+                          placeholder="请输入数字"
+                          style={{ width: 200 }}
+                          defaultValue={
+                            this.props.addOrEditInitValues.name
+                              ?
+                              this.props.addOrEditInitValues.name.split('-')[0] - 0 :
+                              ''
+                          }
+                          onChange={
+                            (v) => this.setState({ num1: v })
+                          }
+                        />
+                      </Col>
+                      <Col span={2} offset={2}>
+                        <InputNumber
+                          placeholder="请输入数字"
+                          style={{ width: 200 }}
+                          defaultValue={
+                            this.props.addOrEditInitValues.name
+                              ?
+                              this.props.addOrEditInitValues.name.split('-')[0] - 0 :
+                              ''
+                          }
+                          onChange={
+                            (v) => this.setState({ num2: v })
+                          }
+                        />
+                      </Col>
+                    </Row>
                   </FormItem>
                 </div>
                 : null

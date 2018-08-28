@@ -56,10 +56,10 @@ export const apiSelfTagDimensionDetailList = (options) => {
 export const apiSelfTagDimensionDelete = (id) => {
   return myAxios(
     {
-      url: 'apiSelfTagDimensionDelete',
-      method: 'post',
-      params: {},
-      data: { id },
+      url: '/dimension/deleteDimension',
+      method: 'put',
+      params: { id },
+      data: {},
       headers: defaultHeader
     })
 }

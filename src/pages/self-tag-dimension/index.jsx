@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-28 17:34:54
+ * @Last Modified time: 2018-08-28 20:15:57
  */
 
 
@@ -29,7 +29,6 @@ import SelfTagDimensionDetailTable from './detail-table'
 import './style.scss'
 
 const FormItem = Form.Item
-
 
 @connect(
   state => state.commonTagAndDimesionsReducer,
@@ -272,6 +271,7 @@ class SelfTagTag extends Component {
       addOrEditVisible: true,
       addOrEditInitValues: line
     })
+    this.editDimensionId = line.id
   }
 
   tableLineDelete(line) {
@@ -280,13 +280,12 @@ class SelfTagTag extends Component {
       title: '确定要删除吗？',
       content: '删除了之后，所有专辑对应的该维度，包括其标签都会被删除',
       onOk: () => {
-        apiSelfTagDimensionDelete(line.dimensionId)
+        apiSelfTagDimensionDelete(line.id)
           .then(res => {
-            this.setState({
-              pageNo: 1
-            })
-            // 更新下公用的维度数据
-            this.props.getCommonDimesions()
+            if (res.code !== ERR_OK) {
+              message.error(res.msg)
+              return
+            }
             // 更新下列表页面
             this.searchList('删除')
           })
@@ -297,7 +296,7 @@ class SelfTagTag extends Component {
   // 列表页面，在当前维度下面添加标签
   tableLineAdd(line) {
     console.log('添加标签', line)
-    this.dimensionId = line.dimensionId
+    this.addTagDimensionId = line.id
     this.setState({
       addOrEditTitle: '添加标签',
       addOrEditVisible: true,
@@ -320,11 +319,9 @@ class SelfTagTag extends Component {
   addOrEditOk(values, title) {
     console.log(values, title)
     if (title === '添加标签') {
-      console.log('父维度的ID', this.dimensionId)
-      // 表单提交了之后，需要讲dimensionId清空
-      this.dimensionId = ''
-      // 需要重新刷新列表
-      this.searchList(title)
+      values.dimensionId = this.addTagDimensionId
+    } else if (title === '编辑维度') {
+      values.id = this.editDimensionId
     }
 
     values.type = title
@@ -343,7 +340,10 @@ class SelfTagTag extends Component {
     apiSelfTagDimensionAddOrEdit(options)
       .then(res => {
         this.refs.mask.hide()
-        console.log(res)
+        if (res.code !== ERR_OK) {
+          message.error(res.msg)
+          return
+        }
         callBack && callBack()
       })
   }
@@ -384,6 +384,7 @@ class SelfTagTag extends Component {
     apiSelfTagDimensionDetailList(options)
       .then(res => {
         this.refs.mask.hide()
+
         const detailData = res.list.map(item => {
           item.key = item.tagId
           return item
