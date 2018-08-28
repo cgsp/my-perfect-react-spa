@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-26 22:50:32
+ * @Last Modified time: 2018-08-28 11:03:36
  */
 
 
@@ -72,8 +72,8 @@ class SelfTagTag extends Component {
   componentDidMount() {
     // 初始化查询列表数据
     this.getListData({
-      page: 1,
-      pageNo: 10,
+      pageNo: 1,
+      pageSize: 10,
       sortIndex: 1,
       sortDirection: 'down'
     })
@@ -147,6 +147,8 @@ class SelfTagTag extends Component {
   handleSearchOrExportOptions(options) {
     // 去掉空格
     options.searchDimensionName = !options.searchDimensionName ? '' : myTrim(options.searchDimensionName)
+    options.dimensionName = options.searchDimensionName
+    delete options.searchDimensionName
 
     // 将时间对象转换为时间戳
     function transToStamp(date) {
@@ -156,10 +158,20 @@ class SelfTagTag extends Component {
       return date
     }
 
-    options.searchCreateTimeBegin = transToStamp(options.searchCreateTimeBegin)
-    options.searchCreateTimeEnd = transToStamp(options.searchCreateTimeEnd)
-    options.searchUpdateTimeBegin = transToStamp(options.searchUpdateTimeBegin)
-    options.searchUpdateTimeEnd = transToStamp(options.searchUpdateTimeEnd)
+    options.createTimeBegin = transToStamp(options.searchCreateTimeBegin)
+    delete options.searchCreateTimeBegin
+    options.createTimeEnd = transToStamp(options.searchCreateTimeEnd)
+    delete options.searchCreateTimeEnd
+    options.updateTimeBegin = transToStamp(options.searchUpdateTimeBegin)
+    delete options.searchUpdateTimeBegin
+    options.updateTimeEnd = transToStamp(options.searchUpdateTimeEnd)
+    delete options.searchUpdateTimeEnd
+
+    // 处理排序的
+    options.orderBy = options.sortIndex === 0 ? 'createdAt' : 'updatedAt'
+    delete options.sortIndex
+    options.desc = options.sortDirection === 'up' ? true : false
+    delete options.sortDirection
 
     return options
   }
@@ -173,13 +185,13 @@ class SelfTagTag extends Component {
     apiSelfTagDimensionList(options)
       .then(res => {
         this.refs.mask.hide()
-        const tableData = res.list.map(item => {
-          item.key = item.dimensionId
+        const tableData = res.dataList.map(item => {
+          item.key = item.id
           return item
         })
         this.setState({
           tableData: tableData,
-          tableTotal: res.total,
+          tableTotal: res.totalNum,
         })
         // 针对删除，编辑，新增之后，重新刷新页面的提示
         if (options.tip) {

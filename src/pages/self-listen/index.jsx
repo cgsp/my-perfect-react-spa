@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-27 19:26:37
+ * @Last Modified time: 2018-08-28 11:03:13
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal } from 'antd'
@@ -201,13 +201,13 @@ class SelfListen extends Component {
     selfListenTableList(options)
       .then(res => {
         this.refs.mask.hide()
-        const modalTableData = res.data.dataList.map(item => {
+        const modalTableData = res.dataList.map(item => {
           item.key = item.id
           return item
         })
         this.setState({
           modalTableData,
-          modalTableTotal: res.data.totalNum,
+          modalTableTotal: res.totalNum,
           modalTableVisible: true
         })
       })
@@ -422,13 +422,13 @@ class SelfListen extends Component {
     selfListenList(options)
       .then(res => {
         this.refs.mask.hide()
-        const tableData = res.data.dataList.map(item => {
+        const tableData = res.dataList.map(item => {
           item.key = item.id
           return item
         })
         this.setState({
           tableData: tableData,
-          tableTotal: res.data.totalNum,
+          tableTotal: res.totalNum,
         })
       })
   }

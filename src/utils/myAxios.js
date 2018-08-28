@@ -2,12 +2,13 @@
  * @Author: John.Guan
  * @Date: 2018-07-24 15:01:37
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-27 11:38:42
+ * @Last Modified time: 2018-08-28 11:02:04
  */
 import axios from 'axios'
 import qs from 'qs'
 import { myLocalStorageGet } from '@Utils/myStorages'
 import { BASEURL, ERR_OK } from '@Constants'
+import { message } from 'antd'
 // import { Toast } from 'antd-mobile'
 
 const DEV = process.env.NODE_ENV !== 'production'
@@ -132,9 +133,10 @@ function myAxios(options) {
     }).then((res) => {
       // debugger;
       if (res.data.code === ERR_OK) {
-        resolve(res.data)
+        resolve(res.data.data)
       } else {
         console.error(res.data.msg)
+        message.error(res.data.msg)
       }
     })
       .catch(err => reject(err))

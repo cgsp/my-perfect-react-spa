@@ -2,10 +2,10 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-27 20:26:50
+ * @Last Modified time: 2018-08-28 11:33:54
  */
 import React, { Component } from 'react'
-import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal } from 'antd'
+import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal, message } from 'antd'
 import moment from 'moment'
 import { myGetStampTime } from '@Utils/myGetTime'
 import { DOWN_LOAD_URL } from '@Constants'
@@ -15,7 +15,7 @@ import MainListenModalTable from './modal-table'
 import MaskLoading from '@Components/mask-loading'
 import SortList from '@Components/sort-list'
 import { myTrim } from '@Utils/myTrim'
-import { mainListenList, mainListenTableList } from '@Api/main-listen'
+import { mainListenList, mainListenTableList, mainListenSave } from '@Api/main-listen'
 import { connect } from 'react-redux'
 // import { getCommonSmallTypes } from '@Redux/commonSmallType'
 import TimeControlHoc from '@Components/time-control-hoc'
@@ -142,41 +142,49 @@ class SelfListen extends Component {
 
   tableLineSave(line) {
     console.log('另存为', line)
+    this.saveSyncColumnId = line.syncColumnId
     this.setState({
       addOrEditTitle: '另存为自运营听单',
       addOrEditVisible: true,
       addOrEditInitValues: line
     })
-
     // this.props.getCommonSmallTypes(line.bigType)
   }
 
 
   addOrEditOk(values) {
-    console.log(values)
-    const content = (
-      <div>
-        <p style={{ textAlign: 'center' }}>成功了5条</p>
-        <p style={{ textAlign: 'center' }}>失败了4条</p>
-        <p style={{ textAlign: 'center' }}>
-          <a href="">查看统计结果</a>
-        </p>
-      </div>
-    )
-    Modal.confirm({
-      title: '统计结果',
-      content: content,
-      okText: '确认',
-      footer: null
-    })
-    this.setState({
-      addOrEditVisible: false
-    })
+    mainListenSave({ ...values, ...{ syncColumnId: this.saveSyncColumnId } })
+      .then(res => {
+        console.log(res)
+        if (res.clickUrl) {
+          const content = (
+            <div>
+              <p style={{ textAlign: 'center' }}>成功了{res.validCount}条</p>
+              <p style={{ textAlign: 'center' }}>失败了{res.InvalidCount}条</p>
+              <p style={{ textAlign: 'center' }}>
+                <a href={res.clickUrl}>查看统计结果</a>
+              </p>
+            </div>
+          )
+          Modal.confirm({
+            title: '另存为结果',
+            content: content,
+            okText: '确认',
+            footer: null
+          })
+        } else {
+          message.error('另存为失败')
+        }
+        this.setState({
+          addOrEditVisible: false
+        })
+      })
   }
   addOrEditCancel() {
     this.setState({
       addOrEditVisible: false
     })
+    this.saveSyncColumnId = ''
   }
 
   tableLineShowDetails(line) {
@@ -200,13 +208,13 @@ class SelfListen extends Component {
     mainListenTableList(options)
       .then(res => {
         this.refs.mask.hide()
-        const modalTableData = res.data.dataList.map(item => {
+        const modalTableData = res.dataList.map(item => {
           item.key = item.id
           return item
         })
         this.setState({
           modalTableData,
-          modalTableTotal: res.data.totalNum,
+          modalTableTotal: res.totalNum,
           modalTableVisible: true
         })
       })
@@ -419,13 +427,13 @@ class SelfListen extends Component {
     mainListenList(options)
       .then(res => {
         this.refs.mask.hide()
-        const tableData = res.data.dataList.map(item => {
+        const tableData = res.dataList.map(item => {
           item.key = item.id
           return item
         })
         this.setState({
           tableData: tableData,
-          tableTotal: res.data.totalNum,
+          tableTotal: res.totalNum,
         })
       })
   }

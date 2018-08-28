@@ -6,7 +6,19 @@ import { defaultHeader } from './config'
 export const apiSelfTagDimensionList = (options) => {
   return myAxios(
     {
-      url: 'apiSelfTagDimensionList',
+      url: '/dimension/queryDimensionsByPage',
+      method: 'get',
+      params: options,
+      data: {},
+      headers: defaultHeader
+    })
+}
+
+// 新增维度接口
+export const apiSelfTagDimensionAdd = (options) => {
+  return myAxios(
+    {
+      url: '/dimension/addDimension',
       method: 'post',
       params: {},
       data: options,

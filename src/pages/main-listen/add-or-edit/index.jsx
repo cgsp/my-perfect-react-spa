@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Modal, Form, Input, Upload, Icon, message, Select } from 'antd'
 import { UP_IMG_ACTION } from '@Constants'
-import { myTrim } from '@Utils/myTrim'
 import { myHuanHang } from '@Utils/myHuanHang'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
@@ -45,19 +44,20 @@ class MainListenAddOrEdit extends Component {
   handleSubmit = () => {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        // coverUrlSmall
-        // coverUrlMiddle
-        // coverUrlLarge
-        if (!values.imgObj.coverUrlSmall) {
-          message.error('请先上传图片')
-          return
-        }
+        // if (!values.imgObj.coverUrlSmall) {
+        //   message.error('请先上传图片')
+        //   return
+        // }
+        // 图片也先写死
+        values.coverUrlSmall = '1'
+        values.coverUrlMiddle = '1'
+        values.coverUrlLarge = '1'
         // 分类id先写死
         values.categoryId = '1'
         // 对id进行处理
         values.contentIds = myHuanHang(values.contentIds)
         this.props.addOrEditOk(values)
-        console.log(values)
+        // console.log(values)
       }
     })
   }

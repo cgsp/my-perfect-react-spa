@@ -35,6 +35,7 @@
     "react/no-string-refs": 0,
     "react/jsx-closing-bracket-location": 0,
     "no-mixed-operators": 0,
-    "no-useless-escape": 0
+    "no-useless-escape": 0,
+    "no-fallthrough": 0
   }
 }

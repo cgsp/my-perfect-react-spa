@@ -27,28 +27,31 @@ export default class SelfTagDimensionListTable extends Component {
       title: '维度名称',
       dataIndex: 'dimensionName',
       key: 'dimensionName',
+      width: 100,
     },
     {
       title: '标签数',
-      dataIndex: 'tagNum',
-      key: 'tagNum',
+      dataIndex: 'tagsNum',
+      key: 'tagsNum',
+      width: 80,
       render: (text, record) => (
         <span style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.props.tableLineShowDetails(record)}>{text}</span>
       )
     },
     {
-      title: '该维度下标签的名称类型',
-      dataIndex: 'tagNameType',
-      key: 'tagNameType',
+      title: '标签名称类型',
+      dataIndex: 'valueType',
+      key: 'valueType',
+      width: 100,
       render: (text, record) => {
         switch (text) {
-          case 'text':
+          case 1:
             text = '文本'
             break
-          case 'number':
+          case 2:
             text = '数值'
             break
-          case 'numberRange':
+          case 3:
             text = '数值范围'
             break
           default:
@@ -58,15 +61,16 @@ export default class SelfTagDimensionListTable extends Component {
       }
     },
     {
-      title: '该维度下标签是否支持多选',
-      dataIndex: 'moreTagOrSingleTag',
-      key: 'moreTagOrSingleTag',
+      title: '标签支持多选',
+      dataIndex: 'choiceType',
+      key: 'choiceType',
+      width: 100,
       render: (text, record) => {
         switch (text) {
-          case 'more':
+          case 2:
             text = '支持多选'
             break
-          case 'single':
+          case 1:
             text = '只能单选'
             break
           default:
@@ -77,8 +81,8 @@ export default class SelfTagDimensionListTable extends Component {
     },
     {
       title: '创建时间',
-      dataIndex: 'createTime',
-      key: 'createTime',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
       render: (text, record) => {
         const str = myGetStrTime(text)
         return (
@@ -88,8 +92,8 @@ export default class SelfTagDimensionListTable extends Component {
     },
     {
       title: '更新时间',
-      dataIndex: 'updateTime',
-      key: 'updateTime',
+      dataIndex: 'updatedAt',
+      key: 'updatedAt',
       render: (text, record) => {
         const str = myGetStrTime(text)
         return (
@@ -99,8 +103,8 @@ export default class SelfTagDimensionListTable extends Component {
     },
     {
       title: '创建人',
-      dataIndex: 'creator',
-      key: 'creator'
+      dataIndex: 'operator',
+      key: 'operator'
     },
     {
       title: '操作',

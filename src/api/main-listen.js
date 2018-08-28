@@ -49,4 +49,16 @@ export const mainListenTableList = (options) => {
     })
 }
 
+// 另存为
+export const mainListenSave = (options) => {
+  return myAxios(
+    {
+      url: '/column/add',
+      method: 'post',
+      params: {},
+      data: options,
+      headers: defaultHeader
+    })
+}
+
 
