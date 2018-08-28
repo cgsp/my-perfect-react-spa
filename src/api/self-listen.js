@@ -48,5 +48,25 @@ export const selfListenTableList = (options) => {
       headers: defaultHeader
     })
 }
-
+// 新增或者编辑听单
+export const selfListenAddorEdit = (options) => {
+  let url
+  let method
+  if (options.type === '新增') {
+    url = '/column/add'
+    method = 'post'
+  } else {
+    url = '/column/update'
+    method = 'put'
+  }
+  delete options.type
+  return myAxios(
+    {
+      url,
+      method,
+      params: {},
+      data: options,
+      headers: defaultHeader
+    })
+}
 

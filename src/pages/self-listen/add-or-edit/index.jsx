@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Modal, Form, Input, Upload, Icon, message, Select } from 'antd'
 import { UP_IMG_ACTION } from '@Constants'
+import { myHuanHang } from '@Utils/myHuanHang'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
 import { getCommonSmallTypes } from '@Redux/commonSmallType'
@@ -43,7 +44,20 @@ class SelfListenAddOrEdit extends Component {
   handleSubmit = () => {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        this.props.addOrEditOk(values)
+        // if (!values.imgObj.coverUrlSmall) {
+        //   message.error('请先上传图片')
+        //   return
+        // }
+        // 图片也先写死
+        values.coverUrlSmall = '1'
+        values.coverUrlMiddle = '1'
+        values.coverUrlLarge = '1'
+        // 分类id先写死
+        values.categoryId = '1'
+        // 对id进行处理
+        values.contentIds = myHuanHang(values.contentIds)
+        this.props.addOrEditOk(values, this.props.addOrEditTitle)
+        // console.log(values)
       }
     })
   }
@@ -79,14 +93,15 @@ class SelfListenAddOrEdit extends Component {
   render() {
     const { getFieldDecorator } = this.props.form
     let { previewVisible, previewImage, fileList } = this.state
-    if (this.props.addOrEditInitValues.pic && !this.timer) {
+    if (this.props.addOrEditInitValues.coverUrlLarge && !this.timer) {
       this.timer = setTimeout(() => {
+        console.log(111)
         this.setState({
           fileList: [{
             uid: '-1',
-            name: 'xxx.png',
+            name: '封面图.png',
             status: 'done',
-            url: this.props.addOrEditInitValues.pic,
+            url: this.props.addOrEditInitValues.coverUrlSmall,
           }]
         }, () => {
           fileList = this.state.fileList
@@ -129,8 +144,8 @@ class SelfListenAddOrEdit extends Component {
               {...formItemLayout}
               label="听单名称"
             >
-              {getFieldDecorator('listenName', {
-                initialValue: this.props.addOrEditInitValues.listenName,
+              {getFieldDecorator('title', {
+                initialValue: this.props.addOrEditInitValues.title,
                 rules: [
                   {
                     required: true, message: '请输入听单名称',
@@ -184,8 +199,8 @@ class SelfListenAddOrEdit extends Component {
                 ],
               })(
                 <Select allowClear onChange={(v) => this.bigTypeChange(v)}>
-                  <Option value="主站分类">主站分类</Option>
-                  <Option value="自运营分类">自运营分类</Option>
+                  <Option value="1">主站分类</Option>
+                  <Option value="2">自运营分类</Option>
                 </Select>
               )}
             </FormItem>
@@ -193,7 +208,7 @@ class SelfListenAddOrEdit extends Component {
               {...formItemLayout}
               label="分类"
             >
-              {getFieldDecorator('smallType', {
+              {getFieldDecorator('categoryId', {
                 initialValue: '咨询',
                 rules: [
                   {
@@ -207,6 +222,7 @@ class SelfListenAddOrEdit extends Component {
                       <Option key={item.id} value={item.id}>{item.name}</Option>
                     ))
                   }
+
                 </Select>
               )}
             </FormItem>
@@ -214,8 +230,8 @@ class SelfListenAddOrEdit extends Component {
               {...formItemLayout}
               label="听单类型"
             >
-              {getFieldDecorator('type', {
-                initialValue: this.props.addOrEditInitValues.type,
+              {getFieldDecorator('contentType', {
+                initialValue: this.props.addOrEditInitValues.contentType ? this.props.addOrEditInitValues.contentType + '' : '1',
                 rules: [
                   {
                     required: true, message: '请选择听单类型',
@@ -223,8 +239,8 @@ class SelfListenAddOrEdit extends Component {
                 ],
               })(
                 <Select allowClear disabled>
-                  <Option value="专辑">专辑</Option>
-                  <Option value="声音">声音</Option>
+                  <Option value="1">专辑</Option>
+                  <Option value="2">声音</Option>
                 </Select>
               )}
             </FormItem>
@@ -232,8 +248,8 @@ class SelfListenAddOrEdit extends Component {
               {...formItemLayout}
               label="选择内容"
             >
-              {getFieldDecorator('voiceIds', {
-                initialValue: this.props.addOrEditInitValues.voiceIds ? this.props.addOrEditInitValues.voiceIds.split(',').join('\n') : '',
+              {getFieldDecorator('contentIds', {
+                initialValue: this.props.addOrEditInitValues.contentIds ? this.props.addOrEditInitValues.contentIds.split(',').join('\n') : '',
                 rules: [
                   {
                     required: true, message: '请输入选择内容',

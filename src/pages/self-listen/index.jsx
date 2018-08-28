@@ -2,10 +2,10 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-28 11:03:13
+ * @Last Modified time: 2018-08-28 13:18:26
  */
 import React, { Component } from 'react'
-import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal } from 'antd'
+import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal, message } from 'antd'
 import moment from 'moment'
 import { myGetStampTime } from '@Utils/myGetTime'
 import { DOWN_LOAD_URL } from '@Constants'
@@ -15,7 +15,7 @@ import SelfListenModalTable from './modal-table'
 import MaskLoading from '@Components/mask-loading'
 import SortList from '@Components/sort-list'
 import { myTrim } from '@Utils/myTrim'
-import { selfListenList, selfListenTableList } from '@Api/self-listen'
+import { selfListenList, selfListenTableList, selfListenAddorEdit } from '@Api/self-listen'
 import { connect } from 'react-redux'
 // import { getCommonSmallTypes } from '@Redux/commonSmallType'
 import TimeControlHoc from '@Components/time-control-hoc'
@@ -152,26 +152,41 @@ class SelfListen extends Component {
     })
     // this.props.getCommonSmallTypes('自运营')
   }
-  addOrEditOk(values) {
+  addOrEditOk(values, title) {
     console.log(values)
-    const content = (
-      <div>
-        <p style={{ textAlign: 'center' }}>成功了5条</p>
-        <p style={{ textAlign: 'center' }}>失败了4条</p>
-        <p style={{ textAlign: 'center' }}>
-          <a href="">查看统计结果</a>
-        </p>
-      </div>
-    )
-    Modal.confirm({
-      title: '统计结果',
-      content: content,
-      okText: '确认',
-      footer: null
-    })
-    this.setState({
-      addOrEditVisible: false
-    })
+    console.log(title)
+    let options
+    if (title === '新增听单') {
+      options = { ...values, ...{ syncColumnId: 0, type: '新增' } }
+    } else {
+      options = { ...values, ...{ type: '编辑' } }
+    }
+
+    selfListenAddorEdit(options)
+      .then(res => {
+        if (res.clickUrl) {
+          const content = (
+            <div>
+              <p style={{ textAlign: 'center' }}>成功了{res.validCount}条</p>
+              <p style={{ textAlign: 'center' }}>失败了{res.InvalidCount}条</p>
+              <p style={{ textAlign: 'center' }}>
+                <a href={res.clickUrl}>查看统计结果</a>
+              </p>
+            </div>
+          )
+          Modal.confirm({
+            title: '另存为结果',
+            content: content,
+            okText: '确认',
+            footer: null
+          })
+        } else {
+          message.error(`${title}失败`)
+        }
+        this.setState({
+          addOrEditVisible: false
+        })
+      })
   }
   addOrEditCancel() {
     this.setState({
@@ -289,7 +304,7 @@ class SelfListen extends Component {
       let str = baseURL + url + '?'
       for (const key in options) {
         if (options[key] || options[key] === 0) {
-          str += `${key}=${options[key]}&`
+          str += `${key} = ${options[key]} & `
         }
       }
 
@@ -628,7 +643,9 @@ class SelfListen extends Component {
         </List>
         <SelfListenListTable {...tableOptions} />
         <SelfListenModalTable {...modalTableOptions} />
-        <WrapperSelfListenAddOrEdit {...addOrEditOptions} />
+        {
+          this.state.addOrEditVisible ? <WrapperSelfListenAddOrEdit {...addOrEditOptions} /> : null
+        }
         <MaskLoading ref="mask" />
       </div >
 

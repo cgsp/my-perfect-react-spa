@@ -50,8 +50,8 @@ export default class SelfListenListTable extends Component {
     },
     {
       title: '听单封面',
-      dataIndex: 'coverUrlLarge',
-      key: 'coverUrlLarge',
+      dataIndex: 'coverUrlSmall',
+      key: 'coverUrlSmall',
       render: (text, record) => {
         let img
         if (!text) {
@@ -61,7 +61,7 @@ export default class SelfListenListTable extends Component {
         } else {
           img = (
             <a href={text} target="_blank" style={{ width: 50, height: 50, display: 'inline-block', cursor: 'pointer' }}>
-              <img width={50} height={50} src={text} alt="听单封面" />
+              <img width={50} height={50} src={record.coverUrlLarge} alt="听单封面" />
             </a>
           )
         }
