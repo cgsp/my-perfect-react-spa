@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-28 15:36:36
+ * @Last Modified time: 2018-08-28 15:56:20
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal, message } from 'antd'
@@ -291,6 +291,7 @@ class SelfListen extends Component {
         selectedRowKeys: selectedRowKeys.join(),
         sortIndex,
         sortDirection,
+        source: 1
       }
       if (options.sortIndex === 0) {
         options.orderBy = 'created_at'
@@ -440,6 +441,7 @@ class SelfListen extends Component {
       updateTimeEnd: !updateTimeEnd ? null : myGetStampTime(updateTimeEnd),
       sortIndex,
       sortDirection,
+      source: 1
     }
 
     mainListenList(options)
