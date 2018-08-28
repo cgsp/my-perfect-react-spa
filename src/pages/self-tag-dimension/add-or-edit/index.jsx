@@ -147,17 +147,17 @@ class SelfTagDimensionAddOrEdit extends Component {
                   {...formItemLayout}
                   label="该维度下标签是否支持多选"
                 >
-                  {getFieldDecorator('moreTagOrSingleTag', {
-                    initialValue: this.props.addOrEditInitValues.moreTagOrSingleTag ? this.props.addOrEditInitValues.moreTagOrSingleTag : 'more',
+                  {getFieldDecorator('choiceType', {
+                    initialValue: this.props.addOrEditInitValues.choiceType ? this.props.addOrEditInitValues.choiceType : 2,
                     rules: [
                       {
-                        required: true, message: '请输入维度名称',
+                        required: true, message: '请选择',
                       }
                     ],
                   })(
                     <RadioGroup>
-                      <Radio value="more">支持多选</Radio>
-                      <Radio value="single">只能单选</Radio>
+                      <Radio value={2}>支持多选</Radio>
+                      <Radio value={1}>只能单选</Radio>
                     </RadioGroup>
                   )}
                 </FormItem>
@@ -171,8 +171,8 @@ class SelfTagDimensionAddOrEdit extends Component {
                   {...formItemLayout}
                   label="该维度下标签名称类型"
                 >
-                  {getFieldDecorator('tagNameType', {
-                    initialValue: this.props.addOrEditInitValues.tagNameType ? this.props.addOrEditInitValues.tagNameType : 'text',
+                  {getFieldDecorator('valueType', {
+                    initialValue: this.props.addOrEditInitValues.valueType ? this.props.addOrEditInitValues.valueType : 1,
                     rules: [
                       {
                         required: true, message: '请选择该维度下标签名称类型'
@@ -180,9 +180,9 @@ class SelfTagDimensionAddOrEdit extends Component {
                     ],
                   })(
                     <RadioGroup>
-                      <Radio value="text">文本</Radio>
-                      <Radio value="number">数值</Radio>
-                      <Radio value="numberRange">数值范围</Radio>
+                      <Radio value={1}>文本</Radio>
+                      <Radio value={2}>数值</Radio>
+                      <Radio value={3}>数值范围</Radio>
                     </RadioGroup>
                   )}
                 </FormItem>

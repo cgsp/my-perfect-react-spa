@@ -14,12 +14,25 @@ export const apiSelfTagDimensionList = (options) => {
     })
 }
 
-// 新增维度接口
-export const apiSelfTagDimensionAdd = (options) => {
+// 新增维度或者编辑维度,添加标签
+export const apiSelfTagDimensionAddOrEdit = (options) => {
+  let url
+  let method
+  if (options.type === '新增维度') {
+    url = '/dimension/addDimension'
+    method = 'post'
+  } else if (options.type === '编辑维度') {
+    url = '/dimension/updateDimension'
+    method = 'put'
+  } else {
+    url = '/tag/addTag'
+    method = 'post'
+  }
+  delete options.type
   return myAxios(
     {
-      url: '/dimension/addDimension',
-      method: 'post',
+      url,
+      method,
       params: {},
       data: options,
       headers: defaultHeader

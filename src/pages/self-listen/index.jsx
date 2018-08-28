@@ -2,13 +2,13 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-28 15:36:03
+ * @Last Modified time: 2018-08-28 17:36:11
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal, message } from 'antd'
 import moment from 'moment'
 import { myGetStampTime } from '@Utils/myGetTime'
-import { DOWN_LOAD_URL } from '@Constants'
+import { DOWN_LOAD_URL, ERR_OK } from '@Constants'
 import SelfListenListTable from './list-table'
 import WrapperSelfListenAddOrEdit from './add-or-edit'
 import SelfListenModalTable from './modal-table'
@@ -97,7 +97,7 @@ class SelfListen extends Component {
   getCategories(source) {
     commonSmallTypes(source).then(res => {
       this.setState({
-        categories: res
+        categories: res.data
       })
     })
   }
@@ -186,14 +186,18 @@ class SelfListen extends Component {
 
     selfListenAddorEdit(options)
       .then(res => {
-        if (res.clickUrl) {
-          this.refs.mask.hide()
+        this.refs.mask.hide()
+        if (res.code !== ERR_OK) {
+          message.error(res.msg)
+          return
+        }
+        if (res.data.clickUrl) {
           const content = (
             <div>
-              <p style={{ textAlign: 'center' }}>成功了{res.validCount ? res.validCount : 0}条</p>
-              <p style={{ textAlign: 'center' }}>失败了{res.InvalidCount ? res.InvalidCount : 0}条</p>
+              <p style={{ textAlign: 'center' }}>成功了{res.data.validCount ? res.data.validCount : 0}条</p>
+              <p style={{ textAlign: 'center' }}>失败了{res.data.invalidCount ? res.data.invalidCount : 0}条</p>
               <p style={{ textAlign: 'center' }}>
-                <a href={res.clickUrl}>查看统计结果</a>
+                <a href={res.data.clickUrl}>查看统计结果</a>
               </p>
             </div>
           )
@@ -241,13 +245,17 @@ class SelfListen extends Component {
     selfListenTableList(options)
       .then(res => {
         this.refs.mask.hide()
-        const modalTableData = res.dataList.map(item => {
+        if (res.code !== ERR_OK) {
+          message.error(res.msg)
+          return
+        }
+        const modalTableData = res.data.dataList.map(item => {
           item.key = item.id
           return item
         })
         this.setState({
           modalTableData,
-          modalTableTotal: res.totalNum,
+          modalTableTotal: res.data.totalNum,
           modalTableVisible: true
         })
       })
@@ -468,13 +476,17 @@ class SelfListen extends Component {
     selfListenList(options)
       .then(res => {
         this.refs.mask.hide()
-        const tableData = res.dataList.map(item => {
+        if (res.code !== ERR_OK) {
+          message.error(res.msg)
+          return
+        }
+        const tableData = res.data.dataList.map(item => {
           item.key = item.id
           return item
         })
         this.setState({
           tableData: tableData,
-          tableTotal: res.totalNum,
+          tableTotal: res.data.totalNum,
         })
       })
   }

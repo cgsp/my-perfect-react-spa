@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-28 11:03:36
+ * @Last Modified time: 2018-08-28 17:34:54
  */
 
 
@@ -12,7 +12,7 @@ import moment from 'moment'
 
 import { myTrim } from '@Utils/myTrim'
 import { myGetStampTime } from '@Utils/myGetTime'
-import { DOWN_LOAD_URL } from '@Constants'
+import { DOWN_LOAD_URL, ERR_OK } from '@Constants'
 
 import MaskLoading from '@Components/mask-loading'
 import SortList from '@Components/sort-list'
@@ -21,7 +21,7 @@ import TimeControlHoc from '@Components/time-control-hoc'
 import { connect } from 'react-redux'
 import { getCommonDimesions } from '@Redux/commonTagAndDimesion'
 
-import { apiSelfTagDimensionList, apiSelfTagDimensionDetailList, apiSelfTagDimensionDelete } from '@Api/self-tag-dimension'
+import { apiSelfTagDimensionList, apiSelfTagDimensionDetailList, apiSelfTagDimensionDelete, apiSelfTagDimensionAddOrEdit } from '@Api/self-tag-dimension'
 
 import SelfTagDimensionListTable from './list-table'
 import WrapperSelfTagDimensionAddOrEdit from './add-or-edit'
@@ -185,13 +185,17 @@ class SelfTagTag extends Component {
     apiSelfTagDimensionList(options)
       .then(res => {
         this.refs.mask.hide()
-        const tableData = res.dataList.map(item => {
+        if (res.code !== ERR_OK) {
+          message.error(res.msg)
+          return
+        }
+        const tableData = res.data.dataList.map(item => {
           item.key = item.id
           return item
         })
         this.setState({
           tableData: tableData,
-          tableTotal: res.totalNum,
+          tableTotal: res.data.totalNum,
         })
         // 针对删除，编辑，新增之后，重新刷新页面的提示
         if (options.tip) {
@@ -312,7 +316,7 @@ class SelfTagTag extends Component {
     })
   }
 
-  // 新增或者编辑标签，点击弹框的确定
+  // 新增或者编辑维度，添加标签，点击弹框的确定
   addOrEditOk(values, title) {
     console.log(values, title)
     if (title === '添加标签') {
@@ -321,24 +325,31 @@ class SelfTagTag extends Component {
       this.dimensionId = ''
       // 需要重新刷新列表
       this.searchList(title)
-    } else if (title === '编辑标签') {
-      // 调用编辑的接口，这个函数，写的时候，最好支持一个callBack的回调，讲下面的刷新写为回调
-      // 需要重新刷新详情列表
-      this.getDetailData({
-        pageNo: 1,
-        pageSize: 10,
-        dimensionId: this.dimensionId,
-        tip: '编辑标签'
-      })
-    } else {
-      // 新增或者编辑维度
+    }
+
+    values.type = title
+    this.handleSelfTagDimensionAddOrEdit(values, () => {
       // 需要重新刷新列表
       this.searchList(title)
-    }
-    this.setState({
-      addOrEditVisible: false
+      this.setState({
+        addOrEditVisible: false
+      })
     })
   }
+
+  // 新增维度，编辑维度，添加标签的辅助函数
+  handleSelfTagDimensionAddOrEdit(options, callBack) {
+    this.refs.mask.show()
+    apiSelfTagDimensionAddOrEdit(options)
+      .then(res => {
+        this.refs.mask.hide()
+        console.log(res)
+        callBack && callBack()
+      })
+  }
+
+
+
   // 新增或者编辑标签，关闭弹框
   addOrEditCancel() {
     this.setState({

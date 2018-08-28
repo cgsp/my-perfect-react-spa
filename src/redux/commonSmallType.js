@@ -1,4 +1,5 @@
 import { commonSmallTypes } from '@Api'
+import { ERR_OK } from '@Constants'
 
 const COMMON_SMALL_TYPE = 'COMMON_SMALL_TYPE'
 const initState = {
@@ -24,8 +25,10 @@ export function getCommonSmallTypes(source, callback) {
     // 发送请求
     commonSmallTypes(source)
       .then((res) => {
-        dispatch(getSuccess(res))
-        callback && callback()
+        if (res.code === ERR_OK) {
+          dispatch(getSuccess(res.data))
+          callback && callback()
+        }
       })
   }
 }
