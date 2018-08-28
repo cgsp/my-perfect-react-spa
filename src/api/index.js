@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:46 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-27 10:16:10
+ * @Last Modified time: 2018-08-28 13:29:01
  */
 import { myAxios } from '@Utils/myAxios'
 import { defaultHeader } from './config'
@@ -208,13 +208,13 @@ export const authMenuPageListAddorEdit = ({
 }
 
 // 获取公用的小分类的接口
-export const commonSmallTypes = (type) => {
+export const commonSmallTypes = (source) => {
   return myAxios(
     {
-      url: 'commonSmallTypes',
-      method: 'post',
-      params: {},
-      data: { type },
+      url: '/category/queryCategories',
+      method: 'get',
+      params: { source },
+      data: {},
       headers: defaultHeader
     })
 }

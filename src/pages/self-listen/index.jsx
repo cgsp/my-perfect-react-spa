@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-28 13:18:26
+ * @Last Modified time: 2018-08-28 15:36:03
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal, message } from 'antd'
@@ -16,8 +16,9 @@ import MaskLoading from '@Components/mask-loading'
 import SortList from '@Components/sort-list'
 import { myTrim } from '@Utils/myTrim'
 import { selfListenList, selfListenTableList, selfListenAddorEdit } from '@Api/self-listen'
+import { commonSmallTypes } from '@Api'
 import { connect } from 'react-redux'
-// import { getCommonSmallTypes } from '@Redux/commonSmallType'
+import { getCommonSmallTypes } from '@Redux/commonSmallType'
 import TimeControlHoc from '@Components/time-control-hoc'
 
 const FormItem = Form.Item
@@ -26,7 +27,7 @@ const Option = Select.Option
 
 @connect(
   state => state.commonSmallTypesReducer,
-  {}
+  { getCommonSmallTypes }
 )
 @TimeControlHoc
 class SelfListen extends Component {
@@ -37,7 +38,9 @@ class SelfListen extends Component {
       id: '',
       title: '',
       contentType: '',
+      source: '1',
       categoryId: '',
+      categories: [],
       onlineStatus: '',
       sortIndex: 1,
       sortDirection: 'down',
@@ -76,6 +79,7 @@ class SelfListen extends Component {
       id: '',
       title: '',
       contentType: '',
+      source: '1',
       categoryId: '',
       onlineStatus: '',
       searchCreateTimeBegin: null,
@@ -85,7 +89,17 @@ class SelfListen extends Component {
       sortIndex: 1,
       sortDirection: 'down'
     })
-    // this.props.getCommonSmallTypes('自运营内容')
+    // 获取主站的小分类
+    this.getCategories(1)
+  }
+
+  // 获取搜索的数据
+  getCategories(source) {
+    commonSmallTypes(source).then(res => {
+      this.setState({
+        categories: res
+      })
+    })
   }
 
   clickSort(sortIndex, sortDirection) {
@@ -109,6 +123,7 @@ class SelfListen extends Component {
         id,
         title,
         contentType,
+        source,
         categoryId,
         onlineStatus,
         sortIndex,
@@ -123,6 +138,7 @@ class SelfListen extends Component {
         title,
         contentType,
         categoryId,
+        source,
         onlineStatus,
         createTimeBegin: searchCreateTimeBegin,
         createTimeEnd: searchCreateTimeEnd,
@@ -135,13 +151,18 @@ class SelfListen extends Component {
   }
 
   tableLineEdit(line) {
+    this.refs.mask.show()
     console.log('编辑', line)
-    this.setState({
-      addOrEditTitle: '编辑听单',
-      addOrEditVisible: true,
-      addOrEditInitValues: line
+    const that = this
+    this.editId = line.id
+    this.props.getCommonSmallTypes(line.source, () => {
+      that.setState({
+        addOrEditTitle: '编辑听单',
+        addOrEditVisible: true,
+        addOrEditInitValues: line
+      })
+      that.refs.mask.hide()
     })
-    // this.props.getCommonSmallTypes(line.bigType)
   }
 
   addListen() {
@@ -150,7 +171,7 @@ class SelfListen extends Component {
       addOrEditVisible: true,
       addOrEditInitValues: {}
     })
-    // this.props.getCommonSmallTypes('自运营')
+    this.props.getCommonSmallTypes(1)
   }
   addOrEditOk(values, title) {
     console.log(values)
@@ -159,16 +180,18 @@ class SelfListen extends Component {
     if (title === '新增听单') {
       options = { ...values, ...{ syncColumnId: 0, type: '新增' } }
     } else {
-      options = { ...values, ...{ type: '编辑' } }
+      options = { ...values, ...{ type: '编辑', id: this.editId } }
     }
+    this.refs.mask.show()
 
     selfListenAddorEdit(options)
       .then(res => {
         if (res.clickUrl) {
+          this.refs.mask.hide()
           const content = (
             <div>
-              <p style={{ textAlign: 'center' }}>成功了{res.validCount}条</p>
-              <p style={{ textAlign: 'center' }}>失败了{res.InvalidCount}条</p>
+              <p style={{ textAlign: 'center' }}>成功了{res.validCount ? res.validCount : 0}条</p>
+              <p style={{ textAlign: 'center' }}>失败了{res.InvalidCount ? res.InvalidCount : 0}条</p>
               <p style={{ textAlign: 'center' }}>
                 <a href={res.clickUrl}>查看统计结果</a>
               </p>
@@ -186,12 +209,14 @@ class SelfListen extends Component {
         this.setState({
           addOrEditVisible: false
         })
+        this.editId = ''
       })
   }
   addOrEditCancel() {
     this.setState({
       addOrEditVisible: false
     })
+    this.editId = ''
   }
 
   tableLineShowDetails(line) {
@@ -260,6 +285,7 @@ class SelfListen extends Component {
         title,
         contentType,
         categoryId,
+        source,
         onlineStatus,
         selectedRowKeys,
         sortIndex,
@@ -274,6 +300,7 @@ class SelfListen extends Component {
         title: !title ? '' : myTrim(title),
         contentType,
         categoryId,
+        source,
         onlineStatus,
         createTimeBegin: !searchCreateTimeBegin ? null : myGetStampTime(searchCreateTimeBegin),
         createTimeEnd: !searchCreateTimeEnd ? null : myGetStampTime(searchCreateTimeEnd),
@@ -304,7 +331,7 @@ class SelfListen extends Component {
       let str = baseURL + url + '?'
       for (const key in options) {
         if (options[key] || options[key] === 0) {
-          str += `${key} = ${options[key]} & `
+          str += `${key}=${options[key]}&`
         }
       }
 
@@ -330,6 +357,7 @@ class SelfListen extends Component {
         title,
         contentType,
         categoryId,
+        source,
         onlineStatus,
         sortIndex,
         sortDirection, } = this.state
@@ -342,6 +370,7 @@ class SelfListen extends Component {
         id,
         title,
         contentType,
+        source,
         categoryId,
         onlineStatus,
         createTimeBegin: searchCreateTimeBegin,
@@ -406,6 +435,7 @@ class SelfListen extends Component {
     id,
     title,
     contentType,
+    source,
     categoryId,
     onlineStatus,
     createTimeBegin,
@@ -424,6 +454,7 @@ class SelfListen extends Component {
       id: !id ? '' : myTrim(id),
       title: !title ? '' : myTrim(title),
       contentType,
+      source,
       categoryId,
       onlineStatus,
       createTimeBegin: !createTimeBegin ? null : myGetStampTime(createTimeBegin),
@@ -517,23 +548,45 @@ class SelfListen extends Component {
                 </FormItem>
               </Col>
               <Col span={6}>
+                <FormItem label={<span style={{ minWidth: 57, display: 'inline-block', textAlign: 'left' }}>分类来源</span>} style={{ marginBottom: 10, marginTop: 10 }}>
+                  <Select
+                    placeholder="请选择分类"
+                    style={{ minWidth: 171 }}
+                    allowClear
+                    defaultValue="1"
+                    onChange={value => {
+                      this.setState({
+                        source: value,
+                        categoryId: ''
+                      })
+                      this.getCategories(value)
+                    }}
+                  >
+                    <Option value="1">主站分类</Option>
+                    <Option value="2">自运营分类</Option>
+                  </Select>
+                </FormItem>
+              </Col>
+
+            </Row>
+            <Row>
+              <Col span={6}>
                 <FormItem label={<span style={{ minWidth: 57, display: 'inline-block', textAlign: 'left' }}>分类</span>} style={{ marginBottom: 10, marginTop: 10 }}>
                   <Select
                     placeholder="请选择分类"
                     style={{ minWidth: 171 }}
                     allowClear
                     onChange={value => this.setState({ categoryId: value })}
+                    value={this.state.categoryId}
                   >
                     {
-                      this.props.commonSmallTypes.map((item) => (
+                      this.state.categories.map((item) => (
                         <Option key={item.id} value={item.id}>{item.name}</Option>
                       ))
                     }
                   </Select>
                 </FormItem>
               </Col>
-            </Row>
-            <Row>
               <Col span={6}>
                 <FormItem label={<span style={{ minWidth: 57, display: 'inline-block', textAlign: 'left' }}>状态</span>} style={{ marginBottom: 10, marginTop: 10 }}>
                   <Select
@@ -586,6 +639,9 @@ class SelfListen extends Component {
                   />
                 </FormItem>
               </Col>
+
+            </Row>
+            <Row>
               <Col span={6}>
                 <FormItem label="更新时间" style={{ marginBottom: 10, marginTop: 10 }}>
                   <DatePicker
@@ -603,8 +659,6 @@ class SelfListen extends Component {
                   />
                 </FormItem>
               </Col>
-            </Row>
-            <Row>
               <Col span={6}>
                 <FormItem label="更新时间" style={{ marginBottom: 10, marginTop: 10 }}>
                   <DatePicker

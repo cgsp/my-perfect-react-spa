@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-28 11:33:54
+ * @Last Modified time: 2018-08-28 15:36:36
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal, message } from 'antd'
@@ -16,8 +16,9 @@ import MaskLoading from '@Components/mask-loading'
 import SortList from '@Components/sort-list'
 import { myTrim } from '@Utils/myTrim'
 import { mainListenList, mainListenTableList, mainListenSave } from '@Api/main-listen'
+import { commonSmallTypes } from '@Api'
 import { connect } from 'react-redux'
-// import { getCommonSmallTypes } from '@Redux/commonSmallType'
+import { getCommonSmallTypes } from '@Redux/commonSmallType'
 import TimeControlHoc from '@Components/time-control-hoc'
 
 const FormItem = Form.Item
@@ -26,7 +27,7 @@ const Option = Select.Option
 
 @connect(
   state => state.commonSmallTypesReducer,
-  {}
+  { getCommonSmallTypes }
 )
 @TimeControlHoc
 class SelfListen extends Component {
@@ -38,6 +39,7 @@ class SelfListen extends Component {
       title: '',
       contentType: '',
       categoryId: '',
+      categories: [],
       onlineStatus: '',
       sortIndex: 1,
       sortDirection: 'down',
@@ -91,7 +93,18 @@ class SelfListen extends Component {
       sortIndex: 1,
       sortDirection: 'down'
     })
-    // this.props.getCommonSmallTypes('主站内容')
+    // 获取主站的小分类
+    this.getCategories(1)
+  }
+
+
+  // 获取搜索的数据
+  getCategories(source) {
+    commonSmallTypes(source).then(res => {
+      this.setState({
+        categories: res
+      })
+    })
   }
 
   clickSort(sortIndex, sortDirection) {
@@ -141,26 +154,31 @@ class SelfListen extends Component {
   }
 
   tableLineSave(line) {
+    this.refs.mask.show()
     console.log('另存为', line)
-    this.saveSyncColumnId = line.syncColumnId
-    this.setState({
-      addOrEditTitle: '另存为自运营听单',
-      addOrEditVisible: true,
-      addOrEditInitValues: line
+    const that = this
+    this.props.getCommonSmallTypes(line.source, () => {
+      that.setState({
+        addOrEditTitle: '另存为自运营听单',
+        addOrEditVisible: true,
+        addOrEditInitValues: line
+      })
+      that.refs.mask.hide()
     })
-    // this.props.getCommonSmallTypes(line.bigType)
   }
 
 
   addOrEditOk(values) {
+    this.refs.mask.show()
     mainListenSave({ ...values, ...{ syncColumnId: this.saveSyncColumnId } })
       .then(res => {
+        this.refs.mask.hide()
         console.log(res)
         if (res.clickUrl) {
           const content = (
             <div>
-              <p style={{ textAlign: 'center' }}>成功了{res.validCount}条</p>
-              <p style={{ textAlign: 'center' }}>失败了{res.InvalidCount}条</p>
+              <p style={{ textAlign: 'center' }}>成功了{res.validCount ? res.validCount : 0}条</p>
+              <p style={{ textAlign: 'center' }}>失败了{res.InvalidCount ? res.InvalidCount : 0}条</p>
               <p style={{ textAlign: 'center' }}>
                 <a href={res.clickUrl}>查看统计结果</a>
               </p>
@@ -522,7 +540,7 @@ class SelfListen extends Component {
                     onChange={value => this.setState({ categoryId: value })}
                   >
                     {
-                      this.props.commonSmallTypes.map((item) => (
+                      this.state.categories.map((item) => (
                         <Option key={item.id} value={item.id}>{item.name}</Option>
                       ))
                     }

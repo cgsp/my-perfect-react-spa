@@ -19,12 +19,13 @@ function getSuccess(data) {
   return { type: COMMON_SMALL_TYPE, payload: data }
 }
 
-export function getCommonSmallTypes(type) {
+export function getCommonSmallTypes(source, callback) {
   return (dispatch) => {
     // 发送请求
-    commonSmallTypes(type)
+    commonSmallTypes(source)
       .then((res) => {
-        dispatch(getSuccess(res.list))
+        dispatch(getSuccess(res))
+        callback && callback()
       })
   }
 }

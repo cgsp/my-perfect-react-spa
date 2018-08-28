@@ -52,11 +52,9 @@ class SelfListenAddOrEdit extends Component {
         values.coverUrlSmall = '1'
         values.coverUrlMiddle = '1'
         values.coverUrlLarge = '1'
-        // 分类id先写死
-        values.categoryId = '1'
         // 对id进行处理
         values.contentIds = myHuanHang(values.contentIds)
-        this.props.addOrEditOk(values, this.props.addOrEditTitle)
+        this.props.addOrEditOk(values)
         // console.log(values)
       }
     })
@@ -86,8 +84,11 @@ class SelfListenAddOrEdit extends Component {
     // console.log(event)
     this.setState({ fileList })
   }
-  bigTypeChange(value) {
+  sourceChange(value) {
     this.props.getCommonSmallTypes(value)
+    this.props.form.setFieldsValue({
+      categoryId: ''
+    })
   }
 
   render() {
@@ -190,15 +191,15 @@ class SelfListenAddOrEdit extends Component {
               {...formItemLayout}
               label="分类来源"
             >
-              {getFieldDecorator('bigType', {
-                initialValue: '主站分类',
+              {getFieldDecorator('source', {
+                initialValue: this.props.addOrEditInitValues.source ? this.props.addOrEditInitValues.source + '' : '1',
                 rules: [
                   {
                     required: true, message: '请选择分类来源',
                   }
                 ],
               })(
-                <Select allowClear onChange={(v) => this.bigTypeChange(v)}>
+                <Select allowClear onChange={(v) => this.sourceChange(v)}>
                   <Option value="1">主站分类</Option>
                   <Option value="2">自运营分类</Option>
                 </Select>
@@ -209,7 +210,7 @@ class SelfListenAddOrEdit extends Component {
               label="分类"
             >
               {getFieldDecorator('categoryId', {
-                initialValue: '咨询',
+                initialValue: this.props.addOrEditInitValues.categoryId,
                 rules: [
                   {
                     required: true, message: '请选择分类',
