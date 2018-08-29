@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Modal, Form, Input, Upload, Icon, message, Select } from 'antd'
-import { UP_IMG_ACTION } from '@Constants'
+import { UP_IMG_ACTION, ERR_OK } from '@Constants'
 import { myHuanHang } from '@Utils/myHuanHang'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
@@ -36,32 +36,43 @@ class MainListenAddOrEdit extends Component {
     this.state = {
       previewVisible: false,
       previewImage: '',
-      fileList: [],
-      imgObj: {}
+      fileList: this.props.addOrEditInitValues.coverUrlSmall ? [{
+        uid: '-1',
+        name: '封面图.png',
+        status: 'done',
+        url: this.props.addOrEditInitValues.coverUrlSmall,
+      }] : []
     }
+    this.coverUrlLarge = this.props.addOrEditInitValues.coverUrlLarge
+    this.coverUrlMiddle = this.props.addOrEditInitValues.coverUrlMiddle
+    this.coverUrlSmall = this.props.addOrEditInitValues.coverUrlSmall
   }
 
   handleSubmit = () => {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        // if (!values.imgObj.coverUrlSmall) {
-        //   message.error('请先上传图片')
-        //   return
-        // }
-        // 图片也先写死
-        values.coverUrlSmall = '1'
-        values.coverUrlMiddle = '1'
-        values.coverUrlLarge = '1'
         // 对id进行处理
         values.contentIds = myHuanHang(values.contentIds)
+
+        values.coverUrlSmall = this.coverUrlSmall
+        values.coverUrlMiddle = this.coverUrlMiddle
+        values.coverUrlLarge = this.coverUrlLarge
+        if (!values.coverUrlSmall || !values.coverUrlMiddle || !values.coverUrlLarge) {
+          message.error('请上传一张图片')
+          console.log(values)
+          return
+        }
+
         this.props.addOrEditOk(values)
-        // console.log(values)
       }
     })
   }
 
   onImgRemove = () => {
     message.error('请至少选择一张图片上传')
+    this.coverUrlLarge = ''
+    this.coverUrlMiddle = ''
+    this.coverUrlSmall = ''
     return true
   }
 
@@ -79,10 +90,24 @@ class MainListenAddOrEdit extends Component {
   }
 
   handleImgChange = ({ file, fileList, event }) => {
-    // console.log(file)
+
+    this.setState({ fileList })
+    console.log(file.response)
     // console.log(fileList)
     // console.log(event)
-    this.setState({ fileList })
+    if (file.response) {
+      if (file.response.code !== ERR_OK) {
+        message.error('上传到服务器失败，请重新上传')
+        this.coverUrlLarge = ''
+        this.coverUrlMiddle = ''
+        this.coverUrlSmall = ''
+        this.setState({ fileList: [] })
+        return
+      }
+      this.coverUrlLarge = file.response.data.coverUrlLarge
+      this.coverUrlMiddle = file.response.data.coverUrlMiddle
+      this.coverUrlSmall = file.response.data.coverUrlSmall
+    }
   }
   sourceChange(value) {
     this.props.getCommonSmallTypes(value)
@@ -94,22 +119,6 @@ class MainListenAddOrEdit extends Component {
   render() {
     const { getFieldDecorator } = this.props.form
     let { previewVisible, previewImage, fileList } = this.state
-    if (this.props.addOrEditInitValues.coverUrlLarge && !this.timer) {
-      this.timer = setTimeout(() => {
-        console.log(111)
-        this.setState({
-          fileList: [{
-            uid: '-1',
-            name: '封面图.png',
-            status: 'done',
-            url: this.props.addOrEditInitValues.coverUrlSmall,
-          }]
-        }, () => {
-          fileList = this.state.fileList
-        })
-      }, 0)
-    }
-
     const uploadButton = (
       <div>
         <Icon type="plus" />
@@ -160,39 +169,29 @@ class MainListenAddOrEdit extends Component {
               {...formItemLayout}
               label="封面图"
             >
-              {getFieldDecorator('imgObj', {
-                initialValue: this.state.imgObj,
-                rules: [
-                  {
-                    required: true, message: '请选择图片',
-                  }
-                ],
-              })(
-                <div>
-                  <Upload
-                    action={action}
-                    listType="picture-card"
-                    fileList={fileList}
-                    onPreview={this.handleImgPreview}
-                    onChange={this.handleImgChange}
-                    onRemove={this.onImgRemove}
-                    withCredentials={true}
-                  >
-                    {fileList.length >= 1 ? null : uploadButton}
-                  </Upload>
-                  <Modal visible={previewVisible} footer={null} onCancel={this.handleImgCancel}>
-                    <img alt="example" style={{ width: '100%' }} src={previewImage} />
-                  </Modal>
-                </div>
-              )}
-
+              <div>
+                <Upload
+                  action={action}
+                  listType="picture-card"
+                  fileList={fileList}
+                  onPreview={this.handleImgPreview}
+                  onChange={this.handleImgChange}
+                  onRemove={this.onImgRemove}
+                  withCredentials={true}
+                >
+                  {fileList.length >= 1 ? null : uploadButton}
+                </Upload>
+                <Modal visible={previewVisible} footer={null} onCancel={this.handleImgCancel}>
+                  <img alt="example" style={{ width: '100%' }} src={previewImage} />
+                </Modal>
+              </div>
             </FormItem>
             <FormItem
               {...formItemLayout}
               label="分类来源"
             >
               {getFieldDecorator('source', {
-                initialValue: this.props.addOrEditInitValues.source + '',
+                initialValue: this.props.addOrEditInitValues.source ? this.props.addOrEditInitValues.source + '' : '1',
                 rules: [
                   {
                     required: true, message: '请选择分类来源',

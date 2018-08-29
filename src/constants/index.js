@@ -63,9 +63,9 @@ const DOWN_LOAD_URL = {
 }
 
 const UP_IMG_ACTION = {
-  dev: '//jsonplaceholder.typicode.com/posts/',
+  dev: '/openapi-content-admin-app/upload/cover',
   // 生产的必须加上http或者https
-  pro: '//jsonplaceholder.typicode.com/posts/',
+  pro: 'http://cms.test.9nali.com/openapi-content-admin-app/upload/cover',
 }
 
 const ERR_OK = 0
