@@ -21,11 +21,15 @@ class SelfTagDimensionAddOrEdit extends Component {
     addOrEditCancel: PropTypes.func,
   }
 
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
-      num1: '',
-      num2: '',
+      num1: this.props.addOrEditInitValues.name?this.props.addOrEditInitValues.name.split('~')[0] - 0 :
+      0,
+      num2: this.props.addOrEditInitValues.name
+      ?
+      this.props.addOrEditInitValues.name.split('~')[1] - 0 :
+      0,
     }
   }
 
@@ -33,12 +37,13 @@ class SelfTagDimensionAddOrEdit extends Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         const title = this.props.addOrEditTitle
-        if (this.props.addOrEditInitValues.valueType === 3) {
+        if ((this.props.addOrEditTitle === '添加标签' || this.props.addOrEditTitle === '编辑标签') && this.props.addOrEditInitValues.valueType === 3) {
           let num1
           let num2
           this.setState({}, () => {
             num1 = this.state.num1 - 0
             num2 = this.state.num2 - 0
+            console.log(num1, num2)
             if (!num1 && num1 !== 0) {
               message.error('请输入数值')
               return
@@ -55,7 +60,7 @@ class SelfTagDimensionAddOrEdit extends Component {
               message.error('前后数值都应该是数字')
               return
             }
-            values.name = `${num1}-${num2}`
+            values.name = `${num1}~${num2}`
             this.props.addOrEditOk(values, title)
           })
         } else {
@@ -91,6 +96,7 @@ class SelfTagDimensionAddOrEdit extends Component {
     //     return ''
     //   }
     // }
+
 
     return (
       <Modal
@@ -179,7 +185,7 @@ class SelfTagDimensionAddOrEdit extends Component {
                           defaultValue={
                             this.props.addOrEditInitValues.name
                               ?
-                              this.props.addOrEditInitValues.name.split('-')[0] - 0 :
+                              this.props.addOrEditInitValues.name.split('~')[0] - 0 :
                               0
                           }
                           onChange={
@@ -194,7 +200,7 @@ class SelfTagDimensionAddOrEdit extends Component {
                           defaultValue={
                             this.props.addOrEditInitValues.name
                               ?
-                              this.props.addOrEditInitValues.name.split('-')[1] - 0 :
+                              this.props.addOrEditInitValues.name.split('~')[1] - 0 :
                               0
                           }
                           onChange={

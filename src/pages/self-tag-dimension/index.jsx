@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-29 11:32:16
+ * @Last Modified time: 2018-08-29 12:54:51
  */
 
 
@@ -330,7 +330,9 @@ class SelfTagTag extends Component {
     this.handleSelfTagDimensionAddOrEdit(values, () => {
       if (title === '编辑标签') {
         // 刷新详情的列表页面
-        this.setState({}, () => {
+        this.setState({
+          addOrEditVisible: false
+        }, () => {
           this.getDetailData({
             pageNo: this.detailPageNo,
             pageSize: this.detailPageSize,
