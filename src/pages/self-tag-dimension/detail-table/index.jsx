@@ -9,6 +9,7 @@ export default class SelfTagDimensionDetailTable extends Component {
     detailVisible: PropTypes.bool,
     detailCancel: PropTypes.func,
     detailTotal: PropTypes.number,
+    detailPageNo: PropTypes.number,
     detailPageOrPageSizeChange: PropTypes.func,
     detailShowTotal: PropTypes.func,
     detailData: PropTypes.array,
@@ -19,8 +20,8 @@ export default class SelfTagDimensionDetailTable extends Component {
   render() {
     const columns = [{
       title: '标签名称',
-      dataIndex: 'tagName',
-      key: 'tagName',
+      dataIndex: 'name',
+      key: 'name',
     },
     {
       title: '发布时间',
@@ -45,8 +46,8 @@ export default class SelfTagDimensionDetailTable extends Component {
       }
     }, {
       title: '创建人',
-      dataIndex: 'creator',
-      key: 'creator'
+      dataIndex: 'operator',
+      key: 'operator'
     }, {
       title: '操作',
       key: 'action',
@@ -76,6 +77,7 @@ export default class SelfTagDimensionDetailTable extends Component {
               showSizeChanger
               showQuickJumper
               defaultCurrent={1}
+              current={this.props.detailPageNo}
               onShowSizeChange={this.props.detailPageOrPageSizeChange}
               onChange={this.props.detailPageOrPageSizeChange}
               total={this.props.detailTotal}

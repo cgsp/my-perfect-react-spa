@@ -24,9 +24,12 @@ export const apiSelfTagDimensionAddOrEdit = (options) => {
   } else if (options.type === '编辑维度') {
     url = '/dimension/updateDimension'
     method = 'put'
-  } else {
+  } else if (options.type === '添加标签') {
     url = '/tag/addTag'
     method = 'post'
+  } else {
+    url = '/tag/updateTag'
+    method = 'put'
   }
   delete options.type
   return myAxios(
@@ -43,10 +46,10 @@ export const apiSelfTagDimensionAddOrEdit = (options) => {
 export const apiSelfTagDimensionDetailList = (options) => {
   return myAxios(
     {
-      url: 'apiSelfTagDimensionDetailList',
-      method: 'post',
-      params: {},
-      data: options,
+      url: '/tag/queryTagsByPage',
+      method: 'get',
+      params: options,
+      data: {},
       headers: defaultHeader
     })
 }
@@ -57,6 +60,18 @@ export const apiSelfTagDimensionDelete = (id) => {
   return myAxios(
     {
       url: '/dimension/deleteDimension',
+      method: 'put',
+      params: { id },
+      data: {},
+      headers: defaultHeader
+    })
+}
+
+// 详情里面的删除的接口
+export const apiSelfTagDetailDelete = (id) => {
+  return myAxios(
+    {
+      url: '/tag/deleteTag',
       method: 'put',
       params: { id },
       data: {},

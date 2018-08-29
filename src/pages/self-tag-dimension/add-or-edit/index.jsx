@@ -39,6 +39,14 @@ class SelfTagDimensionAddOrEdit extends Component {
           this.setState({}, () => {
             num1 = this.state.num1 - 0
             num2 = this.state.num2 - 0
+            if (!num1 && num1 !== 0) {
+              message.error('请输入数值')
+              return
+            }
+            if (!num2 && num2 !== 0) {
+              message.error('请输入数值')
+              return
+            }
             if (num1 >= num2) {
               message.error('后一个数值应该大于前一个数字')
               return
@@ -172,7 +180,7 @@ class SelfTagDimensionAddOrEdit extends Component {
                             this.props.addOrEditInitValues.name
                               ?
                               this.props.addOrEditInitValues.name.split('-')[0] - 0 :
-                              ''
+                              0
                           }
                           onChange={
                             (v) => this.setState({ num1: v })
@@ -186,8 +194,8 @@ class SelfTagDimensionAddOrEdit extends Component {
                           defaultValue={
                             this.props.addOrEditInitValues.name
                               ?
-                              this.props.addOrEditInitValues.name.split('-')[0] - 0 :
-                              ''
+                              this.props.addOrEditInitValues.name.split('-')[1] - 0 :
+                              0
                           }
                           onChange={
                             (v) => this.setState({ num2: v })

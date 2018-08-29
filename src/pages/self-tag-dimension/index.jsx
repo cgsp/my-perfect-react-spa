@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-28 20:15:57
+ * @Last Modified time: 2018-08-29 11:32:16
  */
 
 
@@ -18,10 +18,10 @@ import MaskLoading from '@Components/mask-loading'
 import SortList from '@Components/sort-list'
 import TimeControlHoc from '@Components/time-control-hoc'
 
-import { connect } from 'react-redux'
-import { getCommonDimesions } from '@Redux/commonTagAndDimesion'
+// import { connect } from 'react-redux'
+// import { getCommonDimesions } from '@Redux/commonTagAndDimesion'
 
-import { apiSelfTagDimensionList, apiSelfTagDimensionDetailList, apiSelfTagDimensionDelete, apiSelfTagDimensionAddOrEdit } from '@Api/self-tag-dimension'
+import { apiSelfTagDimensionList, apiSelfTagDimensionDetailList, apiSelfTagDimensionDelete, apiSelfTagDimensionAddOrEdit, apiSelfTagDetailDelete } from '@Api/self-tag-dimension'
 
 import SelfTagDimensionListTable from './list-table'
 import WrapperSelfTagDimensionAddOrEdit from './add-or-edit'
@@ -30,10 +30,10 @@ import './style.scss'
 
 const FormItem = Form.Item
 
-@connect(
-  state => state.commonTagAndDimesionsReducer,
-  { getCommonDimesions }
-)
+// @connect(
+//   state => state.commonTagAndDimesionsReducer,
+//   {}
+// )
 @TimeControlHoc
 class SelfTagTag extends Component {
   constructor() {
@@ -77,7 +77,7 @@ class SelfTagTag extends Component {
       sortDirection: 'down'
     })
     // 获取公用的维度数据
-    this.props.getCommonDimesions()
+    // this.props.getCommonDimesions()
   }
 
   // 点击排序
@@ -303,7 +303,7 @@ class SelfTagTag extends Component {
       addOrEditInitValues: line
     })
     // 更新下公用的维度数据
-    this.props.getCommonDimesions()
+    // this.props.getCommonDimesions()
   }
 
   // 新增标签
@@ -322,15 +322,32 @@ class SelfTagTag extends Component {
       values.dimensionId = this.addTagDimensionId
     } else if (title === '编辑维度') {
       values.id = this.editDimensionId
+    } else if (title === '编辑标签') {
+      values.id = this.tagId
     }
 
     values.type = title
     this.handleSelfTagDimensionAddOrEdit(values, () => {
-      // 需要重新刷新列表
-      this.searchList(title)
-      this.setState({
-        addOrEditVisible: false
-      })
+      if (title === '编辑标签') {
+        // 刷新详情的列表页面
+        this.setState({}, () => {
+          this.getDetailData({
+            pageNo: this.detailPageNo,
+            pageSize: this.detailPageSize,
+            dimensionId: this.detailDimensionId,
+            tip: '编辑标签'
+          }, () => {
+            // 刷新维度列表页面
+            this.searchList()
+          })
+        })
+      } else {
+        // 需要重新刷新列表
+        this.searchList(title)
+        this.setState({
+          addOrEditVisible: false
+        })
+      }
     })
   }
 
@@ -360,97 +377,111 @@ class SelfTagTag extends Component {
   // 查看专辑数的详情--弹框列表
   tableLineShowDetails(line) {
     console.log('查看详情', line)
-    this.dimensionId = line.dimensionId
-    this.tagNameType = line.tagNameType
+    this.detailDimensionId = line.id
+    this.detailValueType = line.valueType
+    this.setState({
+      detailPageNo: 1,
+      detailPageSize: 10,
+    })
     this.getDetailData({
       pageNo: 1,
       pageSize: 10,
-      dimensionId: this.dimensionId,
-
+      dimensionId: this.detailDimensionId,
     })
-    // 标志位
-    this.setState({
-      addOrEditTitle: '',
-      addOrEditInitValues: {
-        tagNameType: this.tagNameType
-      }
-    })
-
   }
 
   // 获取专辑详情列表的配套函数
-  getDetailData(options) {
+  getDetailData(options, callBack) {
     this.refs.mask.show()
     apiSelfTagDimensionDetailList(options)
       .then(res => {
         this.refs.mask.hide()
-
-        const detailData = res.list.map(item => {
-          item.key = item.tagId
+        if (res.code !== ERR_OK) {
+          message.error(res.msg)
+          return
+        }
+        const detailData = res.data.dataList.map(item => {
+          item.key = item.id
           return item
         })
         this.setState({
           detailData,
-          detailTotal: res.total,
+          detailTotal: res.data.totalNum,
           detailVisible: true
         })
         // 针对删除，编之后，重新刷新页面的提示
         if (options.tip) {
           message.success(`${options.tip}成功`)
         }
+        callBack && callBack()
       })
   }
 
   // 详情页面的翻页或者每页的页码改变
   detailPageOrPageSizeChange(current, pageSize) {
-    console.log(this.detailId)
+    this.setState({
+      detailPageNo: current,
+      detailPageSize: pageSize,
+    })
     this.getDetailData({
       pageNo: current,
       pageSize,
-      dimensionId: this.dimensionId
+      dimensionId: this.detailDimensionId
     })
   }
 
   // 详情页面里面的删除与编辑
   detailLineEditOrDelete(line, type) {
-    console.log(line, type, '当前的dimensionId:', this.dimensionId)
     if (type === '删除') {
-      // 调删除的接口--写的时候，写这个函数的时候，支持一个callback最好，把这个callBack传进入
-      // 刷新详情的列表接口
-      this.getDetailData({
-        pageNo: 1,
-        pageSize: 10,
-        dimensionId: this.dimensionId,
-        tip: '删除标签'
+      const that = this
+      Modal.confirm({
+        title: '确定要删除吗？',
+        content: '删除了之后，所有专辑对应的该标签都会被删除',
+        onOk: () => {
+          that.handleSelfDetailDelete(line.id)
+        }
       })
+
     } else {
       // 打开编辑的弹框
+      this.tagId = line.id
       this.setState({
         addOrEditTitle: '编辑标签',
         addOrEditVisible: true,
         addOrEditInitValues: {
-          tagName: line.tagName,
-          tagNameType: this.tagNameType
+          name: line.name,
+          valueType: this.detailValueType
         }
       })
     }
-
-
-
-    // 判断用户是否操作了删除或者编辑
-    if (type === '删除') {
-      // 这个仅仅是标志位
-      this.setState({
-        addOrEditTitle: '删除标签'
-      })
-    } else {
-      // 这个仅仅是标志位
-      this.setState({
-        addOrEditTitle: '编辑标签'
-      })
-    }
-
   }
+
+  // 详情里面的删除的辅助函数
+  handleSelfDetailDelete(id) {
+    this.refs.mask.show()
+    apiSelfTagDetailDelete(id)
+      .then(res => {
+        this.refs.mask.hide()
+        if (res.code !== ERR_OK) {
+          message.error(res.msg)
+          return
+        }
+        // 刷新详情的列表页面
+        this.setState({}, () => {
+          this.getDetailData({
+            pageNo: this.detailPageNo,
+            pageSize: this.detailPageSize,
+            dimensionId: this.detailDimensionId,
+            tip: '删除标签'
+          }, () => {
+            // 刷新维度列表页面
+            this.searchList()
+          })
+        })
+      })
+  }
+
+
 
   // 显示详情total
   detailShowTotal(total) {
@@ -459,15 +490,10 @@ class SelfTagTag extends Component {
 
   // 关闭详情列表
   detailCancel() {
-    this.dimensionId = ''
-    this.tagNameType = ''
+    this.detailDimensionId = ''
+    this.tagId = ''
     this.setState({
       detailVisible: false
-    }, () => {
-      // 如果用户操作了详情里面的编辑或者删除的话--需要重新刷新列表页面
-      if (this.state.addOrEditTitle) {
-        this.searchList()
-      }
     })
   }
 
@@ -488,6 +514,7 @@ class SelfTagTag extends Component {
 
     const detailTableOptions = {
       detailVisible: this.state.detailVisible,
+      detailPageNo: this.state.detailPageNo,
       detailTotal: this.state.detailTotal,
       detailData: this.state.detailData,
       detailCancel: this.detailCancel,
