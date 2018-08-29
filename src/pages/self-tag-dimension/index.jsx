@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-29 12:54:51
+ * @Last Modified time: 2018-08-29 16:11:31
  */
 
 
@@ -172,6 +172,8 @@ class SelfTagTag extends Component {
     options.desc = options.sortDirection === 'up' ? true : false
     delete options.sortDirection
 
+    options.ids = options.selectedRowKeys
+
     return options
   }
 
@@ -180,6 +182,7 @@ class SelfTagTag extends Component {
     this.refs.mask.show()
 
     options = this.handleSearchOrExportOptions(options)
+    delete options.ids
 
     apiSelfTagDimensionList(options)
       .then(res => {
@@ -211,8 +214,8 @@ class SelfTagTag extends Component {
     })
   }
 
-  // 专辑或者标签批量导出
-  export(type) {
+  // 维度或者标签导出
+  export(type, url) {
     this.setState({}, () => {
       const state = { ...this.state, ...this.props.state }
       const {
@@ -246,13 +249,14 @@ class SelfTagTag extends Component {
         baseURL = DOWN_LOAD_URL.pro
       }
 
-      let str = baseURL + '?'
+      let str = baseURL + url + '?'
       for (const key in options) {
         if (options[key] || options[key] === 0) {
           str += `${key}=${options[key]}&`
         }
       }
       str = str.slice(0, -1)
+      console.log(str)
 
       let a = document.createElement('a')
       document.body.appendChild(a)

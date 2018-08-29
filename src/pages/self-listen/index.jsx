@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-29 15:32:36
+ * @Last Modified time: 2018-08-29 16:22:18
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal, message } from 'antd'
@@ -177,12 +177,16 @@ class SelfListen extends Component {
     console.log(values)
     console.log(title)
     let options
+    console.log(title)
     if (title === '新增听单') {
       options = { ...values, ...{ syncColumnId: 0, type: '新增' } }
     } else {
       options = { ...values, ...{ type: '编辑', id: this.editId } }
     }
     this.refs.mask.show()
+
+    console.log(options)
+    // debugger
 
     selfListenAddorEdit(options)
       .then(res => {

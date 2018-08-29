@@ -63,7 +63,7 @@ class SelfListenAddOrEdit extends Component {
           return
         }
 
-        this.props.addOrEditOk(values)
+        this.props.addOrEditOk(values, this.props.addOrEditTitle)
       }
     })
   }
