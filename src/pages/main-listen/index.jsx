@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-28 17:36:40
+ * @Last Modified time: 2018-08-29 11:40:17
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal, message } from 'antd'
@@ -263,7 +263,7 @@ class SelfListen extends Component {
     this.export('/column/export')
   }
   exportContent() {
-    this.export()
+    this.export('/column/content/export')
   }
 
   export(url) {
