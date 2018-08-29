@@ -6,13 +6,14 @@ import { defaultHeader } from './config'
 export const apiSelfTagTagList = (options) => {
   return myAxios(
     {
-      url: 'apiSelfTagTagList',
-      method: 'post',
-      params: {},
-      data: options,
+      url: '/tag/queryTagsByPage',
+      method: 'get',
+      params: options,
+      data: {},
       headers: defaultHeader
     })
 }
+
 
 // 获取详情的列表数据
 export const apiSelfTagTagDetailList = (options) => {

@@ -24,12 +24,12 @@ class SelfTagDimensionAddOrEdit extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      num1: this.props.addOrEditInitValues.name?this.props.addOrEditInitValues.name.split('~')[0] - 0 :
-      0,
+      num1: this.props.addOrEditInitValues.name ? this.props.addOrEditInitValues.name.split('~')[0] - 0 :
+        0,
       num2: this.props.addOrEditInitValues.name
-      ?
-      this.props.addOrEditInitValues.name.split('~')[1] - 0 :
-      0,
+        ?
+        this.props.addOrEditInitValues.name.split('~')[1] - 0 :
+        0,
     }
   }
 
@@ -249,7 +249,9 @@ class SelfTagDimensionAddOrEdit extends Component {
                       }
                     ],
                   })(
-                    <RadioGroup>
+                    <RadioGroup
+                      disabled={this.props.addOrEditTitle === '编辑维度'}
+                    >
                       <Radio value={2}>支持多选</Radio>
                       <Radio value={1}>只能单选</Radio>
                     </RadioGroup>
@@ -273,7 +275,9 @@ class SelfTagDimensionAddOrEdit extends Component {
                       }
                     ],
                   })(
-                    <RadioGroup>
+                    <RadioGroup
+                      disabled={this.props.addOrEditTitle === '编辑维度'}
+                    >
                       <Radio value={1}>文本</Radio>
                       <Radio value={2}>数值</Radio>
                       <Radio value={3}>数值范围</Radio>

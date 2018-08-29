@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:46 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-28 13:29:01
+ * @Last Modified time: 2018-08-29 17:19:01
  */
 import { myAxios } from '@Utils/myAxios'
 import { defaultHeader } from './config'
@@ -223,8 +223,8 @@ export const commonSmallTypes = (source) => {
 export const commonDimesions = () => {
   return myAxios(
     {
-      url: 'commonDimesions',
-      method: 'post',
+      url: '/dimension/queryAllDimensions',
+      method: 'get',
       params: {},
       data: {},
       headers: defaultHeader

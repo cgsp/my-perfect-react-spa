@@ -1,4 +1,6 @@
 import { commonDimesions } from '@Api'
+import { ERR_OK } from '@Constants'
+import { message } from 'antd'
 
 const COMMON_DIMESION = 'COMMON_DIMESION'
 const initState = {
@@ -24,7 +26,11 @@ export function getCommonDimesions(type) {
     // 发送请求
     commonDimesions(type)
       .then((res) => {
-        dispatch(getSuccess(res.list))
+        if (res.code !== ERR_OK) {
+          message.error(res.msg)
+          return
+        }
+        dispatch(getSuccess(res.data))
       })
   }
 }

@@ -1,45 +1,27 @@
 import React, { Component } from 'react'
-import { Modal, Pagination, Table } from 'antd'
+import { Modal, Pagination, Table, Divider } from 'antd'
 import { myGetStrTime } from '@Utils/myGetTime'
 import { PropTypes } from 'prop-types'
 
 
-export default class SelfTagTagDetailTable extends Component {
+export default class SelfTagDimensionDetailTable extends Component {
   static propTypes = {
     detailVisible: PropTypes.bool,
     detailCancel: PropTypes.func,
     detailTotal: PropTypes.number,
+    detailPageNo: PropTypes.number,
     detailPageOrPageSizeChange: PropTypes.func,
     detailShowTotal: PropTypes.func,
-    detailData: PropTypes.array
+    detailData: PropTypes.array,
+    detailLineEditOrDelete: PropTypes.func,
   }
 
 
   render() {
     const columns = [{
-      title: '专辑Id',
-      dataIndex: 'albumId',
-      key: 'albumId',
-      render: (text, record) =>
-        (
-          <a href={record.url} target="_blank" style={{ display: 'inline-block', cursor: 'pointer' }}>
-            {text}
-          </a>
-        )
-    }, {
-      title: '专辑名称',
-      dataIndex: 'albumName',
-      key: 'albumName',
-    },
-    {
-      title: '声音数',
-      dataIndex: 'voiceNum',
-      key: 'voiceNum',
-    },
-    {
-      title: '状态',
-      dataIndex: 'state',
-      key: 'state'
+      title: '标签名称',
+      dataIndex: 'name',
+      key: 'name',
     },
     {
       title: '发布时间',
@@ -62,6 +44,21 @@ export default class SelfTagTagDetailTable extends Component {
           <span>{str}</span>
         )
       }
+    }, {
+      title: '创建人',
+      dataIndex: 'operator',
+      key: 'operator'
+    }, {
+      title: '操作',
+      key: 'action',
+      render: (text, record) => {
+        return (
+          <span>
+            <i style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.props.detailLineEditOrDelete(record, '编辑')}>编辑</i>
+            <Divider type="vertical" />
+            <i style={{ color: 'red', cursor: 'pointer' }} onClick={() => this.props.detailLineEditOrDelete(record, '删除')}>删除</i>
+          </span>)
+      },
     }]
     return (
       <Modal
@@ -71,6 +68,7 @@ export default class SelfTagTagDetailTable extends Component {
         width={1100}
         footer={null}
         destroyOnClose={true}
+        zIndex={1000}
       >
         <div>
           <Table columns={columns} dataSource={this.props.detailData} pagination={false} />
@@ -79,6 +77,7 @@ export default class SelfTagTagDetailTable extends Component {
               showSizeChanger
               showQuickJumper
               defaultCurrent={1}
+              current={this.props.detailPageNo}
               onShowSizeChange={this.props.detailPageOrPageSizeChange}
               onChange={this.props.detailPageOrPageSizeChange}
               total={this.props.detailTotal}

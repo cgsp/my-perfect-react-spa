@@ -86,6 +86,14 @@ export default class SelfListenListTable extends Component {
       }
     },
     {
+      title: '分类来源',
+      dataIndex: 'source',
+      key: 'source',
+      render: (text, record) => (
+        <span>{text === 1 ? '主站' : '自运营'}</span>
+      )
+    },
+    {
       title: '分类',
       dataIndex: 'categoryName',
       key: 'categoryName',
