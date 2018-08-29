@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-29 16:11:31
+ * @Last Modified time: 2018-08-29 16:43:20
  */
 
 
@@ -215,7 +215,7 @@ class SelfTagTag extends Component {
   }
 
   // 维度或者标签导出
-  export(type, url) {
+  export(url) {
     this.setState({}, () => {
       const state = { ...this.state, ...this.props.state }
       const {
@@ -239,6 +239,17 @@ class SelfTagTag extends Component {
       }
 
       options = this.handleSearchOrExportOptions(options)
+
+      delete options.selectedRowKeys
+
+      console.log(options.ids)
+      if (options.ids.length === 0) {
+        delete options.ids
+      } else {
+        options.ids = options.ids.join()
+      }
+
+      console.log(options.ids)
 
       const DEV = process.env.NODE_ENV !== 'production'
       let baseURL
@@ -655,8 +666,8 @@ class SelfTagTag extends Component {
           <Row>
             <Col span={24} className="line">
               <Button className="btn" type="primary" onClick={() => this.addDimension()}>新增维度</Button>
-              <Button className="btn" type="primary" onClick={() => this.export('维度')}>维度导出</Button>
-              <Button className="btn" type="primary" onClick={() => this.export('标签')}>标签导出</Button>
+              <Button className="btn" type="primary" onClick={() => this.export('/dimension/downloadDimensions')}>维度导出</Button>
+              <Button className="btn" type="primary" onClick={() => this.export('/dimension/downloadDimensionsWithTags')}>标签导出</Button>
               <div className="sort-box">
                 <span className="sort-title">排序方式：</span>
                 <SortList clickSort={this.clickSort} />
