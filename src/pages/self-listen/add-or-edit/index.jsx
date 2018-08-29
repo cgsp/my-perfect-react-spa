@@ -238,7 +238,7 @@ class SelfListenAddOrEdit extends Component {
                   }
                 ],
               })(
-                <Select allowClear disabled>
+                <Select allowClear disabled={this.props.addOrEditTitle === '编辑听单'}>
                   <Option value="1">专辑</Option>
                   <Option value="2">声音</Option>
                 </Select>

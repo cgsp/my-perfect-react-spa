@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-29 11:46:30
+ * @Last Modified time: 2018-08-29 15:32:36
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal, message } from 'antd'
@@ -207,6 +207,7 @@ class SelfListen extends Component {
             okText: '确认',
             footer: null
           })
+          this.searchList()
         } else {
           message.error(`${title}失败`)
         }
