@@ -12,7 +12,8 @@ export default class MainListenListTable extends Component {
     onShowSizeChange: PropTypes.func,
     onChange: PropTypes.func,
     showTotal: PropTypes.func,
-    tableData: PropTypes.array
+    tableData: PropTypes.array,
+    pageNo: PropTypes.number,
   }
 
   // onSelectChange = (selectedRowKeys) => {
@@ -163,6 +164,7 @@ export default class MainListenListTable extends Component {
           <Pagination
             showSizeChanger
             showQuickJumper
+            current={this.props.pageNo}
             defaultCurrent={1}
             onShowSizeChange={this.props.onShowSizeChange}
             onChange={this.props.onChange}

@@ -12,7 +12,8 @@ export default class SelfListenListTable extends Component {
     onShowSizeChange: PropTypes.func,
     onChange: PropTypes.func,
     showTotal: PropTypes.func,
-    tableData: PropTypes.array
+    tableData: PropTypes.array,
+    pageNo: PropTypes.number,
   }
 
   // onSelectChange = (selectedRowKeys) => {
@@ -165,6 +166,7 @@ export default class SelfListenListTable extends Component {
             showSizeChanger
             showQuickJumper
             defaultCurrent={1}
+            current={this.props.pageNo}
             onShowSizeChange={this.props.onShowSizeChange}
             onChange={this.props.onChange}
             total={this.props.total}

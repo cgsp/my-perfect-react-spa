@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-30 09:50:33
+ * @Last Modified time: 2018-08-30 10:02:19
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal, message } from 'antd'
@@ -112,7 +112,12 @@ class SelfListen extends Component {
 
   handleSearch = (e) => {
     e.preventDefault()
-    this.searchList()
+    this.setState({
+      pageNo: 1
+    }, () => {
+      this.searchList()
+    })
+
   }
 
   searchList() {
@@ -506,7 +511,8 @@ class SelfListen extends Component {
       onChange: this.onTablePageChange,
       total: this.state.tableTotal,
       showTotal: this.showTableTotal,
-      tableData: this.state.tableData
+      tableData: this.state.tableData,
+      pageNo: this.state.pageNo
     }
 
     const modalTableOptions = {

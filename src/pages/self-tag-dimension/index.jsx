@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-29 16:43:20
+ * @Last Modified time: 2018-08-30 10:05:08
  */
 
 
@@ -92,7 +92,12 @@ class SelfTagTag extends Component {
   // 点击查询
   handleSearch = (e) => {
     e.preventDefault()
-    this.searchList()
+    this.setState({
+      pageNo: 1
+    }, () => {
+      this.searchList()
+    })
+
   }
 
   // 翻页或者每页尺寸改变
