@@ -40,5 +40,38 @@ export const apiSelfTagTagDelete = (id) => {
     })
 }
 
+// 添加维度的接口
+export const apiSelfAddDimension = (options) => {
+  return myAxios(
+    {
+      url: '/dimension/addDimension',
+      method: 'post',
+      params: {},
+      data: options,
+      headers: defaultHeader
+    })
+}
+
+
+// 新增标签或者编辑标签
+export const apiSelfAddOrEdit = (options) => {
+  let url
+  let method
+  if (options.type === '新增标签') {
+    method = 'post'
+    url = '/tag/addTag'
+  } else {
+    method = 'put'
+    url = '/tag/updateTag'
+  }
+  return myAxios(
+    {
+      url,
+      method,
+      params: {},
+      data: options,
+      headers: defaultHeader
+    })
+}
 
 

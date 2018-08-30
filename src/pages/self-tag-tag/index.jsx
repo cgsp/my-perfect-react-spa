@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-30 12:59:56
+ * @Last Modified time: 2018-08-30 15:01:14
  */
 
 
@@ -21,9 +21,9 @@ import TimeControlHoc from '@Components/time-control-hoc'
 import { connect } from 'react-redux'
 import { getCommonDimesions } from '@Redux/commonTagAndDimesion'
 
-import { apiSelfTagDimensionList, apiSelfTagDimensionDetailList, apiSelfTagDimensionAddOrEdit, apiSelfTagDetailDelete } from '@Api/self-tag-dimension'
+import { apiSelfTagDimensionList, apiSelfTagDimensionDetailList, apiSelfTagDetailDelete } from '@Api/self-tag-dimension'
 import {
-  apiSelfTagTagList, apiSelfAllDemensions, apiSelfTagTagDelete
+  apiSelfTagTagList, apiSelfAllDemensions, apiSelfTagTagDelete, apiSelfAddOrEdit
 } from '@Api/self-tag-tag'
 import SelfTagTagListTable from './list-table'
 import WrapperSelfTagDimensionAddOrEdit from './add-or-edit'
@@ -294,11 +294,10 @@ class SelfTagTag extends Component {
   tableLineEdit(line) {
     console.log('编辑', line)
     this.setState({
-      addOrEditTitle: '编辑维度',
+      addOrEditTitle: '编辑标签',
       addOrEditVisible: true,
       addOrEditInitValues: line
     })
-    this.editDimensionId = line.id
   }
 
   // 删除标签的处理
@@ -330,48 +329,23 @@ class SelfTagTag extends Component {
     })
   }
 
-  // 新增或者编辑维度，添加标签，点击弹框的确定
+  // 新增或者编辑标签，添加标签，点击弹框的确定
   addOrEditOk(values, title) {
-    console.log(values, title)
-    if (title === '添加标签') {
-      values.dimensionId = this.addTagDimensionId
-    } else if (title === '编辑维度') {
-      values.id = this.editDimensionId
-    } else if (title === '编辑标签') {
-      values.id = this.tagId
-    }
-
     values.type = title
-    this.handleSelfTagDimensionAddOrEdit(values, () => {
-      if (title === '编辑标签') {
-        // 刷新详情的列表页面
-        this.setState({
-          addOrEditVisible: false
-        }, () => {
-          this.getDetailData({
-            pageNo: this.detailPageNo,
-            pageSize: this.detailPageSize,
-            dimensionId: this.detailDimensionId,
-            tip: '编辑标签'
-          }, () => {
-            // 刷新维度列表页面
-            this.searchList()
-          })
-        })
-      } else {
-        // 需要重新刷新列表
+    this.handleSelfTagAddOrEdit(values, () => {
+      this.setState({
+        addOrEditVisible: false
+      }, () => {
+        // 刷新维度列表页面
         this.searchList(title)
-        this.setState({
-          addOrEditVisible: false
-        })
-      }
+      })
     })
   }
 
-  // 新增标签，编辑维度，添加标签的辅助函数
-  handleSelfTagDimensionAddOrEdit(options, callBack) {
+  // 新增标签，编辑标签的辅助函数
+  handleSelfTagAddOrEdit(options, callBack) {
     this.refs.mask.show()
-    apiSelfTagDimensionAddOrEdit(options)
+    apiSelfAddOrEdit(options)
       .then(res => {
         this.refs.mask.hide()
         if (res.code !== ERR_OK) {

@@ -21,16 +21,17 @@ function getSuccess(data) {
   return { type: COMMON_DIMESION, payload: data }
 }
 
-export function getCommonDimesions(type) {
+export function getCommonDimesions(callBack) {
   return (dispatch) => {
     // 发送请求
-    commonDimesions(type)
+    commonDimesions()
       .then((res) => {
         if (res.code !== ERR_OK) {
           message.error(res.msg)
           return
         }
         dispatch(getSuccess(res.data))
+        callBack && callBack()
       })
   }
 }
