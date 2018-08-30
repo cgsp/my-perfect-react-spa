@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-29 11:40:17
+ * @Last Modified time: 2018-08-30 09:48:23
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal, message } from 'antd'
@@ -522,24 +522,24 @@ class SelfListen extends Component {
             <Row>
               <Col span={6}>
                 <FormItem label={<span style={{ minWidth: 57, display: 'inline-block', textAlign: 'left' }}>主站Id</span>} style={{ marginBottom: 10, marginTop: 10 }}>
-                  <Input placeholder="请输入主站Id" onChange={e => this.setState({ syncColumnId: e.target.value })} />
+                  <Input style={{ width: 190 }} placeholder="请输入主站Id" onChange={e => this.setState({ syncColumnId: e.target.value })} />
                 </FormItem>
               </Col>
               <Col span={6}>
                 <FormItem label={<span style={{ minWidth: 57, display: 'inline-block', textAlign: 'left' }}>自运营Id</span>} style={{ marginBottom: 10, marginTop: 10 }}>
-                  <Input placeholder="请输入自运营Id" onChange={e => this.setState({ id: e.target.value })} />
+                  <Input style={{ width: 190 }} placeholder="请输入自运营Id" onChange={e => this.setState({ id: e.target.value })} />
                 </FormItem>
               </Col>
               <Col span={6}>
                 <FormItem label="听单名称" style={{ marginBottom: 10, marginTop: 10 }}>
-                  <Input placeholder="请输入听单名称" onChange={e => this.setState({ title: e.target.value })} />
+                  <Input style={{ width: 190 }} placeholder="请输入听单名称" onChange={e => this.setState({ title: e.target.value })} />
                 </FormItem>
               </Col>
               <Col span={6}>
                 <FormItem label="听单类型" style={{ marginBottom: 10, marginTop: 10 }}>
                   <Select
                     placeholder="请选择听单类型"
-                    style={{ minWidth: 171 }}
+                    style={{ width: 190 }}
                     allowClear
                     onChange={value => this.setState({ contentType: value })}
                   >
@@ -554,7 +554,7 @@ class SelfListen extends Component {
                 <FormItem label={<span style={{ minWidth: 57, display: 'inline-block', textAlign: 'left' }}>分类</span>} style={{ marginBottom: 10, marginTop: 10 }}>
                   <Select
                     placeholder="请选择分类"
-                    style={{ minWidth: 171 }}
+                    style={{ width: 190 }}
                     allowClear
                     onChange={value => this.setState({ categoryId: value })}
                   >
@@ -570,7 +570,7 @@ class SelfListen extends Component {
                 <FormItem label={<span style={{ minWidth: 57, display: 'inline-block', textAlign: 'left' }}>状态</span>} style={{ marginBottom: 10, marginTop: 10 }}>
                   <Select
                     placeholder="请选择状态"
-                    style={{ minWidth: 171 }}
+                    style={{ width: 190 }}
                     allowClear
                     onChange={value => this.setState({ onlineStatus: value })}
                   >
@@ -595,6 +595,7 @@ class SelfListen extends Component {
                     disabledDate={this.props.disabledCreateBeginDate}
                     disabledTime={this.props.disabledCreateBeiginTime}
                     onChange={this.props.onCreateBeginDateAndTimeChange}
+                    style={{ width: 190 }}
                   />
                 </FormItem>
 
@@ -615,6 +616,7 @@ class SelfListen extends Component {
                     disabledDate={this.props.disabledCreateEndDate}
                     disabledTime={this.props.disabledCreateEndTime}
                     onChange={this.props.onCreateEndDateAndTimeChange}
+                    style={{ width: 190 }}
                   />
                 </FormItem>
               </Col>
@@ -634,6 +636,7 @@ class SelfListen extends Component {
                     disabledDate={this.props.disabledUpdateBeginDate}
                     disabledTime={this.props.disabledUpdateBeiginTime}
                     onChange={this.props.onUpdateBeginDateAndTimeChange}
+                    style={{ width: 190 }}
                   />
                 </FormItem>
               </Col>
@@ -650,6 +653,7 @@ class SelfListen extends Component {
                     disabledDate={this.props.disabledUpdateEndDate}
                     disabledTime={this.props.disabledUpdateEndTime}
                     onChange={this.props.onUpdateEndDateAndTimeChange}
+                    style={{ width: 190 }}
                   />
                 </FormItem>
               </Col>
