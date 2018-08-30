@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-30 17:22:28
+ * @Last Modified time: 2018-08-30 17:57:51
  */
 
 
@@ -174,7 +174,7 @@ class SelfTagTag extends Component {
     // 处理排序的
     options.orderBy = options.sortIndex === 0 ? 'createdAt' : 'updatedAt'
     delete options.sortIndex
-    options.desc = options.sortDirection === 'up' ? true : false
+    options.desc = options.sortDirection === 'up' ? false : true
     delete options.sortDirection
 
     options.ids = options.selectedRowKeys
