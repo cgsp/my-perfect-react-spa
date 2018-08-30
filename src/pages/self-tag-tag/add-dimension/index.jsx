@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Modal, Form, Input, Radio, InputNumber, Row, Col, message } from 'antd'
+import { Modal, Form, Input, Radio } from 'antd'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
 import { getCommonDimesions } from '@Redux/commonTagAndDimesion'

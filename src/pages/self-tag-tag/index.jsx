@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-30 15:30:17
+ * @Last Modified time: 2018-08-30 17:26:44
  */
 
 
@@ -21,9 +21,8 @@ import TimeControlHoc from '@Components/time-control-hoc'
 import { connect } from 'react-redux'
 import { getCommonDimesions } from '@Redux/commonTagAndDimesion'
 
-import { apiSelfTagDimensionList, apiSelfTagDimensionDetailList, apiSelfTagDetailDelete } from '@Api/self-tag-dimension'
 import {
-  apiSelfTagTagList, apiSelfAllDemensions, apiSelfTagTagDelete, apiSelfAddOrEdit
+  apiSelfTagTagList, apiSelfTagTagDelete, apiSelfAddOrEdit, apiSelfTagDetail
 } from '@Api/self-tag-tag'
 import SelfTagTagListTable from './list-table'
 import WrapperSelfTagDimensionAddOrEdit from './add-or-edit'
@@ -65,7 +64,6 @@ class SelfTagTag extends Component {
     this.clickSort = this.clickSort.bind(this)
     this.detailCancel = this.detailCancel.bind(this)
     this.detailPageOrPageSizeChange = this.detailPageOrPageSizeChange.bind(this)
-    this.detailLineEditOrDelete = this.detailLineEditOrDelete.bind(this)
     this.addOrEditOk = this.addOrEditOk.bind(this)
     this.addOrEditCancel = this.addOrEditCancel.bind(this)
   }
@@ -228,10 +226,14 @@ class SelfTagTag extends Component {
 
   // 维度或者标签导出
   export(url) {
+    if (!url) {
+      return
+    }
     this.setState({}, () => {
       const state = { ...this.state, ...this.props.state }
       const {
         searchTagName,
+        searchDimensionId,
         sortIndex,
         sortDirection,
         selectedRowKeys,
@@ -239,8 +241,10 @@ class SelfTagTag extends Component {
         searchCreateTimeEnd,
         searchUpdateTimeBegin,
         searchUpdateTimeEnd } = state
+
       let options = {
         searchTagName,
+        searchDimensionId,
         sortIndex,
         sortDirection,
         selectedRowKeys,
@@ -249,6 +253,8 @@ class SelfTagTag extends Component {
         searchUpdateTimeBegin,
         searchUpdateTimeEnd
       }
+
+
 
       options = this.handleSearchOrExportOptions(options)
 
@@ -274,7 +280,7 @@ class SelfTagTag extends Component {
 
       let str = baseURL + url + '?'
       for (const key in options) {
-        if (options[key] || options[key] === 0) {
+        if (options[key] || options[key] === 0 || options[key] === false) {
           str += `${key}=${options[key]}&`
         }
       }
@@ -366,10 +372,14 @@ class SelfTagTag extends Component {
   }
 
   // 查看专辑数的详情--弹框列表
-  tableLineShowDetails(line) {
+  tableLineShowDetails(line, type) {
     console.log('查看详情', line)
-    this.detailDimensionId = line.id
-    this.detailValueType = line.valueType
+    if (type === '主站') {
+      this.detailContentType = 1
+    } else {
+      this.detailContentType = 2
+    }
+    this.detailTagId = line.id
     this.setState({
       detailPageNo: 1,
       detailPageSize: 10,
@@ -377,14 +387,15 @@ class SelfTagTag extends Component {
     this.getDetailData({
       pageNo: 1,
       pageSize: 10,
-      dimensionId: this.detailDimensionId,
+      tagId: this.detailTagId,
+      contentType: this.detailContentType
     })
   }
 
   // 获取专辑详情列表的配套函数
-  getDetailData(options, callBack) {
+  getDetailData(options) {
     this.refs.mask.show()
-    apiSelfTagDimensionDetailList(options)
+    apiSelfTagDetail(options)
       .then(res => {
         this.refs.mask.hide()
         if (res.code !== ERR_OK) {
@@ -400,11 +411,6 @@ class SelfTagTag extends Component {
           detailTotal: res.data.totalNum,
           detailVisible: true
         })
-        // 针对删除，编之后，重新刷新页面的提示
-        if (options.tip) {
-          message.success(`${options.tip}成功`)
-        }
-        callBack && callBack()
       })
   }
 
@@ -417,62 +423,10 @@ class SelfTagTag extends Component {
     this.getDetailData({
       pageNo: current,
       pageSize,
-      dimensionId: this.detailDimensionId
+      tagId: this.detailTagId,
+      contentType: this.detailContentType
     })
   }
-
-  // 详情页面里面的删除与编辑
-  detailLineEditOrDelete(line, type) {
-    if (type === '删除') {
-      const that = this
-      Modal.confirm({
-        title: '确定要删除吗？',
-        content: '删除了之后，所有专辑对应的该标签都会被删除',
-        onOk: () => {
-          that.handleSelfDetailDelete(line.id)
-        }
-      })
-
-    } else {
-      // 打开编辑的弹框
-      this.tagId = line.id
-      this.setState({
-        addOrEditTitle: '编辑标签',
-        addOrEditVisible: true,
-        addOrEditInitValues: {
-          name: line.name,
-          valueType: this.detailValueType
-        }
-      })
-    }
-  }
-
-  // 详情里面的删除的辅助函数
-  handleSelfDetailDelete(id) {
-    this.refs.mask.show()
-    apiSelfTagDetailDelete(id)
-      .then(res => {
-        this.refs.mask.hide()
-        if (res.code !== ERR_OK) {
-          message.error(res.msg)
-          return
-        }
-        // 刷新详情的列表页面
-        this.setState({}, () => {
-          this.getDetailData({
-            pageNo: this.detailPageNo,
-            pageSize: this.detailPageSize,
-            dimensionId: this.detailDimensionId,
-            tip: '删除标签'
-          }, () => {
-            // 刷新维度列表页面
-            this.searchList()
-          })
-        })
-      })
-  }
-
-
 
   // 显示详情total
   detailShowTotal(total) {
@@ -481,8 +435,8 @@ class SelfTagTag extends Component {
 
   // 关闭详情列表
   detailCancel() {
-    this.detailDimensionId = ''
-    this.tagId = ''
+    this.detailTagId = ''
+    this.detailContentType = ''
     this.setState({
       detailVisible: false
     })
@@ -667,8 +621,8 @@ class SelfTagTag extends Component {
           <Row>
             <Col span={24} className="line">
               <Button className="btn" type="primary" onClick={() => this.addDimension()}>新增标签</Button>
-              <Button className="btn" type="primary" onClick={() => this.export('/dimension/downloadDimensions')}>标签批量导出</Button>
-              <Button className="btn" type="primary" onClick={() => this.export('/dimension/downloadDimensionsWithTags')}>专辑批量导出</Button>
+              <Button className="btn" type="primary" onClick={() => this.export()}>标签批量导出</Button>
+              <Button className="btn" type="primary" onClick={() => this.export()}>专辑批量导出</Button>
               <div className="sort-box">
                 <span className="sort-title">排序方式：</span>
                 <SortList clickSort={this.clickSort} />

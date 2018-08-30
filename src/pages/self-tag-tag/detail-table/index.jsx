@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Modal, Pagination, Table, Divider } from 'antd'
+import { Modal, Pagination, Table } from 'antd'
 import { myGetStrTime } from '@Utils/myGetTime'
 import { PropTypes } from 'prop-types'
 
@@ -18,48 +18,59 @@ export default class SelfTagDimensionDetailTable extends Component {
 
 
   render() {
-    const columns = [{
-      title: '标签名称',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: '发布时间',
-      dataIndex: 'createTime',
-      key: 'createTime',
-      render: (text, record) => {
-        const str = myGetStrTime(text)
-        return (
-          <span>{str}</span>
-        )
-      }
-    },
-    {
-      title: '更新时间',
-      dataIndex: 'updateTime',
-      key: 'updateTime',
-      render: (text, record) => {
-        const str = myGetStrTime(text)
-        return (
-          <span>{str}</span>
-        )
-      }
-    }, {
-      title: '创建人',
-      dataIndex: 'operator',
-      key: 'operator'
-    }, {
-      title: '操作',
-      key: 'action',
-      render: (text, record) => {
-        return (
-          <span>
-            <i style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.props.detailLineEditOrDelete(record, '编辑')}>编辑</i>
-            <Divider type="vertical" />
-            <i style={{ color: 'red', cursor: 'pointer' }} onClick={() => this.props.detailLineEditOrDelete(record, '删除')}>删除</i>
-          </span>)
+    const columns = [
+      {
+        title: '专辑Id',
+        dataIndex: 'id',
+        key: 'id',
+        render: (text, record) =>
+          (
+            <a href={record.url} target="_blank" style={{ display: 'inline-block', cursor: 'pointer' }}>
+              {text}
+            </a>
+          )
       },
-    }]
+      {
+        title: '专辑名称',
+        dataIndex: 'title',
+        key: 'title'
+      },
+      {
+        title: '状态',
+        dataIndex: 'onlineStatus',
+        key: 'onlineStatus',
+        render: (text, record) =>
+          (
+            <span>{text === 1 ? '已上架' : '已下架'}</span>
+          )
+      },
+      {
+        title: '声音数',
+        dataIndex: 'tracksNum',
+        key: 'tracksNum'
+      },
+      {
+        title: '发布时间',
+        dataIndex: 'createdAt',
+        key: 'createdAt',
+        render: (text, record) => {
+          const str = myGetStrTime(text)
+          return (
+            <span>{str}</span>
+          )
+        }
+      },
+      {
+        title: '更新时间',
+        dataIndex: 'updatedAt',
+        key: 'updatedAt',
+        render: (text, record) => {
+          const str = myGetStrTime(text)
+          return (
+            <span>{str}</span>
+          )
+        }
+      }]
     return (
       <Modal
         title="专辑列表"

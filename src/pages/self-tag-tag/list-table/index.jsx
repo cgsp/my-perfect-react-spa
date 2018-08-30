@@ -55,7 +55,7 @@ export default class SelfTagTagListTable extends Component {
         key: 'openapiContentsNum',
         width: 80,
         render: (text, record) => (
-          <span style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.props.tableLineShowDetails(record, '主站')}>{text}</span>
+          <span style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.props.tableLineShowDetails(record, '自运营')}>{text}</span>
         )
       },
       {

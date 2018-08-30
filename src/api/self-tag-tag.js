@@ -75,4 +75,16 @@ export const apiSelfAddOrEdit = (options) => {
     })
 }
 
+// 查看详情
+export const apiSelfTagDetail = (options) => {
+  return myAxios(
+    {
+      url: '/tag/albums',
+      method: 'get',
+      params: options,
+      data: {},
+      headers: defaultHeader
+    })
+}
+
 

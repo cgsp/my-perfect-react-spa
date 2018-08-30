@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-30 13:00:31
+ * @Last Modified time: 2018-08-30 17:22:28
  */
 
 
@@ -267,7 +267,7 @@ class SelfTagTag extends Component {
 
       let str = baseURL + url + '?'
       for (const key in options) {
-        if (options[key] || options[key] === 0) {
+        if (options[key] || options[key] === 0 || options[key] === false) {
           str += `${key}=${options[key]}&`
         }
       }
