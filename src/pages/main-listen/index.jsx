@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-30 10:00:21
+ * @Last Modified time: 2018-08-30 12:56:27
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal, message } from 'antd'
@@ -547,6 +547,7 @@ class SelfListen extends Component {
                     style={{ width: 190 }}
                     allowClear
                     onChange={value => this.setState({ contentType: value })}
+                    getPopupContainer={trigger => trigger.parentNode}
                   >
                     <Option value="1">专辑</Option>
                     <Option value="2">声音</Option>
@@ -562,6 +563,7 @@ class SelfListen extends Component {
                     style={{ width: 190 }}
                     allowClear
                     onChange={value => this.setState({ categoryId: value })}
+                    getPopupContainer={trigger => trigger.parentNode}
                   >
                     {
                       this.state.categories.map((item) => (
@@ -578,6 +580,7 @@ class SelfListen extends Component {
                     style={{ width: 190 }}
                     allowClear
                     onChange={value => this.setState({ onlineStatus: value })}
+                    getPopupContainer={trigger => trigger.parentNode}
                   >
                     <Option value="1">已上架</Option>
                     <Option value="2">已下架</Option>
@@ -601,6 +604,7 @@ class SelfListen extends Component {
                     disabledTime={this.props.disabledCreateBeiginTime}
                     onChange={this.props.onCreateBeginDateAndTimeChange}
                     style={{ width: 190 }}
+                    getCalendarContainer={trigger => trigger.parentNode}
                   />
                 </FormItem>
 
@@ -622,6 +626,7 @@ class SelfListen extends Component {
                     disabledTime={this.props.disabledCreateEndTime}
                     onChange={this.props.onCreateEndDateAndTimeChange}
                     style={{ width: 190 }}
+                    getCalendarContainer={trigger => trigger.parentNode}
                   />
                 </FormItem>
               </Col>
@@ -642,6 +647,7 @@ class SelfListen extends Component {
                     disabledTime={this.props.disabledUpdateBeiginTime}
                     onChange={this.props.onUpdateBeginDateAndTimeChange}
                     style={{ width: 190 }}
+                    getCalendarContainer={trigger => trigger.parentNode}
                   />
                 </FormItem>
               </Col>
@@ -659,6 +665,7 @@ class SelfListen extends Component {
                     disabledTime={this.props.disabledUpdateEndTime}
                     onChange={this.props.onUpdateEndDateAndTimeChange}
                     style={{ width: 190 }}
+                    getCalendarContainer={trigger => trigger.parentNode}
                   />
                 </FormItem>
               </Col>

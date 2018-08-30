@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-29 17:29:44
+ * @Last Modified time: 2018-08-30 12:59:56
  */
 
 
@@ -21,8 +21,10 @@ import TimeControlHoc from '@Components/time-control-hoc'
 import { connect } from 'react-redux'
 import { getCommonDimesions } from '@Redux/commonTagAndDimesion'
 
-import { apiSelfTagDimensionList, apiSelfTagDimensionDetailList, apiSelfTagDimensionDelete, apiSelfTagDimensionAddOrEdit, apiSelfTagDetailDelete } from '@Api/self-tag-dimension'
-import { apiSelfTagTagList, apiSelfAllDemensions } from '@Api/self-tag-tag'
+import { apiSelfTagDimensionList, apiSelfTagDimensionDetailList, apiSelfTagDimensionAddOrEdit, apiSelfTagDetailDelete } from '@Api/self-tag-dimension'
+import {
+  apiSelfTagTagList, apiSelfAllDemensions, apiSelfTagTagDelete
+} from '@Api/self-tag-tag'
 import SelfTagTagListTable from './list-table'
 import WrapperSelfTagDimensionAddOrEdit from './add-or-edit'
 import SelfTagDimensionDetailTable from './detail-table'
@@ -58,7 +60,6 @@ class SelfTagTag extends Component {
     this.pageOrPageSizeChange = this.pageOrPageSizeChange.bind(this)
     this.tableLineEdit = this.tableLineEdit.bind(this)
     this.tableLineDelete = this.tableLineDelete.bind(this)
-    this.tableLineAdd = this.tableLineAdd.bind(this)
     this.tableSelect = this.tableSelect.bind(this)
     this.tableLineShowDetails = this.tableLineShowDetails.bind(this)
     this.clickSort = this.clickSort.bind(this)
@@ -94,7 +95,11 @@ class SelfTagTag extends Component {
   // 点击查询
   handleSearch = (e) => {
     e.preventDefault()
-    this.searchList()
+    this.setState({
+      pageNo: 1
+    }, () => {
+      this.searchList()
+    })
   }
 
   // 翻页或者每页尺寸改变
@@ -122,6 +127,7 @@ class SelfTagTag extends Component {
         pageSize,
         pageNo,
         searchTagName,
+        searchDimensionId,
         sortIndex,
         sortDirection,
         searchCreateTimeBegin,
@@ -133,6 +139,7 @@ class SelfTagTag extends Component {
         pageSize,
         pageNo,
         searchTagName,
+        searchDimensionId,
         sortIndex,
         sortDirection,
         searchCreateTimeBegin,
@@ -294,13 +301,14 @@ class SelfTagTag extends Component {
     this.editDimensionId = line.id
   }
 
+  // 删除标签的处理
   tableLineDelete(line) {
     console.log('删除', line)
     Modal.confirm({
       title: '确定要删除吗？',
-      content: '删除了之后，所有专辑对应的该维度，包括其标签都会被删除',
+      content: '删除了之后，所有专辑对应的该标签都会被删除',
       onOk: () => {
-        apiSelfTagDimensionDelete(line.id)
+        apiSelfTagTagDelete(line.id)
           .then(res => {
             if (res.code !== ERR_OK) {
               message.error(res.msg)
@@ -313,23 +321,10 @@ class SelfTagTag extends Component {
     })
   }
 
-  // 列表页面，在当前维度下面添加标签
-  tableLineAdd(line) {
-    console.log('添加标签', line)
-    this.addTagDimensionId = line.id
-    this.setState({
-      addOrEditTitle: '添加标签',
-      addOrEditVisible: true,
-      addOrEditInitValues: line
-    })
-    // 更新下公用的维度数据
-    // this.props.getCommonDimesions()
-  }
-
   // 新增标签
   addDimension() {
     this.setState({
-      addOrEditTitle: '新增维度',
+      addOrEditTitle: '新增标签',
       addOrEditVisible: true,
       addOrEditInitValues: {}
     })
@@ -373,7 +368,7 @@ class SelfTagTag extends Component {
     })
   }
 
-  // 新增维度，编辑维度，添加标签的辅助函数
+  // 新增标签，编辑维度，添加标签的辅助函数
   handleSelfTagDimensionAddOrEdit(options, callBack) {
     this.refs.mask.show()
     apiSelfTagDimensionAddOrEdit(options)
@@ -526,7 +521,6 @@ class SelfTagTag extends Component {
       total: this.state.tableTotal,
       tableLineEdit: this.tableLineEdit,
       tableLineDelete: this.tableLineDelete,
-      tableLineAdd: this.tableLineAdd,
       tableSelect: this.tableSelect,
       selectedRowKeys: this.state.selectedRowKeys,
       tableLineShowDetails: this.tableLineShowDetails,
@@ -571,7 +565,7 @@ class SelfTagTag extends Component {
                   className="form-item"
                   label={<span className="form-label">标签名称</span>}
                 >
-                  <Input placeholder="请输入标签名称" onChange={e => this.setState({ searchTagName: e.target.value })} />
+                  <Input style={{ width: 190 }} placeholder="请输入标签名称" onChange={e => this.setState({ searchTagName: e.target.value })} />
                 </FormItem>
               </Col>
               <Col span={6}>
@@ -580,10 +574,11 @@ class SelfTagTag extends Component {
                   label={<span className="form-label">维度</span>}
                 >
                   <Select
+                    style={{ width: 190 }}
                     placeholder="请选择维度"
-                    style={{ minWidth: 171 }}
                     allowClear
                     onChange={value => this.setState({ searchDimensionId: value })}
+                    getPopupContainer={trigger => trigger.parentNode}
                   >
                     {
                       this.props.commonDimesions.map((item) => (
@@ -599,6 +594,7 @@ class SelfTagTag extends Component {
                   label={<span className="form-label">创建时间</span>}
                 >
                   <DatePicker
+                    style={{ width: 190 }}
                     showTime={
                       {
                         defaultValue: moment().startOf('day'),
@@ -612,6 +608,7 @@ class SelfTagTag extends Component {
                     disabledDate={this.props.disabledCreateBeginDate}
                     disabledTime={this.props.disabledCreateBeiginTime}
                     onChange={this.props.onCreateBeginDateAndTimeChange}
+                    getCalendarContainer={trigger => trigger.parentNode}
                   />
                 </FormItem>
 
@@ -622,6 +619,7 @@ class SelfTagTag extends Component {
                   label={<span className="form-label">创建时间</span>}
                 >
                   <DatePicker
+                    style={{ width: 190 }}
                     showTime={
                       {
                         defaultValue: moment().endOf('day'),
@@ -635,6 +633,7 @@ class SelfTagTag extends Component {
                     disabledDate={this.props.disabledCreateEndDate}
                     disabledTime={this.props.disabledCreateEndTime}
                     onChange={this.props.onCreateEndDateAndTimeChange}
+                    getCalendarContainer={trigger => trigger.parentNode}
                   />
                 </FormItem>
               </Col>
@@ -646,6 +645,7 @@ class SelfTagTag extends Component {
                   label={<span className="form-label">更新时间</span>}
                 >
                   <DatePicker
+                    style={{ width: 190 }}
                     showTime={
                       { defaultValue: moment().startOf('day'), hideDisabledOptions: true }
 
@@ -657,6 +657,7 @@ class SelfTagTag extends Component {
                     disabledDate={this.props.disabledUpdateBeginDate}
                     disabledTime={this.props.disabledUpdateBeiginTime}
                     onChange={this.props.onUpdateBeginDateAndTimeChange}
+                    getCalendarContainer={trigger => trigger.parentNode}
                   />
                 </FormItem>
               </Col>
@@ -666,6 +667,7 @@ class SelfTagTag extends Component {
                   label={<span className="form-label">更新时间</span>}
                 >
                   <DatePicker
+                    style={{ width: 190 }}
                     showTime={
                       { defaultValue: moment().endOf('day'), hideDisabledOptions: true }
                     }
@@ -676,6 +678,7 @@ class SelfTagTag extends Component {
                     disabledDate={this.props.disabledUpdateEndDate}
                     disabledTime={this.props.disabledUpdateEndTime}
                     onChange={this.props.onUpdateEndDateAndTimeChange}
+                    getCalendarContainer={trigger => trigger.parentNode}
                   />
                 </FormItem>
               </Col>
@@ -689,9 +692,9 @@ class SelfTagTag extends Component {
         <List className="handle-buttons">
           <Row>
             <Col span={24} className="line">
-              <Button className="btn" type="primary" onClick={() => this.addDimension()}>新增维度</Button>
-              <Button className="btn" type="primary" onClick={() => this.export('/dimension/downloadDimensions')}>维度导出</Button>
-              <Button className="btn" type="primary" onClick={() => this.export('/dimension/downloadDimensionsWithTags')}>标签导出</Button>
+              <Button className="btn" type="primary" onClick={() => this.addDimension()}>新增标签</Button>
+              <Button className="btn" type="primary" onClick={() => this.export('/dimension/downloadDimensions')}>标签批量导出</Button>
+              <Button className="btn" type="primary" onClick={() => this.export('/dimension/downloadDimensionsWithTags')}>专辑批量导出</Button>
               <div className="sort-box">
                 <span className="sort-title">排序方式：</span>
                 <SortList clickSort={this.clickSort} />

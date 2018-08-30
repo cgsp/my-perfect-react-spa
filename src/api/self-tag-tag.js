@@ -32,12 +32,13 @@ export const apiSelfTagTagDetailList = (options) => {
 export const apiSelfTagTagDelete = (id) => {
   return myAxios(
     {
-      url: 'apiSelfTagTagDelete',
-      method: 'post',
-      params: {},
-      data: { id },
+      url: '/tag/deleteTag',
+      method: 'put',
+      params: { id },
+      data: {},
       headers: defaultHeader
     })
 }
+
 
 

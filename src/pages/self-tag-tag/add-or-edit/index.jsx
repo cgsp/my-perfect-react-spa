@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { Modal, Form, Input, Radio, InputNumber, Row, Col, message } from 'antd'
+import { Modal, Form, Input, Radio, InputNumber, Row, Col, message, Select } from 'antd'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
 import { getCommonDimesions } from '@Redux/commonTagAndDimesion'
 
 const FormItem = Form.Item
 const RadioGroup = Radio.Group
+const Option = Select.Option
 
 
 @connect(
@@ -23,56 +24,20 @@ class SelfTagDimensionAddOrEdit extends Component {
 
   constructor(props) {
     super(props)
-    this.state = {
-      num1: this.props.addOrEditInitValues.name?this.props.addOrEditInitValues.name.split('~')[0] - 0 :
-      0,
-      num2: this.props.addOrEditInitValues.name
-      ?
-      this.props.addOrEditInitValues.name.split('~')[1] - 0 :
-      0,
-    }
   }
 
   handleSubmit = () => {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        const title = this.props.addOrEditTitle
-        if ((this.props.addOrEditTitle === '添加标签' || this.props.addOrEditTitle === '编辑标签') && this.props.addOrEditInitValues.valueType === 3) {
-          let num1
-          let num2
-          this.setState({}, () => {
-            num1 = this.state.num1 - 0
-            num2 = this.state.num2 - 0
-            console.log(num1, num2)
-            if (!num1 && num1 !== 0) {
-              message.error('请输入数值')
-              return
-            }
-            if (!num2 && num2 !== 0) {
-              message.error('请输入数值')
-              return
-            }
-            if (num1 >= num2) {
-              message.error('后一个数值应该大于前一个数字')
-              return
-            }
-            if (typeof num1 !== 'number' || typeof num2 !== 'number') {
-              message.error('前后数值都应该是数字')
-              return
-            }
-            values.name = `${num1}~${num2}`
-            this.props.addOrEditOk(values, title)
-          })
-        } else {
-          console.log('提交', values)
-          this.props.addOrEditOk(values, title)
-        }
+        console.log('提交', values)
+        this.props.addOrEditOk(values)
       }
     })
   }
 
   render() {
     const { getFieldDecorator } = this.props.form
+    const { commonDimesions } = this.props
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -97,6 +62,8 @@ class SelfTagDimensionAddOrEdit extends Component {
     //   }
     // }
 
+    console.log(this.props.commonDimesions)
+
 
     return (
       <Modal
@@ -104,59 +71,97 @@ class SelfTagDimensionAddOrEdit extends Component {
         visible={this.props.addOrEditVisible}
         onCancel={this.props.addOrEditCancel}
         onOk={() => this.handleSubmit()}
-        confirmLoading={this.props.editOrEditConfirmLoading}
-        width={800}
         destroyOnClose={true}
         zIndex={10000}
       >
-        <div style={{ maxHeight: 550, overflowY: 'scroll', paddingRight: 40 }}>
+        <div style={{ maxHeight: 550, overflowY: 'scroll' }}>
           <Form
             onSubmit={this.handleSubmit}
           >
-            {
-              (this.props.addOrEditTitle === '添加标签' || this.props.addOrEditTitle === '编辑标签') && this.props.addOrEditInitValues.valueType !== 3 ?
-                <div>
-                  <FormItem
-                    {...formItemLayout}
-                    label="该维度下标签名称类型"
-                  >
-                    <RadioGroup
-                      defaultValue={this.props.addOrEditInitValues.valueType}
-                      disabled
-                    >
-                      <Radio value={1}>文本</Radio>
-                      <Radio value={2}>数值</Radio>
-                      <Radio value={3}>数值范围</Radio>
-                    </RadioGroup>
-                  </FormItem>
-                  <FormItem
-                    {...formItemLayout}
-                    label="标签名称"
+            <FormItem
+              {...formItemLayout}
+              label="维度"
+            >
+              {
+                getFieldDecorator('dimensionId', {
+                  initialValue: this.props.addOrEditInitValues.dimensionId,
+                  rules: [
+                    {
+                      required: true, message: '请选择维度',
+                    }
+                  ],
+                })(
+                  <Select
+                    style={{ width: 190 }}
+                    placeholder="请选择维度"
+                    allowClear
                   >
                     {
-                      getFieldDecorator('name', {
-                        initialValue: this.props.addOrEditInitValues.name,
-                        rules: [
-                          {
-                            required: true, message: '请输入标签名称',
-                          }
-                        ],
-                      })(
-                        this.props.addOrEditInitValues.valueType === 1
-                          ?
-                          <Input placeholder="请输入标签名称" />
-                          :
-                          <InputNumber
-                            placeholder="请输入数字"
-                            style={{ width: 200 }}
-                          />
-                      )
+                      commonDimesions.map((item) => (
+                        <Option key={item.id} value={item.id}>{item.dimensionName}</Option>
+                      ))
                     }
+                  </Select>
+                )
+              }
+            </FormItem>
+            <FormItem
+              {...formItemLayout}
+              label="Select"
+              hasFeedback
+            >
+              {getFieldDecorator('select', {
+                rules: [
+                  { required: true, message: 'Please select your country!' },
+                ],
+              })(
+                <Select 
+                placeholder="Please select a country"
+                getPopupContainer={trigger => trigger.parentNode}
+                >
+                  <Option value="china">China</Option>
+                  <Option value="use">U.S.A</Option>
+                </Select>
+              )}
+            </FormItem>
+            <FormItem
+              {...formItemLayout}
+              label="所选维度的标签类型"
+            >
+              <RadioGroup
+                defaultValue={this.props.addOrEditInitValues.valueType}
+                disabled
+              >
+                <Radio value={1}>文本</Radio>
+                <Radio value={2}>数值</Radio>
+                <Radio value={3}>数值范围</Radio>
+              </RadioGroup>
+            </FormItem>
+            <FormItem
+              {...formItemLayout}
+              label="标签名称"
+            >
+              {
+                getFieldDecorator('name', {
+                  initialValue: this.props.addOrEditInitValues.name,
+                  rules: [
+                    {
+                      required: true, message: '请输入标签名称',
+                    }
+                  ],
+                })(
+                  this.props.addOrEditInitValues.valueType === 1
+                    ?
+                    <Input placeholder="请输入标签名称" />
+                    :
+                    <InputNumber
+                      placeholder="请输入数字"
+                      style={{ width: 200 }}
+                    />
+                )
+              }
 
-                  </FormItem>
-                </div>
-                : null
-            }
+            </FormItem>
             {
               (this.props.addOrEditTitle === '添加标签' || this.props.addOrEditTitle === '编辑标签') && this.props.addOrEditInitValues.valueType === 3 ?
                 <div>
@@ -213,74 +218,7 @@ class SelfTagDimensionAddOrEdit extends Component {
                 </div>
                 : null
             }
-            {
-              this.props.addOrEditTitle === '添加标签' || this.props.addOrEditTitle === '编辑标签' ?
-                null
-                :
-                <FormItem
-                  {...formItemLayout}
-                  label="维度名称"
-                >
-                  {getFieldDecorator('dimensionName', {
-                    initialValue: this.props.addOrEditInitValues.dimensionName,
-                    rules: [
-                      {
-                        required: true, message: '请输入维度名称',
-                      }
-                    ],
-                  })(
-                    <Input placeholder="请输入维度名称" />
-                  )}
-                </FormItem>
-            }
-            {
-              this.props.addOrEditTitle === '添加标签' || this.props.addOrEditTitle === '编辑标签' ?
-                null
-                :
-                <FormItem
-                  {...formItemLayout}
-                  label="该维度下标签是否支持多选"
-                >
-                  {getFieldDecorator('choiceType', {
-                    initialValue: this.props.addOrEditInitValues.choiceType ? this.props.addOrEditInitValues.choiceType : 2,
-                    rules: [
-                      {
-                        required: true, message: '请选择',
-                      }
-                    ],
-                  })(
-                    <RadioGroup>
-                      <Radio value={2}>支持多选</Radio>
-                      <Radio value={1}>只能单选</Radio>
-                    </RadioGroup>
-                  )}
-                </FormItem>
-            }
-            {
-              this.props.addOrEditTitle === '添加标签' || this.props.addOrEditTitle === '编辑标签'
-                ?
-                null
-                :
-                <FormItem
-                  {...formItemLayout}
-                  label="该维度下标签名称类型"
-                >
-                  {getFieldDecorator('valueType', {
-                    initialValue: this.props.addOrEditInitValues.valueType ? this.props.addOrEditInitValues.valueType : 1,
-                    rules: [
-                      {
-                        required: true, message: '请选择该维度下标签名称类型'
-                      }
-                    ],
-                  })(
-                    <RadioGroup>
-                      <Radio value={1}>文本</Radio>
-                      <Radio value={2}>数值</Radio>
-                      <Radio value={3}>数值范围</Radio>
-                    </RadioGroup>
-                  )}
-                </FormItem>
-            }
+
           </Form>
         </div>
       </Modal >

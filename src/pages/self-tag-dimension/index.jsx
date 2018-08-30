@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-30 10:05:08
+ * @Last Modified time: 2018-08-30 13:00:31
  */
 
 
@@ -571,7 +571,7 @@ class SelfTagTag extends Component {
                   className="form-item"
                   label={<span className="form-label">维度名称</span>}
                 >
-                  <Input placeholder="请输入维度名称" onChange={e => this.setState({ searchDimensionName: e.target.value })} />
+                  <Input style={{ width: 190 }} placeholder="请输入维度名称" onChange={e => this.setState({ searchDimensionName: e.target.value })} />
                 </FormItem>
               </Col>
               <Col span={6}>
@@ -580,6 +580,7 @@ class SelfTagTag extends Component {
                   label={<span className="form-label">创建时间</span>}
                 >
                   <DatePicker
+                    style={{ width: 190 }}
                     showTime={
                       {
                         defaultValue: moment().startOf('day'),
@@ -593,6 +594,7 @@ class SelfTagTag extends Component {
                     disabledDate={this.props.disabledCreateBeginDate}
                     disabledTime={this.props.disabledCreateBeiginTime}
                     onChange={this.props.onCreateBeginDateAndTimeChange}
+                    getCalendarContainer={trigger => trigger.parentNode}
                   />
                 </FormItem>
 
@@ -603,6 +605,7 @@ class SelfTagTag extends Component {
                   label={<span className="form-label">创建时间</span>}
                 >
                   <DatePicker
+                    style={{ width: 190 }}
                     showTime={
                       {
                         defaultValue: moment().endOf('day'),
@@ -616,17 +619,17 @@ class SelfTagTag extends Component {
                     disabledDate={this.props.disabledCreateEndDate}
                     disabledTime={this.props.disabledCreateEndTime}
                     onChange={this.props.onCreateEndDateAndTimeChange}
+                    getCalendarContainer={trigger => trigger.parentNode}
                   />
                 </FormItem>
               </Col>
-            </Row>
-            <Row>
               <Col span={6}>
                 <FormItem
                   className="form-item"
                   label={<span className="form-label">更新时间</span>}
                 >
                   <DatePicker
+                    style={{ width: 190 }}
                     showTime={
                       { defaultValue: moment().startOf('day'), hideDisabledOptions: true }
 
@@ -638,15 +641,19 @@ class SelfTagTag extends Component {
                     disabledDate={this.props.disabledUpdateBeginDate}
                     disabledTime={this.props.disabledUpdateBeiginTime}
                     onChange={this.props.onUpdateBeginDateAndTimeChange}
+                    getCalendarContainer={trigger => trigger.parentNode}
                   />
                 </FormItem>
               </Col>
+            </Row>
+            <Row>
               <Col span={6}>
                 <FormItem
                   className="form-item"
                   label={<span className="form-label">更新时间</span>}
                 >
                   <DatePicker
+                    style={{ width: 190 }}
                     showTime={
                       { defaultValue: moment().endOf('day'), hideDisabledOptions: true }
                     }
@@ -657,6 +664,7 @@ class SelfTagTag extends Component {
                     disabledDate={this.props.disabledUpdateEndDate}
                     disabledTime={this.props.disabledUpdateEndTime}
                     onChange={this.props.onUpdateEndDateAndTimeChange}
+                    getCalendarContainer={trigger => trigger.parentNode}
                   />
                 </FormItem>
               </Col>

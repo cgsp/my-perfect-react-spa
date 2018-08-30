@@ -138,8 +138,8 @@ export default class MainListenListTable extends Component {
       },
       {
         title: '更新时间',
-        dataIndex: 'releasedAt',
-        key: 'releasedAt',
+        dataIndex: 'updatedAt',
+        key: 'updatedAt',
         width: 120,
         render: (text, record) => {
           const str = myGetStrTime(text)
