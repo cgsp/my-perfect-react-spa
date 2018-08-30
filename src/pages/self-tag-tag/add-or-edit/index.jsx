@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Modal, Form, Input, Radio, InputNumber, Row, Col, message, Select, Button } from 'antd'
 import { PropTypes } from 'prop-types'
 import WrapperSelfAddDimension from '../add-dimension'
+import MaskLoading from '@Components/mask-loading'
 import { connect } from 'react-redux'
 import { getCommonDimesions } from '@Redux/commonTagAndDimesion'
 import { apiSelfAddDimension } from '@Api/self-tag-tag'
@@ -29,7 +30,11 @@ class SelfTagDimensionAddOrEdit extends Component {
     super(props)
     let { valueType, name } = this.props.addOrEditInitValues
     valueType = valueType ? valueType : 1
+
+    let num1
+    let num2
     if (!name) {
+      console.log(111)
       if (valueType === 1) {
         name = ''
       } else if (valueType === 2) {
@@ -37,12 +42,18 @@ class SelfTagDimensionAddOrEdit extends Component {
       } else if (valueType === 3) {
         name = '0~0'
       }
+      num1 = 0
+      num2 = 0
+    }
+    else {
+      num1 = name.split('~')[0] - 0
+      num2 = name.split('~')[1] - 0
     }
     this.state = {
       valueType,
       name,
-      num1: 0,
-      num2: 0,
+      num1,
+      num2,
       addDimesinonVisible: false
     }
     this.addDimesinonCancel = this.addDimesinonCancel.bind(this)
@@ -126,15 +137,17 @@ class SelfTagDimensionAddOrEdit extends Component {
 
   addDimesinonOk(values) {
     console.log(values)
+    this.addDimesinonCancel()
+    this.refs.mask.show()
     apiSelfAddDimension(values)
       .then(res => {
+        this.refs.mask.hide()
         if (res.code !== ERR_OK) {
           message.error(res.msg)
           return
         }
         this.props.getCommonDimesions(() => {
           message.success('新增维度成功')
-          this.addDimesinonCancel()
         })
       })
   }
@@ -307,6 +320,8 @@ class SelfTagDimensionAddOrEdit extends Component {
               <WrapperSelfAddDimension {...addDimensionOptions} />
               : null
           }
+          <MaskLoading ref="mask" />
+
         </div>
       </Modal >
     )

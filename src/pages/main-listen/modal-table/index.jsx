@@ -12,80 +12,146 @@ export default class MainListenModalTable extends Component {
     modalTableOnShowSizeChange: PropTypes.func,
     modalTableOnChange: PropTypes.func,
     modalTableShowTotal: PropTypes.func,
-    modalTableData: PropTypes.array
+    modalTableData: PropTypes.array,
+    modalTableTitile: PropTypes.string,
   }
 
 
   render() {
-    const columns = [{
-      title: '专辑Id',
-      dataIndex: 'id',
-      key: 'id',
-      width: 100,
-      render: (text, record) =>
-        (
-          <a href={record.url} target="_blank" style={{ display: 'inline-block', cursor: 'pointer' }}>
-            {text}
-          </a>
-        )
-    }, {
-      title: '专辑名称',
-      dataIndex: 'title',
-      key: 'title',
-      width: 150
-    },
-    {
-      title: '声音数',
-      dataIndex: 'tracksNum',
-      key: 'tracksNum',
-      width: 100
-    },
-    {
-      title: '状态',
-      dataIndex: 'onlineStatus',
-      key: 'onlineStatus',
-      width: 100,
-      render: (text, record) => {
-        switch (text) {
-          case 1:
-            text = '已上架'
-            break
-          case 2:
-            text = '已下架'
-            break
-          default:
-            break
+    let columns
+    if (this.props.modalTableTitile === '专辑列表') {
+      columns = [{
+        title: '专辑Id',
+        dataIndex: 'id',
+        key: 'id',
+        width: 100,
+        render: (text, record) =>
+          (
+            <a href={record.url} target="_blank" style={{ display: 'inline-block', cursor: 'pointer' }}>
+              {text}
+            </a>
+          )
+      }, {
+        title: '专辑名称',
+        dataIndex: 'title',
+        key: 'title',
+        width: 150
+      },
+      {
+        title: '声音数',
+        dataIndex: 'tracksNum',
+        key: 'tracksNum',
+        width: 100
+      },
+      {
+        title: '状态',
+        dataIndex: 'onlineStatus',
+        key: 'onlineStatus',
+        width: 100,
+        render: (text, record) => {
+          switch (text) {
+            case 1:
+              text = '已上架'
+              break
+            case 2:
+              text = '已下架'
+              break
+            default:
+              break
+          }
+          return <span>{text}</span>
         }
-        return <span>{text}</span>
-      }
-    },
-    {
-      title: '创建时间',
-      dataIndex: 'createTime',
-      key: 'createTime',
-      width: 100,
-      render: (text, record) => {
-        const str = myGetStrTime(text)
-        return (
-          <span>{str}</span>
-        )
-      }
-    },
-    {
-      title: '更新时间',
-      dataIndex: 'updateTime',
-      key: 'updateTime',
-      width: 100,
-      render: (text, record) => {
-        const str = myGetStrTime(text)
-        return (
-          <span>{str}</span>
-        )
-      }
-    }]
+      },
+      {
+        title: '创建时间',
+        dataIndex: 'createTime',
+        key: 'createTime',
+        width: 100,
+        render: (text, record) => {
+          const str = myGetStrTime(text)
+          return (
+            <span>{str}</span>
+          )
+        }
+      },
+      {
+        title: '更新时间',
+        dataIndex: 'updateTime',
+        key: 'updateTime',
+        width: 100,
+        render: (text, record) => {
+          const str = myGetStrTime(text)
+          return (
+            <span>{str}</span>
+          )
+        }
+      }]
+    } else {
+      columns = [{
+        title: '声音Id',
+        dataIndex: 'id',
+        key: 'id',
+        width: 100,
+        render: (text, record) =>
+          (
+            <a href={record.url} target="_blank" style={{ display: 'inline-block', cursor: 'pointer' }}>
+              {text}
+            </a>
+          )
+      }, {
+        title: '声音名称',
+        dataIndex: 'title',
+        key: 'title',
+        width: 150
+      },
+      {
+        title: '状态',
+        dataIndex: 'onlineStatus',
+        key: 'onlineStatus',
+        width: 100,
+        render: (text, record) => {
+          switch (text) {
+            case 1:
+              text = '已上架'
+              break
+            case 2:
+              text = '已下架'
+              break
+            default:
+              break
+          }
+          return <span>{text}</span>
+        }
+      },
+      {
+        title: '创建时间',
+        dataIndex: 'createTime',
+        key: 'createTime',
+        width: 100,
+        render: (text, record) => {
+          const str = myGetStrTime(text)
+          return (
+            <span>{str}</span>
+          )
+        }
+      },
+      {
+        title: '更新时间',
+        dataIndex: 'updateTime',
+        key: 'updateTime',
+        width: 100,
+        render: (text, record) => {
+          const str = myGetStrTime(text)
+          return (
+            <span>{str}</span>
+          )
+        }
+      }]
+    }
+
     return (
       <Modal
-        title="专辑列表"
+        title={this.props.modalTableTitile}
         visible={this.props.modalTableVisible}
         onCancel={this.props.modalTableCancel}
         width={1100}

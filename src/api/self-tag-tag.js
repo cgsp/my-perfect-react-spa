@@ -64,6 +64,7 @@ export const apiSelfAddOrEdit = (options) => {
     method = 'put'
     url = '/tag/updateTag'
   }
+  delete options.type
   return myAxios(
     {
       url,

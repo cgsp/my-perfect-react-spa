@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-30 12:56:27
+ * @Last Modified time: 2018-08-30 16:14:49
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal, message } from 'antd'
@@ -221,8 +221,14 @@ class SelfListen extends Component {
     console.log('查看详情', line)
     if (line.contentType === 2) {
       this.type = '声音'
+      this.setState({
+        modalTableTitile: '声音列表'
+      })
     } else {
       this.type = '专辑'
+      this.setState({
+        modalTableTitile: '专辑列表'
+      })
     }
     this.id = line.id
     this.getModalListData({
@@ -501,6 +507,7 @@ class SelfListen extends Component {
       modalTableOnShowSizeChange: this.modalTableOnShowSizeChange,
       modalTableOnChange: this.modalTableOnChange,
       modalTableShowTotal: this.modalTableShowTotal,
+      modalTableTitile:this.state.modalTableTitile
     }
 
     const addOrEditOptions = {
