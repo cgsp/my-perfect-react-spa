@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-31 17:41:40
+ * @Last Modified time: 2018-08-31 18:05:32
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal, message, InputNumber } from 'antd'
@@ -119,6 +119,8 @@ class SelfListen extends Component {
 
   handleSearch = (e) => {
     e.preventDefault()
+    this.refs.syncColumnIdref.blur()
+    this.refs.idref.blur()
     this.setState({
       pageNo: 1
     }, () => {
@@ -535,13 +537,17 @@ class SelfListen extends Component {
               <Col span={6}>
                 <FormItem label={<span style={{ minWidth: 57, display: 'inline-block', textAlign: 'left' }}>主站Id</span>} style={{ marginBottom: 10, marginTop: 10 }}>
                   <InputNumber
-                    style={{ width: 190 }} placeholder="请输入主站Id" onChange={v => this.setState({ syncColumnId:v })}
+                    ref="syncColumnIdref"
+                    style={{ width: 190 }} placeholder="请输入主站Id"
+                    onChange={v => this.setState({ syncColumnId: v })
+                    }
                   />
                 </FormItem>
               </Col>
               <Col span={6}>
                 <FormItem label={<span style={{ minWidth: 57, display: 'inline-block', textAlign: 'left' }}>自运营Id</span>} style={{ marginBottom: 10, marginTop: 10 }}>
                   <InputNumber
+                    ref="idref"
                     style={{ width: 190 }} placeholder="请输入自运营Id" onChange={v => this.setState({ id: v })}
                   />
                 </FormItem>
