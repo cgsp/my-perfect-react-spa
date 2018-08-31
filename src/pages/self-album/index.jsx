@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-31 15:23:22
+ * @Last Modified time: 2018-08-31 15:50:18
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select } from 'antd'
@@ -147,7 +147,7 @@ class SelfTagTag extends Component {
 
 
   // 查询列表的配套函数
-  searchList(tip) {
+  searchList(tip, callBack) {
     this.setState({
     }, () => {
       const state = { ...this.state, ...this.props.state }
@@ -189,7 +189,7 @@ class SelfTagTag extends Component {
         searchUpdateTimeBegin,
         searchUpdateTimeEnd,
         tip
-      })
+      }, callBack)
     })
   }
 
@@ -240,7 +240,7 @@ class SelfTagTag extends Component {
   }
 
   // 获取列表页面的数据
-  getListData(options) {
+  getListData(options, callBack) {
     this.refs.mask.show()
 
     options = this.handleSearchOrExportOptions(options)
@@ -265,6 +265,7 @@ class SelfTagTag extends Component {
         if (options.tip) {
           message.success(`${options.tip}成功`)
         }
+        callBack && callBack(res.data.totalNum)
       })
   }
 
@@ -317,28 +318,42 @@ class SelfTagTag extends Component {
         searchUpdateTimeEnd
       }
 
-
-
       options = this.handleSearchOrExportOptions(options)
 
       delete options.selectedRowKeys
 
       console.log(options.albumIds)
-      if (options.albumIds.length === 0) {
-        delete options.albumIds
-      } else {
-        options.albumIds = options.albumIds.join()
-      }
-
-
-      if (type == '专辑批量导出') {
+      let newOptions
+      if (type === '专辑批量导出') {
         if (options.albumIds.length !== 0) {
-          this.exportHandle(options, '/custom/albums/batchDownload')
+          // 勾选了
+          newOptions = {
+            albumIds: options.albumIds
+          }
+          this.exportHandle(newOptions, '/custom/albums/batchDownload')
+        } else {
+          // 没勾选
+          delete options.albumIds
+          // 先判断数量，然后再导出
+          this.searchList('', (num) => {
+            if (num > 5000) {
+              message.error('当前搜索条件下，导出专辑数大于5000，请缩小搜索范围')
+            } else {
+              this.exportHandle(options, '/custom/albums/allDownload')
+            }
+          })
+        }
+      } else {
+        // 声音批量导出，只支持勾选导出
+        if (options.albumIds.length === 0) {
+          message.error('请先勾选，才能导出声音')
+        } else {
+          newOptions = {
+            albumIds: options.albumIds
+          }
+          this.exportHandle(newOptions, '/custom/tracks/batchDownload')
         }
       }
-
-
-
     })
   }
 
@@ -849,8 +864,8 @@ class SelfTagTag extends Component {
           <Row>
             <Col span={24} className="line">
               <Button className="btn" type="primary" onClick={() => this.addDimension()}>新增标签</Button>
-              <Button className="btn" type="primary" onClick={() => this.export()}>标签批量导出</Button>
-              <Button className="btn" type="primary" onClick={() => this.export()}>专辑批量导出</Button>
+              <Button className="btn" type="primary" onClick={() => this.export('专辑批量导出')}>专辑批量导出</Button>
+              <Button className="btn" type="primary" onClick={() => this.export('声音批量导出')}>声音批量导出</Button>
               <div className="sort-box">
                 <span className="sort-title">排序方式：</span>
                 <SortList clickSort={this.clickSort} />
