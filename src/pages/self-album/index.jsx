@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-31 16:20:11
+ * @Last Modified time: 2018-08-31 16:41:56
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select } from 'antd'
@@ -388,23 +388,23 @@ class SelfTagTag extends Component {
   tableLineEdit(line) {
     console.log('编辑', line)
     this.setState({
-      addOrEditTitle: '编辑标签',
+      addOrEditTitle: '编辑自运营专辑',
       addOrEditVisible: true,
       addOrEditInitValues: line
     })
   }
 
 
-  // 新增标签
-  addDimension() {
+  // 新增自运营专辑
+  addSelfAlbum() {
     this.setState({
-      addOrEditTitle: '新增标签',
+      addOrEditTitle: '新增自运营专辑',
       addOrEditVisible: true,
       addOrEditInitValues: {}
     })
   }
 
-  // 新增或者编辑标签，添加标签，点击弹框的确定
+  // 新增或者编辑自运营专辑，添加标签，点击弹框的确定
   addOrEditOk(values, title) {
     values.type = title
     this.handleSelfTagAddOrEdit(values, () => {
@@ -417,7 +417,7 @@ class SelfTagTag extends Component {
     })
   }
 
-  // 新增标签，编辑标签的辅助函数
+  // 新增自运营专辑，编辑自运营专辑的辅助函数
   handleSelfTagAddOrEdit(options, callBack) {
     this.refs.mask.show()
     apiSelfAddOrEdit(options)
@@ -433,7 +433,7 @@ class SelfTagTag extends Component {
 
 
 
-  // 新增或者编辑标签，关闭弹框
+  // 新增或者编辑自运营专辑，关闭弹框
   addOrEditCancel() {
     this.setState({
       addOrEditVisible: false
@@ -854,7 +854,7 @@ class SelfTagTag extends Component {
         <List className="handle-buttons">
           <Row>
             <Col span={24} className="line">
-              <Button className="btn" type="primary" onClick={() => this.addDimension()}>新增标签</Button>
+              <Button className="btn" type="primary" onClick={() => this.addSelfAlbum()}>新增自运营专辑</Button>
               <Button className="btn" type="primary" onClick={() => this.export('专辑批量导出')}>专辑批量导出</Button>
               <Button className="btn" type="primary" onClick={() => this.export('声音批量导出')}>声音批量导出</Button>
               <div className="sort-box">

@@ -36,13 +36,12 @@ export default class SelfAlbumListTable extends Component {
         title: '自运营专辑ID',
         dataIndex: 'id',
         key: 'id',
-        width: 60
+        width: 80,
       },
       {
         title: '主站专辑ID',
         dataIndex: 'sourceId',
         key: 'sourceId',
-        width: 90,
         render: (text, record) =>
           (
             <a href={songUrlObj.album + '/' + text} target="_blank" style={{ display: 'inline-block', cursor: 'pointer' }}>
@@ -54,13 +53,11 @@ export default class SelfAlbumListTable extends Component {
         title: '专辑名称',
         dataIndex: 'title',
         key: 'title',
-        width: 100
       },
       {
         title: '是否付费',
         dataIndex: 'isPaid',
         key: 'isPaid',
-        width: 70,
         render: (text, record) => {
           return <span>{text === 1 ? '付费' : '收费'}</span>
         }
@@ -69,7 +66,6 @@ export default class SelfAlbumListTable extends Component {
         title: '价格类型',
         dataIndex: 'priceType',
         key: 'priceType',
-        width: 70,
         render: (text, record) => {
           return <span>{text === 1 ? '单集购买' : '整张购买'}</span>
         }
@@ -78,7 +74,6 @@ export default class SelfAlbumListTable extends Component {
         title: '分类来源',
         dataIndex: 'categorySource',
         key: 'categorySource',
-        width: 70,
         render: (text, record) => {
           if (text === null) {
             return <span />
@@ -90,13 +85,11 @@ export default class SelfAlbumListTable extends Component {
         title: '分类',
         dataIndex: 'categoryName',
         key: 'categoryName',
-        width: 70,
       },
       {
         title: '声音数',
         dataIndex: 'trackIds',
         key: 'trackIds',
-        width: 70,
         render: (text, record) => {
           return <span style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.props.tableLineShowDetails(record)}>{text.length}</span>
         }
@@ -105,7 +98,6 @@ export default class SelfAlbumListTable extends Component {
         title: '自运营标签',
         dataIndex: 'ctagNames',
         key: 'ctagNames',
-        width: 90,
         render: (text, record) => {
           return <span>{text.join()}</span>
         }
@@ -114,7 +106,6 @@ export default class SelfAlbumListTable extends Component {
         title: '状态',
         dataIndex: 'onlineStatus',
         key: 'onlineStatus',
-        width: 70,
         render: (text, record) => {
           return <span>{text === 1 ? '已上架' : '已下架'}</span>
         }
@@ -123,7 +114,6 @@ export default class SelfAlbumListTable extends Component {
         title: '创建时间',
         dataIndex: 'createTime',
         key: 'createTime',
-        width: 95,
         render: (text, record) => {
           const str = myGetStrTime(text)
           return (
@@ -135,7 +125,6 @@ export default class SelfAlbumListTable extends Component {
         title: '更新时间',
         dataIndex: 'updateTime',
         key: 'updateTime',
-        width: 95,
         render: (text, record) => {
           const str = myGetStrTime(text)
           return (
@@ -147,12 +136,11 @@ export default class SelfAlbumListTable extends Component {
         title: '创建人',
         dataIndex: 'creator',
         key: 'creator',
-        width: 60,
       },
       {
         title: '操作',
         key: 'action',
-        width: 80,
+        width: 100,
         render: (text, record) => {
           return (
             <span>
@@ -162,7 +150,7 @@ export default class SelfAlbumListTable extends Component {
       }]
     return (
       <div>
-        <Table columns={columns} rowSelection={rowSelection} dataSource={this.props.tableData} pagination={false} />
+        <Table columns={columns} rowSelection={rowSelection} dataSource={this.props.tableData} pagination={false} scroll={{ x: 1400 }} />
         <div style={{ textAlign: 'right', marginTop: 30 }}>
           <Pagination
             showSizeChanger

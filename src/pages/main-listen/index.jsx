@@ -2,10 +2,10 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-30 17:22:12
+ * @Last Modified time: 2018-08-31 17:41:40
  */
 import React, { Component } from 'react'
-import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal, message } from 'antd'
+import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal, message, InputNumber } from 'antd'
 import moment from 'moment'
 import { myGetStampTime } from '@Utils/myGetTime'
 import { DOWN_LOAD_URL, ERR_OK } from '@Constants'
@@ -34,8 +34,8 @@ class SelfListen extends Component {
   constructor() {
     super()
     this.state = {
-      syncColumnId: '',
-      id: '',
+      syncColumnId: undefined,
+      id: undefined,
       title: '',
       contentType: '',
       categoryId: '',
@@ -80,8 +80,6 @@ class SelfListen extends Component {
     this.getListData({
       pageNo: 1,
       pageSize: 10,
-      syncColumnId: '',
-      id: '',
       title: '',
       contentType: '',
       categoryId: '',
@@ -186,7 +184,7 @@ class SelfListen extends Component {
           return
         }
         console.log(res)
-        if (res.data.clickUrl) {
+        if (res.data.clickUrl && res.data.invalidCount !== 0) {
           const content = (
             <div>
               <p style={{ textAlign: 'center' }}>成功了{res.data.validCount ? res.data.validCount : 0}条</p>
@@ -202,6 +200,8 @@ class SelfListen extends Component {
             okText: '确认',
             footer: null
           })
+        } else if (res.data.clickUrl && res.data.invalidCount === 0) {
+          message.success('另存为成功')
         } else {
           message.error('另存为失败')
         }
@@ -301,8 +301,8 @@ class SelfListen extends Component {
 
       const options = {
         columnFrom: 1,
-        syncColumnId: !syncColumnId ? '' : myTrim(syncColumnId),
-        id: !id ? '' : myTrim(id),
+        syncColumnId,
+        id,
         title: !title ? '' : myTrim(title),
         contentType,
         categoryId,
@@ -452,8 +452,8 @@ class SelfListen extends Component {
     const options = {
       pageNo,
       pageSize,
-      syncColumnId: !syncColumnId ? '' : myTrim(syncColumnId),
-      id: !id ? '' : myTrim(id),
+      syncColumnId,
+      id,
       title: !title ? '' : myTrim(title),
       contentType,
       categoryId,
@@ -507,7 +507,7 @@ class SelfListen extends Component {
       modalTableOnShowSizeChange: this.modalTableOnShowSizeChange,
       modalTableOnChange: this.modalTableOnChange,
       modalTableShowTotal: this.modalTableShowTotal,
-      modalTableTitile:this.state.modalTableTitile
+      modalTableTitile: this.state.modalTableTitile
     }
 
     const addOrEditOptions = {
@@ -534,12 +534,16 @@ class SelfListen extends Component {
             <Row>
               <Col span={6}>
                 <FormItem label={<span style={{ minWidth: 57, display: 'inline-block', textAlign: 'left' }}>主站Id</span>} style={{ marginBottom: 10, marginTop: 10 }}>
-                  <Input style={{ width: 190 }} placeholder="请输入主站Id" onChange={e => this.setState({ syncColumnId: e.target.value })} />
+                  <InputNumber
+                    style={{ width: 190 }} placeholder="请输入主站Id" onChange={v => this.setState({ syncColumnId:v })}
+                  />
                 </FormItem>
               </Col>
               <Col span={6}>
                 <FormItem label={<span style={{ minWidth: 57, display: 'inline-block', textAlign: 'left' }}>自运营Id</span>} style={{ marginBottom: 10, marginTop: 10 }}>
-                  <Input style={{ width: 190 }} placeholder="请输入自运营Id" onChange={e => this.setState({ id: e.target.value })} />
+                  <InputNumber
+                    style={{ width: 190 }} placeholder="请输入自运营Id" onChange={v => this.setState({ id: v })}
+                  />
                 </FormItem>
               </Col>
               <Col span={6}>

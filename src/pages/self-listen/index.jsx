@@ -2,10 +2,10 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-31 15:24:24
+ * @Last Modified time: 2018-08-31 17:47:12
  */
 import React, { Component } from 'react'
-import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal, message } from 'antd'
+import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal, message, InputNumber } from 'antd'
 import moment from 'moment'
 import { myGetStampTime } from '@Utils/myGetTime'
 import { DOWN_LOAD_URL, ERR_OK } from '@Constants'
@@ -35,7 +35,7 @@ class SelfListen extends Component {
     super()
     this.state = {
       syncColumnId: '',
-      id: '',
+      id: undefined,
       title: '',
       contentType: '',
       source: undefined,
@@ -76,7 +76,7 @@ class SelfListen extends Component {
       pageNo: 1,
       pageSize: 10,
       syncColumnId: '',
-      id: '',
+      id: undefined,
       title: '',
       contentType: '',
       onlineStatus: '',
@@ -126,7 +126,7 @@ class SelfListen extends Component {
 
   }
 
-  searchList() {
+  searchList(callBack) {
     this.setState({
     }, () => {
       const {
@@ -157,7 +157,7 @@ class SelfListen extends Component {
         updateTimeEnd: searchUpdateTimeEnd,
         sortIndex,
         sortDirection
-      })
+      }, callBack)
     })
   }
 
@@ -206,7 +206,7 @@ class SelfListen extends Component {
           message.error(res.msg)
           return
         }
-        if (res.data.clickUrl) {
+        if (res.data.clickUrl && res.data.invalidCount !== 0) {
           const content = (
             <div>
               <p style={{ textAlign: 'center' }}>成功了{res.data.validCount ? res.data.validCount : 0}条</p>
@@ -216,14 +216,21 @@ class SelfListen extends Component {
               </p>
             </div>
           )
-          Modal.confirm({
-            title: '另存为结果',
-            content: content,
-            okText: '确认',
-            footer: null
+          this.searchList(() => {
+            Modal.confirm({
+              title: `${title}结果`,
+              content: content,
+              okText: '确认',
+              footer: null
+            })
           })
-          this.searchList()
-        } else {
+        }
+        else if (res.data.clickUrl && res.data.invalidCount === 0) {
+          this.searchList(() => {
+            message.success(`${title}成功`)
+          })
+        }
+        else {
           message.error(`${title}失败`)
         }
         this.setState({
@@ -326,7 +333,7 @@ class SelfListen extends Component {
       const options = {
         columnFrom: 2,
         syncColumnId: !syncColumnId ? '' : myTrim(syncColumnId),
-        id: !id ? '' : myTrim(id),
+        id,
         title: !title ? '' : myTrim(title),
         contentType,
         categoryId,
@@ -473,7 +480,7 @@ class SelfListen extends Component {
     updateTimeBegin,
     updateTimeEnd,
     sortIndex,
-    sortDirection, }) {
+    sortDirection, }, callBack) {
 
     this.refs.mask.show()
 
@@ -481,7 +488,7 @@ class SelfListen extends Component {
       pageNo,
       pageSize,
       syncColumnId: !syncColumnId ? '' : myTrim(syncColumnId),
-      id: !id ? '' : myTrim(id),
+      id,
       title: !title ? '' : myTrim(title),
       contentType,
       source,
@@ -506,6 +513,7 @@ class SelfListen extends Component {
           item.key = item.id
           return item
         })
+        callBack && callBack()
         this.setState({
           tableData: tableData,
           tableTotal: res.data.totalNum,
@@ -562,7 +570,9 @@ class SelfListen extends Component {
             <Row>
               <Col span={6}>
                 <FormItem label={<span style={{ minWidth: 57, display: 'inline-block', textAlign: 'left' }}>自运营Id</span>} style={{ marginBottom: 10, marginTop: 10 }}>
-                  <Input style={{ width: 190 }} placeholder="请输入自运营Id" onChange={e => this.setState({ id: e.target.value })} />
+                  <InputNumber
+                    style={{ width: 190 }} placeholder="请输入自运营Id" onChange={v => this.setState({ id: v })}
+                  />
                 </FormItem>
               </Col>
               <Col span={6}>
