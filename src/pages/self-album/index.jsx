@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-31 14:34:19
+ * @Last Modified time: 2018-08-31 15:23:22
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select } from 'antd'
@@ -234,7 +234,7 @@ class SelfTagTag extends Component {
     options.asc = options.sortDirection === 'up' ? false : true
     delete options.sortDirection
 
-    options.ids = options.selectedRowKeys
+    options.albumIds = options.selectedRowKeys
 
     return options
   }
@@ -244,7 +244,7 @@ class SelfTagTag extends Component {
     this.refs.mask.show()
 
     options = this.handleSearchOrExportOptions(options)
-    delete options.ids
+    delete options.albumIds
 
     apiSelfAlbumList(options)
       .then(res => {
@@ -277,10 +277,7 @@ class SelfTagTag extends Component {
   }
 
   // 维度或者标签导出
-  export(url) {
-    if (!url) {
-      return
-    }
+  export(type) {
     this.setState({}, () => {
       const state = { ...this.state, ...this.props.state }
       const {
@@ -326,40 +323,50 @@ class SelfTagTag extends Component {
 
       delete options.selectedRowKeys
 
-      console.log(options.ids)
-      if (options.ids.length === 0) {
-        delete options.ids
+      console.log(options.albumIds)
+      if (options.albumIds.length === 0) {
+        delete options.albumIds
       } else {
-        options.ids = options.ids.join()
+        options.albumIds = options.albumIds.join()
       }
 
-      console.log(options.ids)
 
-      const DEV = process.env.NODE_ENV !== 'production'
-      let baseURL
-
-      if (DEV) {
-        baseURL = DOWN_LOAD_URL.dev
-      } else {
-        baseURL = DOWN_LOAD_URL.pro
-      }
-
-      let str = baseURL + url + '?'
-      for (const key in options) {
-        if (options[key] || options[key] === 0 || options[key] === false) {
-          str += `${key}=${options[key]}&`
+      if (type == '专辑批量导出') {
+        if (options.albumIds.length !== 0) {
+          this.exportHandle(options, '/custom/albums/batchDownload')
         }
       }
-      str = str.slice(0, -1)
-      console.log(str)
 
-      let a = document.createElement('a')
-      document.body.appendChild(a)
-      a.setAttribute('style', 'display:none')
-      a.setAttribute('href', str)
-      a.setAttribute('download', '列表')
-      a.click()
+
+
     })
+  }
+
+  exportHandle(options, url) {
+    const DEV = process.env.NODE_ENV !== 'production'
+    let baseURL
+
+    if (DEV) {
+      baseURL = DOWN_LOAD_URL.dev
+    } else {
+      baseURL = DOWN_LOAD_URL.pro
+    }
+
+    let str = baseURL + url + '?'
+    for (const key in options) {
+      if (options[key] || options[key] === 0 || options[key] === false) {
+        str += `${key}=${options[key]}&`
+      }
+    }
+    str = str.slice(0, -1)
+    console.log(str)
+
+    let a = document.createElement('a')
+    document.body.appendChild(a)
+    a.setAttribute('style', 'display:none')
+    a.setAttribute('href', str)
+    a.setAttribute('download', '列表')
+    a.click()
   }
 
   // 列表页面的编辑
@@ -699,6 +706,7 @@ class SelfTagTag extends Component {
                     onChange={value => this.setState({ categoryId: value })}
                     value={this.state.categoryId}
                     getPopupContainer={trigger => trigger.parentNode}
+                    notFoundContent="请先选择分类来源"
                   >
                     {
                       this.state.categories.map((item) => (

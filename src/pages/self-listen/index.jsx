@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-31 14:49:28
+ * @Last Modified time: 2018-08-31 15:24:24
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal, message } from 'antd'
@@ -616,6 +616,7 @@ class SelfListen extends Component {
                     onChange={value => this.setState({ categoryId: value })}
                     value={this.state.categoryId}
                     getPopupContainer={trigger => trigger.parentNode}
+                    notFoundContent="请先选择分类来源"
                   >
                     {
                       this.state.categories.map((item) => (
