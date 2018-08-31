@@ -2,10 +2,10 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-31 14:00:51
+ * @Last Modified time: 2018-08-31 14:34:19
  */
 import React, { Component } from 'react'
-import { List, Form, Row, Col, Button, Input, DatePicker, message, Modal, Select } from 'antd'
+import { List, Form, Row, Col, Button, Input, DatePicker, message, Select } from 'antd'
 import moment from 'moment'
 
 import { myTrim } from '@Utils/myTrim'
@@ -20,7 +20,7 @@ import { connect } from 'react-redux'
 import { getCommonDimesions } from '@Redux/commonTagAndDimesion'
 
 import {
-  apiSelfTagTagDelete, apiSelfAddOrEdit, apiSelfTagDetail, apiSelfTagTagList
+  apiSelfAddOrEdit, apiSelfTagDetail, apiSelfTagTagList
 } from '@Api/self-tag-tag'
 
 import { apiSelfAlbumList } from '@Api/self-album'
@@ -79,6 +79,18 @@ class SelfTagTag extends Component {
     this.currentTag = ''
   }
 
+  componentDidMount() {
+    // 初始化查询列表数据
+    this.getListData({
+      pageNo: 1,
+      pageSize: 10,
+      sortIndex: 1,
+      sortDirection: 'down',
+    })
+    // 获取公用的维度数据
+    // this.props.getCommonDimesions()
+  }
+
   // 获取搜索的数据
   getCategories(source) {
     if (!source) {
@@ -96,18 +108,6 @@ class SelfTagTag extends Component {
         categories: res.data
       })
     })
-  }
-
-  componentDidMount() {
-    // 初始化查询列表数据
-    this.getListData({
-      pageNo: 1,
-      pageSize: 10,
-      sortIndex: 1,
-      sortDirection: 'down',
-    })
-    // 获取公用的维度数据
-    // this.props.getCommonDimesions()
   }
 
 

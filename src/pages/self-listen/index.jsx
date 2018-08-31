@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-31 13:21:38
+ * @Last Modified time: 2018-08-31 14:49:28
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal, message } from 'antd'
@@ -38,8 +38,8 @@ class SelfListen extends Component {
       id: '',
       title: '',
       contentType: '',
-      source: '1',
-      categoryId: '',
+      source: undefined,
+      categoryId: undefined,
       categories: [],
       onlineStatus: '',
       sortIndex: 1,
@@ -79,8 +79,6 @@ class SelfListen extends Component {
       id: '',
       title: '',
       contentType: '',
-      source: '1',
-      categoryId: '',
       onlineStatus: '',
       searchCreateTimeBegin: null,
       searchCreateTimeEnd: null,
@@ -89,8 +87,6 @@ class SelfListen extends Component {
       sortIndex: 1,
       sortDirection: 'down'
     })
-    // 获取主站的小分类
-    this.getCategories(1)
   }
 
   // 获取搜索的数据
@@ -594,11 +590,10 @@ class SelfListen extends Component {
                     placeholder="请选择分类"
                     style={{ width: 190 }}
                     allowClear
-                    defaultValue="1"
                     onChange={value => {
                       this.setState({
                         source: value,
-                        categoryId: ''
+                        categoryId: undefined
                       })
                       this.getCategories(value)
                     }}
