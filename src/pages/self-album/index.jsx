@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-31 15:50:18
+ * @Last Modified time: 2018-08-31 16:20:11
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select } from 'antd'
@@ -20,10 +20,10 @@ import { connect } from 'react-redux'
 import { getCommonDimesions } from '@Redux/commonTagAndDimesion'
 
 import {
-  apiSelfAddOrEdit, apiSelfTagDetail, apiSelfTagTagList
+  apiSelfAddOrEdit, apiSelfTagTagList
 } from '@Api/self-tag-tag'
 
-import { apiSelfAlbumList } from '@Api/self-album'
+import { apiSelfAlbumList, apiAlbumDetail } from '@Api/self-album'
 
 import { commonSmallTypes } from '@Api'
 
@@ -277,7 +277,7 @@ class SelfTagTag extends Component {
     })
   }
 
-  // 维度或者标签导出
+  // 导出
   export(type) {
     this.setState({}, () => {
       const state = { ...this.state, ...this.props.state }
@@ -443,12 +443,7 @@ class SelfTagTag extends Component {
   // 查看专辑数的详情--弹框列表
   tableLineShowDetails(line, type) {
     console.log('查看详情', line)
-    if (type === '主站') {
-      this.detailContentType = 1
-    } else {
-      this.detailContentType = 2
-    }
-    this.detailTagId = line.id
+    this.detailAlbumId = line.id
     this.setState({
       detailPageNo: 1,
       detailPageSize: 10,
@@ -456,15 +451,14 @@ class SelfTagTag extends Component {
     this.getDetailData({
       pageNo: 1,
       pageSize: 10,
-      tagId: this.detailTagId,
-      contentType: this.detailContentType
+      albumId: this.detailAlbumId,
     })
   }
 
   // 获取专辑详情列表的配套函数
   getDetailData(options) {
     this.refs.mask.show()
-    apiSelfTagDetail(options)
+    apiAlbumDetail(options)
       .then(res => {
         this.refs.mask.hide()
         if (res.code !== ERR_OK) {
@@ -492,8 +486,7 @@ class SelfTagTag extends Component {
     this.getDetailData({
       pageNo: current,
       pageSize,
-      tagId: this.detailTagId,
-      contentType: this.detailContentType
+      albumId: this.detailAlbumId,
     })
   }
 
@@ -504,8 +497,7 @@ class SelfTagTag extends Component {
 
   // 关闭详情列表
   detailCancel() {
-    this.detailTagId = ''
-    this.detailContentType = ''
+    this.detailAlbumId = ''
     this.setState({
       detailVisible: false
     })
@@ -582,8 +574,7 @@ class SelfTagTag extends Component {
       detailData: this.state.detailData,
       detailCancel: this.detailCancel,
       detailPageOrPageSizeChange: this.detailPageOrPageSizeChange,
-      detailShowTotal: this.detailShowTotal,
-      detailLineEditOrDelete: this.detailLineEditOrDelete
+      detailShowTotal: this.detailShowTotal
     }
 
     const addOrEditOptions = {

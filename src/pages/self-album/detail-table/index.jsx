@@ -1,7 +1,17 @@
 import React, { Component } from 'react'
 import { Modal, Pagination, Table } from 'antd'
+import { SONG_URL } from '@Constants'
 import { myGetStrTime } from '@Utils/myGetTime'
 import { PropTypes } from 'prop-types'
+
+const DEV = process.env.NODE_ENV !== 'production'
+// console.log(process.env.NODE_ENV)
+let songUrlObj
+if (DEV) {
+  songUrlObj = SONG_URL.dev
+} else {
+  songUrlObj = SONG_URL.pro
+}
 
 
 export default class SelfTagDimensionDetailTable extends Component {
@@ -13,46 +23,42 @@ export default class SelfTagDimensionDetailTable extends Component {
     detailPageOrPageSizeChange: PropTypes.func,
     detailShowTotal: PropTypes.func,
     detailData: PropTypes.array,
-    detailLineEditOrDelete: PropTypes.func,
   }
 
 
   render() {
     const columns = [
       {
-        title: '专辑Id',
+        title: '声音Id',
         dataIndex: 'id',
         key: 'id',
         render: (text, record) =>
           (
-            <a href={record.url} target="_blank" style={{ display: 'inline-block', cursor: 'pointer' }}>
+            <a href={songUrlObj.track + '/' + text} target="_blank" style={{ display: 'inline-block', cursor: 'pointer' }}>
               {text}
             </a>
           )
       },
       {
-        title: '专辑名称',
+        title: '声音名称',
         dataIndex: 'title',
         key: 'title'
       },
       {
-        title: '状态',
-        dataIndex: 'onlineStatus',
-        key: 'onlineStatus',
-        render: (text, record) =>
-          (
-            <span>{text === 1 ? '已上架' : '已下架'}</span>
-          )
-      },
-      {
-        title: '声音数',
-        dataIndex: 'tracksNum',
-        key: 'tracksNum'
+        title: '是否付费',
+        dataIndex: 'isPaid',
+        key: 'isPaid',
+        render: (text, record) => {
+          if (!text && text !== 0) {
+            return <span />
+          }
+          return <span>{text === 1 ? '付费' : '免费'}</span>
+        }
       },
       {
         title: '发布时间',
-        dataIndex: 'createdAt',
-        key: 'createdAt',
+        dataIndex: 'publishedTime',
+        key: 'publishedTime',
         render: (text, record) => {
           const str = myGetStrTime(text)
           return (
@@ -62,8 +68,8 @@ export default class SelfTagDimensionDetailTable extends Component {
       },
       {
         title: '更新时间',
-        dataIndex: 'updatedAt',
-        key: 'updatedAt',
+        dataIndex: 'updatedTime',
+        key: 'updatedTime',
         render: (text, record) => {
           const str = myGetStrTime(text)
           return (
@@ -73,7 +79,7 @@ export default class SelfTagDimensionDetailTable extends Component {
       }]
     return (
       <Modal
-        title="专辑列表"
+        title="声音列表"
         visible={this.props.detailVisible}
         onCancel={this.props.detailCancel}
         width={1100}
