@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-30 17:22:20
+ * @Last Modified time: 2018-08-31 13:21:38
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal, message } from 'antd'
@@ -95,7 +95,17 @@ class SelfListen extends Component {
 
   // 获取搜索的数据
   getCategories(source) {
+    if (!source) {
+      this.setState({
+        categories: []
+      })
+      return
+    }
     commonSmallTypes(source).then(res => {
+      if (res.code !== ERR_OK) {
+        message.error(res.msg)
+        return
+      }
       this.setState({
         categories: res.data
       })

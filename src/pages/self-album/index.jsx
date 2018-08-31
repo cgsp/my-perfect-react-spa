@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-30 20:41:20
+ * @Last Modified time: 2018-08-31 14:00:51
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Modal, Select } from 'antd'
@@ -20,9 +20,12 @@ import { connect } from 'react-redux'
 import { getCommonDimesions } from '@Redux/commonTagAndDimesion'
 
 import {
-  apiSelfTagTagList, apiSelfTagTagDelete, apiSelfAddOrEdit, apiSelfTagDetail
+  apiSelfTagTagDelete, apiSelfAddOrEdit, apiSelfTagDetail, apiSelfTagTagList
 } from '@Api/self-tag-tag'
-import { commonSmallTypes, apiGetUserList } from '@Api'
+
+import { apiSelfAlbumList } from '@Api/self-album'
+
+import { commonSmallTypes } from '@Api'
 
 import SelfAlbumListTable from './list-table'
 import WrapperSelfTagDimensionAddOrEdit from './add-or-edit'
@@ -44,8 +47,8 @@ class SelfTagTag extends Component {
       sortIndex: 1,
       sortDirection: 'down',
       categories: [],
-      categoryId: '',
-      tag: undefined,
+      categoryId: undefined,
+      categorySource: undefined,
       tagSelectData: [],
       tableTotal: 0,
       tableData: [],
@@ -62,7 +65,6 @@ class SelfTagTag extends Component {
     }
     this.pageOrPageSizeChange = this.pageOrPageSizeChange.bind(this)
     this.tableLineEdit = this.tableLineEdit.bind(this)
-    this.tableLineDelete = this.tableLineDelete.bind(this)
     this.tableSelect = this.tableSelect.bind(this)
     this.tableLineShowDetails = this.tableLineShowDetails.bind(this)
     this.clickSort = this.clickSort.bind(this)
@@ -79,6 +81,12 @@ class SelfTagTag extends Component {
 
   // 获取搜索的数据
   getCategories(source) {
+    if (!source) {
+      this.setState({
+        categories: []
+      })
+      return
+    }
     commonSmallTypes(source).then(res => {
       if (res.code !== ERR_OK) {
         message.error(res.msg)
@@ -92,15 +100,14 @@ class SelfTagTag extends Component {
 
   componentDidMount() {
     // 初始化查询列表数据
-    // this.getListData({
-    //   pageNo: 1,
-    //   pageSize: 10,
-    //   sortIndex: 1,
-    //   sortDirection: 'down'
-    // })
+    this.getListData({
+      pageNo: 1,
+      pageSize: 10,
+      sortIndex: 1,
+      sortDirection: 'down',
+    })
     // 获取公用的维度数据
     // this.props.getCommonDimesions()
-    this.getCategories(1)
   }
 
 
@@ -150,7 +157,12 @@ class SelfTagTag extends Component {
         searchId,
         searchSourceId,
         searchTitle,
-        searchDimensionId,
+        paid,
+        priceType,
+        onlineStatus,
+        categorySource,
+        categoryId,
+        ctagId,
         sortIndex,
         sortDirection,
         searchCreateTimeBegin,
@@ -164,7 +176,12 @@ class SelfTagTag extends Component {
         searchId,
         searchSourceId,
         searchTitle,
-        searchDimensionId,
+        paid,
+        priceType,
+        onlineStatus,
+        categorySource,
+        categoryId,
+        ctagId,
         sortIndex,
         sortDirection,
         searchCreateTimeBegin,
@@ -193,8 +210,6 @@ class SelfTagTag extends Component {
     options.title = options.searchTitle
     delete options.searchTitle
 
-    options.dimensionId = options.searchDimensionId
-    delete options.searchDimensionId
 
     // 将时间对象转换为时间戳
     function transToStamp(date) {
@@ -204,19 +219,19 @@ class SelfTagTag extends Component {
       return date
     }
 
-    options.createTimeBegin = transToStamp(options.searchCreateTimeBegin)
+    options.createdAtStart = transToStamp(options.searchCreateTimeBegin)
     delete options.searchCreateTimeBegin
-    options.createTimeEnd = transToStamp(options.searchCreateTimeEnd)
+    options.createdAtEnd = transToStamp(options.searchCreateTimeEnd)
     delete options.searchCreateTimeEnd
-    options.updateTimeBegin = transToStamp(options.searchUpdateTimeBegin)
+    options.updatedAtStart = transToStamp(options.searchUpdateTimeBegin)
     delete options.searchUpdateTimeBegin
-    options.updateTimeEnd = transToStamp(options.searchUpdateTimeEnd)
+    options.updatedAtEnd = transToStamp(options.searchUpdateTimeEnd)
     delete options.searchUpdateTimeEnd
 
     // 处理排序的
-    options.orderBy = options.sortIndex === 0 ? 'createdAt' : 'updatedAt'
+    options.orderBy = options.sortIndex === 0 ? 'created_at' : 'updated_at'
     delete options.sortIndex
-    options.desc = options.sortDirection === 'up' ? false : true
+    options.asc = options.sortDirection === 'up' ? false : true
     delete options.sortDirection
 
     options.ids = options.selectedRowKeys
@@ -231,7 +246,7 @@ class SelfTagTag extends Component {
     options = this.handleSearchOrExportOptions(options)
     delete options.ids
 
-    apiSelfTagTagList(options)
+    apiSelfAlbumList(options)
       .then(res => {
         this.refs.mask.hide()
         if (res.code !== ERR_OK) {
@@ -272,7 +287,12 @@ class SelfTagTag extends Component {
         searchId,
         searchSourceId,
         searchTitle,
-        searchDimensionId,
+        paid,
+        priceType,
+        onlineStatus,
+        categorySource,
+        categoryId,
+        ctagId,
         sortIndex,
         sortDirection,
         selectedRowKeys,
@@ -285,7 +305,12 @@ class SelfTagTag extends Component {
         searchId,
         searchSourceId,
         searchTitle,
-        searchDimensionId,
+        paid,
+        priceType,
+        onlineStatus,
+        categorySource,
+        categoryId,
+        ctagId,
         sortIndex,
         sortDirection,
         selectedRowKeys,
@@ -347,25 +372,6 @@ class SelfTagTag extends Component {
     })
   }
 
-  // 删除标签的处理
-  tableLineDelete(line) {
-    console.log('删除', line)
-    Modal.confirm({
-      title: '确定要删除吗？',
-      content: '删除了之后，所有专辑对应的该标签都会被删除',
-      onOk: () => {
-        apiSelfTagTagDelete(line.id)
-          .then(res => {
-            if (res.code !== ERR_OK) {
-              message.error(res.msg)
-              return
-            }
-            // 更新下列表页面
-            this.searchList('删除')
-          })
-      }
-    })
-  }
 
   // 新增标签
   addDimension() {
@@ -496,19 +502,29 @@ class SelfTagTag extends Component {
       this.timeout = null
     }
     this.currentTag = value
+
+    const options = {
+      pageNo: 1,
+      pageSize: 20,
+      name: value
+    }
     this.timeout = setTimeout(() => {
-      apiGetUserList(value)
-        .then(res => res.json())
-        .then(d => {
+      apiSelfTagTagList(options)
+        .then(res => {
           if (this.currentTag === value) {
-            const result = d.result
+            if (res.code !== ERR_OK) {
+              message.error(res.msg)
+              return
+            }
+            const result = res.data.dataList
             const arr = []
             result.forEach(item => {
               arr.push({
-                value: item[1],
-                text: item[0]
+                value: item.id,
+                text: item.name
               })
             })
+            console.log(res)
             callback(arr)
           }
         })
@@ -518,9 +534,9 @@ class SelfTagTag extends Component {
   // 标签的模糊匹配
   handleTagSelectChange(value) {
     this.setState({
-      tag: value,
+      ctagId: value,
     }, () => {
-      console.log(this.state.tag)
+      console.log(this.state.ctagId)
     })
   }
 
@@ -530,7 +546,6 @@ class SelfTagTag extends Component {
       tableData: this.state.tableData,
       total: this.state.tableTotal,
       tableLineEdit: this.tableLineEdit,
-      tableLineDelete: this.tableLineDelete,
       tableSelect: this.tableSelect,
       selectedRowKeys: this.state.selectedRowKeys,
       tableLineShowDetails: this.tableLineShowDetails,
@@ -658,11 +673,10 @@ class SelfTagTag extends Component {
                     style={{ width: 190 }}
                     placeholder="请选择"
                     allowClear
-                    defaultValue={1}
                     onChange={value => {
                       this.setState({
-                        source: value,
-                        categoryId: ''
+                        categorySource: value,
+                        categoryId: undefined
                       })
                       this.getCategories(value)
                     }}
@@ -704,7 +718,7 @@ class SelfTagTag extends Component {
                     style={{ width: 190 }}
                     placeholder="请输入标签"
                     allowClear={true}
-                    value={this.state.tag}
+                    value={this.state.ctagId}
                     onSearch={this.handleTagSelectSearch}
                     onChange={this.handleTagSelectChange}
                     defaultActiveFirstOption={false}

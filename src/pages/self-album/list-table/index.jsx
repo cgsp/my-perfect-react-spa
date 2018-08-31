@@ -1,15 +1,23 @@
 import React, { Component } from 'react'
 import { Table, Pagination, Divider } from 'antd'
+import { SONG_URL } from '@Constants'
 import { myGetStrTime } from '@Utils/myGetTime'
 import { PropTypes } from 'prop-types'
+
+const DEV = process.env.NODE_ENV !== 'production'
+console.log(process.env.NODE_ENV)
+let songUrlObj
+if (DEV) {
+  songUrlObj = SONG_URL.dev
+} else {
+  songUrlObj = SONG_URL.pro
+}
 
 export default class SelfAlbumListTable extends Component {
   static propTypes = {
     showTotal: PropTypes.func,
     tableData: PropTypes.array,
     tableLineEdit: PropTypes.func,
-    tableLineDelete: PropTypes.func,
-    tableLineAdd: PropTypes.func,
     tableSelect: PropTypes.func,
     selectedRowKeys: PropTypes.array,
     tableLineShowDetails: PropTypes.func,
@@ -25,43 +33,94 @@ export default class SelfAlbumListTable extends Component {
     }
     const columns = [
       {
-        title: '标签Id',
+        title: '自运营ID',
         dataIndex: 'id',
         key: 'id',
+        width: 60
       },
       {
-        title: '标签名称',
-        dataIndex: 'name',
-        key: 'name',
+        title: '主站ID',
+        dataIndex: 'sourceId',
+        key: 'sourceId',
+        width: 90,
+        render: (text, record) =>
+          (
+            <a href={songUrlObj.album + '/' + text} target="_blank" style={{ display: 'inline-block', cursor: 'pointer' }}>
+              {text}
+            </a>
+          )
       },
       {
-        title: '所属维度',
-        dataIndex: 'dimensionName',
-        key: 'dimensionName',
-        width: 100,
+        title: '专辑名称',
+        dataIndex: 'title',
+        key: 'title',
+        width: 100
       },
       {
-        title: '主站专辑数',
-        dataIndex: 'xmlyContentsNum',
-        key: 'xmlyContentsNum',
-        width: 80,
-        render: (text, record) => (
-          <span style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.props.tableLineShowDetails(record, '主站')}>{text}</span>
-        )
+        title: '是否付费',
+        dataIndex: 'isPaid',
+        key: 'isPaid',
+        width: 70,
+        render: (text, record) => {
+          return <span>{text === 1 ? '付费' : '收费'}</span>
+        }
       },
       {
-        title: '自运营专辑数',
-        dataIndex: 'openapiContentsNum',
-        key: 'openapiContentsNum',
-        width: 80,
-        render: (text, record) => (
-          <span style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.props.tableLineShowDetails(record, '自运营')}>{text}</span>
-        )
+        title: '价格类型',
+        dataIndex: 'priceType',
+        key: 'priceType',
+        width: 70,
+        render: (text, record) => {
+          return <span>{text === 1 ? '单集购买' : '整张购买'}</span>
+        }
+      },
+      {
+        title: '分类来源',
+        dataIndex: 'categorySource',
+        key: 'categorySource',
+        width: 70,
+        render: (text, record) => {
+          return <span>{text === 1 ? '主站' : '自运营'}</span>
+        }
+      },
+      {
+        title: '分类',
+        dataIndex: 'categoryName',
+        key: 'categoryName',
+        width: 70,
+      },
+      {
+        title: '声音数',
+        dataIndex: 'trackIds',
+        key: 'trackIds',
+        width: 70,
+        render: (text, record) => {
+          return <span style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.props.tableLineShowDetails(record)}>{text.length}</span>
+        }
+      },
+      {
+        title: '自运营标签',
+        dataIndex: 'ctagNames',
+        key: 'ctagNames',
+        width: 90,
+        render: (text, record) => {
+          return <span>{text.join()}</span>
+        }
+      },
+      {
+        title: '状态',
+        dataIndex: 'onlineStatus',
+        key: 'onlineStatus',
+        width: 70,
+        render: (text, record) => {
+          return <span>{text === 1 ? '已上架' : '已下架'}</span>
+        }
       },
       {
         title: '创建时间',
-        dataIndex: 'createdAt',
-        key: 'createdAt',
+        dataIndex: 'createTime',
+        key: 'createTime',
+        width: 95,
         render: (text, record) => {
           const str = myGetStrTime(text)
           return (
@@ -71,8 +130,9 @@ export default class SelfAlbumListTable extends Component {
       },
       {
         title: '更新时间',
-        dataIndex: 'updatedAt',
-        key: 'updatedAt',
+        dataIndex: 'updateTime',
+        key: 'updateTime',
+        width: 95,
         render: (text, record) => {
           const str = myGetStrTime(text)
           return (
@@ -82,18 +142,18 @@ export default class SelfAlbumListTable extends Component {
       },
       {
         title: '创建人',
-        dataIndex: 'operator',
-        key: 'operator'
+        dataIndex: 'creator',
+        key: 'creator',
+        width: 60,
       },
       {
         title: '操作',
         key: 'action',
+        width: 80,
         render: (text, record) => {
           return (
             <span>
               <i style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.props.tableLineEdit(record)}>编辑</i>
-              <Divider type="vertical" />
-              <i style={{ color: 'red', cursor: 'pointer' }} onClick={() => this.props.tableLineDelete(record)}>删除</i>
             </span>)
         },
       }]

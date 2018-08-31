@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-30 17:59:05
+ * @Last Modified time: 2018-08-31 11:49:02
  */
 
 
@@ -621,8 +621,8 @@ class SelfTagTag extends Component {
           <Row>
             <Col span={24} className="line">
               <Button className="btn" type="primary" onClick={() => this.addDimension()}>新增标签</Button>
-              <Button className="btn" type="primary" onClick={() => this.export()}>标签批量导出</Button>
-              <Button className="btn" type="primary" onClick={() => this.export()}>专辑批量导出</Button>
+              <Button className="btn" type="primary" onClick={() => this.export('/tag/downloadTags')}>标签批量导出</Button>
+              <Button className="btn" type="primary" onClick={() => this.export('/tag/downloadTagsWithAlbums')}>专辑批量导出</Button>
               <div className="sort-box">
                 <span className="sort-title">排序方式：</span>
                 <SortList clickSort={this.clickSort} />
