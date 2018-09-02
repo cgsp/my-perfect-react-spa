@@ -33,6 +33,7 @@ export default class SelfTagTagListTable extends Component {
         title: '标签名称',
         dataIndex: 'name',
         key: 'name',
+        width: 130
       },
       {
         title: '所属维度',

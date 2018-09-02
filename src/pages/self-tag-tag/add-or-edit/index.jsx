@@ -60,9 +60,12 @@ class SelfTagDimensionAddOrEdit extends Component {
     this.addDimesinonOk = this.addDimesinonOk.bind(this)
   }
 
-  handleSubmit = () => {
+  handleSubmit = (e) => {
+    e.preventDefault()
     this.props.form.validateFieldsAndScroll((err, values) => {
+
       if (!err) {
+        alert('提交')
         const title = this.props.addOrEditTitle
         if (title === '编辑标签') {
           values.id = this.props.addOrEditInitValues.id

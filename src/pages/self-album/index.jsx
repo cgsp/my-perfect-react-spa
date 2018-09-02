@@ -2,10 +2,10 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-31 16:41:56
+ * @Last Modified time: 2018-08-31 22:16:26
  */
 import React, { Component } from 'react'
-import { List, Form, Row, Col, Button, Input, DatePicker, message, Select } from 'antd'
+import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
 import moment from 'moment'
 
 import { myTrim } from '@Utils/myTrim'
@@ -122,6 +122,8 @@ class SelfTagTag extends Component {
 
   // 点击查询
   handleSearch = (e) => {
+    this.refs.searchSourceIdref.blur()
+    this.refs.searchIdref.blur()
     e.preventDefault()
     this.setState({
       pageNo: 1
@@ -196,12 +198,12 @@ class SelfTagTag extends Component {
   // 处理导出options或者搜索options的配套函数
   handleSearchOrExportOptions(options) {
     // 去掉空格
-    options.searchId = !options.searchId ? '' : myTrim(options.searchId)
+    // options.searchId = !options.searchId ? '' : myTrim(options.searchId)
     options.id = options.searchId
     delete options.searchId
 
     // 去掉空格
-    options.searchSourceId = !options.searchSourceId ? '' : myTrim(options.searchSourceId)
+    // options.searchSourceId = !options.searchSourceId ? '' : myTrim(options.searchSourceId)
     options.sourceId = options.searchSourceId
     delete options.searchSourceId
 
@@ -241,7 +243,7 @@ class SelfTagTag extends Component {
 
   // 获取列表页面的数据
   getListData(options, callBack) {
-    this.refs.mask.show()
+    // this.refs.mask.show()
 
     options = this.handleSearchOrExportOptions(options)
     delete options.albumIds
@@ -603,7 +605,10 @@ class SelfTagTag extends Component {
                   className="form-item"
                   label={<span className="form-label">自运营专辑ID</span>}
                 >
-                  <Input style={{ width: 190 }} placeholder="请输入自运营专辑ID" onChange={e => this.setState({ searchId: e.target.value })} />
+                  <InputNumber
+                    ref="searchIdref"
+                    style={{ width: 190 }} placeholder="请输入自运营专辑ID" onChange={v => this.setState({ searchId: v })}
+                  />
                 </FormItem>
               </Col>
               <Col span={8}>
@@ -611,7 +616,10 @@ class SelfTagTag extends Component {
                   className="form-item"
                   label={<span className="form-label">主站专辑ID</span>}
                 >
-                  <Input style={{ width: 190 }} placeholder="请输入主站专辑ID" onChange={e => this.setState({ searchSourceId: e.target.value })} />
+                  <InputNumber
+                    ref="searchSourceIdref"
+                    style={{ width: 190 }} placeholder="请输入主站专辑ID" onChange={v => this.setState({ searchSourceId: v })}
+                  />
                 </FormItem>
               </Col>
               <Col span={8}>

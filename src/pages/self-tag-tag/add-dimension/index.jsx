@@ -19,7 +19,8 @@ class SelfAddDimension extends Component {
     addDimesinonCancel: PropTypes.func,
   }
 
-  handleSubmit = () => {
+  handleSubmit = (e) => {
+    e.preventDefault()
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         this.props.addDimesinonOk(values)

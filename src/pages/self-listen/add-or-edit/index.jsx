@@ -48,7 +48,8 @@ class SelfListenAddOrEdit extends Component {
     this.coverUrlSmall = this.props.addOrEditInitValues.coverUrlSmall
   }
 
-  handleSubmit = () => {
+  handleSubmit = (e) => {
+    e.preventDefault()
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         // 对id进行处理

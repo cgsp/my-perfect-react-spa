@@ -33,7 +33,8 @@ class SelfTagDimensionAddOrEdit extends Component {
     }
   }
 
-  handleSubmit = () => {
+  handleSubmit = (e) => {
+    e.preventDefault()
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         const title = this.props.addOrEditTitle
