@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:46 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-29 17:19:01
+ * @Last Modified time: 2018-09-03 19:43:17
  */
 import { myAxios } from '@Utils/myAxios'
 import { defaultHeader } from './config'
@@ -230,6 +230,20 @@ export const commonDimesions = () => {
       headers: defaultHeader
     })
 }
+
+// 获取公用的维度和标签的接口
+export const commonDimesionsAndTags = () => {
+  return myAxios(
+    {
+      url: '/dimension/allDimensionsWithTags',
+      method: 'get',
+      params: {},
+      data: {},
+      headers: defaultHeader
+    })
+}
+
+
 
 
 

@@ -1,51 +1,69 @@
 import React, { Component } from 'react'
-import { Modal, Form, Input, Radio } from 'antd'
+import { Modal, Form, Input, Radio, Tag, Checkbox } from 'antd'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
-import { getCommonDimesions } from '@Redux/commonTagAndDimesion'
 
 const FormItem = Form.Item
 const RadioGroup = Radio.Group
+const { CheckableTag } = Tag
 
 
 @connect(
   state => state.commonTagAndDimesionsReducer,
-  { getCommonDimesions }
+  {}
 )
-class SelfAddDimension extends Component {
+class SelfAddTag extends Component {
   static propTypes = {
-    addDimesinonVisible: PropTypes.bool,
-    addDimesinonOk: PropTypes.func,
-    addDimesinonCancel: PropTypes.func,
+    addTagVisible: PropTypes.bool,
+    addTagOk: PropTypes.func,
+    addTagCancel: PropTypes.func,
   }
 
-  handleSubmit = () => {
-    this.props.form.validateFieldsAndScroll((err, values) => {
-      if (!err) {
-        this.props.addDimesinonOk(values)
-      }
+  constructor(props) {
+    super(props)
+    const nowAllTags = this.props.commonDimesionsAndTags[0].tags
+    const activeChoiceType = this.props.commonDimesionsAndTags[0].choiceType
+    this.state = {
+      active: 0,
+      nowAllTags: nowAllTags ? nowAllTags : [],
+      activeChoiceType
+    }
+    // choiceType 1代表单选，2代表多选
+    console.log(this.props.commonDimesionsAndTags[0].tags)
+    console.log(this.props.commonDimesionsAndTags[0].choiceType)
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault()
+  }
+
+  changeDimension(item, index) {
+    console.log(item, index)
+    this.setState({
+      active: index,
+      nowAllTags: item.tags ? item.tags : [],
+      activeChoiceType: item.choiceType
     })
   }
 
   render() {
-    const { getFieldDecorator } = this.props.form
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
-        sm: { span: 10 },
+        sm: { span: 4 },
       },
       wrapperCol: {
         xs: { span: 24 },
-        sm: { span: 14 },
+        sm: { span: 20 },
       },
     }
 
     return (
       <Modal
         title={'新增维度'}
-        visible={this.props.addDimesinonVisible}
-        onCancel={this.props.addDimesinonCancel}
-        onOk={() => this.handleSubmit()}
+        visible={this.props.addTagVisible}
+        onCancel={this.props.addTagCancel}
+        onOk={(e) => this.handleSubmit(e)}
         width={800}
         destroyOnClose={true}
         zIndex={1000}
@@ -58,52 +76,45 @@ class SelfAddDimension extends Component {
               {...formItemLayout}
               label="维度名称"
             >
-              {getFieldDecorator('dimensionName', {
-                rules: [
-                  {
-                    required: true, message: '请输入维度名称',
-                  }
-                ],
-              })(
-                <Input placeholder="请输入维度名称" style={{ maxWidth: 300 }} />
-              )}
+              <div className="tag-set">
+                {
+                  this.props.commonDimesionsAndTags.map((item, index) => {
+                    return (
+                      <CheckableTag
+                        key={item.id}
+                        color="#f50"
+                        checked={this.state.active === index}
+                        onChange={() => this.changeDimension(item, index)}
+                      >{item.dimensionName}</CheckableTag>
+                    )
+                  })
+                }
+              </div>
             </FormItem>
             <FormItem
               {...formItemLayout}
-              label="该维度下标签是否支持多选"
+              label="标签名称"
             >
-              {getFieldDecorator('choiceType', {
-                initialValue: 2,
-                rules: [
-                  {
-                    required: true, message: '请选择',
-                  }
-                ],
-              })(
-                <RadioGroup>
-                  <Radio value={2}>支持多选</Radio>
-                  <Radio value={1}>只能单选</Radio>
-                </RadioGroup>
-              )}
-            </FormItem>
-            <FormItem
-              {...formItemLayout}
-              label="该维度下标签名称类型"
-            >
-              {getFieldDecorator('valueType', {
-                initialValue: 1,
-                rules: [
-                  {
-                    required: true, message: '请选择该维度下标签名称类型'
-                  }
-                ],
-              })(
-                <RadioGroup>
-                  <Radio value={1}>文本</Radio>
-                  <Radio value={2}>数值</Radio>
-                  <Radio value={3}>数值范围</Radio>
-                </RadioGroup>
-              )}
+              <div>
+                {
+                  this.state.activeChoiceType === 1 ?
+                    <RadioGroup>
+                      {this.state.nowAllTags.map((item, index) => {
+                        return (
+                          <Radio key={item.id} value={item.id}>{item.name}</Radio>
+                        )
+                      })}
+                    </RadioGroup>
+                    :
+                    <Checkbox.Group>
+                      {this.state.nowAllTags.map((item, index) => {
+                        return (
+                          <Checkbox key={item.id} value={item.id}>{item.name}</Checkbox>
+                        )
+                      })}
+                    </Checkbox.Group>
+                }
+              </div>
             </FormItem>
           </Form>
         </div>
@@ -112,5 +123,5 @@ class SelfAddDimension extends Component {
   }
 }
 
-const WrapperSelfAddDimension = Form.create()(SelfAddDimension)
-export default WrapperSelfAddDimension
+const WrapperSelfAddTag = Form.create()(SelfAddTag)
+export default WrapperSelfAddTag

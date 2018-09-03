@@ -42,3 +42,22 @@
 .ant-message {
   z-index: 200000 !important;
 }
+
+.tag-set {
+  .ant-tag {
+    &.ant-tag-checkable {
+      border: 1px solid #ccc;
+      line-height: 30px;
+      min-width: 40px;
+      text-align: center;
+      height: 30px;
+      border-radius: 15px;
+      &.ant-tag-checkable-checked {
+        border: 1px solid #1585ff;
+        background-color: #fff;
+        color: #1585ff;
+        font-weight: 700;
+      }
+    }
+  }
+}

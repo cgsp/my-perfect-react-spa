@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { Modal, Form, Input, Radio, InputNumber, Row, Col, message, Select, Button, Tag } from 'antd'
 import { PropTypes } from 'prop-types'
-import WrapperSelfAddDimension from '../add-tag'
+import WrapperSelfAddTag from '../add-tag'
 import MaskLoading from '@Components/mask-loading'
 import { connect } from 'react-redux'
-import { getCommonDimesions } from '@Redux/commonTagAndDimesion'
+import { getCommonDimesionsAndTags } from '@Redux/commonTagAndDimesion'
 import { apiSelfAddDimension } from '@Api/self-tag-tag'
 import { ERR_OK } from '@Constants'
 import { commonSmallTypes } from '@Api'
@@ -16,7 +16,7 @@ const Option = Select.Option
 
 @connect(
   state => state.commonTagAndDimesionsReducer,
-  { getCommonDimesions }
+  { getCommonDimesionsAndTags }
 )
 class SelfTagDimensionAddOrEdit extends Component {
   static propTypes = {
@@ -30,7 +30,7 @@ class SelfTagDimensionAddOrEdit extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      addDTagVisible: false,
+      addTagVisible: false,
       smallTypes: [],
       chosedTags: [
         { name: '标签1', id: '111' },
@@ -103,32 +103,37 @@ class SelfTagDimensionAddOrEdit extends Component {
 
   addTagCancel() {
     this.setState({
-      addDTagVisible: false
+      addTagVisible: false
     })
   }
 
   addTagOk(values) {
     this.addTagCancel()
-    this.refs.mask.show()
-    apiSelfAddDimension(values)
-      .then(res => {
-        this.refs.mask.hide()
-        if (res.code !== ERR_OK) {
-          message.error(res.msg)
-          return
-        }
-        this.props.getCommonDimesions(() => {
-          message.success('新增维度成功')
-        })
-      })
   }
 
-  cancelTag = (id) => {
+  deleteTag = (id) => {
     console.log(id)
   }
 
   addTagBegin = () => {
+    this.refs.mask.show()
+    this.props.getCommonDimesionsAndTags(() => {
+      this.setState({
+        addTagVisible: true
+      })
+      this.refs.mask.hide()
+    })
+  }
 
+  addTagOk = () => {
+    this.setState({
+      addTagVisible: false
+    })
+  }
+  addTagCancel = () => {
+    this.setState({
+      addTagVisible: false
+    })
   }
 
 
@@ -146,7 +151,7 @@ class SelfTagDimensionAddOrEdit extends Component {
     }
 
     const addTagOptions = {
-      addDTagVisible: this.state.addDTagVisible,
+      addTagVisible: this.state.addTagVisible,
       addTagOk: this.addTagOk,
       addTagCancel: this.addTagCancel
     }
@@ -272,19 +277,24 @@ class SelfTagDimensionAddOrEdit extends Component {
               <div>
                 {
                   this.state.chosedTags.map((item) => {
-                    return <Tag key={item.id} color="#f50" closable onClose={() => this.cancelTag(item.id)}>{item.name}</Tag>
+                    return (
+                      <Tag key={item.id} color="#f50"
+                        closable
+                        onClose={() => this.deleteTag(item.id)}
+                      >{item.name}</Tag>
+                    )
                   })
                 }
                 <div>
-                  <Button type="primary">添加标签</Button>
+                  <Button type="primary" onClick={this.addTagBegin}>添加标签</Button>
                 </div>
               </div>
             </FormItem>
           </Form>
           {
-            this.state.addDTagVisible
+            this.state.addTagVisible
               ?
-              <WrapperSelfAddDimension {...addTagOptions} />
+              <WrapperSelfAddTag {...addTagOptions} />
               : null
           }
           <MaskLoading ref="mask" />
