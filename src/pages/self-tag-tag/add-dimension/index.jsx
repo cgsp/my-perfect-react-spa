@@ -46,7 +46,7 @@ class SelfAddDimension extends Component {
         title={'新增维度'}
         visible={this.props.addDimesinonVisible}
         onCancel={this.props.addDimesinonCancel}
-        onOk={() => this.handleSubmit()}
+        onOk={(e) => this.handleSubmit(e)}
         width={800}
         destroyOnClose={true}
         zIndex={1000}

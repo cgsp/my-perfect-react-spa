@@ -46,6 +46,8 @@ class MainListenAddOrEdit extends Component {
     this.coverUrlLarge = this.props.addOrEditInitValues.coverUrlLarge
     this.coverUrlMiddle = this.props.addOrEditInitValues.coverUrlMiddle
     this.coverUrlSmall = this.props.addOrEditInitValues.coverUrlSmall
+    this.isJPG = true
+    this.isLt3M = true
   }
 
   handleSubmit = (e) => {
@@ -58,9 +60,12 @@ class MainListenAddOrEdit extends Component {
         values.coverUrlSmall = this.coverUrlSmall
         values.coverUrlMiddle = this.coverUrlMiddle
         values.coverUrlLarge = this.coverUrlLarge
+        if (!values.coverUrlSmall && !values.coverUrlMiddle && !values.coverUrlLarge) {
+          message.error('请上传图片')
+          return
+        }
         if (!values.coverUrlSmall || !values.coverUrlMiddle || !values.coverUrlLarge) {
-          message.error('请上传一张图片')
-          console.log(values)
+          message.error('图片信息不全，请删除后重新上传')
           return
         }
 
@@ -70,6 +75,7 @@ class MainListenAddOrEdit extends Component {
   }
 
   onImgRemove = () => {
+    this.setState({ fileList: [], previewVisible: false })
     message.error('请至少选择一张图片上传')
     this.coverUrlLarge = ''
     this.coverUrlMiddle = ''
@@ -90,12 +96,29 @@ class MainListenAddOrEdit extends Component {
     })
   }
 
-  handleImgChange = ({ file, fileList, event }) => {
+  beforeUpload = (file) => {
+    this.isJPG = true
+    this.isLt3M = true
+    const isJPG = (file.type === 'image/jpeg' || file.type === 'image/jpg' || file.type === 'image/gif' || file.type === 'image/png' || file.type === 'image/bmp')
+    if (!isJPG) {
+      message.error('只能上传jpeg,jpg,gif,png,bmp图 ')
+      this.isJPG = false
+    }
+    const isLt3M = file.size / 1024 / 1024 < 3
+    if (!isLt3M) {
+      message.error('图片大小应小于3M')
+      this.isJPG = false
+    }
+    return isJPG && isLt3M
+  }
 
-    this.setState({ fileList })
-    console.log(file.response)
+  handleImgChange = ({ file, fileList, event }) => {
+    // console.log(file.response)
     // console.log(fileList)
     // console.log(event)
+    if (this.isJPG && this.isLt3M) {
+      this.setState({ fileList })
+    }
     if (file.response) {
       if (file.response.code !== ERR_OK) {
         message.error('上传到服务器失败，请重新上传')
@@ -143,7 +166,7 @@ class MainListenAddOrEdit extends Component {
         title={this.props.addOrEditTitle}
         visible={this.props.addOrEditVisible}
         onCancel={this.props.addOrEditCancel}
-        onOk={() => this.handleSubmit()}
+        onOk={(e) => this.handleSubmit(e)}
         confirmLoading={this.props.editOrEditConfirmLoading}
         width={800}
       >
@@ -179,6 +202,7 @@ class MainListenAddOrEdit extends Component {
                   onChange={this.handleImgChange}
                   onRemove={this.onImgRemove}
                   withCredentials={true}
+                  beforeUpload={this.beforeUpload}
                 >
                   {fileList.length >= 1 ? null : uploadButton}
                 </Upload>

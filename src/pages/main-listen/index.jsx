@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-31 18:05:32
+ * @Last Modified time: 2018-09-03 12:57:04
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal, message, InputNumber } from 'antd'
@@ -480,6 +480,7 @@ class SelfListen extends Component {
           this.setState({
             tableData: tableData,
             tableTotal: res.data.totalNum,
+            selectedRowKeys:[]
           })
         } else {
           message.error(res.msg)

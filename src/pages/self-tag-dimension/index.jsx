@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-31 22:26:55
+ * @Last Modified time: 2018-09-03 13:32:30
  */
 
 
@@ -203,6 +203,7 @@ class SelfTagTag extends Component {
         this.setState({
           tableData: tableData,
           tableTotal: res.data.totalNum,
+          selectedRowKeys: []
         })
         // 针对删除，编辑，新增之后，重新刷新页面的提示
         if (options.tip) {

@@ -65,7 +65,6 @@ class SelfTagDimensionAddOrEdit extends Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
 
       if (!err) {
-        alert('提交')
         const title = this.props.addOrEditTitle
         if (title === '编辑标签') {
           values.id = this.props.addOrEditInitValues.id
@@ -97,7 +96,16 @@ class SelfTagDimensionAddOrEdit extends Component {
             values.name = `${num1}~${num2}`
             console.log('提交', values)
             this.props.addOrEditOk(values, title)
-          } else {
+          }
+          else if (this.state.valueType === 2) {
+            if (typeof values.name !== 'number') {
+              message.error('请输入数字')
+            } else {
+              console.log('提交', values)
+              this.props.addOrEditOk(values, title)
+            }
+          }
+          else {
             console.log('提交', values)
             this.props.addOrEditOk(values, title)
           }
@@ -191,7 +199,7 @@ class SelfTagDimensionAddOrEdit extends Component {
         title={this.props.addOrEditTitle}
         visible={this.props.addOrEditVisible}
         onCancel={this.props.addOrEditCancel}
-        onOk={() => this.handleSubmit()}
+        onOk={(e) => this.handleSubmit(e)}
         destroyOnClose={true}
         width={600}
       >

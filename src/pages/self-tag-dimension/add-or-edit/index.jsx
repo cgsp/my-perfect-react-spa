@@ -64,7 +64,16 @@ class SelfTagDimensionAddOrEdit extends Component {
             values.name = `${num1}~${num2}`
             this.props.addOrEditOk(values, title)
           })
-        } else {
+        }
+        else if ((this.props.addOrEditTitle === '添加标签' || this.props.addOrEditTitle === '编辑标签') && this.props.addOrEditInitValues.valueType === 2) {
+          if (typeof values.name !== 'number') {
+            message.error('请输入数字')
+          } else {
+            console.log('提交', values)
+            this.props.addOrEditOk(values, title)
+          }
+        }
+        else {
           console.log('提交', values)
           this.props.addOrEditOk(values, title)
         }
@@ -104,7 +113,7 @@ class SelfTagDimensionAddOrEdit extends Component {
         title={this.props.addOrEditTitle}
         visible={this.props.addOrEditVisible}
         onCancel={this.props.addOrEditCancel}
-        onOk={() => this.handleSubmit()}
+        onOk={(e) => this.handleSubmit(e)}
         confirmLoading={this.props.editOrEditConfirmLoading}
         width={800}
         destroyOnClose={true}
@@ -141,7 +150,7 @@ class SelfTagDimensionAddOrEdit extends Component {
                           {
                             required: true, message: '请输入标签名称',
                           }
-                        ],
+                        ]
                       })(
                         this.props.addOrEditInitValues.valueType === 1
                           ?
