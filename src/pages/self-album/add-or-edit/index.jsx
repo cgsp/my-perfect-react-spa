@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
-import { Modal, Form, Input, Radio, InputNumber, Row, Col, message, Select, Button } from 'antd'
+import { Modal, Form, Input, Radio, InputNumber, Row, Col, message, Select, Button, Tag } from 'antd'
 import { PropTypes } from 'prop-types'
-import WrapperSelfAddDimension from '../add-dimension'
+import WrapperSelfAddDimension from '../add-tag'
 import MaskLoading from '@Components/mask-loading'
 import { connect } from 'react-redux'
 import { getCommonDimesions } from '@Redux/commonTagAndDimesion'
 import { apiSelfAddDimension } from '@Api/self-tag-tag'
 import { ERR_OK } from '@Constants'
+import { commonSmallTypes } from '@Api'
 
 const FormItem = Form.Item
 const RadioGroup = Radio.Group
@@ -28,116 +29,86 @@ class SelfTagDimensionAddOrEdit extends Component {
 
   constructor(props) {
     super(props)
-    let { valueType, name } = this.props.addOrEditInitValues
-    valueType = valueType ? valueType : 1
-
-    let num1
-    let num2
-    if (!name) {
-      console.log(111)
-      if (valueType === 1) {
-        name = ''
-      } else if (valueType === 2) {
-        name = 0
-      } else if (valueType === 3) {
-        name = '0~0'
-      }
-      num1 = 0
-      num2 = 0
-    }
-    else {
-      num1 = name.split('~')[0] - 0
-      num2 = name.split('~')[1] - 0
-    }
     this.state = {
-      valueType,
-      name,
-      num1,
-      num2,
-      addDimesinonVisible: false
+      addDTagVisible: false,
+      smallTypes: [],
+      chosedTags: [
+        { name: '标签1', id: '111' },
+        { name: '标签2222222222222222222222222222222222222', id: '222' },
+        { name: '标签3', id: '333' },
+        { name: '标签4', id: '444' },
+        { name: '标签5', id: '555' },
+        { name: '标签6', id: '666' },
+        { name: '标签7777777777777777', id: '777' },
+        { name: '标签8', id: '888' }
+      ]
     }
-    this.addDimesinonCancel = this.addDimesinonCancel.bind(this)
-    this.addDimesinonOk = this.addDimesinonOk.bind(this)
+    this.addTagCancel = this.addTagCancel.bind(this)
+    this.addTagOk = this.addTagOk.bind(this)
   }
 
-  handleSubmit = () => {
-    this.props.form.validateFieldsAndScroll((err, values) => {
-      if (!err) {
-        const title = this.props.addOrEditTitle
-        if (title === '编辑标签') {
-          values.id = this.props.addOrEditInitValues.id
-        }
+  componentDidMount() {
+    this.getSmallTypes('1')
+  }
+
+  getSmallTypes = async (source) => {
+    try {
+      if (!source) {
         this.setState({
-        }, () => {
-          if (this.state.valueType === 3) {
-            let num1
-            let num2
-            num1 = this.state.num1 - 0
-            num2 = this.state.num2 - 0
-            console.log(num1, num2)
-            if (!num1 && num1 !== 0) {
-              message.error('请输入数值')
-              return
-            }
-            if (!num2 && num2 !== 0) {
-              message.error('请输入数值')
-              return
-            }
-            if (num1 >= num2) {
-              message.error('后一个数值应该大于前一个数值')
-              return
-            }
-            if (typeof num1 !== 'number' || typeof num2 !== 'number') {
-              message.error('前后数值都应该是数字')
-              return
-            }
-            values.name = `${num1}~${num2}`
-            console.log('提交', values)
-            this.props.addOrEditOk(values, title)
-          } else {
-            console.log('提交', values)
-            this.props.addOrEditOk(values, title)
-          }
+          smallTypes: []
+        })
+        this.props.form.setFieldsValue({
+          categoryId: undefined
         })
       }
+      const smallTypeRes = await commonSmallTypes(source)
+      if (smallTypeRes.code !== ERR_OK) {
+        message.error(smallTypeRes.msg)
+        return
+      }
+      this.setState({
+        smallTypes: smallTypeRes.data
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  sourceChange = (source) => {
+    this.getSmallTypes(source)
+    this.props.form.setFieldsValue({
+      categoryId: undefined
     })
   }
 
-  findNewValueType(v) {
-    if (!v) {
-      this.setState({
-        valueType: 1,
-        name: ''
-      })
+  handleSubmit = (e) => {
+    e.preventDefault()
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (err) {
+        return
+      }
+      console.log(values)
+    })
+  }
+
+  // 点击确定添加按钮
+  add = () => {
+    const sourceId = this.props.form.getFieldValue('sourceId')
+    if (!sourceId) {
+      message.error('请输入主站专辑Id')
       return
     }
-    const newValueType = this.props.commonDimesions.find((item) => {
-      return v === item.id
-    }).valueType
+    console.log(sourceId)
+  }
 
-    let name
-    if (newValueType === 1) {
-      name = ''
-    } else if (newValueType === 2) {
-      name = 0
-    } else {
-      name = '0~0'
-    }
+  addTagCancel() {
     this.setState({
-      valueType: newValueType,
-      name
+      addDTagVisible: false
     })
   }
 
-  addDimesinonCancel() {
-    this.setState({
-      addDimesinonVisible: false
-    })
-  }
-
-  addDimesinonOk(values) {
-    console.log(values)
-    this.addDimesinonCancel()
+  addTagOk(values) {
+    this.addTagCancel()
     this.refs.mask.show()
     apiSelfAddDimension(values)
       .then(res => {
@@ -152,23 +123,32 @@ class SelfTagDimensionAddOrEdit extends Component {
       })
   }
 
+  cancelTag = (id) => {
+    console.log(id)
+  }
+
+  addTagBegin = () => {
+
+  }
+
+
   render() {
     const { getFieldDecorator } = this.props.form
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
-        sm: { span: 5 },
+        sm: { span: 4 },
       },
       wrapperCol: {
         xs: { span: 24 },
-        sm: { span: 19 },
+        sm: { span: 20 },
       },
     }
 
-    const addDimensionOptions = {
-      addDimesinonVisible: this.state.addDimesinonVisible,
-      addDimesinonOk: this.addDimesinonOk,
-      addDimesinonCancel: this.addDimesinonCancel
+    const addTagOptions = {
+      addDTagVisible: this.state.addDTagVisible,
+      addTagOk: this.addTagOk,
+      addTagCancel: this.addTagCancel
     }
 
     // const limitDecimals = value => {
@@ -188,7 +168,7 @@ class SelfTagDimensionAddOrEdit extends Component {
         title={this.props.addOrEditTitle}
         visible={this.props.addOrEditVisible}
         onCancel={this.props.addOrEditCancel}
-        onOk={() => this.handleSubmit()}
+        onOk={(e) => this.handleSubmit(e)}
         destroyOnClose={true}
         width={600}
       >
@@ -198,126 +178,113 @@ class SelfTagDimensionAddOrEdit extends Component {
           >
             <FormItem
               {...formItemLayout}
-              label="维度"
+              label="主站专辑ID"
             >
               {
-                getFieldDecorator('dimensionId', {
-                  initialValue: this.props.addOrEditInitValues.dimensionId,
+                getFieldDecorator('sourceId', {
+                  initialValue: this.props.addOrEditInitValues.sourceId,
                   rules: [
                     {
-                      required: true, message: '请选择维度',
+                      required: true,
+                      message: '请输入数字型主站专辑ID',
                     }
-                  ],
+                  ]
                 })(
-                  <Select
-                    style={{ width: '100%' }}
-                    placeholder="请选择维度"
-                    allowClear
-                    onChange={(v) => this.findNewValueType(v)}
-                    disabled={this.props.addOrEditTitle === '编辑标签'}
-                  >
-                    {
-                      this.props.commonDimesions.map((item) => (
-                        <Option key={item.id} value={item.id}>{item.dimensionName}</Option>
-                      ))
-                    }
-                  </Select>
+                  <div>
+                    <Input
+                      type="number"
+                      placeholder="请输入主站专辑ID"
+                      style={{ width: 350 }}
+                      onPressEnter={e => e.preventDefault()}
+                    />
+                    <Button onClick={this.add} type="primary" style={{ marginLeft: 20 }}>确定添加</Button>
+                  </div>
                 )
               }
             </FormItem>
-            {
-              this.props.addOrEditTitle === '编辑标签'
-                ?
-                null
-                :
-                <FormItem
-                  {...formItemLayout}
-                  label="添加维度"
-                >
-                  <Button type="primary" onClick={() => this.setState({ addDimesinonVisible: true })}>添加维度</Button>
-                </FormItem>
-            }
             <FormItem
               {...formItemLayout}
-              label="维度的标签类型"
+              label="专辑标题"
             >
-              <RadioGroup
-                disabled
-                value={this.state.valueType}
-              >
-                <Radio value={1}>文本</Radio>
-                <Radio value={2}>数值</Radio>
-                <Radio value={3}>数值范围</Radio>
-              </RadioGroup>
+              {
+                getFieldDecorator('title', {
+                  initialValue: this.props.addOrEditInitValues.title,
+                  rules: [
+                    {
+                      required: true,
+                      message: '请输入专辑标题',
+                    }
+                  ]
+                })(
+                  <div>
+                    <Input
+                      placeholder="请输入专辑标题"
+                      onPressEnter={e => e.preventDefault()}
+                    />
+                  </div>
+                )
+              }
             </FormItem>
-            {
-              this.state.valueType === 3 ?
-                null :
-                <FormItem
-                  {...formItemLayout}
-                  label="标签名称"
-                >
+            <FormItem
+              {...formItemLayout}
+              label="分类来源"
+            >
+              {getFieldDecorator('categorySource', {
+                initialValue: this.props.addOrEditInitValues.categorySource ? this.props.addOrEditInitValues.categorySource + '' : '1',
+                rules: [
                   {
-                    getFieldDecorator('name', {
-                      initialValue: this.state.name,
-                      rules: [
-                        {
-                          required: true, message: '请输入标签名称',
-                        }
-                      ],
-                    })(
-                      this.state.valueType === 1
-                        ?
-                        <Input style={{ width: '100%' }} placeholder="请输入标签名称" />
-                        :
-                        <InputNumber
-                          placeholder="请输入数字"
-                          style={{ width: '100%' }}
-                        />
-                    )
+                    required: true, message: '请选择分类来源',
                   }
-                </FormItem>
-            }
-            {
-              this.state.valueType !== 3 ?
-                null :
-                <FormItem
-                  {...formItemLayout}
-                  label="标签名称"
-                >
-                  <Row>
-                    <Col span={10}>
-                      <InputNumber
-                        placeholder="请输入数字"
-                        style={{ width: 200 }}
-                        defaultValue={
-                          this.state.name.split('~')[0] - 0
-                        }
-                        onChange={
-                          (v) => this.setState({ num1: v })
-                        }
-                      />
-                    </Col>
-                    <Col span={2} offset={2}>
-                      <InputNumber
-                        placeholder="请输入数字"
-                        style={{ width: 200 }}
-                        defaultValue={
-                          this.state.name.split('~')[1] - 0
-                        }
-                        onChange={
-                          (v) => this.setState({ num2: v })
-                        }
-                      />
-                    </Col>
-                  </Row>
-                </FormItem>
-            }
+                ],
+              })(
+                <Select allowClear onChange={(v) => this.sourceChange(v)}>
+                  <Option value="1">主站分类</Option>
+                  <Option value="2">自运营分类</Option>
+                </Select>
+              )}
+            </FormItem>
+            <FormItem
+              {...formItemLayout}
+              label="分类"
+            >
+              {getFieldDecorator('categoryId', {
+                initialValue: this.props.addOrEditInitValues.categoryId,
+                rules: [
+                  {
+                    required: true, message: '请选择分类',
+                  }
+                ],
+              })(
+                <Select allowClear>
+                  {
+                    this.state.smallTypes.map((item) => (
+                      <Option key={item.id} value={item.id}>{item.name}</Option>
+                    ))
+                  }
+
+                </Select>
+              )}
+            </FormItem>
+            <FormItem
+              {...formItemLayout}
+              label="自运营标签"
+            >
+              <div>
+                {
+                  this.state.chosedTags.map((item) => {
+                    return <Tag key={item.id} color="#f50" closable onClose={() => this.cancelTag(item.id)}>{item.name}</Tag>
+                  })
+                }
+                <div>
+                  <Button type="primary">添加标签</Button>
+                </div>
+              </div>
+            </FormItem>
           </Form>
           {
-            this.state.addDimesinonVisible
+            this.state.addDTagVisible
               ?
-              <WrapperSelfAddDimension {...addDimensionOptions} />
+              <WrapperSelfAddDimension {...addTagOptions} />
               : null
           }
           <MaskLoading ref="mask" />

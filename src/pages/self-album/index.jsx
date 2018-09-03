@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-31 22:16:26
+ * @Last Modified time: 2018-09-03 16:07:26
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -233,7 +233,7 @@ class SelfTagTag extends Component {
     // 处理排序的
     options.orderBy = options.sortIndex === 0 ? 'created_at' : 'updated_at'
     delete options.sortIndex
-    options.asc = options.sortDirection === 'up' ? false : true
+    options.asc = options.sortDirection === 'up' ? true : false
     delete options.sortDirection
 
     options.albumIds = options.selectedRowKeys
@@ -262,6 +262,7 @@ class SelfTagTag extends Component {
         this.setState({
           tableData: tableData,
           tableTotal: res.data.totalNum,
+          selectedRowKeys: []
         })
         // 针对删除，编辑，新增之后，重新刷新页面的提示
         if (options.tip) {
