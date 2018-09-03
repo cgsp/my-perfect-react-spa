@@ -104,7 +104,7 @@ class MainListenAddOrEdit extends Component {
       message.error('只能上传jpeg,jpg,gif,png,bmp图 ')
       this.isJPG = false
     }
-    const isLt3M = file.size / 1024 / 1024 < 3
+    const isLt3M = file.size / 1024 / 1024 < 5
     if (!isLt3M) {
       message.error('图片大小应小于3M')
       this.isJPG = false
