@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-03 18:40:14
+ * @Last Modified time: 2018-09-04 18:35:09
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -17,13 +17,13 @@ import SortList from '@Components/sort-list'
 import TimeControlHoc from '@Components/time-control-hoc'
 
 import { connect } from 'react-redux'
-import { getCommonDimesions } from '@Redux/commonTagAndDimesion'
+import { getCommonDimesions, getCommonDimesionsAndTags } from '@Redux/commonTagAndDimesion'
 
 import {
-  apiSelfAddOrEdit, apiSelfTagTagList
+  apiSelfTagTagList
 } from '@Api/self-tag-tag'
 
-import { apiSelfAlbumList, apiAlbumDetail } from '@Api/self-album'
+import { apiSelfAlbumList, apiAlbumDetail, apiAlbumAddOrEdit } from '@Api/self-album'
 
 import { commonSmallTypes } from '@Api'
 
@@ -37,7 +37,7 @@ const Option = Select.Option
 
 @connect(
   state => state.commonTagAndDimesionsReducer,
-  { getCommonDimesions }
+  { getCommonDimesions, getCommonDimesionsAndTags }
 )
 @TimeControlHoc
 class SelfTagTag extends Component {
@@ -389,21 +389,29 @@ class SelfTagTag extends Component {
 
   // 列表页面的编辑
   tableLineEdit(line) {
-    console.log('编辑', line)
-    this.setState({
-      addOrEditTitle: '编辑自运营专辑',
-      addOrEditVisible: true,
-      addOrEditInitValues: line
+    this.refs.mask.show()
+    this.props.getCommonDimesionsAndTags(() => {
+      console.log('编辑', line)
+      this.setState({
+        addOrEditTitle: '编辑自运营专辑',
+        addOrEditVisible: true,
+        addOrEditInitValues: line
+      })
+      this.refs.mask.hide()
     })
   }
 
 
   // 新增自运营专辑
   addSelfAlbum() {
-    this.setState({
-      addOrEditTitle: '新增自运营专辑',
-      addOrEditVisible: true,
-      addOrEditInitValues: {}
+    this.refs.mask.show()
+    this.props.getCommonDimesionsAndTags(() => {
+      this.setState({
+        addOrEditTitle: '新增自运营专辑',
+        addOrEditVisible: true,
+        addOrEditInitValues: {}
+      })
+      this.refs.mask.hide()
     })
   }
 
@@ -423,7 +431,7 @@ class SelfTagTag extends Component {
   // 新增自运营专辑，编辑自运营专辑的辅助函数
   handleSelfTagAddOrEdit(options, callBack) {
     this.refs.mask.show()
-    apiSelfAddOrEdit(options)
+    apiAlbumAddOrEdit(options)
       .then(res => {
         this.refs.mask.hide()
         if (res.code !== ERR_OK) {

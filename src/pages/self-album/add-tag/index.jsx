@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Modal, Form, Input, Radio, Tag, Checkbox } from 'antd'
+import { Modal, Form, Radio, Tag, Checkbox } from 'antd'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
 
@@ -17,11 +17,15 @@ class SelfAddTag extends Component {
     addTagVisible: PropTypes.bool,
     addTagOk: PropTypes.func,
     addTagCancel: PropTypes.func,
+    nowChoosedTagsIds: PropTypes.array
   }
 
   constructor(props) {
+    console.log('重新渲染了')
     super(props)
-    const nowChoosedTagsIds = [41, 42, 48, 51, 66]
+    const nowChoosedTagsIds = this.props.nowChoosedTagsIds || []
+    console.log(this.props.nowChoosedTagsIds)
+    // const nowChoosedTagsIds = [41, 42, 48, 51, 66]
     // 根据当前被选中的所有标签ID，获取，这些被选中的标签的名称，组成一个数组
     const nowChoosedTags = this.transTagIDsToName(nowChoosedTagsIds)
     // 当前的维度Id
@@ -54,6 +58,11 @@ class SelfAddTag extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
+    this.setState({
+
+    }, () => {
+      this.props.addTagOk(this.state.nowChoosedTagsIds)
+    })
   }
 
   // 处理当前维度下面，哪些id被获取了,传入维度的ID，获取，当前维度下，哪些标签被选中了
@@ -83,11 +92,11 @@ class SelfAddTag extends Component {
       return item.id === nowChoosedDimensionId
     }).tags
 
-    NowDimensionTags && NowDimensionTags.length > 0 ? NowDimensionTags : null
+    NowDimensionTags = (NowDimensionTags && NowDimensionTags.length) > 0 ? NowDimensionTags.slice() : null
 
     if (activeChoiceType === 1) {
       if (!NowDimensionTags) {
-        nowChoosedTagsIdInNowDimension = null
+        nowChoosedTagsIdInNowDimension = []
       } else {
         nowChoosedTagsIdInNowDimension = []
         NowDimensionTags.forEach(item => {
@@ -98,7 +107,7 @@ class SelfAddTag extends Component {
       }
     } else {
       if (!NowDimensionTags) {
-        nowChoosedTagsIdInNowDimension = null
+        nowChoosedTagsIdInNowDimension = []
       } else {
         nowChoosedTagsIdInNowDimension = []
         NowDimensionTags.forEach(item => {
@@ -229,7 +238,7 @@ class SelfAddTag extends Component {
 
     return (
       <Modal
-        title={'新增维度'}
+        title={'新增标签'}
         visible={this.props.addTagVisible}
         onCancel={this.props.addTagCancel}
         onOk={(e) => this.handleSubmit(e)}
@@ -303,7 +312,7 @@ class SelfAddTag extends Component {
               {...formItemLayout}
               label="已选标签"
             >
-              <div>
+              <div className="tag-set">
                 {
                   this.state.nowChoosedTags.map((item) => {
                     return (

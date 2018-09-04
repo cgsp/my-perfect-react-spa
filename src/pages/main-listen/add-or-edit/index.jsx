@@ -106,7 +106,7 @@ class MainListenAddOrEdit extends Component {
     }
     const isLt3M = file.size / 1024 / 1024 < 5
     if (!isLt3M) {
-      message.error('图片大小应小于3M')
+      message.error('图片大小应小于5M')
       this.isJPG = false
     }
     return isJPG && isLt3M

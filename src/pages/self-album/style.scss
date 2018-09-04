@@ -59,5 +59,13 @@
         font-weight: 700;
       }
     }
+    &.ant-tag-has-color {
+      height: 30px;
+      line-height: 30px;
+      font-size: 16px;
+      .anticon-cross{
+        font-size: 16px;
+      }
+    }
   }
 }
