@@ -29,8 +29,9 @@ class SelfTagDimensionAddOrEdit extends Component {
   constructor(props) {
     super(props)
 
-    const nowChoosedTagsIds = this.props.addOrEditInitValues.ctagIds || []
-    // const nowChoosedTagsIds = this.props.addOrEditInitValues.ctagIds || [41, 42, 48, 51, 66]
+    const { coverUrlMiddle, coverUrlLarge, coverUrlSmall, ctagIds } = this.props.addOrEditInitValues
+    const nowChoosedTagsIds = ctagIds || []
+    // const nowChoosedTagsIds = ctagIds || [41, 42, 48, 51, 66]
     // 根据传入的标签ID，获取标签名称
     const nowChoosedTags = this.transTagIDsToName(nowChoosedTagsIds)
     this.state = {
@@ -38,6 +39,9 @@ class SelfTagDimensionAddOrEdit extends Component {
       smallTypes: [],
       nowChoosedTags,
       nowChoosedTagsIds,
+      coverUrlMiddle,
+      coverUrlLarge,
+      coverUrlSmall,
     }
     this.addTagCancel = this.addTagCancel.bind(this)
     this.addTagOk = this.addTagOk.bind(this)
@@ -106,13 +110,18 @@ class SelfTagDimensionAddOrEdit extends Component {
         message.error('请导入主站专辑数据后，再编辑，不要直接编辑')
         return
       }
+      if (this.props.addOrEditTitle !== '新增自运营专辑') {
+        values.sourceId = this.props.addOrEditInitValues.sourceId
+        values.id = this.props.addOrEditInitValues.id
+      }
       this.setState({}, () => {
         const { nowChoosedTagsIds, coverUrlLarge, coverUrlSmall, coverUrlMiddle } = this.state
         values.ctagIds = nowChoosedTagsIds.join()
+        // 后面删除这句
         values.coverUrlLarge = coverUrlLarge ? coverUrlLarge : ''
         values.coverUrlMiddle = coverUrlMiddle ? coverUrlMiddle : ''
         values.coverUrlSmall = coverUrlSmall ? coverUrlSmall : ''
-
+        // 后面打开这个
         // values.coverUrlLarge = coverUrlLarge
         // values.coverUrlMiddle = coverUrlMiddle
         // values.coverUrlSmall = coverUrlSmall
@@ -123,14 +132,20 @@ class SelfTagDimensionAddOrEdit extends Component {
         // }
 
         values.tags = this.tags
-        values.trackIds = values.trackIds.join()
+        if (typeof values.trackIds !== 'string') {
+          values.trackIds = values.trackIds.join()
+        }
         values.paid = values.isPaid
+        // 后面删除这句
+        values.people = values.people ? values.people : ''
         if (nowChoosedTagsIds.length === 0) {
           message.error('请至少选择一个自运营标签')
           return
         }
-        // const title = this.props.addOrEditTitle
-        // this.props.addOrEditOk(values, title)
+        values.categorySource = values.categorySource - 0
+        values.sourceId = values.sourceId - 0
+        const title = this.props.addOrEditTitle
+        this.props.addOrEditOk(values, title)
         console.log(values)
       })
     })
@@ -284,38 +299,47 @@ class SelfTagDimensionAddOrEdit extends Component {
           <Form
             onSubmit={this.handleSubmit}
           >
-            <FormItem
-              {...formItemLayout}
-              label="主站专辑ID"
-            >
-              {
-                getFieldDecorator('sourceId', {
-                  initialValue: this.props.addOrEditInitValues.sourceId,
-                  rules: [
-                    {
-                      required: true,
-                      message: '请输入数字型主站专辑ID',
-                    }
-                  ]
-                })(
-                  <div>
-                    <Input
-                      type="number"
-                      placeholder="请输入主站专辑ID"
-                      style={{ width: 350 }}
-                      onPressEnter={e => e.preventDefault()}
-                      disabled={this.props.addOrEditTitle !== '新增自运营专辑'}
-                    />
-                    {
-                      this.props.addOrEditTitle === '新增自运营专辑'
-                        ?
+            {
+              this.props.addOrEditTitle === '新增自运营专辑' ?
+                <FormItem
+                  {...formItemLayout}
+                  label="主站专辑ID"
+                >
+                  {
+                    getFieldDecorator('sourceId', {
+                      initialValue: this.props.addOrEditInitValues.sourceId,
+                      rules: [
+                        {
+                          required: true,
+                          message: '请输入数字型主站专辑ID',
+                        }
+                      ]
+                    })(
+                      <div>
+                        <Input
+                          type="number"
+                          placeholder="请输入主站专辑ID"
+                          style={{ width: 350 }}
+                        />
                         <Button onClick={this.add} type="primary" style={{ marginLeft: 20 }}>确定添加</Button>
-                        : null
-                    }
-                  </div>
-                )
-              }
-            </FormItem>
+                      </div>
+                    )
+                  }
+                </FormItem>
+                : null
+            }
+
+            {
+              this.props.addOrEditTitle !== '新增自运营专辑' ?
+                <FormItem
+                  {...formItemLayout}
+                  label="主站专辑ID"
+                >
+                  <Input type="text" value={this.props.addOrEditInitValues.sourceId} disabled />
+                </FormItem>
+                : null
+            }
+
             <FormItem
               {...formItemLayout}
               label="专辑标题"
@@ -327,6 +351,10 @@ class SelfTagDimensionAddOrEdit extends Component {
                     {
                       required: true,
                       message: '请输入专辑标题',
+                    },
+                    {
+                      max: 20,
+                      message: '专辑标题应该小于20个字符',
                     }
                   ]
                 })(
@@ -460,6 +488,12 @@ class SelfTagDimensionAddOrEdit extends Component {
             >
               {getFieldDecorator('intro', {
                 initialValue: this.props.addOrEditInitValues.intro,
+                rules: [
+                  {
+                    max: 200,
+                    message: '专辑简介应该小于200个字符',
+                  }
+                ]
               })(
                 <TextArea style={{ height: 100, maxHeight: 100 }} placeholder="请输入专辑简介" />
               )}
@@ -471,7 +505,7 @@ class SelfTagDimensionAddOrEdit extends Component {
               {getFieldDecorator('trackIds', {
                 initialValue: this.props.addOrEditInitValues.trackIds ? this.props.addOrEditInitValues.trackIds.join() : '',
               })(
-                <TextArea style={{ height: 100, maxHeight: 100 }} disabled placeholder="请输入专辑简介" />
+                <TextArea style={{ height: 100, maxHeight: 100 }} disabled />
               )}
             </FormItem>
           </Form>
