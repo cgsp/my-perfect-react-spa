@@ -48,7 +48,11 @@ class SelfTagDimensionAddOrEdit extends Component {
   }
 
   componentDidMount() {
-    this.getSmallTypes('1')
+    if (this.props.addOrEditTitle === '新增自运营专辑') {
+      this.getSmallTypes('1')
+    } else {
+      this.getSmallTypes(this.props.addOrEditInitValues.categorySource)
+    }
   }
 
   // 处理当前维度下面，哪些id被获取了,传入维度的ID，获取，当前维度下，哪些标签被选中了
