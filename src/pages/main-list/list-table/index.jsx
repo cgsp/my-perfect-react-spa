@@ -26,65 +26,44 @@ export default class MainListTable extends Component {
   render() {
     const columns = [
       {
-        title: '自运营专辑ID',
+        title: '主站ID',
+        dataIndex: 'rankingListId',
+        key: 'rankingListId',
+      },
+      {
+        title: '榜单ID',
         dataIndex: 'id',
         key: 'id',
-        width: 80,
       },
       {
-        title: '主站专辑ID',
-        dataIndex: 'sourceId',
-        key: 'sourceId',
-        render: (text, record) =>
-          (
-            <a href={songUrlObj.album + '/' + text} target="_blank" style={{ display: 'inline-block', cursor: 'pointer' }}>
-              {text}
-            </a>
-          )
+        title: '榜单标题',
+        dataIndex: 'rankTitle',
+        key: 'rankTitle',
       },
       {
-        title: '专辑名称',
-        dataIndex: 'title',
-        key: 'title',
+        title: '榜单副标题',
+        dataIndex: 'rankSubTitle',
+        key: 'rankSubTitle',
       },
       {
-        title: '是否付费',
-        dataIndex: 'isPaid',
-        key: 'isPaid',
-        render: (text, record) => {
-          return <span>{text === 1 ? '付费' : '收费'}</span>
+        title: '周期类型',
+        dataIndex: 'periodType',
+        key: 'periodType',
+      },
+      {
+        title: '内容数',
+        dataIndex: 'itemNum',
+        key: 'itemNum',
+        render(text, record) {
+          return <span>{text}</span>
         }
       },
       {
-        title: '价格类型',
-        dataIndex: 'priceType',
-        key: 'priceType',
-        render: (text, record) => {
-          return <span>{text === 1 ? '单集购买' : '整张购买'}</span>
-        }
-      },
-      {
-        title: '分类来源',
-        dataIndex: 'categorySource',
-        key: 'categorySource',
-        render: (text, record) => {
-          if (text === null) {
-            return <span />
-          }
-          return <span>{text === 1 ? '主站' : '自运营'}</span>
-        }
-      },
-      {
-        title: '分类',
-        dataIndex: 'categoryName',
-        key: 'categoryName',
-      },
-      {
-        title: '状态',
-        dataIndex: 'onlineStatus',
-        key: 'onlineStatus',
-        render: (text, record) => {
-          return <span>{text === 1 ? '已上架' : '已下架'}</span>
+        title: '内容类型',
+        dataIndex: 'contentType',
+        key: 'contentType',
+        render(text, record) {
+          return <span>{text === 1 ? '声音榜单' : '专辑榜单'}</span>
         }
       },
       {
@@ -108,11 +87,6 @@ export default class MainListTable extends Component {
             <span>{str}</span>
           )
         }
-      },
-      {
-        title: '创建人',
-        dataIndex: 'creator',
-        key: 'creator',
       }]
     return (
       <div>

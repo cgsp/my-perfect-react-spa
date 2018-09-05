@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-05 11:39:38
+ * @Last Modified time: 2018-09-05 11:53:22
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -154,11 +154,6 @@ class SelfTagTag extends Component {
     // options.searchId = !options.searchId ? '' : myTrim(options.searchId)
     options.id = options.searchId
     delete options.searchId
-
-    // 去掉空格
-    // options.rankingListId = !options.rankingListId ? '' : myTrim(options.rankingListId)
-    options.sourceId = options.rankingListId
-    delete options.rankingListId
 
     // 去掉空格
     options.searchTitle = !options.searchTitle ? '' : myTrim(options.searchTitle)
