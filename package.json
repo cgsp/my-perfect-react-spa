@@ -121,7 +121,7 @@
   },
   "proxy": {
     "/openapi-content-admin-app": {
-      "target": "http://cms.test.9nali.com/",
+      "target": "http://192.168.121.4:8080/",
       "secure": true,
       "changeOrigin": true
     }

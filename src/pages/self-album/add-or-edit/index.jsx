@@ -125,6 +125,7 @@ class SelfTagDimensionAddOrEdit extends Component {
         values.coverUrlLarge = coverUrlLarge ? coverUrlLarge : ''
         values.coverUrlMiddle = coverUrlMiddle ? coverUrlMiddle : ''
         values.coverUrlSmall = coverUrlSmall ? coverUrlSmall : ''
+        console.log(values)
         // 后面打开这个
         // values.coverUrlLarge = coverUrlLarge
         // values.coverUrlMiddle = coverUrlMiddle
@@ -138,6 +139,10 @@ class SelfTagDimensionAddOrEdit extends Component {
         values.tags = this.tags
         if (typeof values.trackIds !== 'string') {
           values.trackIds = values.trackIds.join()
+        }
+
+        if (this.props.addOrEditTitle !== '新增自运营专辑') {
+          values.ctagIds = values.ctagIds.split(',')
         }
         values.paid = values.isPaid
         // 后面删除这句
@@ -194,6 +199,10 @@ class SelfTagDimensionAddOrEdit extends Component {
       })
 
       this.tags = tags
+      console.log(this.tags)
+      console.log(coverUrlSmall)
+      console.log(coverUrlMiddle)
+      console.log(coverUrlLarge)
 
       this.hasAddClick = true
 

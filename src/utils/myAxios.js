@@ -2,7 +2,7 @@
  * @Author: John.Guan
  * @Date: 2018-07-24 15:01:37
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-28 17:16:59
+ * @Last Modified time: 2018-09-05 10:13:28
  */
 import axios from 'axios'
 import qs from 'qs'
@@ -89,11 +89,20 @@ function myAxios(options) {
   // const params = { ...{ _: time }, ...options.params }
   const params = { ...{}, ...options.params }
 
-  for (const key in params) {
-    if (params[key] === null || params[key] === '' || params[key] === undefined) {
-      delete params[key]
+  if (options.emptyString) {
+    for (const key in params) {
+      if (params[key] === null || params[key] === undefined) {
+        delete params[key]
+      }
+    }
+  } else {
+    for (const key in params) {
+      if (params[key] === null || params[key] === '' || params[key] === undefined) {
+        delete params[key]
+      }
     }
   }
+
 
   const headers = options.headers || {
     'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
@@ -105,9 +114,19 @@ function myAxios(options) {
 
   const optionsData = options.data
 
-  for (const key in optionsData) {
-    if (optionsData[key] === null || optionsData[key] === '' || optionsData[key] === undefined) {
-      delete optionsData[key]
+
+
+  if (options.emptyString) {
+    for (const key in optionsData) {
+      if (optionsData[key] === null || optionsData[key] === undefined) {
+        delete optionsData[key]
+      }
+    }
+  } else {
+    for (const key in optionsData) {
+      if (optionsData[key] === null || optionsData[key] === '' || optionsData[key] === undefined) {
+        delete optionsData[key]
+      }
     }
   }
 
