@@ -80,22 +80,6 @@ export default class MainListTable extends Component {
         key: 'categoryName',
       },
       {
-        title: '声音数',
-        dataIndex: 'trackIds',
-        key: 'trackIds',
-        render: (text, record) => {
-          return <span style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.props.tableLineShowDetails(record)}>{text.length}</span>
-        }
-      },
-      {
-        title: '自运营标签',
-        dataIndex: 'ctagNames',
-        key: 'ctagNames',
-        render: (text, record) => {
-          return <span>{text.join()}</span>
-        }
-      },
-      {
         title: '状态',
         dataIndex: 'onlineStatus',
         key: 'onlineStatus',

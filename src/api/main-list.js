@@ -3,10 +3,10 @@ import { defaultHeader } from './config'
 
 
 // 获取列表数据
-export const apiSelfAlbumList = (options) => {
+export const apiMainList = (options) => {
   return myAxios(
     {
-      url: '/custom/albums/search',
+      url: '/ranks',
       method: 'get',
       params: options,
       data: {},
