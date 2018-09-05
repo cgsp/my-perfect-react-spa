@@ -19,10 +19,22 @@ export const apiMainAlbumList = (options) => {
 export const apiMainAlbumDetail = (options) => {
   return myAxios(
     {
-      url: '/custom/tracks/forAlbum',
+      url: '/openapi/tracks/forAlbum',
       method: 'get',
       params: options,
       data: {},
+      headers: defaultHeader
+    })
+}
+
+// 打标签
+export const apiMainAlbumMakeTag = (options) => {
+  return myAxios(
+    {
+      url: '/openapi/albums/tags',
+      method: 'put',
+      params: {},
+      data: options,
       headers: defaultHeader
     })
 }
@@ -55,7 +67,7 @@ export const apiAlbumGetMainPeople = (sourceId) => {
 export const apiMainAlbumAddOrEdit = (options) => {
   const url = '/custom/albums/album'
   let method
-  if (options.type === '新增自运营专辑') {
+  if (options.type === '另存为自运营专辑') {
     method = 'post'
   } else {
     method = 'put'

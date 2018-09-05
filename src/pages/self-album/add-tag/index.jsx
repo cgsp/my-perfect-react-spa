@@ -28,12 +28,22 @@ class SelfAddTag extends Component {
     // const nowChoosedTagsIds = [41, 42, 48, 51, 66]
     // 根据当前被选中的所有标签ID，获取，这些被选中的标签的名称，组成一个数组
     const nowChoosedTags = this.transTagIDsToName(nowChoosedTagsIds)
+
+    let firstDimension = this.props.commonDimesionsAndTags[0]
+    firstDimension = firstDimension ? firstDimension : {
+      id: 0,
+      tags: [],
+      choiceType: 2
+    }
     // 当前的维度Id
-    const nowChoosedDimensionId = this.props.commonDimesionsAndTags[0].id
+    const nowChoosedDimensionId = firstDimension.id
     // 当前维度的类型
-    const activeChoiceType = this.props.commonDimesionsAndTags[0].choiceType
+    const activeChoiceType = firstDimension.choiceType
     // 当前维度下的所有的标签
-    const nowAllTags = this.props.commonDimesionsAndTags[0].tags
+    const nowAllTags = firstDimension.tags
+
+
+
 
     // 根据当前被选中的所有标签ID，获取，获取当前，维度下，被选中的标签ID
     const nowChoosedTagsIdInNowDimension = this.getTagIdInNowDimen(nowChoosedDimensionId, nowChoosedTagsIds, activeChoiceType)

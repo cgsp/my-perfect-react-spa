@@ -225,9 +225,9 @@ class SelfTagDimensionAddOrEdit extends Component {
     })
   }
 
-  addTagOk(values) {
-    this.addTagCancel()
-  }
+  // addTagOk(values) {
+  //   this.addTagCancel()
+  // }
 
   deleteTag = (id) => {
     console.log(id)
@@ -491,7 +491,7 @@ class SelfTagDimensionAddOrEdit extends Component {
               })(
                 <Select disabled>
                   <Option value={1}>单集购买</Option>
-                  <Option value={0}>整张购买</Option>
+                  <Option value={2}>整张购买</Option>
                 </Select>
               )}
             </FormItem>

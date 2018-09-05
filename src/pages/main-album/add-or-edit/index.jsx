@@ -4,7 +4,6 @@ import { PropTypes } from 'prop-types'
 import WrapperSelfAddTag from '../add-tag'
 import MaskLoading from '@Components/mask-loading'
 import { connect } from 'react-redux'
-import { apiAlbumGetMain, apiAlbumGetMainPeople } from '@Api/self-album'
 import { ERR_OK } from '@Constants'
 import { commonSmallTypes } from '@Api'
 
@@ -19,7 +18,6 @@ const { TextArea } = Input
 )
 class SelfTagDimensionAddOrEdit extends Component {
   static propTypes = {
-    addOrEditTitle: PropTypes.string,
     addOrEditVisible: PropTypes.bool,
     addOrEditInitValues: PropTypes.object,
     addOrEditOk: PropTypes.func,
@@ -28,10 +26,8 @@ class SelfTagDimensionAddOrEdit extends Component {
 
   constructor(props) {
     super(props)
-
     const { coverUrlMiddle, coverUrlLarge, coverUrlSmall, ctagIds } = this.props.addOrEditInitValues
     const nowChoosedTagsIds = ctagIds || []
-    // const nowChoosedTagsIds = ctagIds || [41, 42, 48, 51, 66]
     // 根据传入的标签ID，获取标签名称
     const nowChoosedTags = this.transTagIDsToName(nowChoosedTagsIds)
     this.state = {
@@ -48,11 +44,7 @@ class SelfTagDimensionAddOrEdit extends Component {
   }
 
   componentDidMount() {
-    if (this.props.addOrEditTitle === '新增自运营专辑') {
-      this.getSmallTypes('1')
-    } else {
-      this.getSmallTypes(this.props.addOrEditInitValues.categorySource)
-    }
+    this.getSmallTypes('1')
   }
 
   // 处理当前维度下面，哪些id被获取了,传入维度的ID，获取，当前维度下，哪些标签被选中了
@@ -110,14 +102,6 @@ class SelfTagDimensionAddOrEdit extends Component {
       if (err) {
         return
       }
-      if (this.props.addOrEditTitle === '新增自运营专辑' && !this.hasAddClick) {
-        message.error('请导入主站专辑数据后，再编辑，不要直接编辑')
-        return
-      }
-      if (this.props.addOrEditTitle !== '新增自运营专辑') {
-        values.sourceId = this.props.addOrEditInitValues.sourceId
-        values.id = this.props.addOrEditInitValues.id
-      }
       this.setState({}, () => {
         const { nowChoosedTagsIds, coverUrlLarge, coverUrlSmall, coverUrlMiddle } = this.state
         values.ctagIds = nowChoosedTagsIds.join()
@@ -125,25 +109,12 @@ class SelfTagDimensionAddOrEdit extends Component {
         values.coverUrlLarge = coverUrlLarge ? coverUrlLarge : ''
         values.coverUrlMiddle = coverUrlMiddle ? coverUrlMiddle : ''
         values.coverUrlSmall = coverUrlSmall ? coverUrlSmall : ''
-        console.log(values)
-        // 后面打开这个
-        // values.coverUrlLarge = coverUrlLarge
-        // values.coverUrlMiddle = coverUrlMiddle
-        // values.coverUrlSmall = coverUrlSmall
-
-        // if (!values.coverUrlLarge || !values.coverUrlMiddle || !values.coverUrlSmall) {
-        //   message.error('封面图片信息不全，无法保存')
-        //   return
-        // }
 
         values.tags = this.tags
         if (typeof values.trackIds !== 'string') {
           values.trackIds = values.trackIds.join()
         }
 
-        if (this.props.addOrEditTitle !== '新增自运营专辑') {
-          values.ctagIds = values.ctagIds.split(',')
-        }
         values.paid = values.isPaid
         // 后面删除这句
         values.people = values.people ? values.people : ''
@@ -153,80 +124,16 @@ class SelfTagDimensionAddOrEdit extends Component {
         }
         values.categorySource = values.categorySource - 0
         values.sourceId = values.sourceId - 0
-        const title = this.props.addOrEditTitle
-        this.props.addOrEditOk(values, title)
+        this.props.addOrEditOk(values)
         console.log(values)
       })
     })
-  }
-
-  // 点击确定添加按钮
-  add = async () => {
-    try {
-      const form = this.props.form
-      const sourceId = form.getFieldValue('sourceId')
-      if (!sourceId) {
-        message.error('请输入主站专辑Id')
-        return
-      }
-      this.refs.mask.show()
-      const res = await apiAlbumGetMain(sourceId)
-      const peopleRes = await apiAlbumGetMainPeople(sourceId)
-      this.refs.mask.hide()
-      if (res.code !== ERR_OK) {
-        message.error(res.msg)
-        return
-      }
-
-      if (peopleRes.code !== ERR_OK) {
-        message.error(peopleRes.msg)
-        return
-      }
-
-
-      const { title, categoryId, onlineStatus, isPaid, priceType, intro, trackIds, coverUrlSmall, coverUrlMiddle, coverUrlLarge, tags } = res.data
-      // 设置值
-      form.setFieldsValue({
-        title,
-        categorySource: '1',
-        categoryId: categoryId ? categoryId : undefined,
-        onlineStatus,
-        isPaid,
-        priceType,
-        intro,
-        trackIds,
-        people: peopleRes.data
-      })
-
-      this.tags = tags
-      console.log(this.tags)
-      console.log(coverUrlSmall)
-      console.log(coverUrlMiddle)
-      console.log(coverUrlLarge)
-
-      this.hasAddClick = true
-
-      this.setState({
-        nowChoosedTagsIds: [],
-        nowChoosedTags: [],
-        coverUrlLarge,
-        coverUrlMiddle,
-        coverUrlSmall
-      })
-
-    } catch (error) {
-      console.log(error)
-    }
   }
 
   addTagCancel() {
     this.setState({
       addTagVisible: false
     })
-  }
-
-  addTagOk(values) {
-    this.addTagCancel()
   }
 
   deleteTag = (id) => {
@@ -287,21 +194,9 @@ class SelfTagDimensionAddOrEdit extends Component {
       nowChoosedTagsIds: this.state.nowChoosedTagsIds.slice()
     }
 
-    // const limitDecimals = value => {
-    //   // 保留2位小数
-    //   const reg = /^(\-)*(\d+)\.(\d\d).*$/
-    //   console.log(value)
-    //   if (typeof value === 'string') {
-    //     return !isNaN(Number(value)) ? value.replace(reg, '$1$2.$3') : ''
-    //   } else if (typeof value === 'number') {
-    //     return !isNaN(value) ? String(value).replace(reg, '$1$2.$3') : ''
-    //   } else {
-    //     return ''
-    //   }
-    // }
     return (
       <Modal
-        title={this.props.addOrEditTitle}
+        title="另存为自运营专辑"
         visible={this.props.addOrEditVisible}
         onCancel={this.props.addOrEditCancel}
         onOk={(e) => this.handleSubmit(e)}
@@ -312,46 +207,12 @@ class SelfTagDimensionAddOrEdit extends Component {
           <Form
             onSubmit={this.handleSubmit}
           >
-            {
-              this.props.addOrEditTitle === '新增自运营专辑' ?
-                <FormItem
-                  {...formItemLayout}
-                  label="主站专辑ID"
-                >
-                  {
-                    getFieldDecorator('sourceId', {
-                      initialValue: this.props.addOrEditInitValues.sourceId,
-                      rules: [
-                        {
-                          required: true,
-                          message: '请输入数字型主站专辑ID',
-                        }
-                      ]
-                    })(
-                      <div>
-                        <Input
-                          type="number"
-                          placeholder="请输入主站专辑ID"
-                          style={{ width: 350 }}
-                        />
-                        <Button onClick={this.add} type="primary" style={{ marginLeft: 20 }}>确定添加</Button>
-                      </div>
-                    )
-                  }
-                </FormItem>
-                : null
-            }
-
-            {
-              this.props.addOrEditTitle !== '新增自运营专辑' ?
-                <FormItem
-                  {...formItemLayout}
-                  label="主站专辑ID"
-                >
-                  <Input type="text" value={this.props.addOrEditInitValues.sourceId} disabled />
-                </FormItem>
-                : null
-            }
+            <FormItem
+              {...formItemLayout}
+              label="主站专辑ID"
+            >
+              <Input type="text" value={this.props.addOrEditInitValues.id} disabled />
+            </FormItem>
 
             <FormItem
               {...formItemLayout}
@@ -491,7 +352,7 @@ class SelfTagDimensionAddOrEdit extends Component {
               })(
                 <Select disabled>
                   <Option value={1}>单集购买</Option>
-                  <Option value={0}>整张购买</Option>
+                  <Option value={2}>整张购买</Option>
                 </Select>
               )}
             </FormItem>

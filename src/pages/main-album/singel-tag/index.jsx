@@ -12,23 +12,18 @@ const { CheckableTag } = Tag
   state => state.commonTagAndDimesionsReducer,
   {}
 )
-class SelfAddTag extends Component {
+class SingleTag extends Component {
   static propTypes = {
-    addTagVisible: PropTypes.bool,
-    addTagOk: PropTypes.func,
-    addTagCancel: PropTypes.func,
+    singleVisible: PropTypes.bool,
+    singleTagOk: PropTypes.func,
+    singleTagCancle: PropTypes.func,
     nowChoosedTagsIds: PropTypes.array
   }
 
   constructor(props) {
-    console.log('重新渲染了')
     super(props)
     const nowChoosedTagsIds = this.props.nowChoosedTagsIds || []
-    console.log(this.props.nowChoosedTagsIds)
-    // const nowChoosedTagsIds = [41, 42, 48, 51, 66]
-    // 根据当前被选中的所有标签ID，获取，这些被选中的标签的名称，组成一个数组
     const nowChoosedTags = this.transTagIDsToName(nowChoosedTagsIds)
-
     let firstDimension = this.props.commonDimesionsAndTags[0]
     firstDimension = firstDimension ? firstDimension : {
       id: 0,
@@ -41,9 +36,6 @@ class SelfAddTag extends Component {
     const activeChoiceType = firstDimension.choiceType
     // 当前维度下的所有的标签
     const nowAllTags = firstDimension.tags
-
-
-
 
     // 根据当前被选中的所有标签ID，获取，获取当前，维度下，被选中的标签ID
     const nowChoosedTagsIdInNowDimension = this.getTagIdInNowDimen(nowChoosedDimensionId, nowChoosedTagsIds, activeChoiceType)
@@ -71,7 +63,7 @@ class SelfAddTag extends Component {
     this.setState({
 
     }, () => {
-      this.props.addTagOk(this.state.nowChoosedTagsIds)
+      this.props.singleTagOk(this.state.nowChoosedTagsIds)
     })
   }
 
@@ -248,9 +240,9 @@ class SelfAddTag extends Component {
 
     return (
       <Modal
-        title={'新增标签'}
-        visible={this.props.addTagVisible}
-        onCancel={this.props.addTagCancel}
+        title={'打标签'}
+        visible={this.props.singleVisible}
+        onCancel={this.props.singleTagCancle}
         onOk={(e) => this.handleSubmit(e)}
         width={800}
         destroyOnClose={true}
@@ -342,5 +334,5 @@ class SelfAddTag extends Component {
   }
 }
 
-const WrapperSelfAddTag = Form.create()(SelfAddTag)
-export default WrapperSelfAddTag
+const WrapperSingleTag = Form.create()(SingleTag)
+export default WrapperSingleTag
