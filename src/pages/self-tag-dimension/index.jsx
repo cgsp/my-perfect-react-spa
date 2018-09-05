@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-03 13:32:30
+ * @Last Modified time: 2018-09-05 13:46:55
  */
 
 
@@ -35,7 +35,7 @@ const FormItem = Form.Item
 //   {}
 // )
 @TimeControlHoc
-class SelfTagTag extends Component {
+class SelfDimension extends Component {
   constructor() {
     super()
     this.state = {
@@ -708,5 +708,5 @@ class SelfTagTag extends Component {
     )
   }
 }
-const WrappedAdvancedSearchForm = Form.create()(SelfTagTag)
+const WrappedAdvancedSearchForm = Form.create()(SelfDimension)
 export default WrappedAdvancedSearchForm

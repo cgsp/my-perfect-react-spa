@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-04 20:30:41
+ * @Last Modified time: 2018-09-05 13:46:18
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -40,7 +40,7 @@ const Option = Select.Option
   { getCommonDimesions, getCommonDimesionsAndTags }
 )
 @TimeControlHoc
-class SelfTagTag extends Component {
+class SelfAlbum extends Component {
   constructor() {
     super()
     this.state = {
@@ -914,5 +914,5 @@ class SelfTagTag extends Component {
     )
   }
 }
-const WrappedAdvancedSearchForm = Form.create()(SelfTagTag)
+const WrappedAdvancedSearchForm = Form.create()(SelfAlbum)
 export default WrappedAdvancedSearchForm
