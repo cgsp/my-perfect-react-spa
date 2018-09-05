@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-05 17:58:45
+ * @Last Modified time: 2018-09-05 18:13:12
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -392,6 +392,7 @@ class MainAlbum extends Component {
   tableLineSave(line) {
     console.log('另存为', line)
     this.saveId = line.id
+    this.saveTags = line.tags
     this.refs.mask.show()
     this.props.getCommonDimesionsAndTags(() => {
       apiAlbumGetMainPeople(line.id)
@@ -428,6 +429,7 @@ class MainAlbum extends Component {
   addOrEditOk(values) {
     values.type = '另存为自运营专辑'
     values.sourceId = this.saveId
+    values.tags = this.saveTags
     this.handleSelfTagAddOrEdit(values, () => {
       this.setState({
         addOrEditVisible: false
@@ -460,6 +462,7 @@ class MainAlbum extends Component {
       addOrEditVisible: false
     })
     this.saveId = null
+    this.saveTags = null
   }
 
   // 查看专辑数的详情--弹框列表
