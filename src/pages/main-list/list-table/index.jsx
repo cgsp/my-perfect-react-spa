@@ -1,17 +1,7 @@
 import React, { Component } from 'react'
 import { Table, Pagination } from 'antd'
-import { SONG_URL } from '@Constants'
 import { myGetStrTime } from '@Utils/myGetTime'
 import { PropTypes } from 'prop-types'
-
-const DEV = process.env.NODE_ENV !== 'production'
-// console.log(process.env.NODE_ENV)
-let songUrlObj
-if (DEV) {
-  songUrlObj = SONG_URL.dev
-} else {
-  songUrlObj = SONG_URL.pro
-}
 
 export default class MainListTable extends Component {
   static propTypes = {
@@ -54,8 +44,8 @@ export default class MainListTable extends Component {
         title: '内容数',
         dataIndex: 'itemNum',
         key: 'itemNum',
-        render(text, record) {
-          return <span>{text}</span>
+        render: (text, record) => {
+          return <span style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.props.tableLineShowDetails(record)}>{text}</span>
         }
       },
       {

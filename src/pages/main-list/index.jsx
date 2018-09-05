@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-05 11:53:22
+ * @Last Modified time: 2018-09-05 13:17:58
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -16,7 +16,7 @@ import MaskLoading from '@Components/mask-loading'
 import SortList from '@Components/sort-list'
 import TimeControlHoc from '@Components/time-control-hoc'
 
-import { apiMainList, apiAlbumDetail, apiAlbumAddOrEdit } from '@Api/main-list'
+import { apiMainList, apiMainListDetail } from '@Api/main-list'
 
 import SelfAlbumListTable from './list-table'
 import SelfTagDimensionDetailTable from './detail-table'
@@ -54,8 +54,6 @@ class SelfTagTag extends Component {
     this.clickSort = this.clickSort.bind(this)
     this.detailCancel = this.detailCancel.bind(this)
     this.detailPageOrPageSizeChange = this.detailPageOrPageSizeChange.bind(this)
-    this.addOrEditOk = this.addOrEditOk.bind(this)
-    this.addOrEditCancel = this.addOrEditCancel.bind(this)
   }
 
   componentDidMount() {
@@ -174,13 +172,13 @@ class SelfTagTag extends Component {
       return date
     }
 
-    options.createdAtStart = transToStamp(options.searchCreateTimeBegin)
+    options.createTimeBegin = transToStamp(options.searchCreateTimeBegin)
     delete options.searchCreateTimeBegin
-    options.createdAtEnd = transToStamp(options.searchCreateTimeEnd)
+    options.createTimeEnd = transToStamp(options.searchCreateTimeEnd)
     delete options.searchCreateTimeEnd
-    options.updatedAtStart = transToStamp(options.searchUpdateTimeBegin)
+    options.updateTimeBegin = transToStamp(options.searchUpdateTimeBegin)
     delete options.searchUpdateTimeBegin
-    options.updatedAtEnd = transToStamp(options.searchUpdateTimeEnd)
+    options.updateTimeEnd = transToStamp(options.searchUpdateTimeEnd)
     delete options.searchUpdateTimeEnd
 
     // 处理排序的
@@ -225,61 +223,10 @@ class SelfTagTag extends Component {
       })
   }
 
-
-
-  // 新增自运营专辑
-  addSelfAlbum() {
-    this.refs.mask.show()
-    this.props.getCommonDimesionsAndTags(() => {
-      this.setState({
-        addOrEditTitle: '新增自运营专辑',
-        addOrEditVisible: true,
-        addOrEditInitValues: {}
-      })
-      this.refs.mask.hide()
-    })
-  }
-
-  // 新增或者编辑自运营专辑，添加标签，点击弹框的确定
-  addOrEditOk(values, title) {
-    values.type = title
-    this.handleSelfTagAddOrEdit(values, () => {
-      this.setState({
-        addOrEditVisible: false
-      }, () => {
-        // 刷新维度列表页面
-        this.searchList(title)
-      })
-    })
-  }
-
-  // 新增自运营专辑，编辑自运营专辑的辅助函数
-  handleSelfTagAddOrEdit(options, callBack) {
-    this.refs.mask.show()
-    apiAlbumAddOrEdit(options)
-      .then(res => {
-        this.refs.mask.hide()
-        if (res.code !== ERR_OK) {
-          message.error(res.msg)
-          return
-        }
-        callBack && callBack()
-      })
-  }
-
-
-
-  // 新增或者编辑自运营专辑，关闭弹框
-  addOrEditCancel() {
-    this.setState({
-      addOrEditVisible: false
-    })
-  }
-
   // 查看专辑数的详情--弹框列表
   tableLineShowDetails(line, type) {
     console.log('查看详情', line)
-    this.detailAlbumId = line.id
+    this.rankId = line.id
     this.setState({
       detailPageNo: 1,
       detailPageSize: 10,
@@ -287,14 +234,14 @@ class SelfTagTag extends Component {
     this.getDetailData({
       pageNo: 1,
       pageSize: 10,
-      albumId: this.detailAlbumId,
+      rankId: this.rankId,
     })
   }
 
   // 获取专辑详情列表的配套函数
-  getDetailData(options) {
+  getDetailData(rankId) {
     this.refs.mask.show()
-    apiAlbumDetail(options)
+    apiMainListDetail(rankId)
       .then(res => {
         this.refs.mask.hide()
         if (res.code !== ERR_OK) {
@@ -322,7 +269,7 @@ class SelfTagTag extends Component {
     this.getDetailData({
       pageNo: current,
       pageSize,
-      albumId: this.detailAlbumId,
+      rankId: this.rankId,
     })
   }
 
@@ -333,7 +280,7 @@ class SelfTagTag extends Component {
 
   // 关闭详情列表
   detailCancel() {
-    this.detailAlbumId = ''
+    this.rankId = ''
     this.setState({
       detailVisible: false
     })

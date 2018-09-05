@@ -1,18 +1,7 @@
 import React, { Component } from 'react'
 import { Modal, Pagination, Table } from 'antd'
-import { SONG_URL } from '@Constants'
 import { myGetStrTime } from '@Utils/myGetTime'
 import { PropTypes } from 'prop-types'
-
-const DEV = process.env.NODE_ENV !== 'production'
-// console.log(process.env.NODE_ENV)
-let songUrlObj
-if (DEV) {
-  songUrlObj = SONG_URL.dev
-} else {
-  songUrlObj = SONG_URL.pro
-}
-
 
 export default class MainListDetailTable extends Component {
   static propTypes = {
@@ -29,36 +18,38 @@ export default class MainListDetailTable extends Component {
   render() {
     const columns = [
       {
-        title: '声音Id',
+        title: '专辑Id',
         dataIndex: 'id',
         key: 'id',
         render: (text, record) =>
           (
-            <a href={songUrlObj.track + '/' + text} target="_blank" style={{ display: 'inline-block', cursor: 'pointer' }}>
+            <a href={record.url} target="_blank" style={{ display: 'inline-block', cursor: 'pointer' }}>
               {text}
             </a>
           )
       },
       {
-        title: '声音名称',
+        title: '专辑名称',
         dataIndex: 'title',
         key: 'title'
       },
       {
-        title: '是否付费',
-        dataIndex: 'isPaid',
-        key: 'isPaid',
+        title: '声音数',
+        dataIndex: 'tracksNum',
+        key: 'tracksNum'
+      },
+      {
+        title: '状态',
+        dataIndex: 'onlineStatus',
+        key: 'onlineStatus',
         render: (text, record) => {
-          if (!text && text !== 0) {
-            return <span />
-          }
-          return <span>{text === 1 ? '付费' : '免费'}</span>
+          return <span>{text === 1 ? '已上架' : '已下架'}</span>
         }
       },
       {
         title: '发布时间',
-        dataIndex: 'publishedTime',
-        key: 'publishedTime',
+        dataIndex: 'createTime',
+        key: 'createTime',
         render: (text, record) => {
           const str = myGetStrTime(text)
           return (
@@ -68,8 +59,8 @@ export default class MainListDetailTable extends Component {
       },
       {
         title: '更新时间',
-        dataIndex: 'updatedTime',
-        key: 'updatedTime',
+        dataIndex: 'updateTime',
+        key: 'updateTime',
         render: (text, record) => {
           const str = myGetStrTime(text)
           return (
@@ -79,7 +70,7 @@ export default class MainListDetailTable extends Component {
       }]
     return (
       <Modal
-        title="声音列表"
+        title="专辑列表"
         visible={this.props.detailVisible}
         onCancel={this.props.detailCancel}
         width={1100}
