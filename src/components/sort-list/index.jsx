@@ -21,6 +21,14 @@ export default class SortList extends Component {
     }
   }
 
+  handleClick(sortIndex, sortDirection) {
+    this.setState({
+      sortIndex,
+      sortDirection,
+    })
+    this.props.clickSort(sortIndex, sortDirection)
+  }
+
   render() {
     return (
       <div className="sort-list">

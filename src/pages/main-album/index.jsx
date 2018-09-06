@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-05 18:13:12
+ * @Last Modified time: 2018-09-06 09:37:50
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -232,7 +232,7 @@ class MainAlbum extends Component {
     delete options.searchUpdateTimeEnd
 
     // 处理排序的
-    options.orderBy = options.sortIndex === 0 ? 'created_at' : 'updated_at'
+    options.orderBy = (options.sortIndex === 0 ? 'created_at' : options.sortIndex === 1 ? 'updated_at' : 'play_count')
     delete options.sortIndex
     options.desc = options.sortDirection === 'up' ? false : true
     delete options.sortDirection
@@ -871,7 +871,7 @@ class MainAlbum extends Component {
               <Button className="btn" type="primary" onClick={() => this.allTag()}>批量打标签</Button>
               <div className="sort-box">
                 <span className="sort-title">排序方式：</span>
-                <SortList clickSort={this.clickSort} />
+                <SortList clickSort={this.clickSort} sortNameArr={['创建时间', '更新时间', '播放数']} />
               </div>
             </Col>
           </Row>
