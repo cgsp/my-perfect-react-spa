@@ -58,8 +58,8 @@ export default class MainListTable extends Component {
       },
       {
         title: '创建时间',
-        dataIndex: 'createTime',
-        key: 'createTime',
+        dataIndex: 'createdAt',
+        key: 'createdAt',
         render: (text, record) => {
           const str = myGetStrTime(text)
           return (
@@ -69,8 +69,8 @@ export default class MainListTable extends Component {
       },
       {
         title: '更新时间',
-        dataIndex: 'updateTime',
-        key: 'updateTime',
+        dataIndex: 'updatedAt',
+        key: 'updatedAt',
         render: (text, record) => {
           const str = myGetStrTime(text)
           return (
