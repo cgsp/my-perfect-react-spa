@@ -29,10 +29,17 @@ export const apiMainAlbumDetail = (options) => {
 
 // 打标签
 export const apiMainAlbumMakeTag = (options) => {
+  let method
+  if (options.type === '批量') {
+    method = 'post'
+  } else {
+    method = 'put'
+  }
+  delete options.type
   return myAxios(
     {
       url: '/openapi/albums/tags',
-      method: 'put',
+      method,
       params: {},
       data: options,
       headers: defaultHeader
