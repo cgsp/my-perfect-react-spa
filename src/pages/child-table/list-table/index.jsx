@@ -8,7 +8,6 @@ export default class MainClassfiyListTable extends Component {
     showTotal: PropTypes.func,
     tableData: PropTypes.array,
     tableLineEdit: PropTypes.func,
-    tableLineShowDetails: PropTypes.func,
     pageOrPageSizeChange: PropTypes.func,
     total: PropTypes.number,
     pageNo: PropTypes.number
@@ -62,10 +61,7 @@ export default class MainClassfiyListTable extends Component {
       {
         title: '内容数',
         dataIndex: 'contentsNum',
-        key: 'contentsNum',
-        render: (text, record) => (
-          <span style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.props.tableLineShowDetails(record)}>{text}</span>
-        )
+        key: 'contentsNum'
       },
       {
         title: '状态',

@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-10 14:13:39
+ * @Last Modified time: 2018-09-10 18:28:49
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber, Modal } from 'antd'
@@ -20,7 +20,6 @@ import { apiSelfClassfiyList, apiSelfClassfiyDetail, apiSelfClassfiyEdit, apiSel
 
 import MainClassfiyListTable from './list-table'
 import WrapperMainClassfiyAddOrEdit from './add-or-edit'
-import MainClassfiyDimensionDetailTable from './detail-table'
 import './style.scss'
 
 const FormItem = Form.Item
@@ -48,10 +47,7 @@ class MainAlbum extends Component {
     }
     this.pageOrPageSizeChange = this.pageOrPageSizeChange.bind(this)
     this.tableLineEdit = this.tableLineEdit.bind(this)
-    this.tableLineShowDetails = this.tableLineShowDetails.bind(this)
     this.clickSort = this.clickSort.bind(this)
-    this.detailCancel = this.detailCancel.bind(this)
-    this.detailPageOrPageSizeChange = this.detailPageOrPageSizeChange.bind(this)
     this.addOrEditOk = this.addOrEditOk.bind(this)
     this.addOrEditCancel = this.addOrEditCancel.bind(this)
   }
@@ -339,75 +335,12 @@ class MainAlbum extends Component {
     this.editOnlineStatus = null
   }
 
-  // 查看专辑数的详情--弹框列表
-  tableLineShowDetails(line, type) {
-    console.log('查看详情', line)
-    this.detailId = line.id
-    let detailTitle
-    if (line.contentType === 1) {
-      detailTitle = '专辑列表'
-    } else {
-      detailTitle = '声音列表'
-    }
-    this.setState({
-      detailPageNo: 1,
-      detailPageSize: 10,
-      detailTitle
-    })
-    this.getDetailData({
-      pageNo: 1,
-      pageSize: 10,
-      id: this.detailId,
-    })
-  }
+  
 
-  // 获取专辑详情列表的配套函数
-  getDetailData(options) {
-    this.refs.mask.show()
-    apiSelfClassfiyDetail(options)
-      .then(res => {
-        this.refs.mask.hide()
-        if (res.code !== ERR_OK) {
-          message.error(res.msg)
-          return
-        }
-        const detailData = res.data.dataList.map(item => {
-          item.key = item.id
-          return item
-        })
-        this.setState({
-          detailData,
-          detailTotal: res.data.totalNum,
-          detailVisible: true
-        })
-      })
-  }
+  
 
-  // 详情页面的翻页或者每页的页码改变
-  detailPageOrPageSizeChange(current, pageSize) {
-    this.setState({
-      detailPageNo: current,
-      detailPageSize: pageSize,
-    })
-    this.getDetailData({
-      pageNo: current,
-      pageSize,
-      id: this.detailId,
-    })
-  }
+  
 
-  // 显示详情total
-  detailShowTotal(total) {
-    return `共 ${total} 条`
-  }
-
-  // 关闭详情列表
-  detailCancel() {
-    this.detailId = ''
-    this.setState({
-      detailVisible: false
-    })
-  }
 
 
   render() {
@@ -416,20 +349,8 @@ class MainAlbum extends Component {
       tableData: this.state.tableData,
       total: this.state.tableTotal,
       tableLineEdit: this.tableLineEdit,
-      tableLineShowDetails: this.tableLineShowDetails,
       pageOrPageSizeChange: this.pageOrPageSizeChange,
       pageNo: this.state.pageNo
-    }
-
-    const detailTableOptions = {
-      detailTitle: this.state.detailTitle,
-      detailVisible: this.state.detailVisible,
-      detailPageNo: this.state.detailPageNo,
-      detailTotal: this.state.detailTotal,
-      detailData: this.state.detailData,
-      detailCancel: this.detailCancel,
-      detailPageOrPageSizeChange: this.detailPageOrPageSizeChange,
-      detailShowTotal: this.detailShowTotal
     }
 
     const addOrEditOptions = {
@@ -613,12 +534,6 @@ class MainAlbum extends Component {
           </Row>
         </List>
         <MainClassfiyListTable {...tableOptions} />
-        {
-          this.state.detailVisible
-            ?
-            <MainClassfiyDimensionDetailTable {...detailTableOptions} />
-            : null
-        }
         {
           this.state.addOrEditVisible
             ?
