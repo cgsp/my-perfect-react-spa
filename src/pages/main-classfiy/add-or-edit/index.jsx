@@ -1,405 +1,258 @@
 import React, { Component } from 'react'
-import { Modal, Form, Input, message, Select, Button, Tag } from 'antd'
+import { Modal, Form, Input, Upload, Icon, message, Select } from 'antd'
+import { UP_IMG_ACTION, ERR_OK } from '@Constants'
+import { myHuanHang } from '@Utils/myHuanHang'
 import { PropTypes } from 'prop-types'
-import WrapperSelfAddTag from '../add-tag'
-import MaskLoading from '@Components/mask-loading'
 import { connect } from 'react-redux'
-import { ERR_OK } from '@Constants'
-import { commonSmallTypes } from '@Api'
+import { getCommonSmallTypes } from '@Redux/commonSmallType'
 
-const FormItem = Form.Item
 const Option = Select.Option
 const { TextArea } = Input
-
+const FormItem = Form.Item
+const DEV = process.env.NODE_ENV !== 'production'
+let action
+if (DEV) {
+  action = UP_IMG_ACTION.dev
+} else {
+  action = UP_IMG_ACTION.pro
+}
 
 @connect(
-  state => state.commonTagAndDimesionsReducer,
-  {}
+  state => state.commonSmallTypesReducer,
+  { getCommonSmallTypes }
 )
-class SelfTagDimensionAddOrEdit extends Component {
+class MainClassfiyAddOrEdit extends Component {
   static propTypes = {
+    addOrEditTitle: PropTypes.string,
     addOrEditVisible: PropTypes.bool,
     addOrEditInitValues: PropTypes.object,
     addOrEditOk: PropTypes.func,
     addOrEditCancel: PropTypes.func,
+    getCommonSmallTypes: PropTypes.func
   }
 
   constructor(props) {
     super(props)
-    const { coverUrlMiddle, coverUrlLarge, coverUrlSmall, ctagIds } = this.props.addOrEditInitValues
-    const nowChoosedTagsIds = ctagIds || []
-    // 根据传入的标签ID，获取标签名称
-    const nowChoosedTags = this.transTagIDsToName(nowChoosedTagsIds)
     this.state = {
-      addTagVisible: false,
-      smallTypes: [],
-      nowChoosedTags,
-      nowChoosedTagsIds,
-      coverUrlMiddle,
-      coverUrlLarge,
-      coverUrlSmall,
+      previewVisible: false,
+      previewImage: '',
+      fileList: this.props.addOrEditInitValues.coverUrlSmall ? [{
+        uid: '-1',
+        name: '封面图.png',
+        status: 'done',
+        url: this.props.addOrEditInitValues.coverUrlSmall,
+      }] : []
     }
-    this.addTagCancel = this.addTagCancel.bind(this)
-    this.addTagOk = this.addTagOk.bind(this)
-  }
-
-  componentDidMount() {
-    this.getSmallTypes('1')
-  }
-
-  // 处理当前维度下面，哪些id被获取了,传入维度的ID，获取，当前维度下，哪些标签被选中了
-  transTagIDsToName = (nowChoosedTagsIds) => {
-    const data = this.props.commonDimesionsAndTags
-    let nowChoosedTags = []
-    data.forEach(item => {
-      if (item.tags && item.tags.length > 0) {
-        item.tags.forEach(tag => {
-          if (nowChoosedTagsIds.indexOf(tag.id) > -1) {
-            nowChoosedTags.push({
-              id: tag.id,
-              name: tag.name
-            })
-          }
-        })
-      }
-    })
-    return nowChoosedTags
-  }
-
-  getSmallTypes = async (source) => {
-    try {
-      if (!source) {
-        this.setState({
-          smallTypes: []
-        })
-        this.props.form.setFieldsValue({
-          categoryId: undefined
-        })
-      }
-      const smallTypeRes = await commonSmallTypes(source)
-      if (smallTypeRes.code !== ERR_OK) {
-        message.error(smallTypeRes.msg)
-        return
-      }
-      this.setState({
-        smallTypes: smallTypeRes.data
-      })
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  sourceChange = (source) => {
-    this.getSmallTypes(source)
-    this.props.form.setFieldsValue({
-      categoryId: undefined
-    })
+    this.coverUrlLarge = this.props.addOrEditInitValues.coverUrlLarge
+    this.coverUrlMiddle = this.props.addOrEditInitValues.coverUrlMiddle
+    this.coverUrlSmall = this.props.addOrEditInitValues.coverUrlSmall
+    this.isJPG = true
+    this.isLt3M = true
   }
 
   handleSubmit = (e) => {
     e.preventDefault()
     this.props.form.validateFieldsAndScroll((err, values) => {
-      if (err) {
-        return
-      }
-      this.setState({}, () => {
-        const { nowChoosedTagsIds, coverUrlLarge, coverUrlSmall, coverUrlMiddle } = this.state
-        values.ctagIds = nowChoosedTagsIds.join()
-        // 后面删除这句
-        values.coverUrlLarge = coverUrlLarge ? coverUrlLarge : ''
-        values.coverUrlMiddle = coverUrlMiddle ? coverUrlMiddle : ''
-        values.coverUrlSmall = coverUrlSmall ? coverUrlSmall : ''
+      if (!err) {
+        // 对id进行处理
+        values.contentIds = myHuanHang(values.contentIds)
 
-        values.tags = this.tags
-        if (typeof values.trackIds !== 'string') {
-          values.trackIds = values.trackIds.join()
-        }
-
-        values.paid = values.isPaid
-        // 后面删除这句
-        values.people = values.people ? values.people : ''
-        if (nowChoosedTagsIds.length === 0) {
-          message.error('请至少选择一个自运营标签')
+        values.coverUrlSmall = this.coverUrlSmall
+        values.coverUrlMiddle = this.coverUrlMiddle
+        values.coverUrlLarge = this.coverUrlLarge
+        if (!values.coverUrlSmall && !values.coverUrlMiddle && !values.coverUrlLarge) {
+          message.error('请上传图片')
           return
         }
-        values.categorySource = values.categorySource - 0
-        values.sourceId = values.sourceId - 0
+        if (!values.coverUrlSmall || !values.coverUrlMiddle || !values.coverUrlLarge) {
+          message.error('图片信息不全，请删除后重新上传')
+          return
+        }
+
         this.props.addOrEditOk(values)
-        console.log(values)
-      })
+      }
     })
   }
 
-  addTagCancel() {
+  onImgRemove = () => {
+    this.setState({ fileList: [], previewVisible: false })
+    message.error('请至少选择一张图片上传')
+    this.coverUrlLarge = ''
+    this.coverUrlMiddle = ''
+    this.coverUrlSmall = ''
+    return true
+  }
+
+  handleImgCancel = () => {
+    console.log('删除')
+    this.setState({ previewVisible: false })
+  }
+
+  handleImgPreview = (file) => {
+    console.log('初始化')
     this.setState({
-      addTagVisible: false
+      previewImage: file.url || file.thumbUrl,
+      previewVisible: true,
     })
   }
 
-  deleteTag = (id) => {
-    console.log(id)
-    this.setState({
-    }, () => {
-      const { nowChoosedTagsIds, nowChoosedTags } = this.state
-      nowChoosedTagsIds.splice(nowChoosedTagsIds.indexOf(id), 1)
-      const index = nowChoosedTags.findIndex(item => item.id === id)
-      nowChoosedTags.splice(index, 1)
-      this.setState({
-        nowChoosedTagsIds,
-        nowChoosedTags
-      })
-    })
+  beforeUpload = (file) => {
+    this.isJPG = true
+    this.isLt3M = true
+    const isJPG = (file.type === 'image/jpeg' || file.type === 'image/jpg' || file.type === 'image/gif' || file.type === 'image/png' || file.type === 'image/bmp')
+    if (!isJPG) {
+      message.error('只能上传jpeg,jpg,gif,png,bmp图 ')
+      this.isJPG = false
+    }
+    const isLt3M = file.size / 1024 / 1024 < 5
+    if (!isLt3M) {
+      message.error('图片大小应小于5M')
+      this.isJPG = false
+    }
+    return isJPG && isLt3M
   }
 
-  addTagBegin = () => {
-    this.setState({
-      addTagVisible: true
+  handleImgChange = ({ file, fileList, event }) => {
+    // console.log(file.response)
+    // console.log(fileList)
+    // console.log(event)
+    if (this.isJPG && this.isLt3M) {
+      this.setState({ fileList })
+    }
+    if (file.response) {
+      if (file.response.code !== ERR_OK) {
+        message.error('上传到服务器失败，请重新上传')
+        this.coverUrlLarge = ''
+        this.coverUrlMiddle = ''
+        this.coverUrlSmall = ''
+        this.setState({ fileList: [] })
+        return
+      }
+      this.coverUrlLarge = file.response.data.coverUrlLarge
+      this.coverUrlMiddle = file.response.data.coverUrlMiddle
+      this.coverUrlSmall = file.response.data.coverUrlSmall
+    }
+  }
+  sourceChange(value) {
+    this.props.getCommonSmallTypes(value)
+    this.props.form.setFieldsValue({
+      categoryId: ''
     })
   }
-
-  addTagOk = (nowChoosedTagsIds) => {
-    // 根据传入的标签ID，获取标签名称
-    nowChoosedTagsIds = nowChoosedTagsIds.slice()
-    const nowChoosedTags = this.transTagIDsToName(nowChoosedTagsIds).slice()
-    this.setState({
-      addTagVisible: false,
-      nowChoosedTagsIds,
-      nowChoosedTags
-    })
-  }
-  addTagCancel = () => {
-    this.setState({
-      addTagVisible: false
-    })
-  }
-
 
   render() {
     const { getFieldDecorator } = this.props.form
+    let { previewVisible, previewImage, fileList } = this.state
+    const uploadButton = (
+      <div>
+        <Icon type="plus" />
+        <div className="ant-upload-text">上传</div>
+      </div>
+    )
+
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
-        sm: { span: 4 },
+        sm: { span: 8 },
       },
       wrapperCol: {
         xs: { span: 24 },
-        sm: { span: 20 },
+        sm: { span: 16 },
       },
-    }
-
-    const addTagOptions = {
-      addTagVisible: this.state.addTagVisible,
-      addTagOk: this.addTagOk,
-      addTagCancel: this.addTagCancel,
-      nowChoosedTagsIds: this.state.nowChoosedTagsIds.slice()
     }
 
     return (
       <Modal
-        title="另存为自运营专辑"
+        title={this.props.addOrEditTitle}
         visible={this.props.addOrEditVisible}
         onCancel={this.props.addOrEditCancel}
         onOk={(e) => this.handleSubmit(e)}
-        destroyOnClose={true}
-        width={600}
+        width={800}
       >
-        <div style={{ maxHeight: 550, overflowY: 'scroll' }}>
+        <div style={{ maxHeight: 550, overflowY: 'scroll', paddingRight: 40 }}>
           <Form
             onSubmit={this.handleSubmit}
           >
             <FormItem
               {...formItemLayout}
-              label="主站专辑ID"
+              label="听单名称"
             >
-              <Input type="text" value={this.props.addOrEditInitValues.id} disabled />
-            </FormItem>
-
-            <FormItem
-              {...formItemLayout}
-              label="专辑标题"
-            >
-              {
-                getFieldDecorator('title', {
-                  initialValue: this.props.addOrEditInitValues.title,
-                  rules: [
-                    {
-                      required: true,
-                      message: '请输入专辑标题',
-                    },
-                    {
-                      max: 20,
-                      message: '专辑标题应该小于20个字符',
-                    }
-                  ]
-                })(
-                  <Input placeholder="请输入专辑标题" onPressEnter={e => e.preventDefault()} />
-                )
-              }
-            </FormItem>
-            {
-              this.state.coverUrlMiddle ? <FormItem
-                {...formItemLayout}
-                label="专辑封面"
-              >
-                <div>
-                  <img src={this.state.coverUrlMiddle} alt="封面" width="100" height="100" />
-                </div>
-              </FormItem> :
-                null
-            }
-            <FormItem
-              {...formItemLayout}
-              label="分类来源"
-            >
-              {getFieldDecorator('categorySource', {
-                initialValue: this.props.addOrEditInitValues.categorySource ? this.props.addOrEditInitValues.categorySource + '' : '1',
+              {getFieldDecorator('name', {
+                initialValue: this.props.addOrEditInitValues.name,
                 rules: [
                   {
-                    required: true, message: '请选择分类来源',
+                    required: true, message: '请输入分类名称',
+                  },
+                  {
+                    max: 20, message: '名称须小于20个字符',
                   }
                 ],
               })(
-                <Select allowClear onChange={(v) => this.sourceChange(v)}>
-                  <Option value="1">主站分类</Option>
-                  <Option value="2">自运营分类</Option>
-                </Select>
+                <Input placeholder="请输入分类名称" />
               )}
             </FormItem>
             <FormItem
               {...formItemLayout}
-              label="分类"
+              label="分类封面"
             >
-              {getFieldDecorator('categoryId', {
-                initialValue: this.props.addOrEditInitValues.categoryId,
-                rules: [
-                  {
-                    required: true, message: '请选择分类',
-                  }
-                ],
-              })(
-                <Select allowClear>
-                  {
-                    this.state.smallTypes.map((item) => (
-                      <Option key={item.id} value={item.id}>{item.name}</Option>
-                    ))
-                  }
-
-                </Select>
-              )}
-            </FormItem>
-            <FormItem
-              {...formItemLayout}
-              label="自运营标签"
-            >
-              <div className="tag-set">
-                {
-                  this.state.nowChoosedTags.map((item) => {
-                    return (
-                      <Tag key={item.id} color="#f50"
-                        closable
-                        onClose={() => this.deleteTag(item.id)}
-                      >{item.name}</Tag>
-                    )
-                  })
-                }
-                <div>
-                  <Button type="primary" onClick={this.addTagBegin}>添加标签</Button>
-                </div>
+              <div>
+                <Upload
+                  action={action}
+                  listType="picture-card"
+                  fileList={fileList}
+                  onPreview={this.handleImgPreview}
+                  onChange={this.handleImgChange}
+                  onRemove={this.onImgRemove}
+                  withCredentials={true}
+                  beforeUpload={this.beforeUpload}
+                >
+                  {fileList.length >= 1 ? null : uploadButton}
+                </Upload>
+                <Modal visible={previewVisible} footer={null} onCancel={this.handleImgCancel}>
+                  <img alt="example" style={{ width: '100%' }} src={previewImage} />
+                </Modal>
               </div>
             </FormItem>
             <FormItem
               {...formItemLayout}
-              label="上下架状态"
+              label="内容类型"
             >
-              {getFieldDecorator('onlineStatus', {
-                initialValue: this.props.addOrEditInitValues.onlineStatus ? this.props.addOrEditInitValues.onlineStatus : 1,
-              })(
-                <Select disabled>
-                  <Option value={1}>已上架</Option>
-                  <Option value={0}>已下架</Option>
-                </Select>
-              )}
-            </FormItem>
-            <FormItem
-              {...formItemLayout}
-              label="主讲人"
-            >
-              {getFieldDecorator('people', {
-                initialValue: this.props.addOrEditInitValues.people,
-              })(
-                <Input disabled />
-              )}
-            </FormItem>
-            <FormItem
-              {...formItemLayout}
-              label="是否付费"
-            >
-              {getFieldDecorator('isPaid', {
-                initialValue: this.props.addOrEditInitValues.isPaid,
-              })(
-                <Select disabled>
-                  <Option value={1}>付费</Option>
-                  <Option value={0}>免费</Option>
-                </Select>
-              )}
-            </FormItem>
-            <FormItem
-              {...formItemLayout}
-              label="价格类型"
-            >
-              {getFieldDecorator('priceType', {
-                initialValue: this.props.addOrEditInitValues.priceType,
-              })(
-                <Select disabled>
-                  <Option value={1}>单集购买</Option>
-                  <Option value={2}>整张购买</Option>
-                </Select>
-              )}
-            </FormItem>
-            <FormItem
-              {...formItemLayout}
-              label="专辑简介"
-            >
-              {getFieldDecorator('intro', {
-                initialValue: this.props.addOrEditInitValues.intro,
+              {getFieldDecorator('contentType', {
+                initialValue: this.props.addOrEditInitValues.contentType,
                 rules: [
                   {
-                    max: 200,
-                    message: '专辑简介应该小于200个字符',
-                  },
-                  {
-                    required: true,
-                    message: '请输入专辑简介',
+                    required: true, message: '请选择内容类型',
                   }
-                ]
+                ],
               })(
-                <TextArea style={{ height: 100, maxHeight: 100 }} placeholder="请输入专辑简介" />
+                <Select allowClear>
+                  <Option value={1}>专辑</Option>
+                  <Option value={2}>声音</Option>
+                </Select>
               )}
             </FormItem>
             <FormItem
               {...formItemLayout}
-              label="专辑内容"
+              label="选择内容"
             >
-              {getFieldDecorator('trackIds', {
-                initialValue: this.props.addOrEditInitValues.trackIds ? this.props.addOrEditInitValues.trackIds.join() : '',
+              {getFieldDecorator('contentIds', {
+                initialValue: this.props.addOrEditInitValues.contentIds ? this.props.addOrEditInitValues.contentIds.split(',').join('\n') : '',
+                rules: [
+                  {
+                    required: true, message: '请输入选择内容',
+                  }
+                ],
               })(
-                <TextArea style={{ height: 100, maxHeight: 100 }} disabled />
+                <TextArea style={{ height: 100, maxHeight: 100 }} placeholder="请输入选择内容" />
               )}
             </FormItem>
-          </Form>
-          {
-            this.state.addTagVisible
-              ?
-              <WrapperSelfAddTag {...addTagOptions} />
-              : null
-          }
-          <MaskLoading ref="mask" />
 
+          </Form>
         </div>
       </Modal >
     )
   }
 }
 
-const WrapperSelfTagDimensionAddOrEdit = Form.create()(SelfTagDimensionAddOrEdit)
-export default WrapperSelfTagDimensionAddOrEdit
+const WrapperMainClassfiyAddOrEdit = Form.create()(MainClassfiyAddOrEdit)
+export default WrapperMainClassfiyAddOrEdit

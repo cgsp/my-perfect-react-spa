@@ -14,7 +14,7 @@ if (DEV) {
 }
 
 
-export default class SelfTagDimensionDetailTable extends Component {
+export default class MainClassfiyDimensionDetailTable extends Component {
   static propTypes = {
     detailVisible: PropTypes.bool,
     detailCancel: PropTypes.func,

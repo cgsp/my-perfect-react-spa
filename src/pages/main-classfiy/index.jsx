@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-10 11:07:35
+ * @Last Modified time: 2018-09-10 11:50:43
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -19,8 +19,8 @@ import TimeControlHoc from '@Components/time-control-hoc'
 import { apiMainClassfiyList, apiMainClassfiyDetail } from '@Api/main-classfiy'
 
 import MainClassfiyListTable from './list-table'
-import WrapperSelfTagDimensionAddOrEdit from './add-or-edit'
-import SelfTagDimensionDetailTable from './detail-table'
+import WrapperMainClassfiyAddOrEdit from './add-or-edit'
+import MainClassfiyDimensionDetailTable from './detail-table'
 import './style.scss'
 
 const FormItem = Form.Item
@@ -216,38 +216,28 @@ class MainAlbum extends Component {
   tableLineSave(line) {
     console.log('另存为', line)
     this.saveId = line.id
-    this.saveTags = line.tags
-    this.refs.mask.show()
-    // this.props.getCommonDimesionsAndTags(() => {
-    //   apiAlbumGetMainPeople(line.id)
-    //     .then(res => {
-    //       this.refs.mask.hide()
-    //       if (res.code !== ERR_OK) {
-    //         message.error(res.msg)
-    //         return
-    //       }
-    //       line.people = res.data
-    //       this.setState({
-    //         addOrEditTitle: '另存为自运营专辑',
-    //         addOrEditVisible: true,
-    //         addOrEditInitValues: line
-    //       })
-    //     })
-    // })
+    this.saveSourceId = line.sourceId
+    this.saveOnlineStatus = line.onlineStatus
+    this.setState({
+      addOrEditTitle: '另存为自运营分类',
+      addOrEditVisible: true,
+      addOrEditInitValues: line
+    })
   }
 
 
   // 另存为的确定
   addOrEditOk(values) {
-    values.type = '另存为自运营专辑'
-    values.sourceId = this.saveId
-    values.tags = this.saveTags
+    values.id = this.saveId
+    values.source = 1
+    values.sourceId = this.saveSourceId
+    values.onlineStatus = this.saveOnlineStatus
     this.handleSelfTagAddOrEdit(values, () => {
       this.setState({
         addOrEditVisible: false
       }, () => {
         // 刷新维度列表页面
-        this.searchList('另存为自运营专辑')
+        this.searchList('另存为')
       })
     })
   }
@@ -274,7 +264,8 @@ class MainAlbum extends Component {
       addOrEditVisible: false
     })
     this.saveId = null
-    this.saveTags = null
+    this.saveSourceId = null
+    this.saveOnlineStatus = null
   }
 
   // 查看专辑数的详情--弹框列表
@@ -556,13 +547,13 @@ class MainAlbum extends Component {
         {
           this.state.detailVisible
             ?
-            <SelfTagDimensionDetailTable {...detailTableOptions} />
+            <MainClassfiyDimensionDetailTable {...detailTableOptions} />
             : null
         }
         {
           this.state.addOrEditVisible
             ?
-            <WrapperSelfTagDimensionAddOrEdit {...addOrEditOptions} />
+            <WrapperMainClassfiyAddOrEdit {...addOrEditOptions} />
             : null
         }
         <MaskLoading ref="mask" />
