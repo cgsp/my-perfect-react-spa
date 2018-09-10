@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Pagination } from 'antd'
+import { Table, Pagination, Divider } from 'antd'
 import { myGetStrTime } from '@Utils/myGetTime'
 import { PropTypes } from 'prop-types'
 
@@ -8,6 +8,7 @@ export default class MainClassfiyListTable extends Component {
     showTotal: PropTypes.func,
     tableData: PropTypes.array,
     tableLineEdit: PropTypes.func,
+    tableLineSave: PropTypes.func,
     pageOrPageSizeChange: PropTypes.func,
     total: PropTypes.number,
     pageNo: PropTypes.number
@@ -100,7 +101,9 @@ export default class MainClassfiyListTable extends Component {
         render: (text, record) => {
           return (
             <span>
-              <i style={{ color: 'green', cursor: 'pointer' }} onClick={() => this.props.tableLineEdit(record)}>编辑</i>
+              <i style={{ color: '#1585ff', cursor: 'pointer' }} onClick={() => this.props.tableLineEdit(record)}>编辑</i>
+              <Divider type="vertical" />
+              <i style={{ color: 'green', cursor: 'pointer' }} onClick={() => this.props.tableLineSave(record)}>另存为</i>
             </span>)
         },
         width: 140

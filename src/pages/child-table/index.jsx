@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-10 18:28:49
+ * @Last Modified time: 2018-09-10 18:35:16
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber, Modal } from 'antd'
@@ -16,7 +16,7 @@ import MaskLoading from '@Components/mask-loading'
 import SortList from '@Components/sort-list'
 import TimeControlHoc from '@Components/time-control-hoc'
 
-import { apiSelfClassfiyList, apiSelfClassfiyDetail, apiSelfClassfiyEdit, apiSelfClassfiyAdd } from '@Api/self-classfiy'
+import { apiChildTableList, apiChildTableEdit, apiChildTableAdd } from '@Api/child-table'
 
 import MainClassfiyListTable from './list-table'
 import WrapperMainClassfiyAddOrEdit from './add-or-edit'
@@ -47,6 +47,7 @@ class MainAlbum extends Component {
     }
     this.pageOrPageSizeChange = this.pageOrPageSizeChange.bind(this)
     this.tableLineEdit = this.tableLineEdit.bind(this)
+    this.tableLineSave = this.tableLineSave.bind(this)
     this.clickSort = this.clickSort.bind(this)
     this.addOrEditOk = this.addOrEditOk.bind(this)
     this.addOrEditCancel = this.addOrEditCancel.bind(this)
@@ -178,7 +179,7 @@ class MainAlbum extends Component {
     this.refs.mask.show()
     options = this.handleSearchOrExportOptions(options)
 
-    apiSelfClassfiyList(options)
+    apiChildTableList(options)
       .then(res => {
         this.refs.mask.hide()
         if (res.code !== ERR_OK) {
@@ -298,7 +299,7 @@ class MainAlbum extends Component {
   // 编辑
   handleSelfTagEdit(options, callBack) {
     this.refs.mask.show()
-    apiSelfClassfiyEdit(options)
+    apiChildTableEdit(options)
       .then(res => {
         this.refs.mask.hide()
         if (res.code !== ERR_OK) {
@@ -312,7 +313,7 @@ class MainAlbum extends Component {
   // 新增
   handleSelfTagAdd(options, callBack) {
     this.refs.mask.show()
-    apiSelfClassfiyAdd(options)
+    apiChildTableAdd(options)
       .then(res => {
         this.refs.mask.hide()
         if (res.code !== ERR_OK) {
@@ -335,11 +336,15 @@ class MainAlbum extends Component {
     this.editOnlineStatus = null
   }
 
-  
+  tableLineSave() {
 
-  
+  }
 
-  
+
+
+
+
+
 
 
 
@@ -349,6 +354,7 @@ class MainAlbum extends Component {
       tableData: this.state.tableData,
       total: this.state.tableTotal,
       tableLineEdit: this.tableLineEdit,
+      tableLineSave: this.tableLineSave,
       pageOrPageSizeChange: this.pageOrPageSizeChange,
       pageNo: this.state.pageNo
     }
@@ -525,7 +531,7 @@ class MainAlbum extends Component {
         <List className="handle-buttons">
           <Row>
             <Col span={24} className="line">
-              <Button className="btn" type="primary" onClick={() => this.addBegin()}>新增分类</Button>
+              <Button className="btn" type="primary" onClick={() => this.addBegin()}>新增子站</Button>
               <div className="sort-box">
                 <span className="sort-title">排序方式：</span>
                 <SortList clickSort={this.clickSort} sortNameArr={['创建时间', '更新时间']} />
