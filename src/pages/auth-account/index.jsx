@@ -1,445 +1,499 @@
 /*
  * @Author: John.Guan 
- * @Date: 2018-08-18 22:25:36 
+ * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-30 20:25:23
+ * @Last Modified time: 2018-09-09 16:30:44
  */
 import React, { Component } from 'react'
-import { List, Form, Row, Col, Button, Select, Modal } from 'antd'
-import AuthAccountListTable from './list-table'
-import AddOrEditAccount from './add-or-edit-account'
-import MaskLoading from '@Components/mask-loading'
+import { List, Form, Row, Col, Button, Input, message, Select, Modal } from 'antd'
+
 import { myTrim } from '@Utils/myTrim'
-import { apiGetUserList, apiGetAuthAccountPageRolesList, apiGetAuthAccountList, apiGetAuthAccountPageDeleteLine, apiGetAuthAccountPageAddLine } from '@Api'
+import { ERR_OK } from '@Constants'
+
+import MaskLoading from '@Components/mask-loading'
+import SortList from '@Components/sort-list'
+
+import { apiAuthAccountList, apiAuthAllUser, apiAuthAccountGetRoles, apiAuthAccountDeleteRole, apiAuthAccountUpdateRole, apiAuthAllRole } from '@Api/auth-account'
+
+import AuthAccountListTable from './list-table'
+import WrapperAuthAccountAddOrEdit from './add-or-edit'
+import './style.scss'
 
 const FormItem = Form.Item
 const Option = Select.Option
 const confirm = Modal.confirm
 
-
 class AuthAccount extends Component {
   constructor() {
     super()
     this.state = {
-      userValue: undefined,
-      userSelectOptionsData: [],
-      roleValue: undefined,
-      roleSelectOptionsData: [],
+      sortIndex: 1,
+      sortDirection: 'down',
       tableTotal: 0,
       tableData: [],
-      currentPage: 1,
+      pageNo: 1,
       pageSize: 10,
-      modalTitle: '新增用户',
-      modalVisible: false,
-      modalConfirmLoading: false,
-      modalUserValue: undefined,
-      modalUserSelectOptionsData: [],
-      modalRoleValue: undefined,
-      modalRoleSelectOptionsData: [],
+      addOrEditVisible: false,
+      addOrEditInitValues: {},
+      userSelectData: [],
+      roleSelectData: []
     }
-    this.timeout = null
-    this.currentUserValue = ''
-    this.modalTimeout = null
-    this.modalCurrentUserValue = ''
-    this.handleRoleSelectChange = this.handleRoleSelectChange.bind(this)
-    this.handleSelectChange = this.handleSelectChange.bind(this)
-    this.handleSelectSearch = this.handleSelectSearch.bind(this)
-    this.onTableShowSizeChange = this.onTableShowSizeChange.bind(this)
-    this.onTablePageChange = this.onTablePageChange.bind(this)
-    this.tableLineDelete = this.tableLineDelete.bind(this)
+    this.pageOrPageSizeChange = this.pageOrPageSizeChange.bind(this)
     this.tableLineEdit = this.tableLineEdit.bind(this)
-    this.modalOk = this.modalOk.bind(this)
-    this.modalCancel = this.modalCancel.bind(this)
-    this.modalHandleSelectChange = this.modalHandleSelectChange.bind(this)
-    this.modalHandleSelectSearch = this.modalHandleSelectSearch.bind(this)
-    this.modalHandleRoleSelectChange = this.modalHandleRoleSelectChange.bind(this)
+    this.tableLineDelete = this.tableLineDelete.bind(this)
+    this.clickSort = this.clickSort.bind(this)
+    this.addOrEditOk = this.addOrEditOk.bind(this)
+    this.addOrEditCancel = this.addOrEditCancel.bind(this)
+    // 模糊匹配
+    this.handleAccountSelectChange = this.handleAccountSelectChange.bind(this)
+    this.handleAccountSelectSearch = this.handleAccountSelectSearch.bind(this)
+    this.timeout = null
+    this.currentAccount = ''
+
+    this.handleRoleSelectChange = this.handleRoleSelectChange.bind(this)
+    this.handleRoleSelectSearch = this.handleRoleSelectSearch.bind(this)
+    this.timeoutRole = null
+    this.currentRole = ''
   }
 
   componentDidMount() {
-    // 获取表格数据
+    // 初始化查询列表数据
     this.getListData({
-      page: 1,
+      pageNo: 1,
       pageSize: 10,
-      rolename: '',
-      username: '',
+      sortIndex: 1,
+      sortDirection: 'down',
     })
-    // 获取角色数据
-    this.getRolesList()
   }
 
+  // 点击排序
+  clickSort(sortIndex, sortDirection) {
+    this.setState({
+      sortIndex,
+      sortDirection
+    })
+    this.searchList()
+  }
+
+  // 点击查询
   handleSearch = (e) => {
     e.preventDefault()
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        this.setState({
-        }, () => {
-          this.getListData({
-            page: this.state.currentPage,
-            pageSize: this.state.pageSize,
-            rolename: this.state.roleValue === undefined ? '' : myTrim(this.state.roleValue),
-            username: this.state.userValue === undefined ? '' : myTrim(this.state.userValue)
+    this.setState({
+      pageNo: 1
+    }, () => {
+      this.searchList()
+    })
+  }
+
+  // 翻页或者每页尺寸改变
+  pageOrPageSizeChange(current, pageSize) {
+    this.setState({
+      pageNo: current,
+      pageSize
+    }, () => {
+      this.searchList()
+    })
+  }
+
+  // 展示total
+  showTableTotal(total) {
+    return `共 ${total} 条`
+  }
+
+
+  // 查询列表的配套函数
+  searchList(tip, callBack) {
+    this.setState({
+    }, () => {
+      const state = this.state
+      const {
+        pageSize,
+        pageNo,
+        roleId,
+        roleName,
+        userIdAndName,
+        userName,
+        sortIndex,
+        sortDirection,
+      } = state
+      const realName = userIdAndName ? userIdAndName.split('~~~~++++')[1] : undefined
+
+      this.getListData({
+        pageSize,
+        pageNo,
+        roleId,
+        roleName,
+        realName,
+        userName,
+        sortIndex,
+        sortDirection,
+        tip
+      })
+    })
+  }
+
+  // 处理导出options或者搜索options的配套函数
+  handleSearchOrExportOptions(options) {
+    // 去掉空格
+    options.roleName = !options.roleName ? undefined : myTrim(options.roleName)
+    options.userName = !options.userName ? undefined : myTrim(options.userName)
+
+    // 处理排序的
+    options.orderBy = options.sortIndex === 0 ? 'created_at' : 'updated_at'
+    delete options.sortIndex
+    options.desc = options.sortDirection === 'up' ? true : false
+    delete options.sortDirection
+
+    return options
+  }
+
+  // 获取列表页面的数据
+  getListData(options) {
+    this.refs.mask.show()
+    options = this.handleSearchOrExportOptions(options)
+    apiAuthAccountList(options)
+      .then(res => {
+        this.refs.mask.hide()
+        if (res.code !== ERR_OK) {
+          message.error(res.message)
+          return
+        }
+        const data = JSON.parse(res.data)
+        console.log(data)
+        let tableData
+        if (data.total === 0) {
+          tableData = []
+        } else {
+          tableData = data.data.map(item => {
+            item.key = item.userId
+            return item
           })
+        }
+        this.setState({
+          tableData,
+          tableTotal: data.total
         })
-      } else {
-        // 处理错误
-      }
-    })
+        // 针对删除，编辑，新增之后，重新刷新页面的提示
+        if (options.tip) {
+          message.success(`${options.tip}成功`)
+        }
+      })
   }
 
-  getSelectUserList(value, callback) {
-    if (this.timeout) {
-      clearTimeout(this.timeout)
-      this.timeout = null
-    }
-    this.currentUserValue = value
-    this.timeout = setTimeout(() => {
-      apiGetUserList(value)
-        .then(res => res.json())
-        .then(d => {
-          if (this.currentUserValue === value) {
-            const result = d.result
-            const arr = []
-            result.forEach(item => {
-              arr.push({
-                value: item[1],
-                text: item[0]
-              })
-            })
-            callback(arr)
-          }
+  // 列表页面的编辑
+  tableLineEdit(line) {
+    console.log('编辑', line)
+    let roleIds = []
+
+    this.editUserId = line.userId
+
+    const roles = line.roles.slice()
+    roles.forEach(item => {
+      roleIds.push(item.roleId)
+    })
+
+    line.oldRoles = roleIds
+
+    this.refs.mask.show()
+    apiAuthAccountGetRoles()
+      .then(res => {
+        this.refs.mask.hide()
+        if (res.code !== ERR_OK) {
+          message.error(res.message)
+          return
+        }
+        const data = JSON.parse(res.data).data
+        // 获取角色的数据，然后传递给编辑的组件
+        // 打开编辑组件
+        this.setState({
+          addOrEditTitle: '编辑角色',
+          roleList: data,
+          addOrEditVisible: true,
+          addOrEditInitValues: { ...line, ...{ roleList: data } }
         })
-    }, 300)
-
+      })
   }
 
-  handleSelectSearch(value) {
-    // console.log(value)
-    this.getSelectUserList(value, data => this.setState({ userSelectOptionsData: data }))
-  }
-
-  handleSelectChange(value) {
-    this.setState({
-      userValue: value,
-    })
-  }
-
-  handleRoleSelectChange(value) {
-    this.setState({
-      roleValue: value,
-    })
-  }
-
-
-
+  // 删除的逻辑
   tableLineDelete(line) {
+    console.log(line)
     const that = this
     confirm({
       title: '确定要删除吗？',
       content: '',
       onOk() {
         that.refs.mask.show()
-        apiGetAuthAccountPageDeleteLine({ id: line.id })
+        apiAuthAccountDeleteRole(line.userId)
           .then(res => {
-            // 将列表页面重新刷新
-            that.setState({
-            }, () => {
-              that.getListData({
-                page: 1,
-                pageSize: that.state.pageSize,
-                rolename: that.state.roleValue === undefined ? '' : myTrim(that.state.roleValue),
-                username: that.state.userValue === undefined ? '' : myTrim(that.state.userValue)
-              })
-            })
+            that.refs.mask.hide()
+            if (res.code !== ERR_OK) {
+              message.error(res.message)
+              return
+            }
+            that.searchList('删除用户')
           })
       },
       onCancel() { },
     })
   }
 
-
-  onTableShowSizeChange(current, pageSize) {
-    console.log(current, pageSize)
-    this.setState({
-      currentPage: current,
-      pageSize
-    }, () => {
-      this.getListData({
-        page: this.state.currentPage,
-        pageSize: this.state.pageSize,
-        rolename: this.state.roleValue,
-        username: this.state.userValue === undefined ? '' : myTrim(this.state.userValue)
+  // 新增或者编辑自运营专辑，添加标签，点击弹框的确定
+  addOrEditOk(values) {
+    values.userId = this.editUserId
+    this.handleSelfTagAddOrEdit(values, () => {
+      this.setState({
+        addOrEditVisible: false
       })
+      // 刷新维度列表页面
+      this.searchList('编辑')
     })
   }
 
-  onTablePageChange(current, pageSize) {
-    console.log(current, pageSize)
-    this.setState({
-      currentPage: current,
-      pageSize
-    }, () => {
-
-      this.getListData({
-        page: this.state.currentPage,
-        pageSize: this.state.pageSize,
-        rolename: this.state.roleValue,
-        username: this.state.userValue === undefined ? '' : myTrim(this.state.userValue)
-      })
-    })
-  }
-
-  showTableTotal(total) {
-    return `共 ${total} 条`
-  }
-
-  // 获取列表页面的数据
-  getListData({ page, pageSize, rolename, username }) {
-    this.refs.mask.show()
-    apiGetAuthAccountList({ page, pageSize, rolename, username })
+  handleSelfTagAddOrEdit(values, callback) {
+    // 编辑的api
+    apiAuthAccountUpdateRole(values)
       .then(res => {
-        this.refs.mask.hide()
-        const tableData = res.map(item => {
-          item.key = item.id
-          return item
-        })
-        this.setState({
-          tableData: tableData,
-          tableTotal: tableData.length
-        })
+        if (res.code !== ERR_OK) {
+          message.error(res.message)
+          return
+        }
+        callback && callback()
       })
   }
 
-  // 获取角色数据
-  getRolesList() {
-    this.refs.mask.show()
-    apiGetAuthAccountPageRolesList()
-      .then(res => {
-        this.refs.mask.hide()
-        this.setState({
-          roleSelectOptionsData: res,
-          modalRoleSelectOptionsData: res
-        })
-      })
-  }
-
-  addAccount() {
+  // 新增或者编辑自运营专辑，关闭弹框
+  addOrEditCancel() {
+    this.editUserId = null
     this.setState({
-      modalVisible: true,
-      modalRoleValue: undefined,
-      modalUserValue: undefined
+      addOrEditVisible: false
     })
   }
 
-  // 编辑
-  tableLineEdit(line) {
-    console.log(line)
-    this.setState({
-      modalTitle: '修改用户',
-      modalVisible: true,
-      modalRoleValue: line.rolename.split(','),
-      modalUserValue: line.username
-    })
+  // 真实姓名的模糊匹配
+  handleAccountSelectSearch(value) {
+    // console.log(value)
+    this.getSelectUserList(value, data => this.setState({ userSelectData: data }))
   }
 
-  modalOk(title) {
-    this.setState({
-      modalConfirmLoading: true
-    })
-    if (title === '新增用户') {
-      this.setState({},
-        () => {
-          const username = this.state.modalUserValue === undefined ? '' : this.state.modalUserValue
-          const roleArr = this.state.modalRoleValue === undefined ? [] : this.state.modalRoleValue
-          // console.log(username)
-          // console.log(roleArr)
-          apiGetAuthAccountPageAddLine({ username, roleArr })
-            .then(res => {
-              this.setState({
-                modalVisible: false,
-                modalConfirmLoading: false,
-              })
-              // 刷新列表页面
-              this.getListData({
-                page: 1,
-                pageSize: this.state.pageSize,
-                rolename: this.state.roleValue === undefined ? '' : myTrim(this.state.roleValue),
-                username: this.state.userValue === undefined ? '' : myTrim(this.state.userValue)
-              })
-            })
-        }
-      )
+  // 角色的模糊匹配
+  handleRoleSelectSearch(value) {
+    // console.log(value)
+    this.getSelectRoleList(value, data => this.setState({ roleSelectData: data }))
+  }
+
+  // 真实姓名的模糊匹配
+  getSelectUserList(value, callback) {
+    if (this.timeout) {
+      clearTimeout(this.timeout)
+      this.timeout = null
     }
+    this.currentAccount = value
 
-    if (title === '修改用户') {
-      this.setState({},
-        () => {
-          const username = this.state.modalUserValue === undefined ? '' : this.state.modalUserValue
-          const roleArr = this.state.modalRoleValue === undefined ? [] : this.state.modalRoleValue
-          // console.log(username)
-          // console.log(roleArr)
-          apiGetAuthAccountPageAddLine({ username, roleArr })
-            .then(res => {
-              this.setState({
-                modalVisible: false,
-                modalConfirmLoading: false,
-              })
-              // 刷新列表页面
-              this.getListData({
-                page: 1,
-                pageSize: this.state.pageSize,
-                rolename: this.state.roleValue === undefined ? '' : myTrim(this.state.roleValue),
-                username: this.state.userValue === undefined ? '' : myTrim(this.state.userValue)
-              })
-            })
-        }
-      )
+    const options = {
+      realName: value
     }
-  }
-
-  modalCancel() {
-    this.setState({
-      modalVisible: false,
-    })
-  }
-
-  getModalSelectUserList(value, callback) {
-    if (this.modalTimeout) {
-      clearTimeout(this.modalTimeout)
-      this.modalTimeout = null
-    }
-    this.modalCurrentUserValue = value
-    this.modalTimeout = setTimeout(() => {
-      apiGetUserList(value)
-        .then(res => res.json())
-        .then(d => {
-          if (this.modalCurrentUserValue === value) {
-            const result = d.result
+    this.timeout = setTimeout(() => {
+      apiAuthAllUser(options)
+        .then(res => {
+          if (this.currentAccount === value) {
+            if (res.code !== ERR_OK) {
+              message.error(res.msg)
+              return
+            }
+            // 只取前面的20条
+            let result = JSON.parse(res.data).slice(0, 20)
+            if (!result) {
+              result = []
+            }
             const arr = []
             result.forEach(item => {
               arr.push({
-                value: item[1],
-                text: item[0]
+                value: item.userCode,
+                text: item.realName
               })
             })
+            console.log(res)
             callback(arr)
           }
         })
     }, 300)
+
   }
 
-  modalHandleSelectSearch(value) {
-    // console.log(value)
-    this.getModalSelectUserList(value, data => this.setState({ modalUserSelectOptionsData: data }))
+  // 角色的模糊匹配
+  getSelectRoleList(value, callback) {
+    this.timeoutRole = null
+    if (this.timeoutRole) {
+      clearTimeout(this.timeoutRole)
+      this.timeoutRole = null
+    }
+    this.currentRole = value
+
+    const options = {
+      roleName: value
+    }
+    this.timeout = setTimeout(() => {
+      apiAuthAllRole(options)
+        .then(res => {
+          if (this.currentRole === value) {
+            if (res.code !== ERR_OK) {
+              message.error(res.msg)
+              return
+            }
+            // 只取前面的20条
+            let result = JSON.parse(res.data).data
+            console.log(result)
+            if (!result) {
+              result = []
+            }
+
+            const arr = []
+            result.forEach(item => {
+              arr.push({
+                value: item.roleId,
+                text: item.roleName
+              })
+            })
+            console.log(res)
+            callback(arr)
+          }
+        })
+    }, 300)
+
   }
 
-  modalHandleSelectChange(value) {
-    console.log(value)
+
+  // 真实姓名的模糊匹配
+  handleAccountSelectChange(value) {
     this.setState({
-      modalUserValue: value,
+      userIdAndName: value,
+    }, () => {
+      console.log(this.state.userIdAndName)
     })
   }
 
-  modalHandleRoleSelectChange(value) {
+  // 角色的模糊匹配
+  handleRoleSelectChange(value) {
     this.setState({
-      modalRoleValue: value,
+      roleId: value,
+    }, () => {
+      console.log(this.state.roleId)
     })
   }
-
 
   render() {
     const tableOptions = {
+      showTotal: this.showTableTotal,
+      tableData: this.state.tableData,
+      total: this.state.tableTotal,
       tableLineEdit: this.tableLineEdit,
       tableLineDelete: this.tableLineDelete,
-      onShowSizeChange: this.onTableShowSizeChange,
-      onChange: this.onTablePageChange,
-      total: this.state.tableTotal,
-      showTotal: this.showTableTotal,
-      tableData: this.state.tableData
+      pageOrPageSizeChange: this.pageOrPageSizeChange,
+      pageNo: this.state.pageNo
     }
 
-    const modalOptions = {
-      modalTitle: this.state.modalTitle,
-      modalVisible: this.state.modalVisible,
-      modalOk: this.modalOk,
-      modalConfirmLoading: this.state.modalConfirmLoading,
-      modalCancel: this.modalCancel,
-      modalHandleSelectChange: this.modalHandleSelectChange,
-      modalHandleSelectSearch: this.modalHandleSelectSearch,
-      modalHandleRoleSelectChange: this.modalHandleRoleSelectChange,
-      modalRoleSelectOptionsData: this.state.modalRoleSelectOptionsData,
-      modalUserSelectOptionsData: this.state.modalUserSelectOptionsData,
-      modalUserValue: this.state.modalUserValue,
-      modalRoleValue: this.state.modalRoleValue,
-
+    const addOrEditOptions = {
+      addOrEditTitle: this.state.addOrEditTitle,
+      addOrEditVisible: this.state.addOrEditVisible,
+      addOrEditInitValues: this.state.addOrEditInitValues,
+      addOrEditOk: this.addOrEditOk,
+      addOrEditCancel: this.addOrEditCancel,
     }
+
     return (
-      <div>
+      <div className="auth-account">
         {/* 搜索 */}
-        <List bordered style={{ paddingLeft: 10, marginBottom: 30 }}>
+        <List className="search-list" bordered>
           <Form
             className="ant-advanced-search-form"
             onSubmit={this.handleSearch}
             layout="inline"
           >
-            <Row>
-
-              <Col span={8}>
-                <FormItem label="用户名称" style={{ marginBottom: 0, marginTop: 10 }}>
-                  <Select
-                    showSearch
-                    style={{ width: 200, marginTop: 4 }}
-                    placeholder="请输入搜索关键字"
-                    allowClear={true}
-                    value={this.state.userValue}
-                    onSearch={this.handleSelectSearch}
-                    onChange={this.handleSelectChange}
-                    defaultActiveFirstOption={false}
-                    showArrow={false}
-                    filterOption={false}
-                    notFoundContent={'根据此关键字，无法搜索'}
-                  >
-                    {
-                      this.state.userSelectOptionsData.map(item => (
-                        <Option key={item.value}>{item.text}</Option>
-                      ))
-                    }
-                  </Select>
-                </FormItem>
-              </Col>
-              <Col span={8}>
-                <FormItem label="角色名称" style={{ marginBottom: 10, marginTop: 10 }}>
-                  <Select
-                    style={{ width: 200, marginTop: 4 }}
-                    placeholder="请选择角色"
-                    allowClear={true}
-                    onChange={this.handleRoleSelectChange}
-                  >
-                    {
-                      this.state.roleSelectOptionsData.map(item => (
-                        <Option key={item.key}>{item.text}</Option>
-                      ))
-                    }
-                  </Select>
-                </FormItem>
-              </Col>
-              <Col span={8} style={{ textAlign: 'left', marginTop: 14 }}>
-                <Button type="primary" htmlType="submit">查询</Button>
-              </Col>
-            </Row>
+            <Col span={6}>
+              <FormItem
+                className="form-item"
+                label={<span className="form-label">角色姓名</span>}
+              >
+                <Select
+                  showSearch
+                  style={{ width: 190 }}
+                  placeholder="请输入真实姓名"
+                  allowClear={true}
+                  value={this.state.roleId}
+                  onSearch={this.handleRoleSelectSearch}
+                  onChange={this.handleRoleSelectChange}
+                  defaultActiveFirstOption={false}
+                  showArrow={false}
+                  filterOption={false}
+                  notFoundContent={'根据此关键字，无法搜索'}
+                >
+                  {
+                    this.state.roleSelectData.map(item => (
+                      <Option key={item.value}>{item.text}</Option>
+                    ))
+                  }
+                </Select>
+              </FormItem>
+            </Col>
+            <Col span={6}>
+              <FormItem
+                className="form-item"
+                label={<span className="form-label">用户名</span>}
+              >
+                <Input style={{ width: 190 }} placeholder="请输入用户名" onChange={e => this.setState({ userName: e.target.value })} />
+              </FormItem>
+            </Col>
+            <Col span={6}>
+              <FormItem
+                className="form-item"
+                label={<span className="form-label">真实姓名</span>}
+              >
+                <Select
+                  showSearch
+                  style={{ width: 190 }}
+                  placeholder="请输入真实姓名"
+                  allowClear={true}
+                  value={this.state.userIdAndName}
+                  onSearch={this.handleAccountSelectSearch}
+                  onChange={this.handleAccountSelectChange}
+                  defaultActiveFirstOption={false}
+                  showArrow={false}
+                  filterOption={false}
+                  notFoundContent={'根据此关键字，无法搜索'}
+                >
+                  {
+                    this.state.userSelectData.map(item => (
+                      <Option key={`${item.value}~~~~++++${item.text}`}>{item.text}</Option>
+                    ))
+                  }
+                </Select>
+              </FormItem>
+            </Col>
+            <Col span={6} className="search-btn">
+              <Button className="searchBtn" type="primary" htmlType="submit">查询</Button>
+            </Col>
           </Form>
         </List>
         {/* 表头功能按钮 */}
-        <List style={{ marginBottom: 30 }}>
+        <List className="handle-buttons">
           <Row>
-            <Col span={8} style={{ textAlign: 'left' }}>
-              <Button type="primary" onClick={() => this.addAccount()}>新增用户</Button>
+            <Col span={24} className="line">
+              <div className="sort-box">
+                <span className="sort-title">排序方式：</span>
+                <SortList clickSort={this.clickSort} />
+              </div>
             </Col>
           </Row>
         </List>
         <AuthAccountListTable {...tableOptions} />
-        <AddOrEditAccount {...modalOptions} />
+        {
+          this.state.addOrEditVisible
+            ?
+            <WrapperAuthAccountAddOrEdit {...addOrEditOptions} />
+            : null
+        }
         <MaskLoading ref="mask" />
-      </div>
+      </div >
 
     )
   }

@@ -1,0 +1,25 @@
+.auth-role {
+  .handle-buttons {
+    margin-bottom: 30px;
+    .line {
+      text-align: left;
+      .btn {
+        margin-left: 10px;
+        &:first-child {
+          margin-left: 0;
+        }
+      }
+      .sort-box {
+        float: right;
+        .sort-title {
+          position: relative;
+          top: -10px;
+        }
+      }
+    }
+  }
+}
+
+.ant-message {
+  z-index: 200000 !important;
+}

@@ -1,571 +1,482 @@
 /*
  * @Author: John.Guan 
- * @Date: 2018-08-18 22:25:36 
+ * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-08-24 16:06:51
+ * @Last Modified time: 2018-09-10 16:46:48
  */
 import React, { Component } from 'react'
-import { List, Form, Row, Col, Button, Input, Modal, Select } from 'antd'
-import { connect } from 'react-redux'
-import { getNodeSort } from '@Utils/getNodeSort'
-import AuthMenuListTable from './list-table'
-import AddOrEditMenu from './add-or-edit-menu'
-import TreeModal from './tree-modal'
-import MaskLoading from '@Components/mask-loading'
-import TopTip from '@Components/top-tip'
+import { List, Form, Row, Col, Button, Input, message, Select, Modal } from 'antd'
+
 import { myTrim } from '@Utils/myTrim'
-import { getNavAndAuthData } from '@Redux/navBarAndAuth'
-import { apiGetAuthMenuPageList, authMenuPageListDelete, authMenuPageListAddorEdit } from '@Api'
+import { ERR_OK } from '@Constants'
+
+import MaskLoading from '@Components/mask-loading'
+import SortList from '@Components/sort-list'
+
+import { apiAuthMenuList, apiAuthMenuDeleteMenu, apiAuthMenuUpdateMenu, apiAuthMenuAddMenu, apiAuthMenuChild } from '@Api/auth-menu'
+
+import { connect } from 'react-redux'
+import { getNavBarData } from '@Redux/navBar'
+
+import AuthAccountListTable from './list-table'
+import WrapperAuthAccountAddOrEdit from './add-or-edit'
+import './style.scss'
 
 const FormItem = Form.Item
-const confirm = Modal.confirm
 const Option = Select.Option
+const confirm = Modal.confirm
 
 @connect(
-  state => state.navBarAndAuthReducer,
-  { getNavAndAuthData }
+  state => state.navBarReducer,
+  { getNavBarData }
 )
 class AuthMenu extends Component {
   constructor() {
     super()
     this.state = {
-      searchname: '',
-      searchtype: '',
-      searchlevel: '',
+      sortIndex: 1,
+      sortDirection: 'down',
       tableTotal: 0,
       tableData: [],
-      page: 1,
+      pageNo: 1,
       pageSize: 10,
-      modalTitle: '',
-      modalVisible: false,
-      modalRoleName: '',
-      modalRoleDesc: '',
-      modalConfirmLoading: false,
-      treeModalVisible: false,
-      topTipOptions: {
-        show: false,
-        msg: '',
-        type: 'success'
-      }
+      addOrEditVisible: false,
+      addOrEditInitValues: {},
     }
-    this.onTableShowSizeChange = this.onTableShowSizeChange.bind(this)
-    this.onTablePageChange = this.onTablePageChange.bind(this)
+    this.pageOrPageSizeChange = this.pageOrPageSizeChange.bind(this)
+    this.tableLineAddOrEdit = this.tableLineAddOrEdit.bind(this)
     this.tableLineDelete = this.tableLineDelete.bind(this)
-    this.tableLineEdit = this.tableLineEdit.bind(this)
-    this.tableLineAdd = this.tableLineAdd.bind(this)
-    this.modalOk = this.modalOk.bind(this)
-    this.modalCancel = this.modalCancel.bind(this)
-    // this.modalOnCheck = this.modalOnCheck.bind(this)
-    this.urlChange = this.urlChange.bind(this)
-    this.codeChange = this.codeChange.bind(this)
-    this.iconChange = this.iconChange.bind(this)
-    this.newnameChange = this.newnameChange.bind(this)
+    this.clickSort = this.clickSort.bind(this)
+    this.addOrEditOk = this.addOrEditOk.bind(this)
+    this.addOrEditCancel = this.addOrEditCancel.bind(this)
   }
 
   componentDidMount() {
-    // 获取表格数据
+    // 初始化查询列表数据
     this.getListData({
-      page: 1,
+      pageNo: 1,
       pageSize: 10,
-      searchname: '',
-      searchtype: '',
-      searchlevel: ''
+      sortIndex: 1,
+      sortDirection: 'down',
     })
   }
 
+  // 点击排序
+  clickSort(sortIndex, sortDirection) {
+    this.setState({
+      sortIndex,
+      sortDirection
+    })
+    this.searchList()
+  }
+
+  // 点击查询
   handleSearch = (e) => {
     e.preventDefault()
     this.setState({
+      pageNo: 1
     }, () => {
-      const searchname = myTrim(this.state.searchname)
-      const { searchtype, searchlevel } = this.state
+      this.searchList()
+    })
+  }
+
+  // 翻页或者每页尺寸改变
+  pageOrPageSizeChange(current, pageSize) {
+    this.setState({
+      pageNo: current,
+      pageSize
+    }, () => {
+      this.searchList()
+    })
+  }
+
+  // 展示total
+  showTableTotal(total) {
+    return `共 ${total} 条`
+  }
+
+
+  // 查询列表的配套函数
+  searchList(tip, callBack) {
+    this.setState({
+    }, () => {
+      const state = this.state
+      const {
+        pageSize,
+        pageNo,
+        searchName,
+        searchPName,
+        searchType,
+        searchLevel,
+        sortIndex,
+        sortDirection,
+      } = state
+
       this.getListData({
-        page: this.state.page,
-        pageSize: this.state.pageSize,
-        searchname,
-        searchtype,
-        searchlevel
+        pageSize,
+        pageNo,
+        searchPName,
+        searchName,
+        searchType,
+        searchLevel,
+        sortIndex,
+        sortDirection,
+        tip
       })
     })
   }
 
+  // 处理导出options或者搜索options的配套函数
+  handleSearchOrExportOptions(options) {
+    // 去掉空格
+    options.searchPName = !options.searchPName ? undefined : myTrim(options.searchPName)
+
+    options.parentName = options.searchPName
+    delete options.searchPName
+
+    // 去掉空格
+    options.searchName = !options.searchName ? undefined : myTrim(options.searchName)
+
+    options.resourceName = options.searchName
+    delete options.searchName
+
+    // 处理level 与type的
+
+    options.level = options.searchLevel
+    delete options.searchLevel
+
+    options.type = options.searchType
+    delete options.searchType
+
+    // 处理排序的
+    options.orderBy = options.sortIndex === 0 ? 'created_at' : 'updated_at'
+    delete options.sortIndex
+    options.desc = options.sortDirection === 'up' ? true : false
+    delete options.sortDirection
+
+    return options
+  }
+
+  // 获取列表页面的数据
+  getListData(options) {
+    this.refs.mask.show()
+    options = this.handleSearchOrExportOptions(options)
+    apiAuthMenuList(options)
+      .then(res => {
+        this.refs.mask.hide()
+        if (res.code !== ERR_OK) {
+          message.error(res.message)
+          return
+        }
+        const data = JSON.parse(res.data)
+        console.log(data)
+        let tableData
+        if (data.total === 0) {
+          tableData = []
+        } else {
+          tableData = data.data.map(item => {
+            item.key = item.resourceId
+            return item
+          })
+        }
+        this.setState({
+          tableData,
+          tableTotal: data.total
+        })
+        // 针对删除，编辑，新增之后，重新刷新页面的提示
+        if (options.tip) {
+          message.success(`${options.tip}成功`)
+        }
+      })
+  }
+
+
+
+  // 删除的逻辑
   tableLineDelete(line) {
+    console.log(line)
     const that = this
     confirm({
       title: '确定要删除吗？',
       content: '',
       onOk() {
         that.refs.mask.show()
-        authMenuPageListDelete({ id: line.id })
+        apiAuthMenuDeleteMenu(line.resourceId)
           .then(res => {
-            // 将列表页面重新刷新
-            that.setState({
-            }, () => {
-              // 更新导航的redux数据
-              that.props.getNavAndAuthData()
-              const searchname = myTrim(that.state.searchname)
-              const { searchtype, searchlevel } = that.state
-              that.getListData({
-                page: 1,
-                pageSize: that.state.pageSize,
-                searchname,
-                searchtype,
-                searchlevel,
-                tag: '删除'
-              })
-            })
+            that.refs.mask.hide()
+            if (res.code !== ERR_OK) {
+              message.error(res.message)
+              return
+            }
+            that.searchList('删除节点')
+            that.props.getNavBarData()
           })
       },
       onCancel() { },
     })
   }
 
+  // 列表页面的编辑
+  tableLineAddOrEdit(line, type) {
+    console.log(type, line)
+    const addOrEditVisible = true
+    this.parentId = line.parentId
+    this.sort = line.sort
+    this.resourceId = line.resourceId
 
-  onTableShowSizeChange(current, pageSize) {
-    console.log(current, pageSize)
-    this.setState({
-      page: current,
-      pageSize
-    }, () => {
-      const searchname = myTrim(this.state.searchname)
-      const { searchtype, searchlevel } = this.state
-      this.getListData({
-        page: this.state.page,
-        pageSize: this.state.pageSize,
-        searchname,
-        searchtype,
-        searchlevel
-      })
-    })
-  }
+    let addOrEditTitle
+    if (line.level === 1 && line.type === 3 && type === '编辑') {
+      addOrEditTitle = '编辑一级菜单'
 
-  onTablePageChange(current, pageSize) {
-    console.log(current, pageSize)
-    this.setState({
-      page: current,
-      pageSize
-    }, () => {
-      const searchname = myTrim(this.state.searchname)
-      const { searchtype, searchlevel } = this.state
-      this.getListData({
-        page: this.state.page,
-        pageSize: this.state.pageSize,
-        searchname,
-        searchtype,
-        searchlevel
-      })
-    })
-  }
-
-  showTableTotal(total) {
-    return `共 ${total} 条`
-  }
-
-  // 获取列表页面的数据
-  getListData({ page, pageSize, searchname, searchtype, searchlevel, tag }) {
-    this.refs.mask.show()
-    apiGetAuthMenuPageList({ page, pageSize, searchname, searchtype, searchlevel })
-      .then(res => {
-        this.refs.mask.hide()
-        const tableData = res.map(item => {
-          item.key = item.id
-          return item
-        })
-        this.setState({
-          tableData: tableData,
-          tableTotal: tableData.length,
-        })
-        if (tag === '新增') {
-          this.showTopTip('success', '新增节点成功')
-        } else if (tag === '编辑') {
-          this.showTopTip('success', '编辑节点成功')
-        } else if (tag === '删除') {
-          this.showTopTip('success', '删除节点成功')
-        }
-
-      })
-  }
-
-  showTopTip(type, msg) {
-    this.setState({
-      topTipOptions: {
-        show: true,
-        msg,
-        type
-      }
-    })
-    if (this.timer) {
-      clearTimeout(this.timer)
-      this.timer = null
     }
-    setTimeout(() => {
-      this.setState({
-        topTipOptions: {
-          show: false,
-          msg,
-          type
-        }
-      })
-    }, 1500)
 
+    if (line.level === 1 && line.type === 3 && type === '新增') {
+      addOrEditTitle = '二级菜单'
+    }
+
+    if (line.level === 2 && line.type === 3 && type === '编辑') {
+      addOrEditTitle = '二级菜单'
+    }
+
+    if (line.level === 2 && line.type === 3 && type === '新增') {
+      addOrEditTitle = '三级菜单'
+    }
+
+    if (line.level === 3 && line.type === 3 && type === '编辑') {
+      addOrEditTitle = '三级菜单'
+    }
+
+    if (line.level === 3 && line.type === 3 && type === '新增') {
+      addOrEditTitle = '按钮'
+    }
+
+    if (line.type === 4 && type === '编辑') {
+      addOrEditTitle = '按钮'
+    }
+
+    this.setState({
+      addOrEditTitle,
+      addOrEditInitValues: line,
+      addOrEditVisible,
+      handleType: type
+    })
+
+  }
+
+  // 新增或者编辑自运营专辑，添加标签，点击弹框的确定
+  addOrEditOk(values, type) {
+    this.handleSelfTagAddOrEdit(values, type, () => {
+      this.setState({
+        addOrEditVisible: false
+      })
+      // 刷新维度列表页面
+      this.searchList(type)
+      this.props.getNavBarData()
+    })
+  }
+
+  handleSelfTagAddOrEdit(values, type, callback) {
+    if (values.type === '菜单') {
+      values.type = 3
+    } else {
+      values.type = 4
+      if (!values.level) {
+        values.level = 1
+      }
+    }
+    values.level = values.level - 0
+    values.routePath = values.path
+    delete values.path
+    values.descInfo = ''
+    if (!values.code) {
+      values.code = ''
+    }
+    if (!values.icon) {
+      values.icon = ''
+    }
+    if (!values.routePath) {
+      values.routePath = ''
+    }
+    delete values.ajaxType
+
+    // 编辑的api
+    if (type === '编辑') {
+      values.sort = this.sort
+      values.resourceId = this.resourceId
+      this.refs.mask.show()
+      apiAuthMenuUpdateMenu(values)
+        .then(res => {
+          this.refs.mask.hide()
+          if (res.code !== ERR_OK) {
+            message.error(res.message)
+            return
+          }
+          callback && callback()
+        })
+    } else {
+      // 根据parentId获取sort
+      if (values.level === 1) {
+        values.parentId = this.parentId
+      } else {
+        values.parentId = this.resourceId
+      }
+
+      this.refs.mask.show()
+      apiAuthMenuChild(values.parentId)
+        .then(res => {
+          this.refs.mask.hide()
+          if (res.code !== ERR_OK) {
+            message.error(res.message)
+            return
+          }
+          let data = JSON.parse(res.data)
+          let maxSort
+          if (!data) {
+            data = []
+            maxSort = 0
+          } else {
+            let sortArr = []
+            data.forEach(element => {
+              sortArr.push(element.sort)
+            })
+            maxSort = Math.max.apply(null, sortArr)
+          }
+          values.sort = maxSort + 1
+
+          // 新增的api
+          apiAuthMenuAddMenu(values)
+            .then(res => {
+              if (res.code !== ERR_OK) {
+                message.error(res.message)
+                return
+              }
+              callback && callback()
+            })
+        })
+    }
+  }
+
+  // 新增或者编辑自运营专辑，关闭弹框
+  addOrEditCancel() {
+    this.setState({
+      addOrEditVisible: false
+    })
+    this.parentId = null
+    this.sort = null
+    this.resourceId = null
   }
 
   addLevel1Menu() {
     this.setState({
-      newname: '',
-      name: '',
-      url: '',
-      icon: '',
-      code: '',
-      pid: '0',
-      modalTitle: '一级菜单',
-      modalVisible: true,
-      modalConfirmLoading: false,
-      handleType: '新增'
+      addOrEditTitle: '新增一级菜单',
+      addOrEditVisible: true,
+      handleType: '新增',
+      addOrEditInitValues: {}
     })
-  }
-
-  // 编辑
-  tableLineEdit(line) {
-    let modalTitle
-    switch (line.level) {
-      case '1':
-        modalTitle = '一级菜单'
-        break
-      case '2':
-        modalTitle = '二级菜单'
-        break
-      case '3':
-        modalTitle = '三级菜单'
-        break
-      case null:
-        modalTitle = '功能'
-        break
-      default:
-        break
-    }
-    const { id, pid, code, icon } = line
-    console.log(line)
-    const newname = line.name
-    const url = line.path
-    const name = line.pname
-    this.setState({
-      id,
-      newname,
-      name,
-      url,
-      icon,
-      code,
-      pid,
-      modalTitle,
-      modalVisible: true,
-      modalConfirmLoading: false,
-      handleType: '编辑'
-    })
-
-  }
-
-  tableLineAdd(line) {
-    let modalTitle
-    switch (line.level) {
-      case '1':
-        modalTitle = '二级菜单'
-        break
-      case '2':
-        modalTitle = '三级菜单'
-        break
-      case '3':
-        modalTitle = '功能'
-        break
-      default:
-        break
-    }
-    const { id } = line
-    // const newname = line.name
-    const name = line.name
-    this.setState({
-      id: null,
-      newname: '',
-      name,
-      url: '',
-      icon: '',
-      code: '',
-      pid: id,
-      modalTitle,
-      modalVisible: true,
-      modalConfirmLoading: false,
-      handleType: '新增'
-    })
-  }
-
-  modalOk(title) {
-    this.setState({
-    }, () => {
-      if (!this.state.newname) {
-        this.showModalTip(`请输入${title}名称`)
-        return
-      }
-      if (!this.state.icon && title === '一级菜单') {
-        this.showModalTip('请输入一级菜单图标')
-        return
-      }
-      if (!this.state.url && title !== '功能') {
-        this.showModalTip('请输入url路径')
-        return
-      }
-
-      if (!this.state.code && title === '功能') {
-        this.showModalTip('请输入权限字符串')
-        return
-      }
-
-      const { newname, icon, url, code, pid } = this.state
-
-      let id
-      let sort
-      if (this.state.handleType === '编辑') {
-        id = this.state.id
-        // 写一个函数根据pid来获取sort
-        sort = getNodeSort(pid, this.props.appNavAndAuthPlain, '编辑')
-        // debugger
-        console.log(id)
-      }
-      else {
-        id = null
-        // 写一个函数根据pid来获取sort
-        sort = getNodeSort(pid, this.props.appNavAndAuthPlain, '新增')
-      }
-
-      let type
-      let level
-      if (title === '一级菜单') {
-        type = '菜单'
-        level = '1'
-      } else if (title === '二级菜单') {
-        type = '菜单'
-        level = '2'
-      } else if (title === '三级菜单') {
-        type = '菜单'
-        level = '3'
-      } else if (title === '功能') {
-        type = '功能'
-        level = ''
-      }
-
-      console.log({ newname, icon, url, code, type, level, sort })
-      this.setState({
-        modalConfirmLoading: true
-      })
-      authMenuPageListAddorEdit(
-        {
-          id,
-          pid,
-          newname: myTrim(newname),
-          icon: myTrim(icon),
-          url: myTrim(url),
-          code: myTrim(code),
-          type,
-          level,
-          sort
-        }
-      )
-        .then(res => {
-          this.setState({
-            modalVisible: false,
-          }, () => {
-            // 更新导航的redux数据
-            this.props.getNavAndAuthData()
-            const searchname = myTrim(this.state.searchname)
-            const { searchtype, searchlevel } = this.state
-            this.getListData({
-              page: this.state.page,
-              pageSize: this.state.pageSize,
-              searchname,
-              searchtype,
-              searchlevel,
-              tag: this.state.handleType
-            })
-          })
-
-        })
-    })
-  }
-
-  showModalTip(tip) {
-    this.setState({
-      modalAlertVisible: true,
-      modalAlertMessage: tip
-    })
-    if (this.timer) {
-      clearTimeout(this.timer)
-      this.timer = null
-    }
-    this.timer = setTimeout(() => {
-      this.setState({
-        modalAlertVisible: false,
-        modalAlertMessage: ''
-      })
-    }, 2000)
-  }
-
-  modalCancel() {
-    this.setState({
-      modalVisible: false
-    })
-  }
-
-  newnameChange(e) {
-    this.setState({
-      newname: e.target.value
-    })
-  }
-  codeChange(e) {
-    this.setState({
-      code: e.target.value
-    })
-  }
-
-  iconChange(e) {
-    this.setState({
-      icon: e.target.value
-    })
-  }
-
-  urlChange(e) {
-    this.setState({
-      url: e.target.value
-    })
-  }
-
-  showTree() {
-    this.setState({
-      treeModalVisible: true
-    })
-  }
-
-
-  treeModalOk = () => {
-    this.setState({
-      treeModalVisible: false
-    })
-  }
-
-  treeModalCancel = () => {
-    this.setState({
-      treeModalVisible: false
-    })
+    this.parentId = 0
   }
 
   render() {
     const tableOptions = {
-      tableLineEdit: this.tableLineEdit,
-      tableLineDelete: this.tableLineDelete,
-      tableLineAdd: this.tableLineAdd,
-      onShowSizeChange: this.onTableShowSizeChange,
-      onChange: this.onTablePageChange,
-      total: this.state.tableTotal,
       showTotal: this.showTableTotal,
-      tableData: this.state.tableData
+      tableData: this.state.tableData,
+      total: this.state.tableTotal,
+      tableLineAddOrEdit: this.tableLineAddOrEdit,
+      tableLineDelete: this.tableLineDelete,
+      pageOrPageSizeChange: this.pageOrPageSizeChange,
+      pageNo: this.state.pageNo
     }
 
-    const modalOptions = {
-      modalTitle: this.state.modalTitle,
-      modalVisible: this.state.modalVisible,
-      modalOk: this.modalOk,
-      modalConfirmLoading: this.state.modalConfirmLoading,
-      modalCancel: this.modalCancel,
-      name: this.state.name,
-      newname: this.state.newname,
-      newnameChange: this.newnameChange,
-      url: this.state.url,
-      urlChange: this.urlChange,
-      icon: this.state.icon,
-      iconChange: this.iconChange,
-      code: this.state.code,
-      codeChange: this.codeChange,
-      handleType: this.state.handleType,
-      modalAlertVisible: this.state.modalAlertVisible,
-      modalAlertMessage: this.state.modalAlertMessage
-    }
-
-    const treeModalOptions = {
-      treeModalVisible: this.state.treeModalVisible,
-      treeModalOk: this.treeModalOk,
-      treeModalCancel: this.treeModalCancel,
+    const addOrEditOptions = {
+      addOrEditTitle: this.state.addOrEditTitle,
+      addOrEditVisible: this.state.addOrEditVisible,
+      addOrEditInitValues: this.state.addOrEditInitValues,
+      addOrEditOk: this.addOrEditOk,
+      addOrEditCancel: this.addOrEditCancel,
+      handleType: this.state.handleType
     }
 
     return (
-      <div className="auth-role">
-        <TopTip item={this.state.topTipOptions} />
+      <div className="auth-menu">
         {/* 搜索 */}
-        <List bordered style={{ paddingLeft: 10, marginBottom: 30 }}>
+        <List className="search-list" bordered>
           <Form
             className="ant-advanced-search-form"
             onSubmit={this.handleSearch}
             layout="inline"
           >
-            <Row>
-              <Col span={8}>
-                <FormItem label="权限名称" style={{ marginBottom: 10, marginTop: 10 }}>
-                  <Input placeholder="请输入权限名称" onChange={e => this.setState({ searchname: e.target.value })} />
-                </FormItem>
-              </Col>
-              <Col span={8}>
-                <FormItem label="权限类型" style={{ marginBottom: 10, marginTop: 10 }}>
-                  <Select
-                    placeholder="请选择权限类型"
-                    style={{ width: 200 }}
-                    allowClear
-                    onChange={value => {
-                      let searchtype
-                      let searchlevel
-                      if (!value) {
-                        searchtype = ''
-                        searchlevel = ''
-                      } else if (value === '1级菜单') {
-                        searchtype = '菜单'
-                        searchlevel = '1'
-                      } else if (value === '2级菜单') {
-                        searchtype = '菜单'
-                        searchlevel = '2'
-                      } else if (value === '3级菜单') {
-                        searchtype = '菜单'
-                        searchlevel = '3'
-                      } else if (value === '功能') {
-                        searchtype = '功能'
-                        searchlevel = ''
-                      }
-                      this.setState({
-                        searchtype,
-                        searchlevel
-                      })
-                    }}
-                  >
-                    <Option value="1级菜单">1级菜单</Option>
-                    <Option value="2级菜单">2级菜单</Option>
-                    <Option value="3级菜单">3级菜单</Option>
-                    <Option value="功能">功能</Option>
-                  </Select>
-                </FormItem>
-              </Col>
-              <Col span={8} style={{ textAlign: 'left' }}>
-                <Button style={{ marginTop: 14 }} type="primary" htmlType="submit">查询</Button>
-              </Col>
-            </Row>
+            <Col span={8}>
+              <FormItem label="父节点名称" style={{ marginBottom: 10, marginTop: 10 }}>
+                <Input placeholder="请输入父节点名称" onChange={e => this.setState({ searchPName: e.target.value })} />
+              </FormItem>
+            </Col>
+            <Col span={8}>
+              <FormItem label="节点名称" style={{ marginBottom: 10, marginTop: 10 }}>
+                <Input placeholder="请输入节点名称" onChange={e => this.setState({ searchName: e.target.value })} />
+              </FormItem>
+            </Col>
+            <Col span={8}>
+              <FormItem label="节点类型" style={{ marginBottom: 10, marginTop: 10 }}>
+                <Select
+                  placeholder="请选择节点类型"
+                  style={{ width: 200 }}
+                  allowClear
+                  onChange={value => {
+                    let searchType
+                    let searchLevel
+                    if (!value) {
+                      searchType = undefined
+                      searchLevel = undefined
+                    } else if (value === '1级菜单') {
+                      searchType = 3
+                      searchLevel = 1
+                    } else if (value === '2级菜单') {
+                      searchType = 3
+                      searchLevel = 2
+                    } else if (value === '3级菜单') {
+                      searchType = 3
+                      searchLevel = 2
+                    } else if (value === '按钮') {
+                      searchType = 4
+                      searchLevel = 1
+                    }
+                    this.setState({
+                      searchType,
+                      searchLevel
+                    })
+                  }}
+                >
+                  <Option value="1级菜单">1级菜单</Option>
+                  <Option value="2级菜单">2级菜单</Option>
+                  <Option value="3级菜单">3级菜单</Option>
+                  <Option value="按钮">按钮</Option>
+                </Select>
+              </FormItem>
+            </Col>
+            <Col span={8} className="search-btn">
+              <Button className="searchBtn" type="primary" htmlType="submit">查询</Button>
+            </Col>
           </Form>
         </List>
         {/* 表头功能按钮 */}
-        <List style={{ marginBottom: 30 }}>
+        <List className="handle-buttons">
           <Row>
-            <Col span={24} style={{ textAlign: 'left' }}>
-              <Button type="primary" onClick={() => this.addLevel1Menu()}>新增一级菜单</Button>
-              <Button style={{ marginLeft: 20 }} type="primary" onClick={() => this.showTree()}>树状权限预览</Button>
+            <Col span={24} className="line">
+              <Button type="primary" onClick={() => this.addLevel1Menu()}>新增一级菜单节点</Button>
+              <div className="sort-box">
+                <span className="sort-title">排序方式：</span>
+                <SortList clickSort={this.clickSort} />
+              </div>
             </Col>
           </Row>
         </List>
-        <AuthMenuListTable {...tableOptions} />
-        <TreeModal {...treeModalOptions} />
-        <AddOrEditMenu {...modalOptions} />
+        <AuthAccountListTable {...tableOptions} />
+        {
+          this.state.addOrEditVisible
+            ?
+            <WrapperAuthAccountAddOrEdit {...addOrEditOptions} />
+            : null
+        }
         <MaskLoading ref="mask" />
       </div >
 
