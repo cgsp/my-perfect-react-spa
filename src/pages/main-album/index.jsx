@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-06 11:07:17
+ * @Last Modified time: 2018-09-10 10:28:04
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -763,7 +763,7 @@ class MainAlbum extends Component {
                   getPopupContainer={trigger => trigger.parentNode}
                 >
                   <Option value={1}>已上架</Option>
-                  <Option value={0}>已下架</Option>
+                  <Option value={2}>已下架</Option>
                 </Select>
               </FormItem>
             </Col>
