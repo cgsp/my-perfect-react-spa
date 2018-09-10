@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-09 16:30:44
+ * @Last Modified time: 2018-09-10 17:29:20
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, message, Select, Modal } from 'antd'
@@ -409,7 +409,7 @@ class AuthAccount extends Component {
             onSubmit={this.handleSearch}
             layout="inline"
           >
-            <Col span={6}>
+            <Col span={8}>
               <FormItem
                 className="form-item"
                 label={<span className="form-label">角色姓名</span>}
@@ -435,7 +435,7 @@ class AuthAccount extends Component {
                 </Select>
               </FormItem>
             </Col>
-            <Col span={6}>
+            <Col span={8}>
               <FormItem
                 className="form-item"
                 label={<span className="form-label">用户名</span>}
@@ -443,7 +443,7 @@ class AuthAccount extends Component {
                 <Input style={{ width: 190 }} placeholder="请输入用户名" onChange={e => this.setState({ userName: e.target.value })} />
               </FormItem>
             </Col>
-            <Col span={6}>
+            <Col span={8}>
               <FormItem
                 className="form-item"
                 label={<span className="form-label">真实姓名</span>}
@@ -469,7 +469,7 @@ class AuthAccount extends Component {
                 </Select>
               </FormItem>
             </Col>
-            <Col span={6} className="search-btn">
+            <Col span={8} className="search-btn">
               <Button className="searchBtn" type="primary" htmlType="submit">查询</Button>
             </Col>
           </Form>
