@@ -175,7 +175,7 @@ class MainClassfiyAddOrEdit extends Component {
           >
             <FormItem
               {...formItemLayout}
-              label="听单名称"
+              label="分类名称"
             >
               {getFieldDecorator('name', {
                 initialValue: this.props.addOrEditInitValues.name,
