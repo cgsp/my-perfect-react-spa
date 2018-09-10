@@ -38,7 +38,7 @@ export default class HeadNav extends Component {
                             <ul className="nav-right-menu">
                                 <a>
                                     <li className="login" onClick={this.login} style={{color: '#fff'}}>
-                                        登录
+                                      退出
                                     </li>
                                 </a>
                             </ul>
