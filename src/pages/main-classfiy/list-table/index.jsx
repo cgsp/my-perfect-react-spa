@@ -53,8 +53,8 @@ export default class MainClassfiyListTable extends Component {
       },
       {
         title: '内容类型',
-        dataIndex: 'categoryType',
-        key: 'categoryType',
+        dataIndex: 'contentType',
+        key: 'contentType',
         render: (text, record) => {
           if (text === 1) {
             text = '专辑'
