@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import { Menu, Icon } from 'antd'
 import { withRouter } from 'react-router-dom'
 
-
 const { SubMenu } = Menu
 
 @withRouter
@@ -23,14 +22,12 @@ export default class NavList extends Component {
   constructor() {
     super()
     this.state = {
-      theme: 'dark',
-      currentKey: ''
+      currentKey: 'index'
     }
     this.handleClick = this.handleClick.bind(this)
   }
 
   handleClick = (e) => {
-    // console.log('click ', e)
     this.setState({
       currentKey: e.key
     })
@@ -39,50 +36,58 @@ export default class NavList extends Component {
   render() {
     const currentPath = this.props.location.pathname ? this.props.location.pathname.substr(1) : ''
 
-    const defaultNav1 = this.props.appRoutesList.length ? this.props.appRoutesList[0] : ''
-
-    const nav1 = currentPath ? currentPath.split('-')[0] : defaultNav1
+    const nav1 = currentPath ? currentPath.split('-')[0] : 'index'
 
     return (
-
       <Menu
         className="app-sibe-bar"
-        theme={this.state.theme}
+        theme="dark"
         onClick={this.handleClick}
         style={{ width: 256 }}
+        selectedKeys={[
+          currentPath ? currentPath : this.state.currentKey
+        ]}
         defaultOpenKeys={[nav1]}
-        selectedKeys={[this.state.currentKey || currentPath]}
         mode="inline"
       >
-
         {
-          this.props.navListData.map(item => (
-            <SubMenu key={item.path} title={<span><Icon type={item.icon} /><span>{item.name}</span></span>}>
-              {
-                item.children.map(secondItem => (
-                  secondItem.children.length ? (
-                    <SubMenu key={secondItem.path} title={secondItem.name}>
-                      {
-                        secondItem.children.map(thirdItem => (
-                          <Menu.Item key={thirdItem.path}>
-                            <Link to={thirdItem.path}>{thirdItem.name}</Link>
-                          </Menu.Item>
-                        ))
-                      }
-                    </SubMenu>
-                  ) :
-                    <Menu.Item key={secondItem.path}>
-                      <Link to={secondItem.path}>{secondItem.name}</Link>
-                    </Menu.Item>
-                ))
-              }
-
-            </SubMenu>
-          ))
+          this.props.navListData.map(item => {
+            if (!item.childResources) {
+              return (
+                <Menu.Item key={item.routePath}>
+                  <Link to={item.routePath}>
+                    <Icon type={item.icon} />
+                    {item.name}
+                  </Link>
+                </Menu.Item>
+              )
+            }
+            return (
+              <SubMenu key={item.routePath} title={<span><Icon type={item.icon} /><span>{item.name}</span></span>}>
+                {
+                  item.childResources && item.childResources.map(secondItem => {
+                    return (
+                      secondItem.childResources && secondItem.childResources.length ? (
+                        <SubMenu key={secondItem.routePath} title={secondItem.name}>
+                          {
+                            secondItem.childResources.map(thirdItem => (
+                              <Menu.Item key={thirdItem.routePath}>
+                                <Link to={thirdItem.routePath}>{thirdItem.name}</Link>
+                              </Menu.Item>
+                            ))
+                          }
+                        </SubMenu>
+                      ) :
+                        <Menu.Item key={secondItem.routePath}>
+                          <Link to={secondItem.routePath}>{secondItem.name}</Link>
+                        </Menu.Item>
+                    )
+                  })
+                }
+              </SubMenu>)
+          })
         }
-
       </Menu>
-
     )
   }
 }

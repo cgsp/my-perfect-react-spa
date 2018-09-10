@@ -1,5 +1,7 @@
 import { apiGetNavList } from '@Api'
+import { ERR_OK } from '@Constants'
 import { mySessionStorageGet, mySessionStorageSet } from '@Utils/myStorages'
+import { message } from 'antd'
 
 const NAV_BAR_SUCCESS = 'NAV_BAR_SUCCESS'
 const initState = {
@@ -25,16 +27,18 @@ function getSuccess(data) {
 function screenRoutesList(arr) {
   let routesList = []
   arr.forEach(item => {
-    if (item.children.length) {
-      item.children.forEach(secondItem => {
-        if (!secondItem.children.length) {
-          routesList.push(secondItem.path)
-        } else {
-          secondItem.children.forEach(thirdItem => {
-            routesList.push(thirdItem.path)
+    if (item.childResources && item.childResources.length) {
+      item.childResources.forEach(secondItem => {
+        if (secondItem.childResources && secondItem.childResources.length) {
+          secondItem.childResources.forEach(thirdItem => {
+            routesList.push(thirdItem.routePath)
           })
+        } else {
+          routesList.push(secondItem.routePath)
         }
       })
+    } else {
+      routesList.push(item.routePath)
     }
   })
   return routesList
@@ -45,9 +49,22 @@ export function getNavBarData() {
     // 发送请求
     apiGetNavList()
       .then((res) => {
-        dispatch(getSuccess(res))
-        mySessionStorageSet('app-nav-list', res)
-        mySessionStorageSet('app-route-list', screenRoutesList(res))
+        if (res.code !== ERR_OK) {
+          message.error(res.message)
+          return
+        }
+        let menuTree = [{
+          name: '首页',
+          routePath: 'index',
+          icon: 'laptop'
+        }]
+        const resNav = JSON.parse(JSON.parse(res.data).menuTree).childResources
+        console.log(JSON.parse(res.data))
+        menuTree = menuTree.concat(resNav || [])
+        // console.log(menuTree)
+        dispatch(getSuccess(menuTree))
+        mySessionStorageSet('app-nav-list', menuTree)
+        mySessionStorageSet('app-route-list', screenRoutesList(menuTree))
       })
   }
 }
