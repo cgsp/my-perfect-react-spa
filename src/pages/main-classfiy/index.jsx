@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-10 12:48:11
+ * @Last Modified time: 2018-09-10 14:11:41
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber, Modal } from 'antd'
@@ -293,9 +293,16 @@ class MainAlbum extends Component {
   tableLineShowDetails(line, type) {
     console.log('查看详情', line)
     this.detailId = line.id
+    let detailTitle
+    if (line.contentType === 1) {
+      detailTitle = '专辑列表'
+    } else {
+      detailTitle = '声音列表'
+    }
     this.setState({
       detailPageNo: 1,
       detailPageSize: 10,
+      detailTitle
     })
     this.getDetailData({
       pageNo: 1,
@@ -365,6 +372,7 @@ class MainAlbum extends Component {
     }
 
     const detailTableOptions = {
+      detailTitle: this.state.detailTitle,
       detailVisible: this.state.detailVisible,
       detailPageNo: this.state.detailPageNo,
       detailTotal: this.state.detailTotal,
