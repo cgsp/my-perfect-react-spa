@@ -56,7 +56,7 @@ export default class SelfAlbumListTable extends Component {
         dataIndex: 'isPaid',
         key: 'isPaid',
         render: (text, record) => {
-          return <span>{text === 1 ? '付费' : '收费'}</span>
+          return <span>{text === 1 ? '付费' : '免费'}</span>
         },
         width: 60
       },
@@ -65,7 +65,15 @@ export default class SelfAlbumListTable extends Component {
         dataIndex: 'priceType',
         key: 'priceType',
         render: (text, record) => {
-          return <span>{text === 1 ? '单集购买' : '整张购买'}</span>
+          let str
+          if (text === 1) {
+            str = '单集购买'
+          } else if (text === 2) {
+            str = '整张购买'
+          } else {
+            str = text
+          }
+          return <span>{str}</span>
         },
         width: 60
       },
