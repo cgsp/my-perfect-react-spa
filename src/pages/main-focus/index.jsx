@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-11 19:08:31
+ * @Last Modified time: 2018-09-11 19:24:56
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber, Modal } from 'antd'
@@ -344,7 +344,7 @@ class MainAlbum extends Component {
             <Col span={8}>
               <FormItem
                 className="form-item"
-                label={<span className="form-label">内容类型</span>}
+                label={<span className="form-label">跳转类型</span>}
               >
                 <Select
                   style={{ width: 190 }}
@@ -353,8 +353,17 @@ class MainAlbum extends Component {
                   onChange={value => this.setState({ contentType: value })}
                   getPopupContainer={trigger => trigger.parentNode}
                 >
-                  <Option value={1}>专辑</Option>
-                  <Option value={2}>声音</Option>
+                  <Option value={1}>单个用户</Option>
+                  <Option value={2}>单个专辑</Option>
+                  <Option value={3}>单个声音</Option>
+                  <Option value={4}>链接</Option>
+                  <Option value={5}>多个用户</Option>
+                  <Option value={6}>多个专辑</Option>
+                  <Option value={7}>多个声音</Option>
+                  <Option value={8}>活动</Option>
+                  <Option value={9}>听单</Option>
+                  <Option value={10}>广告</Option>
+                  <Option value={11}>直播</Option>
                 </Select>
               </FormItem>
             </Col>

@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-10 10:28:04
+ * @Last Modified time: 2018-09-11 19:27:01
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -672,7 +672,7 @@ class MainAlbum extends Component {
               >
                 <InputNumber
                   ref="searchIdref"
-                  style={{ width: 190 }} placeholder="请输入主站专辑IDD" onChange={v => this.setState({ searchId: v })}
+                  style={{ width: 190 }} placeholder="请输入主站专辑ID" onChange={v => this.setState({ searchId: v })}
                 />
               </FormItem>
             </Col>
