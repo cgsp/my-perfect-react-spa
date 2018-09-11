@@ -6,7 +6,19 @@ import { defaultHeader } from './config'
 export const apiChildTableList = (options) => {
   return myAxios(
     {
-      url: '/category/pagedCategories',
+      url: '/sites',
+      method: 'get',
+      params: options,
+      data: {},
+      headers: defaultHeader
+    })
+}
+
+// 获取合作方的模糊搜索
+export const apiChildParter = (options) => {
+  return myAxios(
+    {
+      url: '/apps/search',
       method: 'get',
       params: options,
       data: {},

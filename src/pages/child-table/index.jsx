@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-10 18:35:16
+ * @Last Modified time: 2018-09-11 18:17:42
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber, Modal } from 'antd'
@@ -16,7 +16,7 @@ import MaskLoading from '@Components/mask-loading'
 import SortList from '@Components/sort-list'
 import TimeControlHoc from '@Components/time-control-hoc'
 
-import { apiChildTableList, apiChildTableEdit, apiChildTableAdd } from '@Api/child-table'
+import { apiChildTableList, apiChildTableEdit, apiChildTableAdd, apiChildParter } from '@Api/child-table'
 
 import MainClassfiyListTable from './list-table'
 import WrapperMainClassfiyAddOrEdit from './add-or-edit'
@@ -44,6 +44,8 @@ class MainAlbum extends Component {
 
       addOrEditVisible: false,
       addOrEditInitValues: {},
+
+      parterSelectData: []
     }
     this.pageOrPageSizeChange = this.pageOrPageSizeChange.bind(this)
     this.tableLineEdit = this.tableLineEdit.bind(this)
@@ -51,6 +53,12 @@ class MainAlbum extends Component {
     this.clickSort = this.clickSort.bind(this)
     this.addOrEditOk = this.addOrEditOk.bind(this)
     this.addOrEditCancel = this.addOrEditCancel.bind(this)
+
+    // 模糊匹配
+    this.handleParterSelectChange = this.handleParterSelectChange.bind(this)
+    this.handleParterSelectSearch = this.handleParterSelectSearch.bind(this)
+    this.timeout = null
+    this.currentAccount = ''
   }
 
   componentDidMount() {
@@ -109,8 +117,7 @@ class MainAlbum extends Component {
         pageNo,
         searchId,
         searchName,
-        contentType,
-        onlineStatus,
+        appKey,
         sortIndex,
         sortDirection,
         searchCreateTimeBegin,
@@ -123,8 +130,7 @@ class MainAlbum extends Component {
         pageNo,
         searchId,
         searchName,
-        contentType,
-        onlineStatus,
+        appKey,
         sortIndex,
         sortDirection,
         searchCreateTimeBegin,
@@ -142,11 +148,9 @@ class MainAlbum extends Component {
     options.id = options.searchId
     delete options.searchId
 
-    options.source = 2
-
     // 去掉空格
     options.searchName = !options.searchName ? '' : myTrim(options.searchName)
-    options.name = options.searchName
+    options.siteName = options.searchName
     delete options.searchName
 
     // 将时间对象转换为时间戳
@@ -167,7 +171,7 @@ class MainAlbum extends Component {
     delete options.searchUpdateTimeEnd
 
     // 处理排序的
-    options.orderBy = (options.sortIndex === 0 ? 'createdAt' : 'updatedAt')
+    options.orderBy = (options.sortIndex === 0 ? 'created_at' : 'updated_at')
     delete options.sortIndex
     options.desc = options.sortDirection === 'up' ? false : true
     delete options.sortDirection
@@ -340,13 +344,59 @@ class MainAlbum extends Component {
 
   }
 
+  // 合作方的模糊匹配
+  handleParterSelectSearch(value) {
+    // console.log(value)
+    this.getSelectUserList(value, data => this.setState({ parterSelectData: data }))
+  }
 
+  // 合作方的模糊匹配
+  getSelectUserList(value, callback) {
+    if (!value) {
+      return
+    }
+    if (this.timeout) {
+      clearTimeout(this.timeout)
+      this.timeout = null
+    }
+    this.currentAccount = value
 
+    const options = {
+      appName: value
+    }
+    this.timeout = setTimeout(() => {
+      apiChildParter(options)
+        .then(res => {
+          if (this.currentAccount === value) {
+            if (res.code !== ERR_OK) {
+              message.error(res.msg)
+              return
+            }
+            // 只取前面的20条
+            let result = res.data.slice(0, 20)
+            const arr = []
+            result.forEach(item => {
+              arr.push({
+                value: item.appKey,
+                text: item.appName
+              })
+            })
+            console.log(res)
+            callback(arr)
+          }
+        })
+    }, 300)
 
+  }
 
-
-
-
+  // 合作方的模糊匹配
+  handleParterSelectChange(value) {
+    this.setState({
+      appKey: value,
+    }, () => {
+      console.log(this.state.appKey)
+    })
+  }
 
   render() {
     const tableOptions = {
@@ -381,53 +431,45 @@ class MainAlbum extends Component {
             <Col span={8}>
               <FormItem
                 className="form-item"
-                label={<span className="form-label">ID</span>}
+                label={<span className="form-label">子站ID</span>}
               >
                 <InputNumber
                   ref="searchIdref"
-                  style={{ width: 190 }} placeholder="请输入ID" onChange={v => this.setState({ searchId: v })}
+                  style={{ width: 190 }} placeholder="请输入子站ID" onChange={v => this.setState({ searchId: v })}
                 />
               </FormItem>
             </Col>
             <Col span={8}>
               <FormItem
                 className="form-item"
-                label={<span className="form-label">分类名称</span>}
+                label={<span className="form-label">子站名称</span>}
               >
-                <Input style={{ width: 190 }} placeholder="请输入分类名称" onChange={e => this.setState({ searchName: e.target.value })} />
+                <Input style={{ width: 190 }} placeholder="请输入子站名称" onChange={e => this.setState({ searchName: e.target.value })} />
               </FormItem>
             </Col>
             <Col span={8}>
               <FormItem
                 className="form-item"
-                label={<span className="form-label">内容类型</span>}
+                label={<span className="form-label">合作方</span>}
               >
                 <Select
+                  showSearch
                   style={{ width: 190 }}
-                  placeholder="请选择"
-                  allowClear
-                  onChange={value => this.setState({ contentType: value })}
-                  getPopupContainer={trigger => trigger.parentNode}
+                  placeholder="请输入合作方"
+                  allowClear={true}
+                  value={this.state.appKey}
+                  onSearch={this.handleParterSelectSearch}
+                  onChange={this.handleParterSelectChange}
+                  defaultActiveFirstOption={false}
+                  showArrow={false}
+                  filterOption={false}
+                  notFoundContent={'根据此关键字，无法搜索'}
                 >
-                  <Option value={1}>专辑</Option>
-                  <Option value={2}>声音</Option>
-                </Select>
-              </FormItem>
-            </Col>
-            <Col span={8}>
-              <FormItem
-                className="form-item"
-                label={<span className="form-label">状态</span>}
-              >
-                <Select
-                  style={{ width: 190 }}
-                  placeholder="请选择"
-                  allowClear
-                  onChange={value => this.setState({ onlineStatus: value })}
-                  getPopupContainer={trigger => trigger.parentNode}
-                >
-                  <Option value={1}>已上架</Option>
-                  <Option value={2}>已下架</Option>
+                  {
+                    this.state.parterSelectData.map(item => (
+                      <Option key={item.value}>{item.text}</Option>
+                    ))
+                  }
                 </Select>
               </FormItem>
             </Col>

@@ -20,58 +20,34 @@ export default class MainClassfiyListTable extends Component {
         title: 'ID',
         dataIndex: 'id',
         key: 'id',
+        width: 60
       },
       {
-        title: '分类名称',
-        dataIndex: 'name',
-        key: 'name'
-      },
-      {
-        title: '分类封面',
-        dataIndex: 'coverUrlSmall',
-        key: 'coverUrlSmall',
+        title: '子站名称',
+        dataIndex: 'siteName',
+        key: 'siteName',
         render: (text, record) => {
-          let img
+          let aurl
           if (!text) {
-            img = (
+            aurl = (
               <span />
             )
           } else {
-            img = (
-              <a href={text} target="_blank" style={{ width: 50, height: 50, display: 'inline-block', cursor: 'pointer' }}>
-                <img width={50} height={50} src={text} alt="分类封面" />
+            aurl = (
+              <a href={record.siteUrl} target="_blank" style={{ display: 'inline-block', cursor: 'pointer' }}>
+                {text}
               </a>
             )
           }
-          return img
-        }
-      },
-      {
-        title: '内容类型',
-        dataIndex: 'contentType',
-        key: 'contentType',
-        render: (text, record) => {
-          if (text === 1) {
-            text = '专辑'
-          } else if (text === 2) {
-            text = '声音'
-          }
-          return <span>{text}</span>
-        }
-      },
-      {
-        title: '内容数',
-        dataIndex: 'contentsNum',
-        key: 'contentsNum'
-      },
-      {
-        title: '状态',
-        dataIndex: 'onlineStatus',
-        key: 'onlineStatus',
-        render: (text, record) => {
-          return <span>{text === 1 ? '已上架' : '已下架'}</span>
+          return aurl
         },
-        width: 60
+        width: 200
+      },
+      {
+        title: '合作方',
+        dataIndex: 'appName',
+        key: 'appName',
+        width: 200
       },
       {
         title: '创建时间',
@@ -83,6 +59,7 @@ export default class MainClassfiyListTable extends Component {
             <span>{str}</span>
           )
         },
+        width: 150
       },
       {
         title: '更新时间',
@@ -94,6 +71,7 @@ export default class MainClassfiyListTable extends Component {
             <span>{str}</span>
           )
         },
+        width: 150
       },
       {
         title: '操作',
@@ -106,11 +84,11 @@ export default class MainClassfiyListTable extends Component {
               <i style={{ color: 'green', cursor: 'pointer' }} onClick={() => this.props.tableLineSave(record)}>另存为</i>
             </span>)
         },
-        width: 140
+        width: 100
       }]
     return (
       <div>
-        <Table columns={columns} dataSource={this.props.tableData} pagination={false} scroll={{ x: 1200 }} />
+        <Table columns={columns} dataSource={this.props.tableData} pagination={false} />
         <div style={{ textAlign: 'right', marginTop: 30 }}>
           <Pagination
             showSizeChanger

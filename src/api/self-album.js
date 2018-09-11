@@ -59,6 +59,7 @@ export const apiAlbumAddOrEdit = (options) => {
     method = 'post'
   } else {
     method = 'put'
+    options.ctagIds = options.ctagIds.join()
   }
   return myAxios(
     {
