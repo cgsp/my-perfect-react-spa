@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-11 19:24:56
+ * @Last Modified time: 2018-09-11 19:41:22
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber, Modal } from 'antd'
@@ -16,7 +16,8 @@ import MaskLoading from '@Components/mask-loading'
 import SortList from '@Components/sort-list'
 import TimeControlHoc from '@Components/time-control-hoc'
 
-import { apiMainClassfiyList, apiMainClassfiyDetail, apiMainClassfiyAddOrEdit } from '@Api/main-classfiy'
+import { apiMainFocusList, apiMainFocusAddOrEdit } from '@Api/main-focus'
+import { commonSmallTypes } from '@Api'
 
 import MainFocusListTable from './list-table'
 import WrapperMainFocusAddOrEdit from './add-or-edit'
@@ -37,6 +38,7 @@ class MainAlbum extends Component {
       tableData: [],
       pageNo: 1,
       pageSize: 10,
+      categories: [],
 
       addOrEditVisible: false,
       addOrEditInitValues: {},
@@ -55,6 +57,27 @@ class MainAlbum extends Component {
       pageSize: 10,
       sortIndex: 1,
       sortDirection: 'down',
+    })
+    // 获取主站的分类数据
+    this.getCategories(1)
+  }
+
+  // 获取分类的数据
+  getCategories(source) {
+    if (!source) {
+      this.setState({
+        categories: []
+      })
+      return
+    }
+    commonSmallTypes(source).then(res => {
+      if (res.code !== ERR_OK) {
+        message.error(res.msg)
+        return
+      }
+      this.setState({
+        categories: res.data
+      })
     })
   }
 
@@ -159,17 +182,17 @@ class MainAlbum extends Component {
       return date
     }
 
-    options.createdTimeBegin = transToStamp(options.searchCreateTimeBegin)
+    options.createdAtStart = transToStamp(options.searchCreateTimeBegin)
     delete options.searchCreateTimeBegin
-    options.createdTimeEnd = transToStamp(options.searchCreateTimeEnd)
+    options.createdAtEnd = transToStamp(options.searchCreateTimeEnd)
     delete options.searchCreateTimeEnd
-    options.updatedTimeBegin = transToStamp(options.searchUpdateTimeBegin)
+    options.updatedAtStart = transToStamp(options.searchUpdateTimeBegin)
     delete options.searchUpdateTimeBegin
-    options.updatedTimeEnd = transToStamp(options.searchUpdateTimeEnd)
+    options.updatedAtEnd = transToStamp(options.searchUpdateTimeEnd)
     delete options.searchUpdateTimeEnd
 
     // 处理排序的
-    options.orderBy = (options.sortIndex === 0 ? 'createdAt' : 'updatedAt')
+    options.orderBy = (options.sortIndex === 0 ? 'created_at' : 'updated_at')
     delete options.sortIndex
     options.desc = options.sortDirection === 'up' ? false : true
     delete options.sortDirection
@@ -181,7 +204,7 @@ class MainAlbum extends Component {
     this.refs.mask.show()
     options = this.handleSearchOrExportOptions(options)
 
-    apiMainClassfiyList(options)
+    apiMainFocusList(options)
       .then(res => {
         this.refs.mask.hide()
         if (res.code !== ERR_OK) {
@@ -258,7 +281,7 @@ class MainAlbum extends Component {
   // 新增自运营专辑，编辑自运营专辑的辅助函数
   handleSelfTagAddOrEdit(options, callBack) {
     this.refs.mask.show()
-    apiMainClassfiyAddOrEdit(options)
+    apiMainFocusAddOrEdit(options)
       .then(res => {
         this.refs.mask.hide()
         if (res.code !== ERR_OK) {
@@ -370,6 +393,45 @@ class MainAlbum extends Component {
             <Col span={8}>
               <FormItem
                 className="form-item"
+                label={<span className="form-label">分类</span>}
+              >
+                <Select
+                  placeholder="请选择分类"
+                  style={{ width: 190 }}
+                  allowClear
+                  onChange={value => this.setState({ categoryId: value })}
+                  value={this.state.categoryId}
+                  getPopupContainer={trigger => trigger.parentNode}
+                  notFoundContent="请先选择分类来源"
+                >
+                  {
+                    this.state.categories.map((item) => (
+                      <Option key={item.id} value={item.id}>{item.name}</Option>
+                    ))
+                  }
+                </Select>
+              </FormItem>
+            </Col>
+            <Col span={8}>
+              <FormItem
+                className="form-item"
+                label={<span className="form-label">是否外部链接</span>}
+              >
+                <Select
+                  style={{ width: 190 }}
+                  placeholder="请选择"
+                  allowClear
+                  onChange={value => this.setState({ isExternalUrl: value })}
+                  getPopupContainer={trigger => trigger.parentNode}
+                >
+                  <Option value={1}>是</Option>
+                  <Option value={0}>否</Option>
+                </Select>
+              </FormItem>
+            </Col>
+            <Col span={8}>
+              <FormItem
+                className="form-item"
                 label={<span className="form-label">状态</span>}
               >
                 <Select
@@ -381,6 +443,7 @@ class MainAlbum extends Component {
                 >
                   <Option value={1}>已上架</Option>
                   <Option value={2}>已下架</Option>
+                  <Option value={0}>未知</Option>
                 </Select>
               </FormItem>
             </Col>

@@ -21,19 +21,24 @@ export default class MainFocusListTable extends Component {
         key: 'id',
       },
       {
-        title: '主站分类ID',
-        dataIndex: 'sourceId',
-        key: 'sourceId'
+        title: '主站ID',
+        dataIndex: 'bannerId',
+        key: 'bannerId'
       },
       {
-        title: '分类名称',
-        dataIndex: 'name',
-        key: 'name'
+        title: '焦点图名称',
+        dataIndex: 'title',
+        key: 'title'
       },
       {
-        title: '分类封面',
-        dataIndex: 'coverUrlSmall',
-        key: 'coverUrlSmall',
+        title: '分类',
+        dataIndex: 'categoryTitle',
+        key: 'categoryTitle'
+      },
+      {
+        title: '焦点图',
+        dataIndex: 'bannerUrl',
+        key: 'bannerUrl',
         render: (text, record) => {
           let img
           if (!text) {
@@ -51,22 +56,37 @@ export default class MainFocusListTable extends Component {
         }
       },
       {
-        title: '内容类型',
-        dataIndex: 'contentType',
-        key: 'contentType',
+        title: '跳转对象',
+        dataIndex: 'contentTitle',
+        key: 'contentTitle',
         render: (text, record) => {
-          if (text === 1) {
-            text = '专辑'
-          } else if (text === 2) {
-            text = '声音'
+          let url
+          if (!text) {
+            url = (
+              <span />
+            )
+          } else {
+            url = (
+              <a href={record.contentUrl} target="_blank" style={{ display: 'block', cursor: 'pointer' }}>
+                {text}
+              </a>
+            )
           }
-          return <span>{text}</span>
+          return url
         }
       },
       {
-        title: '内容数',
-        dataIndex: 'contentsNum',
-        key: 'contentsNum',
+        title: '是否外链地址',
+        dataIndex: 'isExternalUrl',
+        key: 'isExternalUrl',
+        render: (text, record) => {
+          if (text === false) {
+            text = '否'
+          } else if (text === true) {
+            text = '是'
+          }
+          return <span>{text}</span>
+        }
       },
       {
         title: '状态',
@@ -75,7 +95,7 @@ export default class MainFocusListTable extends Component {
         render: (text, record) => {
           return <span>{text === 1 ? '已上架' : '已下架'}</span>
         },
-        width: 60
+        width: 80
       },
       {
         title: '创建时间',
@@ -87,6 +107,7 @@ export default class MainFocusListTable extends Component {
             <span>{str}</span>
           )
         },
+        width: 110
       },
       {
         title: '更新时间',
@@ -98,6 +119,7 @@ export default class MainFocusListTable extends Component {
             <span>{str}</span>
           )
         },
+        width: 110
       },
       {
         title: '操作',
@@ -108,11 +130,11 @@ export default class MainFocusListTable extends Component {
               <i style={{ color: 'green', cursor: 'pointer' }} onClick={() => this.props.tableLineSave(record)}>另存为</i>
             </span>)
         },
-        width: 140
+        width: 90
       }]
     return (
       <div>
-        <Table columns={columns} dataSource={this.props.tableData} pagination={false} scroll={{ x: 1200 }} />
+        <Table columns={columns} dataSource={this.props.tableData} pagination={false} />
         <div style={{ textAlign: 'right', marginTop: 30 }}>
           <Pagination
             showSizeChanger
