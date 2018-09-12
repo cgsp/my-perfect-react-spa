@@ -19,16 +19,28 @@ export default class SelfFocusListTable extends Component {
         title: 'ID',
         dataIndex: 'id',
         key: 'id',
-      },
-      {
-        title: '主站ID',
-        dataIndex: 'bannerId',
-        key: 'bannerId'
+        width: 90
       },
       {
         title: '焦点图名称',
         dataIndex: 'title',
         key: 'title'
+      },
+      {
+        title: '分类来源',
+        dataIndex: 'categorySource',
+        key: 'categorySource',
+        render(text, record) {
+          let str
+          if (text === 1) {
+            str = '主站'
+          } else if (text === 2) {
+            str = '自运营'
+          } else {
+            str = ''
+          }
+          return <span>{str}</span>
+        }
       },
       {
         title: '分类',
@@ -127,7 +139,7 @@ export default class SelfFocusListTable extends Component {
         render: (text, record) => {
           return (
             <span>
-              <i style={{ color: 'green', cursor: 'pointer' }} onClick={() => this.props.tableLineEdit(record)}>编辑</i>
+              <i style={{ color: '#3f90f7', cursor: 'pointer' }} onClick={() => this.props.tableLineEdit(record)}>编辑</i>
             </span>)
         },
         width: 90

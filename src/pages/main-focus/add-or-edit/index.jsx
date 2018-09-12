@@ -158,6 +158,9 @@ class MainFocusAddOrEdit extends Component {
       this.props.form.setFieldsValue({
         categoryId: undefined
       })
+      this.setState({
+        smallTypes: []
+      })
       return
     }
     this.getSmallTypes(value)

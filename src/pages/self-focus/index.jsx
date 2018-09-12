@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-12 11:44:18
+ * @Last Modified time: 2018-09-12 13:48:30
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -58,8 +58,6 @@ class SelfFocus extends Component {
       sortIndex: 1,
       sortDirection: 'down',
     })
-    // 获取主站的分类数据
-    this.getCategories(1)
   }
 
   // 获取分类的数据
@@ -93,7 +91,6 @@ class SelfFocus extends Component {
   // 点击查询
   handleSearch = (e) => {
     this.refs.searchIdref.blur()
-    this.refs.searchBannerIdref.blur()
     e.preventDefault()
     this.setState({
       pageNo: 1
@@ -127,7 +124,6 @@ class SelfFocus extends Component {
         pageSize,
         pageNo,
         searchId,
-        searchBannerId,
         searchName,
         contentType,
         onlineStatus,
@@ -143,7 +139,6 @@ class SelfFocus extends Component {
         pageSize,
         pageNo,
         searchId,
-        searchBannerId,
         searchName,
         contentType,
         onlineStatus,
@@ -165,11 +160,7 @@ class SelfFocus extends Component {
     options.id = options.searchId
     delete options.searchId
 
-    options.searchBannerId = !options.searchBannerId ? '' : myTrim(options.searchBannerId + '')
-    options.bannerId = options.searchBannerId
-    delete options.searchBannerId
-
-    options.source = 1
+    options.source = 2
 
     // 去掉空格
     options.searchName = !options.searchName ? '' : myTrim(options.searchName)
@@ -232,15 +223,17 @@ class SelfFocus extends Component {
   // 列表页面的编辑
   tableLineEdit(line) {
     console.log('编辑', line)
-    this.saveBannerId = line.bannerId
+    this.editBannerId = line.bannerId
+    this.editId = line.id
     this.setState({
-      addOrEditTitle: '编辑自运营焦点图',
+      addOrEditTitle: '编辑焦点图',
       addOrEditVisible: true,
       addOrEditInitValues: line
     })
   }
 
   addSelfFocus() {
+    // 新增的时候，bannerId=0
     this.setState({
       addOrEditTitle: '新增焦点图',
       addOrEditVisible: true,
@@ -250,14 +243,21 @@ class SelfFocus extends Component {
 
 
   // 编辑的确定
-  addOrEditOk(values) {
-    values.bannerId = this.saveBannerId
+  addOrEditOk(values, title) {
+    if (title === '新增焦点图') {
+      values.type = '新增'
+      values.bannerId = 0
+    } else {
+      values.type = '编辑'
+      values.bannerId = this.editBannerId
+      values.id = this.editId
+    }
     this.handleMainFocusAddOrEdit(values, () => {
       this.setState({
         addOrEditVisible: false
       }, () => {
         // 刷新列表页面
-        this.searchList('编辑')
+        this.searchList(title)
       })
     })
   }
@@ -283,7 +283,8 @@ class SelfFocus extends Component {
     this.setState({
       addOrEditVisible: false
     })
-    this.saveBannerId = null
+    this.editBannerId = null
+    this.editId = null
   }
 
   render() {
@@ -329,17 +330,6 @@ class SelfFocus extends Component {
             <Col span={8}>
               <FormItem
                 className="form-item"
-                label={<span className="form-label">主站ID</span>}
-              >
-                <InputNumber
-                  ref="searchBannerIdref"
-                  style={{ width: 190 }} placeholder="请输入主站ID" onChange={v => this.setState({ searchBannerId: v })}
-                />
-              </FormItem>
-            </Col>
-            <Col span={8}>
-              <FormItem
-                className="form-item"
                 label={<span className="form-label">焦点图名称</span>}
               >
                 <Input style={{ width: 190 }} placeholder="请输入焦点图名称" onChange={e => this.setState({ searchName: e.target.value })} />
@@ -365,6 +355,29 @@ class SelfFocus extends Component {
                   <Option value={9}>听单</Option>
                   <Option value={10}>广告</Option>
                   <Option value={11}>直播</Option>
+                </Select>
+              </FormItem>
+            </Col>
+            <Col span={8}>
+              <FormItem
+                className="form-item"
+                label={<span className="form-label">分类来源</span>}
+              >
+                <Select
+                  style={{ width: 190 }}
+                  placeholder="请选择分类来源"
+                  allowClear
+                  onChange={value => {
+                    this.getCategories(value)
+                    this.setState({
+                      categorySource: value,
+                      categoryId: undefined
+                    })
+                  }}
+                  getPopupContainer={trigger => trigger.parentNode}
+                >
+                  <Option value={1}>主站</Option>
+                  <Option value={2}>自运营</Option>
                 </Select>
               </FormItem>
             </Col>

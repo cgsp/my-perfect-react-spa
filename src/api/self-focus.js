@@ -14,12 +14,20 @@ export const apiSelfFocusList = (options) => {
     })
 }
 
-// 获取主站专辑数据
+// 编辑与新增
 export const apiSelfFocusAddOrEdit = (options) => {
+  let method
+  if (options.type === '新增') {
+    method = 'post'
+  } else {
+    method = 'put'
+  }
+  delete options.type
+  
   return myAxios(
     {
       url: '/banners/banner',
-      method: 'post',
+      method,
       params: {},
       data: options,
       headers: defaultHeader

@@ -46,7 +46,12 @@ class SelfFocusAddOrEdit extends Component {
   }
 
   componentDidMount() {
-    this.getSmallTypes(1)
+    const categorySource = this.props.addOrEditInitValues.categorySource
+    if (categorySource) {
+      this.getSmallTypes(categorySource)
+    } else {
+      this.getSmallTypes(2)
+    }
   }
 
   getSmallTypes = async (source) => {
@@ -95,7 +100,7 @@ class SelfFocusAddOrEdit extends Component {
 
         // console.log(values)
 
-        this.props.addOrEditOk(values)
+        this.props.addOrEditOk(values, this.props.addOrEditTitle)
       }
     })
   }
@@ -156,7 +161,10 @@ class SelfFocusAddOrEdit extends Component {
   sourceChange(value) {
     if (!value) {
       this.props.form.setFieldsValue({
-        categoryId: undefined
+        categoryId: undefined,
+      })
+      this.setState({
+        smallTypes: []
       })
       return
     }
@@ -254,7 +262,8 @@ class SelfFocusAddOrEdit extends Component {
               label="分类来源"
             >
               {getFieldDecorator('source', {
-                initialValue: 1,
+                initialValue:
+                  this.props.addOrEditInitValues.categorySource ? this.props.addOrEditInitValues.categorySource : 2,
                 rules: [
                   {
                     required: true, message: '请选择分类来源',
