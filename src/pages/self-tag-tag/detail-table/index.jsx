@@ -50,9 +50,9 @@ export default class SelfTagDimensionDetailTable extends Component {
         key: 'tracksNum'
       },
       {
-        title: '发布时间',
-        dataIndex: 'createdAt',
-        key: 'createdAt',
+        title: '创建时间',
+        dataIndex: 'createTime',
+        key: 'createTime',
         render: (text, record) => {
           const str = myGetStrTime(text)
           return (
@@ -62,8 +62,8 @@ export default class SelfTagDimensionDetailTable extends Component {
       },
       {
         title: '更新时间',
-        dataIndex: 'updatedAt',
-        key: 'updatedAt',
+        dataIndex: 'updateTime',
+        key: 'updateTime',
         render: (text, record) => {
           const str = myGetStrTime(text)
           return (

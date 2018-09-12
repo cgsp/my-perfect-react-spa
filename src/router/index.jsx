@@ -38,6 +38,8 @@ import SelfClassfiy from '@Pages/self-classfiy'
 import SelfTagTag from '@Pages/self-tag-tag'
 import SelfTagDimension from '@Pages/self-tag-dimension'
 import ChildTable from '@Pages/child-table'
+import ChildTableAdd from '@Pages/child-table/add'
+import ChildTableEdit from '@Pages/child-table/edit'
 import AuthAccount from '@Pages/auth-account'
 import AuthRole from '@Pages/auth-role'
 import AuthMenu from '@Pages/auth-menu'
@@ -118,6 +120,16 @@ export default class RootRoutes extends Component {
         path: '/child-table',
         component: ChildTable,
         hide: this.props.appRoutesList.indexOf('child-table') > -1
+      },
+      {
+        path: '/child-table-add',
+        component: ChildTableAdd,
+        hide: this.props.appRoutesList.indexOf('child-table') > -1,
+      },
+      {
+        path: '/child-table-edit',
+        component: ChildTableEdit,
+        hide: this.props.appRoutesList.indexOf('child-table') > -1,
       },
       {
         path: '/auth-account',

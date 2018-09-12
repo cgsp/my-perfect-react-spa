@@ -34,7 +34,11 @@ export default class NavList extends Component {
   }
 
   render() {
-    const currentPath = this.props.location.pathname ? this.props.location.pathname.substr(1) : ''
+    let currentPath = this.props.location.pathname ? this.props.location.pathname.substr(1) : ''
+    // 高亮的特殊处理
+    if (currentPath === 'child-table-add' || currentPath === 'child-table-edit') {
+      currentPath = 'child-table'
+    }
 
     const nav1 = currentPath ? currentPath.split('-')[0] : 'index'
 

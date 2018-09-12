@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-12 16:40:40
+ * @Last Modified time: 2018-09-12 19:01:05
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -209,9 +209,21 @@ class ChildTable extends Component {
   // 列表页面的编辑
   tableLineEdit(line) {
     console.log('编辑', line)
+    this.props.history.push({
+      pathname: '/child-table-edit',
+      query: {
+        data: [{
+          name: 'guan',
+          age: 18
+        }]
+      }
+    })
   }
 
   addBegin() {
+    this.props.history.push({
+      pathname: '/child-table-add',
+    })
   }
 
 
@@ -371,6 +383,7 @@ class ChildTable extends Component {
               >
                 <InputNumber
                   ref="searchIdref"
+                  value={this.state.searchId}
                   style={{ width: 190 }} placeholder="请输入子站ID" onChange={v => this.setState({ searchId: v })}
                 />
               </FormItem>

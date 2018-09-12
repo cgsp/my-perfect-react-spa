@@ -29,6 +29,7 @@ export const apiMainClassfiyDetail = (options) => {
 
 // 获取主站专辑数据
 export const apiMainClassfiyAddOrEdit = (options) => {
+  options.source = 2
   return myAxios(
     {
       url: '/category/customizedCategory',

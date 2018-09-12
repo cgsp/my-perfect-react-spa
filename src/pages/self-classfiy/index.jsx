@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-10 14:13:39
+ * @Last Modified time: 2018-09-12 19:55:35
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber, Modal } from 'antd'
@@ -211,6 +211,7 @@ class MainAlbum extends Component {
     this.editId = line.id
     this.editSourceId = line.sourceId
     this.editOnlineStatus = line.onlineStatus
+    this.ediSource = line.source
     this.setState({
       addOrEditTitle: '编辑分类',
       addOrEditVisible: true,
@@ -231,7 +232,7 @@ class MainAlbum extends Component {
   addOrEditOk(values, title) {
     if (title === '编辑分类') {
       values.id = this.editId
-      values.source = 1
+      values.source = this.ediSource
       values.sourceId = this.editSourceId
       values.onlineStatus = this.editOnlineStatus
       this.handleSelfTagEdit(values, (res) => {
@@ -337,6 +338,7 @@ class MainAlbum extends Component {
     this.editId = null
     this.editSourceId = null
     this.editOnlineStatus = null
+    this.ediSource = null
   }
 
   // 查看专辑数的详情--弹框列表

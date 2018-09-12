@@ -1,0 +1,23 @@
+.child-table-edit {
+  .title {
+    margin: 0 auto;
+    width: 98%;
+    height: 30px;
+    border-bottom: 1px solid grey;
+    .text{
+      margin-left: 10px;
+      float: left;
+    }
+    .function{
+      float: left;
+      color: #1585ff;
+    }
+    .back{
+      float: right;
+      margin-right: 10px;
+      position: relative;
+      top: -6px;
+    }
+  }
+}
+
