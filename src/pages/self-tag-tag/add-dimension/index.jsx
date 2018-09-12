@@ -63,6 +63,9 @@ class SelfAddDimension extends Component {
                 rules: [
                   {
                     required: true, message: '请输入维度名称',
+                  },
+                  {
+                    max: 10, message: '维度名称长度应小于10个字符'
                   }
                 ],
               })(

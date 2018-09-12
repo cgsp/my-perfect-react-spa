@@ -94,6 +94,10 @@ class SelfTagDimensionAddOrEdit extends Component {
               return
             }
             values.name = `${num1}~${num2}`
+            if (values.name && values.name.length > 10) {
+              message.error('数值范围型标签，名称的拼接长度，应小于10个字符')
+              return
+            }
             console.log('提交', values)
             this.props.addOrEditOk(values, title)
           }
@@ -101,11 +105,19 @@ class SelfTagDimensionAddOrEdit extends Component {
             if (typeof values.name !== 'number') {
               message.error('请输入数字')
             } else {
+              if (values.name && (values.name + '').length > 10) {
+                message.error('标签名称长度应小于10个字符')
+                return
+              }
               console.log('提交', values)
               this.props.addOrEditOk(values, title)
             }
           }
           else {
+            if (values.name && values.name.length > 10) {
+              message.error('标签名称长度应小于10个字符')
+              return
+            }
             console.log('提交', values)
             this.props.addOrEditOk(values, title)
           }

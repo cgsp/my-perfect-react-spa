@@ -24,9 +24,9 @@ export default class SelfTagDimensionDetailTable extends Component {
       key: 'name',
     },
     {
-      title: '发布时间',
-      dataIndex: 'createTime',
-      key: 'createTime',
+      title: '创建时间',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
       render: (text, record) => {
         const str = myGetStrTime(text)
         return (
@@ -36,8 +36,8 @@ export default class SelfTagDimensionDetailTable extends Component {
     },
     {
       title: '更新时间',
-      dataIndex: 'updateTime',
-      key: 'updateTime',
+      dataIndex: 'updatedAt',
+      key: 'updatedAt',
       render: (text, record) => {
         const str = myGetStrTime(text)
         return (
@@ -62,7 +62,7 @@ export default class SelfTagDimensionDetailTable extends Component {
     }]
     return (
       <Modal
-        title="专辑列表"
+        title="标签列表"
         visible={this.props.detailVisible}
         onCancel={this.props.detailCancel}
         width={1100}
