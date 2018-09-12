@@ -305,10 +305,7 @@ class MainFocusAddOrEdit extends Component {
                   <Option value={2}>单个专辑</Option>
                   <Option value={3}>单个声音</Option>
                   <Option value={4}>链接</Option>
-                  <Option value={8}>活动</Option>
                   <Option value={9}>听单</Option>
-                  <Option value={10}>广告</Option>
-                  <Option value={11}>直播</Option>
                 </Select>
               )}
             </FormItem>
@@ -402,62 +399,6 @@ class MainFocusAddOrEdit extends Component {
                   )}
                 </FormItem> : null
             }
-            {
-              this.state.contentType === 8 ?
-                <FormItem
-                  {...formItemLayout}
-                  label="活动URl"
-                >
-                  {getFieldDecorator('redirectUrl', {
-                    initialValue: this.props.addOrEditInitValues.redirectUrl,
-                    rules: [
-                      {
-                        required: true, message: '请输入活动URl',
-                      }
-                    ],
-                  })(
-                    <Input placeholder="请输入活动URl" />
-                  )}
-                </FormItem> : null
-            }
-            {
-              this.state.contentType === 11 ?
-                <FormItem
-                  {...formItemLayout}
-                  label="直播URl"
-                >
-                  {getFieldDecorator('redirectUrl', {
-                    initialValue: this.props.addOrEditInitValues.redirectUrl,
-                    rules: [
-                      {
-                        required: true, message: '请输入直播URl',
-                      }
-                    ],
-                  })(
-                    <Input placeholder="请输入直播URl" />
-                  )}
-                </FormItem> : null
-            }
-            {
-              this.state.contentType === 10 ?
-                <FormItem
-                  {...formItemLayout}
-                  label="广告URl"
-                >
-                  {getFieldDecorator('thirdPartyUrl', {
-                    initialValue: this.props.addOrEditInitValues.thirdPartyUrl,
-                    rules: [
-                      {
-                        required: true, message: '请输入广告URl',
-                      }
-                    ],
-                  })(
-                    <Input placeholder="请输入广告URl" />
-                  )}
-                </FormItem> : null
-            }
-
-
           </Form>
         </div>
       </Modal >

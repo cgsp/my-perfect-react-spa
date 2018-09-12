@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-12 14:41:20
+ * @Last Modified time: 2018-09-12 15:34:17
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -370,10 +370,7 @@ class MainFocus extends Component {
                   <Option value={2}>单个专辑</Option>
                   <Option value={3}>单个声音</Option>
                   <Option value={4}>链接</Option>
-                  <Option value={8}>活动</Option>
                   <Option value={9}>听单</Option>
-                  <Option value={10}>广告</Option>
-                  <Option value={11}>直播</Option>
                 </Select>
               </FormItem>
             </Col>

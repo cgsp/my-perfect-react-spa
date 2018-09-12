@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-11 18:17:42
+ * @Last Modified time: 2018-09-12 15:19:55
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber, Modal } from 'antd'
@@ -19,7 +19,7 @@ import TimeControlHoc from '@Components/time-control-hoc'
 import { apiChildTableList, apiChildTableEdit, apiChildTableAdd, apiChildParter } from '@Api/child-table'
 
 import MainClassfiyListTable from './list-table'
-import WrapperMainClassfiyAddOrEdit from './add-or-edit'
+import WrapperChildTablesave from './save'
 import './style.scss'
 
 const FormItem = Form.Item
@@ -27,7 +27,7 @@ const Option = Select.Option
 
 
 @TimeControlHoc
-class MainAlbum extends Component {
+class ChildTable extends Component {
   constructor() {
     super()
     this.state = {
@@ -42,8 +42,8 @@ class MainAlbum extends Component {
       detailTotal: 0,
       detailData: [],
 
-      addOrEditVisible: false,
-      addOrEditInitValues: {},
+      saveVisible: false,
+      saveInitValues: {},
 
       parterSelectData: []
     }
@@ -51,8 +51,8 @@ class MainAlbum extends Component {
     this.tableLineEdit = this.tableLineEdit.bind(this)
     this.tableLineSave = this.tableLineSave.bind(this)
     this.clickSort = this.clickSort.bind(this)
-    this.addOrEditOk = this.addOrEditOk.bind(this)
-    this.addOrEditCancel = this.addOrEditCancel.bind(this)
+    this.saveOk = this.saveOk.bind(this)
+    this.saveCancel = this.saveCancel.bind(this)
 
     // 模糊匹配
     this.handleParterSelectChange = this.handleParterSelectChange.bind(this)
@@ -206,102 +206,22 @@ class MainAlbum extends Component {
       })
   }
 
-  // 列表页面的另存为
+  // 列表页面的编辑
   tableLineEdit(line) {
     console.log('编辑', line)
-    this.editId = line.id
-    this.editSourceId = line.sourceId
-    this.editOnlineStatus = line.onlineStatus
-    this.setState({
-      addOrEditTitle: '编辑分类',
-      addOrEditVisible: true,
-      addOrEditInitValues: line
-    })
   }
 
   addBegin() {
-    this.setState({
-      addOrEditTitle: '新增分类',
-      addOrEditVisible: true,
-      addOrEditInitValues: {}
-    })
   }
 
 
-  // 编辑的确定
-  addOrEditOk(values, title) {
-    if (title === '编辑分类') {
-      values.id = this.editId
-      values.source = 1
-      values.sourceId = this.editSourceId
-      values.onlineStatus = this.editOnlineStatus
-      this.handleSelfTagEdit(values, (res) => {
-        this.setState({
-          addOrEditVisible: false
-        }, () => {
-          // 刷新维度列表页面
-          this.searchList()
-          if (res.data.clickUrl && res.data.invalidCount !== 0) {
-            const content = (
-              <div>
-                <p style={{ textAlign: 'center' }}>成功了{res.data.validCount ? res.data.validCount : 0}条</p>
-                <p style={{ textAlign: 'center' }}>失败了{res.data.invalidCount ? res.data.invalidCount : 0}条</p>
-                <p style={{ textAlign: 'center' }}>
-                  <a href={res.data.clickUrl}>查看统计结果</a>
-                </p>
-              </div>
-            )
-            Modal.confirm({
-              title: '编辑分类结果',
-              content: content,
-              okText: '确认',
-              footer: null
-            })
-          } else if (res.data.clickUrl && res.data.invalidCount === 0) {
-            message.success('编辑成功')
-          } else {
-            message.error('编辑失败')
-          }
-        })
-      })
-    }
-    if (title === '新增分类') {
-      values.source = 2
-      values.onlineStatus = 1
-      this.handleSelfTagAdd(values, (res) => {
-        this.setState({
-          addOrEditVisible: false
-        }, () => {
-          // 刷新维度列表页面
-          this.searchList()
-          if (res.data.clickUrl && res.data.invalidCount !== 0) {
-            const content = (
-              <div>
-                <p style={{ textAlign: 'center' }}>成功了{res.data.validCount ? res.data.validCount : 0}条</p>
-                <p style={{ textAlign: 'center' }}>失败了{res.data.invalidCount ? res.data.invalidCount : 0}条</p>
-                <p style={{ textAlign: 'center' }}>
-                  <a href={res.data.clickUrl}>查看统计结果</a>
-                </p>
-              </div>
-            )
-            Modal.confirm({
-              title: '新增分类结果',
-              content: content,
-              okText: '确认',
-              footer: null
-            })
-          } else if (res.data.clickUrl && res.data.invalidCount === 0) {
-            message.success('新增分类成功')
-          } else {
-            message.error('新增分类失败')
-          }
-        })
-      })
-    }
+  // 另存为的确定
+  saveOk(values, title) {
+
   }
 
-  // 编辑
-  handleSelfTagEdit(options, callBack) {
+  // 另存为ajax
+  handleSave(options, callBack) {
     this.refs.mask.show()
     apiChildTableEdit(options)
       .then(res => {
@@ -314,34 +234,19 @@ class MainAlbum extends Component {
       })
   }
 
-  // 新增
-  handleSelfTagAdd(options, callBack) {
-    this.refs.mask.show()
-    apiChildTableAdd(options)
-      .then(res => {
-        this.refs.mask.hide()
-        if (res.code !== ERR_OK) {
-          message.error(res.msg)
-          return
-        }
-        callBack && callBack(res)
-      })
-  }
-
-
-
-  // 新增或者编辑自运营专辑，关闭弹框
-  addOrEditCancel() {
+  // 另存为关闭弹框
+  saveCancel() {
     this.setState({
-      addOrEditVisible: false
+      saveVisible: false
     })
-    this.editId = null
-    this.editSourceId = null
-    this.editOnlineStatus = null
   }
 
-  tableLineSave() {
-
+  tableLineSave(line) {
+    this.setState({
+      saveTitle: '子站另存为',
+      saveVisible: true,
+      saveInitValues: line
+    })
   }
 
   // 合作方的模糊匹配
@@ -409,18 +314,18 @@ class MainAlbum extends Component {
       pageNo: this.state.pageNo
     }
 
-    const addOrEditOptions = {
-      addOrEditTitle: this.state.addOrEditTitle,
-      addOrEditVisible: this.state.addOrEditVisible,
-      addOrEditInitValues: this.state.addOrEditInitValues,
-      addOrEditOk: this.addOrEditOk,
-      addOrEditCancel: this.addOrEditCancel,
+    const saveOptions = {
+      saveTitle: this.state.saveTitle,
+      saveVisible: this.state.saveVisible,
+      saveInitValues: this.state.saveInitValues,
+      saveOk: this.saveOk,
+      saveCancel: this.saveCancel,
     }
 
     const { searchCreateTimeBegin, searchCreateTimeEnd, searchUpdateTimeBegin, searchUpdateTimeEnd } = this.props.state
 
     return (
-      <div className="self-classfiy">
+      <div className="child-table">
         {/* 搜索 */}
         <List className="search-list" bordered>
           <Form
@@ -583,9 +488,9 @@ class MainAlbum extends Component {
         </List>
         <MainClassfiyListTable {...tableOptions} />
         {
-          this.state.addOrEditVisible
+          this.state.saveVisible
             ?
-            <WrapperMainClassfiyAddOrEdit {...addOrEditOptions} />
+            <WrapperChildTablesave {...saveOptions} />
             : null
         }
         <MaskLoading ref="mask" />
@@ -594,5 +499,5 @@ class MainAlbum extends Component {
     )
   }
 }
-const WrappedAdvancedSearchForm = Form.create()(MainAlbum)
+const WrappedAdvancedSearchForm = Form.create()(ChildTable)
 export default WrappedAdvancedSearchForm
