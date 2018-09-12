@@ -2,11 +2,12 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  overflow: hidden;
   .title {
     margin: 0 auto;
     width: 98%;
     height: 30px;
-    border-bottom: 1px solid grey;
+    border-bottom: 1px solid #dddddd;
     .text {
       margin-left: 10px;
       float: left;
@@ -26,16 +27,38 @@
     margin-top: 10px;
     flex: 1;
     .form {
+      display: flex;
+      flex-direction: column;
       width: 100%;
       height: 100%;
       border: 1px solid #1585ff;
-      display: flex;
-      
-      .left{
+      .body {
         flex: 1;
+        display: flex;
+        flex-direction: row;
+        .left {
+          flex: 1;
+          height: 100px;
+          background-color: red;
+          overflow-y: hidden;
+          margin-right: 5px;
+        }
+        .right {
+          flex: 1;
+          height: 100px;
+          overflow-y: scroll;
+          margin-left: 5px;
+        }
       }
-      .right{
-        flex: 1;
+      .submit {
+        margin: 0 auto;
+        width: 98%;
+        border-top: 1px solid #dddddd;
+        height: 40px;
+        .submit-button {
+          float: right;
+          margin-right: 20px;
+        }
       }
     }
   }

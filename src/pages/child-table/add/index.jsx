@@ -64,13 +64,17 @@ class ChildTableAdd extends Component {
                       <Input placeholder="请输入子站标题" onPressEnter={e => e.preventDefault()} />
                     )
                   }
+                  <div style={{ height: 1000 }}></div>
                 </FormItem>
               </div>
-              <div className="right">右边</div>
+              <div className="right">
+                <div style={{ height: 1000 }}>
+                </div>
+              </div>
             </div>
 
             <div className="submit">
-              <FormItem>
+              <FormItem className="submit-button">
                 <Button type="primary" htmlType="submit">保存</Button>
               </FormItem>
             </div>
