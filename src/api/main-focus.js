@@ -18,7 +18,7 @@ export const apiMainFocusList = (options) => {
 export const apiMainFocusAddOrEdit = (options) => {
   return myAxios(
     {
-      url: '/category/customizedCategory',
+      url: '/banners/banner',
       method: 'post',
       params: {},
       data: options,

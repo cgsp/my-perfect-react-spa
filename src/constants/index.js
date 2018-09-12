@@ -68,6 +68,13 @@ const UP_IMG_ACTION = {
   pro: 'http://cms.test.9nali.com/openapi-content-admin-app/upload/cover',
 }
 
+// 焦点图上传
+const UP_FOCUS_IMG_ACTION = {
+  dev: '/openapi-content-admin-app/upload/pic',
+  // 生产的必须加上http或者https
+  pro: 'http://cms.test.9nali.com/openapi-content-admin-app/upload/pic',
+}
+
 // 专辑和声音的跳转地址
 const SONG_URL = {
   dev: {
@@ -82,4 +89,4 @@ const SONG_URL = {
 
 const ERR_OK = 0
 
-export { BASEURL, ROUTE_BASE, ERR_OK, DOWN_LOAD_URL, UP_IMG_ACTION, SONG_URL }
+export { BASEURL, ROUTE_BASE, ERR_OK, DOWN_LOAD_URL, UP_IMG_ACTION, SONG_URL, UP_FOCUS_IMG_ACTION }

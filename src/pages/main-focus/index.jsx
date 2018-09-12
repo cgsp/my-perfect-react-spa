@@ -2,10 +2,10 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-11 19:41:22
+ * @Last Modified time: 2018-09-12 11:12:34
  */
 import React, { Component } from 'react'
-import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber, Modal } from 'antd'
+import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
 import moment from 'moment'
 
 import { myTrim } from '@Utils/myTrim'
@@ -230,11 +230,9 @@ class MainAlbum extends Component {
   // 列表页面的另存为
   tableLineSave(line) {
     console.log('另存为', line)
-    this.saveId = line.id
-    this.saveSourceId = line.sourceId
-    this.saveOnlineStatus = line.onlineStatus
+    this.saveBannerId = line.bannerId
     this.setState({
-      addOrEditTitle: '另存为自运营分类',
+      addOrEditTitle: '另存为自运营焦点图',
       addOrEditVisible: true,
       addOrEditInitValues: line
     })
@@ -243,43 +241,19 @@ class MainAlbum extends Component {
 
   // 另存为的确定
   addOrEditOk(values) {
-    values.id = this.saveId
-    values.source = 1
-    values.sourceId = this.saveSourceId
-    values.onlineStatus = this.saveOnlineStatus
-    this.handleSelfTagAddOrEdit(values, (res) => {
+    values.bannerId = this.saveBannerId
+    this.handleMainFocusAddOrEdit(values, () => {
       this.setState({
         addOrEditVisible: false
       }, () => {
-        // 刷新维度列表页面
-        this.searchList()
-        if (res.data.clickUrl && res.data.invalidCount !== 0) {
-          const content = (
-            <div>
-              <p style={{ textAlign: 'center' }}>成功了{res.data.validCount ? res.data.validCount : 0}条</p>
-              <p style={{ textAlign: 'center' }}>失败了{res.data.invalidCount ? res.data.invalidCount : 0}条</p>
-              <p style={{ textAlign: 'center' }}>
-                <a href={res.data.clickUrl}>查看统计结果</a>
-              </p>
-            </div>
-          )
-          Modal.confirm({
-            title: '另存为结果',
-            content: content,
-            okText: '确认',
-            footer: null
-          })
-        } else if (res.data.clickUrl && res.data.invalidCount === 0) {
-          message.success('另存为成功')
-        } else {
-          message.error('另存为失败')
-        }
+        // 刷新列表页面
+        this.searchList('另存为')
       })
     })
   }
 
   // 新增自运营专辑，编辑自运营专辑的辅助函数
-  handleSelfTagAddOrEdit(options, callBack) {
+  handleMainFocusAddOrEdit(options, callBack) {
     this.refs.mask.show()
     apiMainFocusAddOrEdit(options)
       .then(res => {
@@ -288,7 +262,7 @@ class MainAlbum extends Component {
           message.error(res.msg)
           return
         }
-        callBack && callBack(res)
+        callBack && callBack()
       })
   }
 
@@ -299,9 +273,7 @@ class MainAlbum extends Component {
     this.setState({
       addOrEditVisible: false
     })
-    this.saveId = null
-    this.saveSourceId = null
-    this.saveOnlineStatus = null
+    this.saveBannerId = null
   }
 
   render() {
@@ -380,9 +352,6 @@ class MainAlbum extends Component {
                   <Option value={2}>单个专辑</Option>
                   <Option value={3}>单个声音</Option>
                   <Option value={4}>链接</Option>
-                  <Option value={5}>多个用户</Option>
-                  <Option value={6}>多个专辑</Option>
-                  <Option value={7}>多个声音</Option>
                   <Option value={8}>活动</Option>
                   <Option value={9}>听单</Option>
                   <Option value={10}>广告</Option>
