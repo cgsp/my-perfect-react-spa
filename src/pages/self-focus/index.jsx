@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-12 11:37:20
+ * @Last Modified time: 2018-09-12 11:44:18
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -229,19 +229,27 @@ class SelfFocus extends Component {
       })
   }
 
-  // 列表页面的另存为
+  // 列表页面的编辑
   tableLineEdit(line) {
-    console.log('另存为', line)
+    console.log('编辑', line)
     this.saveBannerId = line.bannerId
     this.setState({
-      addOrEditTitle: '另存为自运营焦点图',
+      addOrEditTitle: '编辑自运营焦点图',
       addOrEditVisible: true,
       addOrEditInitValues: line
     })
   }
 
+  addSelfFocus() {
+    this.setState({
+      addOrEditTitle: '新增焦点图',
+      addOrEditVisible: true,
+      addOrEditInitValues: {}
+    })
+  }
 
-  // 另存为的确定
+
+  // 编辑的确定
   addOrEditOk(values) {
     values.bannerId = this.saveBannerId
     this.handleMainFocusAddOrEdit(values, () => {
@@ -249,7 +257,7 @@ class SelfFocus extends Component {
         addOrEditVisible: false
       }, () => {
         // 刷新列表页面
-        this.searchList('另存为')
+        this.searchList('编辑')
       })
     })
   }
@@ -517,6 +525,7 @@ class SelfFocus extends Component {
         <List className="handle-buttons">
           <Row>
             <Col span={24} className="line">
+              <Button className="btn" type="primary" onClick={() => this.addSelfFocus()}>新增焦点图</Button>
               <div className="sort-box">
                 <span className="sort-title">排序方式：</span>
                 <SortList clickSort={this.clickSort} sortNameArr={['创建时间', '更新时间']} />
