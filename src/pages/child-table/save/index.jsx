@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Modal, Form, Input, message, Select } from 'antd'
 import { ERR_OK } from '@Constants'
 import { PropTypes } from 'prop-types'
+import { apiChildParter } from '@Api/child-table'
 
 const Option = Select.Option
 const FormItem = Form.Item
@@ -17,13 +18,90 @@ class ChildTablesave extends Component {
     saveCancel: PropTypes.func,
   }
 
+  constructor(props) {
+    super(props)
+    const { appKey, parterSelectData } = this.props.saveInitValues
+    this.state = {
+      parterSelectData,
+      appKey
+    }
+    // 模糊匹配
+    this.handleParterSelectChange = this.handleParterSelectChange.bind(this)
+    this.handleParterSelectSearch = this.handleParterSelectSearch.bind(this)
+    this.timeout = null
+    this.currentAccount = ''
+  }
+
   handleSubmit = (e) => {
     e.preventDefault()
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (err) {
         return
       }
-      this.props.saveOk(values)
+      this.setState({
+      }, () => {
+        values = { ...values, ...{ appKey: this.state.appKey } }
+        if (!values.appKey) {
+          message.error('请选择合作方')
+          return
+        }
+        console.log(values)
+        this.props.saveOk(values)
+      })
+    })
+  }
+
+  // 合作方的模糊匹配
+  handleParterSelectSearch(value) {
+    // console.log(value)
+    this.getSelectUserList(value, data => this.setState({ parterSelectData: data }))
+  }
+
+  // 合作方的模糊匹配
+  getSelectUserList(value, callback) {
+    if (!value) {
+      return
+    }
+    if (this.timeout) {
+      clearTimeout(this.timeout)
+      this.timeout = null
+    }
+    this.currentAccount = value
+
+    const options = {
+      appName: value
+    }
+    this.timeout = setTimeout(() => {
+      apiChildParter(options)
+        .then(res => {
+          if (this.currentAccount === value) {
+            if (res.code !== ERR_OK) {
+              message.error(res.msg)
+              return
+            }
+            // 只取前面的20条
+            let result = res.data.slice(0, 20)
+            const arr = []
+            result.forEach(item => {
+              arr.push({
+                value: item.appKey,
+                text: item.appName
+              })
+            })
+            console.log(res)
+            callback(arr)
+          }
+        })
+    }, 300)
+
+  }
+
+  // 合作方的模糊匹配
+  handleParterSelectChange(value) {
+    this.setState({
+      appKey: value,
+    }, () => {
+      console.log(this.state.appKey)
     })
   }
 
@@ -53,6 +131,30 @@ class ChildTablesave extends Component {
           <Form
             onSubmit={this.handleSubmit}
           >
+            <FormItem
+              {...formItemLayout}
+              label="合作方"
+            >
+              <Select
+                showSearch
+                placeholder="请输入合作方"
+                defaultValue={1}
+                allowClear={true}
+                value={this.state.appKey}
+                onSearch={this.handleParterSelectSearch}
+                onChange={this.handleParterSelectChange}
+                defaultActiveFirstOption={false}
+                showArrow={false}
+                filterOption={false}
+                notFoundContent={'根据此关键字，无法搜索'}
+              >
+                {
+                  this.state.parterSelectData.map(item => (
+                    <Option key={item.value}>{item.text}</Option>
+                  ))
+                }
+              </Select>
+            </FormItem>
             <FormItem
               {...formItemLayout}
               label="子站名称"

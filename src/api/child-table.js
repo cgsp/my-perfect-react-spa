@@ -26,8 +26,8 @@ export const apiChildParter = (options) => {
     })
 }
 
-// 编辑
-export const apiChildTableEdit = (options) => {
+// 另存为
+export const apiChildTableSave = (options) => {
   return myAxios(
     {
       url: '/category/customizedCategory',

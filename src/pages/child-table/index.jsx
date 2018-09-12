@@ -2,10 +2,10 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-12 15:19:55
+ * @Last Modified time: 2018-09-12 16:40:40
  */
 import React, { Component } from 'react'
-import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber, Modal } from 'antd'
+import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
 import moment from 'moment'
 
 import { myTrim } from '@Utils/myTrim'
@@ -16,7 +16,7 @@ import MaskLoading from '@Components/mask-loading'
 import SortList from '@Components/sort-list'
 import TimeControlHoc from '@Components/time-control-hoc'
 
-import { apiChildTableList, apiChildTableEdit, apiChildTableAdd, apiChildParter } from '@Api/child-table'
+import { apiChildTableList, apiChildTableSave, apiChildParter } from '@Api/child-table'
 
 import MainClassfiyListTable from './list-table'
 import WrapperChildTablesave from './save'
@@ -202,7 +202,7 @@ class ChildTable extends Component {
         if (options.tip) {
           message.success(`${options.tip}成功`)
         }
-        callBack && callBack(res.data.totalNum)
+        callBack && callBack()
       })
   }
 
@@ -216,21 +216,24 @@ class ChildTable extends Component {
 
 
   // 另存为的确定
-  saveOk(values, title) {
-
+  saveOk(values) {
+    this.handleSave(values, () => {
+      this.saveCancel()
+      this.searchList('另存为')
+    })
   }
 
   // 另存为ajax
   handleSave(options, callBack) {
     this.refs.mask.show()
-    apiChildTableEdit(options)
+    apiChildTableSave(options)
       .then(res => {
         this.refs.mask.hide()
         if (res.code !== ERR_OK) {
           message.error(res.msg)
           return
         }
-        callBack && callBack(res)
+        callBack && callBack()
       })
   }
 
@@ -241,12 +244,40 @@ class ChildTable extends Component {
     })
   }
 
-  tableLineSave(line) {
-    this.setState({
-      saveTitle: '子站另存为',
-      saveVisible: true,
-      saveInitValues: line
-    })
+  async tableLineSave(line) {
+    try {
+      if (line.appName && line.appKey) {
+        const options = {
+          appName: line.appName
+        }
+        this.refs.mask.show()
+        const parterRes = await apiChildParter(options)
+        this.refs.mask.hide()
+        if (parterRes.code !== ERR_OK) {
+          message.error(parterRes.msg)
+          return
+        }
+        const result = parterRes.data.slice(0, 20)
+        let parterSelectData = []
+        result.forEach(item => {
+          parterSelectData.push({
+            value: item.appKey,
+            text: item.appName
+          })
+        })
+        line.parterSelectData = parterSelectData.slice()
+      } else {
+        line.appKey = undefined
+        line.parterSelectData = []
+      }
+      this.setState({
+        saveTitle: '子站另存为',
+        saveVisible: true,
+        saveInitValues: line,
+      })
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   // 合作方的模糊匹配
