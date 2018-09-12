@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-12 11:34:35
+ * @Last Modified time: 2018-09-12 14:41:20
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -230,14 +230,29 @@ class MainFocus extends Component {
   }
 
   // 列表页面的另存为
-  tableLineSave(line) {
+  async tableLineSave(line) {
     console.log('另存为', line)
     this.saveBannerId = line.bannerId
-    this.setState({
-      addOrEditTitle: '另存为自运营焦点图',
-      addOrEditVisible: true,
-      addOrEditInitValues: line
-    })
+    try {
+      const categorySource = 1
+      let addOrEdidSmallTypes = []
+      this.refs.mask.show()
+      const smallTypeRes = await commonSmallTypes(categorySource)
+      this.refs.mask.hide()
+      if (smallTypeRes.code !== ERR_OK) {
+        message.error(smallTypeRes.msg)
+        return
+      }
+      addOrEdidSmallTypes = smallTypeRes.data
+      this.setState({
+        addOrEditTitle: '另存为自运营焦点图',
+        addOrEditVisible: true,
+        addOrEditInitValues: line,
+        addOrEdidSmallTypes
+      })
+    } catch (error) {
+      console.log(error)
+    }
   }
 
 
@@ -295,6 +310,7 @@ class MainFocus extends Component {
       addOrEditInitValues: this.state.addOrEditInitValues,
       addOrEditOk: this.addOrEditOk,
       addOrEditCancel: this.addOrEditCancel,
+      addOrEdidSmallTypes: this.state.addOrEdidSmallTypes
     }
 
     const { searchCreateTimeBegin, searchCreateTimeEnd, searchUpdateTimeBegin, searchUpdateTimeEnd } = this.props.state

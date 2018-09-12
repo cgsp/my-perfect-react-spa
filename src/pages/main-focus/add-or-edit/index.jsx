@@ -22,7 +22,7 @@ class MainFocusAddOrEdit extends Component {
     addOrEditInitValues: PropTypes.object,
     addOrEditOk: PropTypes.func,
     addOrEditCancel: PropTypes.func,
-    getCommonSmallTypes: PropTypes.func
+    addOrEdidSmallTypes: PropTypes.array
   }
 
   constructor(props) {
@@ -37,16 +37,12 @@ class MainFocusAddOrEdit extends Component {
         status: 'done',
         url: this.props.addOrEditInitValues.bannerUrl,
       }] : [],
-      smallTypes: [],
+      smallTypes: this.props.addOrEdidSmallTypes,
       contentType
     }
     this.bannerUrl = this.props.addOrEditInitValues.bannerUrl
     this.isJPG = true
     this.isLt3M = true
-  }
-
-  componentDidMount() {
-    this.getSmallTypes(1)
   }
 
   getSmallTypes = async (source) => {

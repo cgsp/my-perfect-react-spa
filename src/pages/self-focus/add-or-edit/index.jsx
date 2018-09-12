@@ -22,12 +22,13 @@ class SelfFocusAddOrEdit extends Component {
     addOrEditInitValues: PropTypes.object,
     addOrEditOk: PropTypes.func,
     addOrEditCancel: PropTypes.func,
-    getCommonSmallTypes: PropTypes.func
+    addOrEdidSmallTypes: PropTypes.array
   }
 
   constructor(props) {
     super(props)
     const contentType = this.props.addOrEditInitValues.contentType
+    const addOrEdidSmallTypes = this.props.addOrEdidSmallTypes
     this.state = {
       previewVisible: false,
       previewImage: '',
@@ -37,21 +38,12 @@ class SelfFocusAddOrEdit extends Component {
         status: 'done',
         url: this.props.addOrEditInitValues.bannerUrl,
       }] : [],
-      smallTypes: [],
+      smallTypes: addOrEdidSmallTypes,
       contentType
     }
     this.bannerUrl = this.props.addOrEditInitValues.bannerUrl
     this.isJPG = true
     this.isLt3M = true
-  }
-
-  componentDidMount() {
-    const categorySource = this.props.addOrEditInitValues.categorySource
-    if (categorySource) {
-      this.getSmallTypes(categorySource)
-    } else {
-      this.getSmallTypes(2)
-    }
   }
 
   getSmallTypes = async (source) => {
