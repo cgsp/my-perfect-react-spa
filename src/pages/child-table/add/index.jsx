@@ -31,7 +31,54 @@ class ChildTableAdd extends Component {
       if (err) {
         return
       }
-      console.log(values)
+      this.setState({
+      }, () => {
+        const {
+          appKey,
+          toastWhenTrackPlayingStartInMsMinute,
+          toastWhenTrackPlayingStartInMsSecond } = this.state
+        if (!appKey) {
+          message.error('请选择合作方')
+          return
+        }
+        // 如果选择了弹框提示app，则必须选择类型和频率
+        if(values.toastWhenTrackPlayingTurnon){
+          
+        }else{
+          
+        }
+        // if (!appKey) {
+        //   message.error('请选择合作方')
+        //   return
+        // }
+        console.log(toastWhenTrackPlayingStartInMsMinute)
+        console.log(typeof toastWhenTrackPlayingStartInMsMinute)
+        console.log(toastWhenTrackPlayingStartInMsSecond)
+        console.log(typeof toastWhenTrackPlayingStartInMsSecond)
+        // 基本信息
+        const site = {
+          siteName: values.siteName,
+          appKey,
+          description: values.description,
+          enableCopyrightFilter: values.enableCopyrightFilter,
+          extendConfigJson: {
+            soundPatch: values.soundPatch,
+            toastInAlbumDetailPage: values.toastInAlbumDetailPage,
+            toastWhenTrackPlaying: {
+              turnon: values.toastWhenTrackPlayingTurnon,
+              type: values.toastWhenTrackPlayingType,
+              // startInMs:
+            }
+          }
+        }
+        const options = {
+          site,
+          categories: [],
+          modules: []
+        }
+        console.log(options)
+      })
+
     })
   }
   // 合作方的模糊匹配
@@ -271,7 +318,7 @@ class ChildTableAdd extends Component {
                     {...formItemLayoutTextLong}
                     label="底部Tab"
                   >
-                    {getFieldDecorator('footTab',
+                    {getFieldDecorator('dockTab',
                       {
                         valuePropName: 'checked',
                         initialValue: true,
@@ -290,7 +337,7 @@ class ChildTableAdd extends Component {
                     {...formItemLayoutTextLong}
                     label="声音贴片提示下载app"
                   >
-                    {getFieldDecorator('voiceTipApp',
+                    {getFieldDecorator('soundPatch',
                       {
                         valuePropName: 'checked',
                         initialValue: false,
@@ -309,7 +356,7 @@ class ChildTableAdd extends Component {
                     {...formItemLayoutTextLong}
                     label="专辑详情页提示下载app："
                   >
-                    {getFieldDecorator('appTipInDetail',
+                    {getFieldDecorator('toastInAlbumDetailPage',
                       {
                         valuePropName: 'checked',
                         initialValue: false,
@@ -328,7 +375,7 @@ class ChildTableAdd extends Component {
                     {...formItemLayoutTextLong}
                     label="弹框提示下载app："
                   >
-                    {getFieldDecorator('tanAppTip',
+                    {getFieldDecorator('toastWhenTrackPlayingTurnon',
                       {
                         valuePropName: 'checked',
                         initialValue: true,
@@ -347,7 +394,7 @@ class ChildTableAdd extends Component {
                     {...formItemLayout}
                     label="出现频率"
                   >
-                    {getFieldDecorator('frequency', {
+                    {getFieldDecorator('toastWhenTrackPlayingType', {
                       initialValue: 1,
                       rules: [
                         {
@@ -363,21 +410,36 @@ class ChildTableAdd extends Component {
                   </FormItem>
                   <FormItem
                     {...formItemLayout}
-                    label={<label className="ant-form-item-required">点击添加</label>}
+                    label={<label className="ant-form-item-required">弹出时间点</label>}
                   >
-                    {getFieldDecorator('frequency', {
-                      initialValue: 1,
-                      rules: [
-                        {
-                          required: true, message: '请选择出现频率',
-                        }
-                      ],
-                    })(
-                      <Select allowClear>
-                        <Option value={1}>页面第一次点击播放声音</Option>
-                        <Option value={2}>每条声音</Option>
-                      </Select>
-                    )}
+                    <div>
+                      <div className="tan-time">
+                        <span>第</span>
+                        <Input
+                          className="input"
+                          type="number"
+                          onChange={(e) => {
+                            this.setState({
+                              toastWhenTrackPlayingStartInMsMinute: e.target.value
+                            })
+                          }}
+                        />
+                        <span>分</span>
+                      </div>
+                      <div className="tan-time">
+                        <span>第</span>
+                        <Input
+                          className="input"
+                          type="number"
+                          onChange={(e) => {
+                            this.setState({
+                              toastWhenTrackPlayingStartInMsSecond: e.target.value
+                            })
+                          }}
+                        />
+                        <span>秒</span>
+                      </div>
+                    </div>
                   </FormItem>
                 </div>
               </div>

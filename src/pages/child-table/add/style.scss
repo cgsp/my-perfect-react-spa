@@ -121,6 +121,17 @@
             }
           }
         }
+        .tan-time{
+          display: inline-block;
+          width: 50%;
+          &>.input{
+            width: 70%;
+            margin: 0 5px;
+          }
+          &:last-child{
+            text-align: right;
+          }
+        }
       }
     }
   }
