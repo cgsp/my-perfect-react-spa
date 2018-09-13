@@ -1,10 +1,29 @@
 import React, { Component } from 'react'
-import { Button, Form, Input } from 'antd'
+import { Button, Form, Input, message, Select, Switch, Modal } from 'antd'
+import { apiChildParter } from '@Api/child-table'
+import { ERR_OK } from '@Constants'
+import { moduleNameList } from '../config'
 import './style.scss'
 
 const FormItem = Form.Item
+const Option = Select.Option
+const TextArea = Input.TextArea
+const Confirm = Modal.confirm
 
 class ChildTableAdd extends Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      parterSelectData: [],
+      moduleNameList
+    }
+    // 模糊匹配
+    this.handleParterSelectChange = this.handleParterSelectChange.bind(this)
+    this.handleParterSelectSearch = this.handleParterSelectSearch.bind(this)
+    this.timeout = null
+    this.currentAccount = ''
+  }
 
   handleSubmit = (e) => {
     e.preventDefault()
@@ -15,6 +34,79 @@ class ChildTableAdd extends Component {
       console.log(values)
     })
   }
+  // 合作方的模糊匹配
+  handleParterSelectSearch(value) {
+    // console.log(value)
+    this.getSelectUserList(value, data => this.setState({ parterSelectData: data }))
+  }
+
+  // 合作方的模糊匹配
+  getSelectUserList(value, callback) {
+    if (!value) {
+      return
+    }
+    if (this.timeout) {
+      clearTimeout(this.timeout)
+      this.timeout = null
+    }
+    this.currentAccount = value
+
+    const options = {
+      appName: value
+    }
+    this.timeout = setTimeout(() => {
+      apiChildParter(options)
+        .then(res => {
+          if (this.currentAccount === value) {
+            if (res.code !== ERR_OK) {
+              message.error(res.msg)
+              return
+            }
+            // 只取前面的20条
+            let result = res.data.slice(0, 20)
+            const arr = []
+            result.forEach(item => {
+              arr.push({
+                value: item.appKey,
+                text: item.appName
+              })
+            })
+            console.log(res)
+            callback(arr)
+          }
+        })
+    }, 300)
+
+  }
+
+  // 合作方的模糊匹配
+  handleParterSelectChange(value) {
+    this.setState({
+      appKey: value,
+    }, () => {
+      console.log(this.state.appKey)
+    })
+  }
+
+  // 返回
+  goBack = () => {
+    this.props.history.push({
+      pathname: '/child-table',
+    })
+  }
+
+  // 点击添加模块
+  addModule = (name) => {
+    Confirm({
+      title: `确定添加 ${name} 模块吗？`,
+      content: '',
+      onOk() {
+        console.log(name)
+      }
+    })
+  }
+
+
   render() {
     const { getFieldDecorator } = this.props.form
     const formItemLayout = {
@@ -43,58 +135,150 @@ class ChildTableAdd extends Component {
           >
             <div className="body">
               <div className="left">
-                <FormItem
-                  {...formItemLayout}
-                  label="子站标题"
-                >
-                  {
-                    getFieldDecorator('title', {
-                      initialValue: '22222',
-                      rules: [
-                        {
-                          required: true,
-                          message: '请输入子站标题',
-                        },
-                        {
-                          max: 20,
-                          message: '子站标题应该小于20个字符',
-                        }
-                      ]
-                    })(
-                      <Input placeholder="请输入子站标题" onPressEnter={e => e.preventDefault()} />
-                    )
-                  }
-                </FormItem>
-                <div>
-                  <div style={{ height: 100 }}>我很高</div>
-                  <div style={{ height: 100 }}>我很高</div>
-                  <div style={{ height: 100 }}>我很高</div>
-                  <div style={{ height: 100 }}>我很高</div>
-                  <div style={{ height: 100 }}>我很高</div>
-                  <div style={{ height: 100 }}>我很高</div>
+                <div className="basic">
+                  <div className="content-title">
+                    基本信息
+                  </div>
+                  <FormItem
+                    {...formItemLayout}
+                    label={
+                      <label className="ant-form-item-required">合作方:</label>
+                    }
+                    colon={false}
+                  >
+                    <Select
+                      showSearch
+                      placeholder="请输入合作方"
+                      allowClear={true}
+                      value={this.state.appKey}
+                      onSearch={this.handleParterSelectSearch}
+                      onChange={this.handleParterSelectChange}
+                      defaultActiveFirstOption={false}
+                      showArrow={false}
+                      filterOption={false}
+                      notFoundContent={'根据此关键字，无法搜索'}
+                    >
+                      {
+                        this.state.parterSelectData.map(item => (
+                          <Option key={item.value}>{item.text}</Option>
+                        ))
+                      }
+                    </Select>
+                  </FormItem>
+                  <FormItem
+                    {...formItemLayout}
+                    label="子站名称"
+                  >
+                    {
+                      getFieldDecorator('siteName', {
+                        initialValue: undefined,
+                        rules: [
+                          {
+                            required: true,
+                            message: '请输入子站名称',
+                          },
+                          {
+                            max: 20,
+                            message: '子站名称应该小于20个字符',
+                          }
+                        ]
+                      })(
+                        <Input placeholder="请输入子站名称" onPressEnter={e => e.preventDefault()} />
+                      )
+                    }
+                  </FormItem>
+                  <FormItem
+                    {...formItemLayout}
+                    label="子站简介"
+                  >
+                    {
+                      getFieldDecorator('description', {
+                        initialValue: undefined,
+                        rules: [
+                          {
+                            required: true,
+                            message: '请输入子站简介',
+                          },
+                          {
+                            max: 200,
+                            message: '子站简介应该小于200个字符',
+                          }
+                        ]
+                      })(
+                        <TextArea
+                          style={{ height: 100, maxHeight: 100 }}
+                          placeholder="请输入子站简介"
+                          onPressEnter={e => e.preventDefault()}
+                        />
+                      )
+                    }
+                  </FormItem>
+                  <FormItem
+                    {...formItemLayout}
+                    label="版权过滤"
+                  >
+                    {getFieldDecorator('enableCopyrightFilter',
+                      {
+                        valuePropName: 'checked',
+                        initialValue: true,
+                        rules: [
+                          {
+                            required: true,
+                            message: '必填',
+                          },
+                        ]
+                      },
+                    )(
+                      <Switch />
+                    )}
+                  </FormItem>
+                </div>
+                <div className="add-module">
+                  <div className="content-title">
+                    添加模块
+                  </div>
+                  <FormItem
+                    className="click-to-add-box"
+                    {...formItemLayout}
+                    label={
+                      <label className="ant-form-item-required">点击添加</label>
+                    }
+                    colon={false}
+                  >
+                    <div className="click-to-add">
+                      {
+                        this.state.moduleNameList.map((item, index) => {
+                          return (
+                            <Button className="add-button" icon="plus" type="primary" key={index} onClick={() => this.addModule(item.name)}>
+                              {item.name}
+                            </Button>
+                          )
+                        })
+                      }
+                    </div>
+                  </FormItem>
+
                 </div>
               </div>
               <div className="right">
-                <div>
-                  <div style={{ height: 100 }}>我很高</div>
-                  <div style={{ height: 100 }}>我很高</div>
-                  <div style={{ height: 100 }}>我很高</div>
-                  <div style={{ height: 100 }}>我很高</div>
-                  <div style={{ height: 100 }}>我很高</div>
-                  <div style={{ height: 100 }}>我很高</div>
-                  <div style={{ height: 100 }}>我很高</div>
-                  <div style={{ height: 100 }}>我很高</div>
-                  <div style={{ height: 100 }}>我很高</div>
-                  <div style={{ height: 100 }}>我很高</div>
-                  <div style={{ height: 100 }}>我很高</div>
-                  <div style={{ height: 100 }}>我很高</div>
-                  <div style={{ height: 100 }}>我很高</div>
-                  <div style={{ height: 100 }}>我很高</div>
-                  <div style={{ height: 100 }}>我很高</div>
-                  <div style={{ height: 100 }}>我很高</div>
-                  <div style={{ height: 100 }}>我很高</div>
-                  <div style={{ height: 100 }}>我很高</div>
-                </div>
+                <div style={{ height: 100 }}>我很高</div>
+                <div style={{ height: 100 }}>我很高</div>
+                <div style={{ height: 100 }}>我很高</div>
+                <div style={{ height: 100 }}>我很高</div>
+                <div style={{ height: 100 }}>我很高</div>
+                <div style={{ height: 100 }}>我很高</div>
+                <div style={{ height: 100 }}>我很高</div>
+                <div style={{ height: 100 }}>我很高</div>
+                <div style={{ height: 100 }}>我很高</div>
+                <div style={{ height: 100 }}>我很高</div>
+                <div style={{ height: 100 }}>我很高</div>
+                <div style={{ height: 100 }}>我很高</div>
+                <div style={{ height: 100 }}>我很高</div>
+                <div style={{ height: 100 }}>我很高</div>
+                <div style={{ height: 100 }}>我很高</div>
+                <div style={{ height: 100 }}>我很高</div>
+                <div style={{ height: 100 }}>我很高</div>
+                <div style={{ height: 100 }}>我很高</div>
               </div>
               <div className="submit">
                 <FormItem className="submit-button">
@@ -104,7 +288,7 @@ class ChildTableAdd extends Component {
             </div>
           </Form>
         </div>
-      </div>
+      </div >
     )
   }
 }
