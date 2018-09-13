@@ -71,7 +71,7 @@ export default class SelfAlbumListTable extends Component {
           } else if (text === 2) {
             str = '整张购买'
           } else {
-            str = text
+            str = ''
           }
           return <span>{str}</span>
         },
