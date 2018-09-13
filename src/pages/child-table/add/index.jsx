@@ -41,20 +41,22 @@ class ChildTableAdd extends Component {
           message.error('请选择合作方')
           return
         }
+        let toastWhenTrackPlayingStartInMs
         // 如果选择了弹框提示app，则必须选择类型和频率
-        if(values.toastWhenTrackPlayingTurnon){
-          
-        }else{
-          
+        if (values.toastWhenTrackPlayingTurnon) {
+          if (!toastWhenTrackPlayingStartInMsSecond) {
+            message.error('请输入弹出时间点，对应的秒数')
+            return
+          }
+          if (!toastWhenTrackPlayingStartInMsMinute) {
+            toastWhenTrackPlayingStartInMs = toastWhenTrackPlayingStartInMsSecond - 0
+          } else {
+            toastWhenTrackPlayingStartInMs = (toastWhenTrackPlayingStartInMsMinute - 0) * 60 + (toastWhenTrackPlayingStartInMsSecond - 0)
+          }
+        } else {
+          values.toastWhenTrackPlayingType = ''
+          toastWhenTrackPlayingStartInMs = ''
         }
-        // if (!appKey) {
-        //   message.error('请选择合作方')
-        //   return
-        // }
-        console.log(toastWhenTrackPlayingStartInMsMinute)
-        console.log(typeof toastWhenTrackPlayingStartInMsMinute)
-        console.log(toastWhenTrackPlayingStartInMsSecond)
-        console.log(typeof toastWhenTrackPlayingStartInMsSecond)
         // 基本信息
         const site = {
           siteName: values.siteName,
@@ -67,7 +69,7 @@ class ChildTableAdd extends Component {
             toastWhenTrackPlaying: {
               turnon: values.toastWhenTrackPlayingTurnon,
               type: values.toastWhenTrackPlayingType,
-              // startInMs:
+              startInMs: toastWhenTrackPlayingStartInMs
             }
           }
         }
@@ -176,6 +178,8 @@ class ChildTableAdd extends Component {
         sm: { span: 16 },
       },
     }
+
+    const toastWhenTrackPlayingTurnon = this.props.form.getFieldsValue().toastWhenTrackPlayingTurnon
     return (
       <div className="child-table-add">
         <div className="title">
@@ -390,57 +394,63 @@ class ChildTableAdd extends Component {
                       <Switch />
                     )}
                   </FormItem>
-                  <FormItem
-                    {...formItemLayout}
-                    label="出现频率"
-                  >
-                    {getFieldDecorator('toastWhenTrackPlayingType', {
-                      initialValue: 1,
-                      rules: [
-                        {
-                          required: true, message: '请选择出现频率',
-                        }
-                      ],
-                    })(
-                      <Select allowClear>
-                        <Option value={1}>页面第一次点击播放声音</Option>
-                        <Option value={2}>每条声音</Option>
-                      </Select>
-                    )}
-                  </FormItem>
-                  <FormItem
-                    {...formItemLayout}
-                    label={<label className="ant-form-item-required">弹出时间点</label>}
-                  >
-                    <div>
-                      <div className="tan-time">
-                        <span>第</span>
-                        <Input
-                          className="input"
-                          type="number"
-                          onChange={(e) => {
-                            this.setState({
-                              toastWhenTrackPlayingStartInMsMinute: e.target.value
-                            })
-                          }}
-                        />
-                        <span>分</span>
-                      </div>
-                      <div className="tan-time">
-                        <span>第</span>
-                        <Input
-                          className="input"
-                          type="number"
-                          onChange={(e) => {
-                            this.setState({
-                              toastWhenTrackPlayingStartInMsSecond: e.target.value
-                            })
-                          }}
-                        />
-                        <span>秒</span>
-                      </div>
-                    </div>
-                  </FormItem>
+                  {
+                    toastWhenTrackPlayingTurnon ?
+                      <FormItem
+                        {...formItemLayout}
+                        label="出现频率"
+                      >
+                        {getFieldDecorator('toastWhenTrackPlayingType', {
+                          initialValue: 1,
+                          rules: [
+                            {
+                              required: true, message: '请选择出现频率',
+                            }
+                          ],
+                        })(
+                          <Select allowClear>
+                            <Option value={1}>页面第一次点击播放声音</Option>
+                            <Option value={2}>每条声音</Option>
+                          </Select>
+                        )}
+                      </FormItem> : null
+                  }
+                  {
+                    toastWhenTrackPlayingTurnon ?
+                      <FormItem
+                        {...formItemLayout}
+                        label={<label className="ant-form-item-required">弹出时间点</label>}
+                      >
+                        <div>
+                          <div className="tan-time">
+                            <span>第</span>
+                            <Input
+                              className="input"
+                              type="number"
+                              onChange={(e) => {
+                                this.setState({
+                                  toastWhenTrackPlayingStartInMsMinute: e.target.value
+                                })
+                              }}
+                            />
+                            <span>分</span>
+                          </div>
+                          <div className="tan-time">
+                            <span>第</span>
+                            <Input
+                              className="input"
+                              type="number"
+                              onChange={(e) => {
+                                this.setState({
+                                  toastWhenTrackPlayingStartInMsSecond: e.target.value
+                                })
+                              }}
+                            />
+                            <span>秒</span>
+                          </div>
+                        </div>
+                      </FormItem> : null
+                  }
                 </div>
               </div>
               <div className="right">
