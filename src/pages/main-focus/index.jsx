@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-13 14:28:10
+ * @Last Modified time: 2018-09-13 16:15:05
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -129,6 +129,7 @@ class MainFocus extends Component {
         searchId,
         searchBannerId,
         searchName,
+        categoryId,
         contentType,
         onlineStatus,
         isExternalUrl,
@@ -145,6 +146,7 @@ class MainFocus extends Component {
         searchId,
         searchBannerId,
         searchName,
+        categoryId,
         contentType,
         onlineStatus,
         isExternalUrl,

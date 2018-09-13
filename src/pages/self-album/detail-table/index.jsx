@@ -56,7 +56,7 @@ export default class SelfTagDimensionDetailTable extends Component {
         }
       },
       {
-        title: '发布时间',
+        title: '创建时间',
         dataIndex: 'publishedTime',
         key: 'publishedTime',
         render: (text, record) => {

@@ -119,6 +119,16 @@ class ChildTableAdd extends Component {
         sm: { span: 20 },
       },
     }
+    const formItemLayoutTextLong = {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 8 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 16 },
+      },
+    }
     return (
       <div className="child-table-add">
         <div className="title">
@@ -257,7 +267,118 @@ class ChildTableAdd extends Component {
                       }
                     </div>
                   </FormItem>
-
+                  <FormItem
+                    {...formItemLayoutTextLong}
+                    label="底部Tab"
+                  >
+                    {getFieldDecorator('footTab',
+                      {
+                        valuePropName: 'checked',
+                        initialValue: true,
+                        rules: [
+                          {
+                            required: true,
+                            message: '必填',
+                          },
+                        ]
+                      },
+                    )(
+                      <Switch />
+                    )}
+                  </FormItem>
+                  <FormItem
+                    {...formItemLayoutTextLong}
+                    label="声音贴片提示下载app"
+                  >
+                    {getFieldDecorator('voiceTipApp',
+                      {
+                        valuePropName: 'checked',
+                        initialValue: false,
+                        rules: [
+                          {
+                            required: true,
+                            message: '必填',
+                          },
+                        ]
+                      },
+                    )(
+                      <Switch />
+                    )}
+                  </FormItem>
+                  <FormItem
+                    {...formItemLayoutTextLong}
+                    label="专辑详情页提示下载app："
+                  >
+                    {getFieldDecorator('appTipInDetail',
+                      {
+                        valuePropName: 'checked',
+                        initialValue: false,
+                        rules: [
+                          {
+                            required: true,
+                            message: '必填',
+                          },
+                        ]
+                      },
+                    )(
+                      <Switch />
+                    )}
+                  </FormItem>
+                  <FormItem
+                    {...formItemLayoutTextLong}
+                    label="弹框提示下载app："
+                  >
+                    {getFieldDecorator('tanAppTip',
+                      {
+                        valuePropName: 'checked',
+                        initialValue: true,
+                        rules: [
+                          {
+                            required: true,
+                            message: '必填',
+                          },
+                        ]
+                      },
+                    )(
+                      <Switch />
+                    )}
+                  </FormItem>
+                  <FormItem
+                    {...formItemLayout}
+                    label="出现频率"
+                  >
+                    {getFieldDecorator('frequency', {
+                      initialValue: 1,
+                      rules: [
+                        {
+                          required: true, message: '请选择出现频率',
+                        }
+                      ],
+                    })(
+                      <Select allowClear>
+                        <Option value={1}>页面第一次点击播放声音</Option>
+                        <Option value={2}>每条声音</Option>
+                      </Select>
+                    )}
+                  </FormItem>
+                  <FormItem
+                    {...formItemLayout}
+                    label={<label className="ant-form-item-required">点击添加</label>}
+                  >
+                    {getFieldDecorator('frequency', {
+                      initialValue: 1,
+                      rules: [
+                        {
+                          required: true, message: '请选择出现频率',
+                        }
+                      ],
+                    })(
+                      <Select allowClear>
+                        <Option value={1}>页面第一次点击播放声音</Option>
+                        <Option value={2}>每条声音</Option>
+                      </Select>
+                    )}
+                  </FormItem>
                 </div>
               </div>
               <div className="right">

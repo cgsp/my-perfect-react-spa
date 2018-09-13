@@ -109,16 +109,15 @@
             &>.add-button {
               cursor: pointer;
               float: left;
-              width: 20%;
-              margin-right: 25%;
+              width: 22%;
+              min-width: 100px;
+              margin-right: 10px;
               margin-bottom: 10px;
               height: 40px;
-              background-color: #1585ff;
-              color: #f0f0f0;
-              margin-right: 10px;
+              font-size: 10px;
               border-radius: 5px;
-              text-align: center;
-              line-height: 40px;
+              padding-left: 0;
+              padding-right: 0;
             }
           }
         }

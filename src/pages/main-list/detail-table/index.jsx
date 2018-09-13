@@ -47,7 +47,7 @@ export default class MainListDetailTable extends Component {
         }
       },
       {
-        title: '发布时间',
+        title: '创建时间',
         dataIndex: 'createTime',
         key: 'createTime',
         render: (text, record) => {

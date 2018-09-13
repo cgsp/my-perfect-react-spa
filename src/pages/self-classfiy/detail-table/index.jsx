@@ -67,7 +67,7 @@ export default class MainClassfiyDimensionDetailTable extends Component {
           }
         },
         {
-          title: '发布时间',
+          title: '创建时间',
           dataIndex: 'createdAt',
           key: 'createdAt',
           render: (text, record) => {
@@ -120,7 +120,7 @@ export default class MainClassfiyDimensionDetailTable extends Component {
           }
         },
         {
-          title: '发布时间',
+          title: '创建时间',
           dataIndex: 'createdAt',
           key: 'createdAt',
           render: (text, record) => {
