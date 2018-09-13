@@ -1,4 +1,12 @@
 .child-table-add {
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #f0f2f5;
+  padding: 10px 30px 30px;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -52,13 +60,13 @@
         left: 0;
         top: 0;
         .left {
-          flex: 1;
+          flex: 3;
           overflow-y: scroll;
           margin-right: 5px;
           padding-right: 10px;
         }
         .right {
-          flex: 1;
+          flex: 4;
           overflow-y: scroll;
           margin-left: 5px;
           padding-left: 10px;
@@ -121,14 +129,14 @@
             }
           }
         }
-        .tan-time{
+        .tan-time {
           display: inline-block;
           width: 50%;
-          &>.input{
+          &>.input {
             width: 70%;
             margin: 0 5px;
           }
-          &:last-child{
+          &:last-child {
             text-align: right;
           }
         }

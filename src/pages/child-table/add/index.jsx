@@ -165,7 +165,7 @@ class ChildTableAdd extends Component {
       },
       wrapperCol: {
         xs: { span: 24 },
-        sm: { span: 20 },
+        sm: { span: 15 },
       },
     }
     const formItemLayoutTextLong = {
@@ -300,7 +300,14 @@ class ChildTableAdd extends Component {
                   </div>
                   <FormItem
                     className="click-to-add-box"
-                    {...formItemLayout}
+                    labelCol={{
+                      xs: { span: 24 },
+                      sm: { span: 4 },
+                    }}
+                    wrapperCol={{
+                      xs: { span: 24 },
+                      sm: { span: 20 },
+                    }}
                     label={
                       <label className="ant-form-item-required">点击添加</label>
                     }

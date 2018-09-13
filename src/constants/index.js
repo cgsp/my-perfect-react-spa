@@ -79,11 +79,11 @@ const UP_FOCUS_IMG_ACTION = {
 const SONG_URL = {
   dev: {
     album: 'http://test.ximalaya.com/album',
-    track: 'http://test.ximalaya.com/track'
+    track: 'http://test.ximalaya.com/tracks'
   },
   pro: {
     album: 'http://ximalaya.com/album',
-    track: 'http://ximalaya.com/track'
+    track: 'http://ximalaya.com/tracks'
   },
 }
 
