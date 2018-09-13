@@ -179,7 +179,10 @@ class ChildTableAdd extends Component {
       },
     }
 
-    const toastWhenTrackPlayingTurnon = this.props.form.getFieldsValue().toastWhenTrackPlayingTurnon
+    let toastWhenTrackPlayingTurnon = this.props.form.getFieldsValue().toastWhenTrackPlayingTurnon
+    if (toastWhenTrackPlayingTurnon === undefined) {
+      toastWhenTrackPlayingTurnon = true
+    }
     return (
       <div className="child-table-add">
         <div className="title">
