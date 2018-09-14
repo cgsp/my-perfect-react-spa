@@ -1,0 +1,8 @@
+@import '../mixin.scss';
+
+.classfiy-tab-module {
+  @include module-title; 
+  .module-content {
+    height: 200px;
+  }
+}

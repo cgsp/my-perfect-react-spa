@@ -1,5 +1,5 @@
 .search-condition-module {
-  height: 40px;
+  height: 50px;
   box-sizing: border-box;
   width: 100%;
   border: 1px solid #ccc;
@@ -7,8 +7,8 @@
   border-radius: 5px;
   padding-left: 20px;
   .text {
-    height: 38px;
-    line-height: 38px;
+    height: 48px;
+    line-height: 48px;
     float: left;
     letter-spacing: 2px;
   }
@@ -16,14 +16,14 @@
     float: right;
     width: 30px;
     height: 30px;
-    margin-top: 4px;
+    margin-top: 9px;
     margin-right: 20px;
   }
   .delete {
     float: right;
     width: 28px;
     height: 30px;
-    margin-top: 4px;
+    margin-top: 9px;
     margin-right: 20px;
   }
 }

@@ -5,6 +5,13 @@ import styled from 'styled-components'
 import Test from './test'
 // 引入搜索条件模块
 import ModuleSearchCondition from '../modules/searchCondition'
+// 引入普通模块
+import ModuleCommon from '../modules/common'
+// 引入分类Tab模块
+import ModuleClassfiyTab from '../modules/classfiyTab'
+// 引入优惠券模块
+import ModuleDiscountCoupon from '../modules/discount-coupon'
+
 
 const Container = styled.div`
   margin-bottom: 20px;
@@ -12,7 +19,8 @@ const Container = styled.div`
 
 export default class Task extends Component {
   static propTypes = {
-    task: PropTypes.object
+    task: PropTypes.object,
+    deleteModule: PropTypes.func,
   }
 
   render() {
@@ -22,6 +30,15 @@ export default class Task extends Component {
     switch (content) {
       case 'ModuleSearchCondition':
         Module = ModuleSearchCondition
+        break
+      case 'ModuleCommon':
+        Module = ModuleCommon
+        break
+      case 'ModuleClassfiyTab':
+        Module = ModuleClassfiyTab
+        break
+      case 'ModuleDiscountCoupon':
+        Module = ModuleDiscountCoupon
         break
       default:
         Module = Test
@@ -39,7 +56,9 @@ export default class Task extends Component {
               {...provided.dragHandleProps}
               innerRef={provided.innerRef}
             >
-              <Module />
+              <Module
+                deleteModule={() => this.props.deleteModule(this.props.index)}
+              />
             </Container>
           )
         }

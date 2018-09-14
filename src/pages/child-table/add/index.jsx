@@ -22,9 +22,9 @@ class ChildTableAdd extends Component {
       dragOriginData: {
         tasks: {
           'task-1': { id: 'task-1', content: 'ModuleSearchCondition' },
-          'task-2': { id: 'task-2', content: '2222' },
-          'task-3': { id: 'task-3', content: '3333' },
-          'task-4': { id: 'task-4', content: '4444' },
+          'task-2': { id: 'task-2', content: 'ModuleCommon' },
+          'task-3': { id: 'task-3', content: 'ModuleClassfiyTab' },
+          'task-4': { id: 'task-4', content: 'ModuleDiscountCoupon' },
           'task-5': { id: 'task-5', content: '5555' },
           'task-6': { id: 'task-6', content: '6666' },
           'task-7': { id: 'task-7', content: '7777' },
@@ -52,6 +52,8 @@ class ChildTableAdd extends Component {
     this.handleParterSelectSearch = this.handleParterSelectSearch.bind(this)
     this.timeout = null
     this.currentAccount = ''
+    // 删除模块
+    this.deleteModule = this.deleteModule.bind(this)
   }
 
   handleSubmit = (e) => {
@@ -220,6 +222,17 @@ class ChildTableAdd extends Component {
     // console.log(newState)
     this.setState({
       dragOriginData: newState
+    })
+  }
+
+  // 删除模块
+  deleteModule = (index) => {
+    Confirm({
+      title: '确定删除该模块吗？',
+      content: '',
+      onOk() {
+        console.log(index)
+      }
     })
   }
 
@@ -540,7 +553,14 @@ class ChildTableAdd extends Component {
                     this.state.dragOriginData.columnOrder.map(columnId => {
                       const column = this.state.dragOriginData.columns[columnId]
                       const tasks = column.taskIds.map(taskId => this.state.dragOriginData.tasks[taskId])
-                      return <Column key={column.id} column={column} tasks={tasks} />
+                      return (
+                        <Column
+                          key={column.id}
+                          column={column}
+                          tasks={tasks}
+                          deleteModule={this.deleteModule}
+                        />
+                      )
                     })
                   }
                 </DragDropContext>

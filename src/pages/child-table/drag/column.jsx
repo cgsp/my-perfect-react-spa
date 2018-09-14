@@ -14,6 +14,7 @@ export default class Column extends Component {
   static propTypes = {
     column: PropTypes.object,
     tasks: PropTypes.array,
+    deleteModule: PropTypes.func
   }
 
   render() {
@@ -28,7 +29,7 @@ export default class Column extends Component {
                 {...provided.droppableProps}
               >
                 {this.props.tasks.map((task, index) => (
-                  <Task key={task.id} task={task} index={index} />
+                  <Task key={task.id} task={task} index={index} {...this.props} />
                 ))}
                 {provided.placeholder}
               </TaskList>
