@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-13 17:29:33
+ * @Last Modified time: 2018-09-14 17:51:16
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -340,8 +340,8 @@ class MainAlbum extends Component {
           delete options.albumIds
           // 先判断数量，然后再导出
           this.searchList('', (num) => {
-            if (num > 5000) {
-              message.error('当前搜索条件下，导出专辑数大于5000，请缩小搜索范围')
+            if (num > 500) {
+              message.error('当前搜索条件下，导出专辑数大于500，请缩小搜索范围')
             } else {
               this.exportHandle(options, '/openapi/albums/allDownload')
             }

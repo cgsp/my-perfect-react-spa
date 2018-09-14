@@ -74,7 +74,7 @@ export default class Task extends Component {
               innerRef={provided.innerRef}
             >
               <Module
-                deleteModule={() => this.props.deleteModule(this.props.index)}
+                deleteModule={() => this.props.deleteModule(this.props.task.id)}
               />
             </Container>
           )

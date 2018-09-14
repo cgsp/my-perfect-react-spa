@@ -19,7 +19,7 @@ class ChildTableAdd extends Component {
     this.state = {
       parterSelectData: [],
       moduleNameList,
-      dragOriginData: {
+      dragData: {
         tasks: {
           'task-1': { id: 'task-1', content: 'ModuleSearchCondition' },
           'task-2': { id: 'task-2', content: 'ModuleCommon' },
@@ -168,17 +168,6 @@ class ChildTableAdd extends Component {
     })
   }
 
-  // 点击添加模块
-  addModule = (name) => {
-    Confirm({
-      title: `确定添加 ${name} 模块吗？`,
-      content: '',
-      onOk() {
-        console.log(name)
-      }
-    })
-  }
-
   // 拖拽
   onDragEnd = (result) => {
     const { destination, source, draggableId } = result
@@ -193,42 +182,66 @@ class ChildTableAdd extends Component {
       return
     }
 
-    const column = this.state.dragOriginData.columns[source.droppableId]
-    const newTakIds = Array.from(column.taskIds)
-    newTakIds.splice(source.index, 1)
-    newTakIds.splice(destination.index, 0, draggableId)
+    this.setState({}, () => {
+      const column = this.state.dragData.columns[source.droppableId]
+      const newTakIds = Array.from(column.taskIds)
+      newTakIds.splice(source.index, 1)
+      newTakIds.splice(destination.index, 0, draggableId)
 
-    const newColumn = {
-      ...column,
-      taskIds: newTakIds
-    }
-
-    const newState = {
-      ...this.state.dragOriginData,
-      columns: {
-        ...this.state.dragOriginData.columns,
-        [newColumn.id]: newColumn,
+      const newColumn = {
+        ...column,
+        taskIds: newTakIds
       }
-    }
-    console.log(newState.columns['column-1']
-      .taskIds)
-    // console.log(newState)
-    this.setState({
-      dragOriginData: newState
+
+      const newState = {
+        ...this.state.dragData,
+        columns: {
+          ...this.state.dragData.columns,
+          [newColumn.id]: newColumn,
+        }
+      }
+      console.log(newState.columns['column-1']
+        .taskIds)
+      // console.log(newState)
+      this.setState({
+        dragData: newState
+      })
+    })
+  }
+
+  // 点击添加模块
+  addModule = (name) => {
+    Confirm({
+      title: `确定添加 ${name} 模块吗？`,
+      content: '',
+      onOk() {
+        console.log(name)
+      }
     })
   }
 
   // 删除模块
-  deleteModule = (index) => {
+  deleteModule = (taskId) => {
+    const that = this
     Confirm({
       title: '确定删除该模块吗？',
       content: '',
       onOk() {
-        console.log(index)
+        that.setState({}, () => {
+          let oldDragData = that.state.dragData
+          oldDragData = JSON.parse(JSON.stringify(oldDragData))
+          delete oldDragData.tasks[taskId]
+          const taskIds = oldDragData.columns['column-1'].taskIds.slice()
+          const deleteIndex = taskIds.indexOf(taskId)
+          oldDragData.columns['column-1'].taskIds.splice(deleteIndex, 1)
+          // console.log(oldDragData)
+          that.setState({
+            dragData: oldDragData
+          })
+        })
       }
     })
   }
-
 
   render() {
     const { getFieldDecorator } = this.props.form
@@ -543,9 +556,9 @@ class ChildTableAdd extends Component {
                   className="right"
                 >
                   {
-                    this.state.dragOriginData.columnOrder.map(columnId => {
-                      const column = this.state.dragOriginData.columns[columnId]
-                      const tasks = column.taskIds.map(taskId => this.state.dragOriginData.tasks[taskId])
+                    this.state.dragData.columnOrder.map(columnId => {
+                      const column = this.state.dragData.columns[columnId]
+                      const tasks = column.taskIds.map(taskId => this.state.dragData.tasks[taskId])
                       return (
                         <Column
                           key={column.id}
