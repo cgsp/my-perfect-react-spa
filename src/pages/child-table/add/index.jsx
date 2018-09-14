@@ -25,7 +25,7 @@ class ChildTableAdd extends Component {
           'task-2': { id: 'task-2', content: 'ModuleCommon' },
           'task-3': { id: 'task-3', content: 'ModuleClassfiyTab' },
           'task-4': { id: 'task-4', content: 'ModuleDiscountCoupon' },
-          'task-5': { id: 'task-5', content: '5555' },
+          'task-5': { id: 'task-5', content: 'ModuleValueWelfare' },
           'task-6': { id: 'task-6', content: '6666' },
           'task-7': { id: 'task-7', content: '7777' },
           'task-8': { id: 'task-8', content: '8888' },

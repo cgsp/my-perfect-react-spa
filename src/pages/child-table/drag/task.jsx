@@ -11,6 +11,8 @@ import ModuleCommon from '../modules/common'
 import ModuleClassfiyTab from '../modules/classfiyTab'
 // 引入优惠券模块
 import ModuleDiscountCoupon from '../modules/discount-coupon'
+// 引入超值福利模块
+import ModuleValueWelfare from '../modules/value-welfare'
 
 
 const Container = styled.div`
@@ -39,6 +41,9 @@ export default class Task extends Component {
         break
       case 'ModuleDiscountCoupon':
         Module = ModuleDiscountCoupon
+        break
+      case 'ModuleValueWelfare':
+        Module = ModuleValueWelfare
         break
       default:
         Module = Test

@@ -4,16 +4,16 @@ import DeleteIcon from '../imgs/delete.png'
 import MoveIcon from '../imgs/move.png'
 import './style.scss'
 
-class ModuleClassfiyTab extends Component {
+class ModuleValueWelfare extends Component {
   static propTypes = {
     deleteModule: PropTypes.func
   }
 
   render() {
     return (
-      <div className="classfiy-tab-module">
+      <div className="value-welfare-module">
         <div className="module-title">
-          <span className="text">分类Tab</span>
+          <span className="text">超值福利</span>
           <img className="delete" src={DeleteIcon} alt="delete" onClick={this.props.deleteModule} />
           <img className="move" src={MoveIcon} alt="move" />
         </div>
@@ -23,4 +23,4 @@ class ModuleClassfiyTab extends Component {
   }
 }
 
-export default ModuleClassfiyTab
+export default ModuleValueWelfare
