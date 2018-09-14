@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { PropTypes } from 'prop-types'
 import { Draggable } from 'react-beautiful-dnd'
 import styled from 'styled-components'
-import Test from './test'
 // 引入搜索条件模块
 import ModuleSearchCondition from '../modules/searchCondition'
 // 引入普通模块
@@ -13,7 +12,12 @@ import ModuleClassfiyTab from '../modules/classfiyTab'
 import ModuleDiscountCoupon from '../modules/discount-coupon'
 // 引入超值福利模块
 import ModuleValueWelfare from '../modules/value-welfare'
-
+// 引入会员领取模块
+import ModuleMemberGet from '../modules/member-get'
+// 引入会员专享模块
+import ModuleMemberHas from '../modules/member-has'
+// 引入提示下载app模块
+import ModuleTipApp from '../modules/tip-app'
 
 const Container = styled.div`
   margin-bottom: 20px;
@@ -45,8 +49,16 @@ export default class Task extends Component {
       case 'ModuleValueWelfare':
         Module = ModuleValueWelfare
         break
+      case 'ModuleMemberGet':
+        Module = ModuleMemberGet
+        break
+      case 'ModuleMemberHas':
+        Module = ModuleMemberHas
+        break
+      case 'ModuleTipApp':
+        Module = ModuleTipApp
+        break
       default:
-        Module = Test
         break
     }
     return (

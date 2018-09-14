@@ -1,0 +1,7 @@
+@import '../mixin.scss';
+.member-has-module {
+  @include module-title;
+  .module-content {
+    height: 200px;
+  }
+}

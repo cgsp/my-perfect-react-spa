@@ -99,6 +99,7 @@ module.exports = {
       '@Pages': path.join(__dirname, '..', 'src/pages'),
       '@Components': path.join(__dirname, '..', 'src/components'),
       '@Redux': path.join(__dirname, '..', 'src/redux'),
+      '@Assets': path.join(__dirname, '..', 'src/assets'),
     },
     plugins: [
       // Prevents users from importing files from outside of src/ (or node_modules/).

@@ -1,0 +1,45 @@
+@import '../mixin.scss';
+.tip-app-module {
+  @include module-title;
+  .module-content {
+    padding: 30px 0;
+    text-align: center;
+    .logo {
+      display: inline-block;
+      width: 45px;
+      height: 45px;
+      border-radius: 14px;
+      vertical-align: middle;
+      margin-right: 20px;
+    }
+    .text-box {
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 20px;
+      .top {
+        text-align: left;
+        color: #000;
+        font-weight: bold;
+        font-size: 14px;
+      }
+      .bottom {
+        text-align: left;
+        color: #aaaaaa;
+        font-size: 12px;
+      }
+    }
+    .btn {
+      display: inline-block;
+      vertical-align: middle;
+      height: 36px;
+      border-radius: 18px;
+      width: 80px;
+      outline: none;
+      border: 1px solid red;
+      background-color: transparent;
+      color: red;
+      font-size: 12px;
+      line-height: 36px;
+    }
+  }
+}

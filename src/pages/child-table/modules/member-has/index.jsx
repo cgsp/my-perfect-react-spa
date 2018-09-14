@@ -4,16 +4,16 @@ import DeleteIcon from '../imgs/delete.png'
 import MoveIcon from '../imgs/move.png'
 import './style.scss'
 
-class ModuleValueWelfare extends Component {
+class ModuleMemberHas extends Component {
   static propTypes = {
     deleteModule: PropTypes.func
   }
 
   render() {
     return (
-      <div className="value-welfare-module">
+      <div className="member-has-module">
         <div className="module-title">
-          <span className="text">超值福利</span>
+          <span className="text">会员专享</span>
           <img className="delete" src={DeleteIcon} alt="delete" onClick={this.props.deleteModule} />
           <img className="move" src={MoveIcon} alt="move" />
         </div>
@@ -23,4 +23,4 @@ class ModuleValueWelfare extends Component {
   }
 }
 
-export default ModuleValueWelfare
+export default ModuleMemberHas

@@ -26,22 +26,15 @@ class ChildTableAdd extends Component {
           'task-3': { id: 'task-3', content: 'ModuleClassfiyTab' },
           'task-4': { id: 'task-4', content: 'ModuleDiscountCoupon' },
           'task-5': { id: 'task-5', content: 'ModuleValueWelfare' },
-          'task-6': { id: 'task-6', content: '6666' },
-          'task-7': { id: 'task-7', content: '7777' },
-          'task-8': { id: 'task-8', content: '8888' },
-          'task-9': { id: 'task-9', content: '9999' },
-          'task-10': { id: 'task-10', content: '10000' },
-          'task-11': { id: 'task-11', content: '10001' },
-          'task-12': { id: 'task-12', content: '10002' },
-          'task-13': { id: 'task-13', content: '10003' },
-          'task-14': { id: 'task-14', content: '10004' },
-          'task-15': { id: 'task-15', content: '10005' },
+          'task-6': { id: 'task-6', content: 'ModuleMemberGet' },
+          'task-7': { id: 'task-7', content: 'ModuleMemberHas' },
+          'task-8': { id: 'task-8', content: 'ModuleTipApp' },
         },
         columns: {
           'column-1': {
             id: 'column-1',
             title: '模块设置',
-            taskIds: ['task-1', 'task-2', 'task-3', 'task-4', 'task-5', 'task-6', 'task-7', 'task-8', 'task-9', 'task-10', 'task-11', 'task-12', 'task-13', 'task-14', 'task-15'],
+            taskIds: ['task-1', 'task-2', 'task-3', 'task-4', 'task-5', 'task-6', 'task-7', 'task-8',],
           }
         },
         columnOrder: ['column-1']
