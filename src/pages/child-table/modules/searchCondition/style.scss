@@ -1,0 +1,29 @@
+.search-condition-module {
+  height: 40px;
+  box-sizing: border-box;
+  width: 100%;
+  border: 1px solid #ccc;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  padding-left: 20px;
+  .text {
+    height: 38px;
+    line-height: 38px;
+    float: left;
+    letter-spacing: 2px;
+  }
+  .move {
+    float: right;
+    width: 30px;
+    height: 30px;
+    margin-top: 4px;
+    margin-right: 20px;
+  }
+  .delete {
+    float: right;
+    width: 28px;
+    height: 30px;
+    margin-top: 4px;
+    margin-right: 20px;
+  }
+}

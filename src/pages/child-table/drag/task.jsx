@@ -2,12 +2,12 @@ import React, { Component } from 'react'
 import { PropTypes } from 'prop-types'
 import { Draggable } from 'react-beautiful-dnd'
 import styled from 'styled-components'
+import Test from './test'
+// 引入搜索条件模块
+import ModuleSearchCondition from '../modules/searchCondition'
 
 const Container = styled.div`
-  border: 1px solid red;
-  border-radius: 2px;
-  padding: 20px;
-  margin-bottom: 8px;
+  margin-bottom: 20px;
 `
 
 export default class Task extends Component {
@@ -16,6 +16,17 @@ export default class Task extends Component {
   }
 
   render() {
+    // 判断是哪个模块
+    const content = this.props.task.content
+    let Module
+    switch (content) {
+      case 'ModuleSearchCondition':
+        Module = ModuleSearchCondition
+        break
+      default:
+        Module = Test
+        break
+    }
     return (
       <Draggable
         draggableId={this.props.task.id}
@@ -28,7 +39,7 @@ export default class Task extends Component {
               {...provided.dragHandleProps}
               innerRef={provided.innerRef}
             >
-              {this.props.task.content}
+              <Module />
             </Container>
           )
         }
