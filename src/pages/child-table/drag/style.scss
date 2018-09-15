@@ -1,0 +1,25 @@
+/* module动画p */
+.module-wrapper-enter {
+  opacity: 0.01;
+}
+
+.module-wrapper-enter.module-wrapper-enter-active {
+  opacity: 1;
+  transition: all 500ms ease-in;
+}
+
+.module-wrapper-leave {
+  opacity: 1;
+}
+
+.module-wrapper-leave.module-wrapper-leave-active {
+  opacity: 0.01;
+  transition: all 500ms ease-in;
+}
+.module-wrapper-appear {
+  opacity: 0.01;
+}
+.module-wrapper-appear.module-wrapper-appear-active {
+  opacity: 1;
+  transition: opacity .5s ease-in;
+}

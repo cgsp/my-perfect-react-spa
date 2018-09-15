@@ -235,9 +235,25 @@ class ChildTableAdd extends Component {
           const deleteIndex = taskIds.indexOf(taskId)
           oldDragData.columns['column-1'].taskIds.splice(deleteIndex, 1)
           // console.log(oldDragData)
+          // 这么做是为了稍微有一点动画的效果，因为这个地方动画的效果没办法加入
           that.setState({
-            dragData: oldDragData
+            dragData: {
+              tasks: {},
+              columns: {
+                'column-1': {
+                  id: 'column-1',
+                  title: '模块设置',
+                  taskIds: [],
+                }
+              },
+              columnOrder: ['column-1']
+            }
           })
+          setTimeout(() => {
+            that.setState({
+              dragData: oldDragData
+            })
+          }, 100)
         })
       }
     })

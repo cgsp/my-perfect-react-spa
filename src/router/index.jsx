@@ -44,6 +44,22 @@ import AuthAccount from '@Pages/auth-account'
 import AuthRole from '@Pages/auth-role'
 import AuthMenu from '@Pages/auth-menu'
 
+// {
+//   path: '/child-table',
+//   component: ChildTable,
+//   hide: this.props.appRoutesList.indexOf('child-table') > -1
+// },
+// {
+//   path: '/child-table-add',
+//   component: ChildTableAdd,
+//   hide: this.props.appRoutesList.indexOf('child-table') > -1,
+// },
+// {
+//   path: '/child-table-edit',
+//   component: ChildTableEdit,
+//   hide: this.props.appRoutesList.indexOf('child-table') > -1,
+// },
+
 @withRouter
 @connect(
   state => state.navBarReducer,
@@ -119,17 +135,17 @@ export default class RootRoutes extends Component {
       {
         path: '/child-table',
         component: ChildTable,
-        hide: this.props.appRoutesList.indexOf('child-table') > -1
+        hide: true
       },
       {
         path: '/child-table-add',
         component: ChildTableAdd,
-        hide: this.props.appRoutesList.indexOf('child-table') > -1,
+        hide: true
       },
       {
         path: '/child-table-edit',
         component: ChildTableEdit,
-        hide: this.props.appRoutesList.indexOf('child-table') > -1,
+        hide: true
       },
       {
         path: '/auth-account',

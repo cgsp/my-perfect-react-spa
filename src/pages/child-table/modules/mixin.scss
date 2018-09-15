@@ -1,6 +1,4 @@
 @mixin module-title() {
-  border: 1px solid #ccc;
-  border-radius: 5px;
   &>.module-title {
     height: 50px;
     box-sizing: border-box;

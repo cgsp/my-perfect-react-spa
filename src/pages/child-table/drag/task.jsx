@@ -21,6 +21,8 @@ import ModuleTipApp from '../modules/tip-app'
 
 const Container = styled.div`
   margin-bottom: 20px;
+  border: 1px solid ${props => (props.isDragging ? '#3f8ef9' : '#ccc')};
+  border-radius: 5px;
 `
 
 export default class Task extends Component {
@@ -67,11 +69,12 @@ export default class Task extends Component {
         index={this.props.index}
       >
         {
-          (provided) => (
+          (provided, snapshot) => (
             <Container
               {...provided.draggableProps}
               {...provided.dragHandleProps}
               innerRef={provided.innerRef}
+              isDragging={snapshot.isDragging}
             >
               <Module
                 deleteModule={() => this.props.deleteModule(this.props.task.id)}
