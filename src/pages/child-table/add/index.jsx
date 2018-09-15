@@ -6,6 +6,9 @@ import { moduleNameList } from '../config'
 import { DragDropContext } from 'react-beautiful-dnd'
 import Column from '../drag/column'
 import './style.scss'
+import { transNameToModule } from '@Utils/transNameToModule'
+import { getMaxTaskId } from '@Utils/getMaxTaskId'
+import { judgeLimitOneModule } from '@Utils/judgeLimitOneModule'
 
 const FormItem = Form.Item
 const Option = Select.Option
@@ -20,26 +23,18 @@ class ChildTableAdd extends Component {
       parterSelectData: [],
       moduleNameList,
       dragData: {
-        tasks: {
-          'task-1': { id: 'task-1', content: 'ModuleSearchCondition' },
-          'task-2': { id: 'task-2', content: 'ModuleCommon' },
-          'task-3': { id: 'task-3', content: 'ModuleClassfiyTab' },
-          'task-4': { id: 'task-4', content: 'ModuleDiscountCoupon' },
-          'task-5': { id: 'task-5', content: 'ModuleValueWelfare' },
-          'task-6': { id: 'task-6', content: 'ModuleMemberGet' },
-          'task-7': { id: 'task-7', content: 'ModuleMemberHas' },
-          'task-8': { id: 'task-8', content: 'ModuleTipApp' },
-        },
+        tasks: {},
         columns: {
           'column-1': {
             id: 'column-1',
             title: '模块设置',
-            taskIds: ['task-1', 'task-2', 'task-3', 'task-4', 'task-5', 'task-6', 'task-7', 'task-8',],
+            taskIds: [],
           }
         },
         columnOrder: ['column-1']
       }
     }
+
     // 模糊匹配
     this.handleParterSelectChange = this.handleParterSelectChange.bind(this)
     this.handleParterSelectSearch = this.handleParterSelectSearch.bind(this)
@@ -211,11 +206,33 @@ class ChildTableAdd extends Component {
 
   // 点击添加模块
   addModule = (name) => {
+    const that = this
     Confirm({
       title: `确定添加 ${name} 模块吗？`,
       content: '',
       onOk() {
-        console.log(name)
+
+        that.setState({}, () => {
+          let oldDragData = that.state.dragData
+          oldDragData = JSON.parse(JSON.stringify(oldDragData))
+          const taskContent = transNameToModule(name)
+          const limit = judgeLimitOneModule(taskContent, oldDragData.tasks)
+          if (limit) {
+            message.error('提示下载App, 搜索条件，分类Tab模块，分别只能添加一次')
+            return
+          }
+          const taskId = `task-${getMaxTaskId(oldDragData.tasks) + 1}`
+
+          oldDragData.tasks[taskId] = {
+            taskId,
+            content: taskContent
+          }
+          oldDragData.columns['column-1'].taskIds.unshift(taskId)
+          // console.log(oldDragData)
+          that.setState({
+            dragData: oldDragData
+          })
+        })
       }
     })
   }
@@ -260,7 +277,9 @@ class ChildTableAdd extends Component {
   }
 
   render() {
+    const taskLength = this.state.dragData.columns['column-1'].taskIds.length
     const { getFieldDecorator } = this.props.form
+
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -567,25 +586,30 @@ class ChildTableAdd extends Component {
                 </div>
               </div>
               <div className="right">
-                <DragDropContext
-                  onDragEnd={this.onDragEnd}
-                  className="right"
-                >
-                  {
-                    this.state.dragData.columnOrder.map(columnId => {
-                      const column = this.state.dragData.columns[columnId]
-                      const tasks = column.taskIds.map(taskId => this.state.dragData.tasks[taskId])
-                      return (
-                        <Column
-                          key={column.id}
-                          column={column}
-                          tasks={tasks}
-                          deleteModule={this.deleteModule}
-                        />
-                      )
-                    })
-                  }
-                </DragDropContext>
+                {
+                  taskLength === 0 ?
+                    <div className="no-module">请添加模块</div>
+                    :
+                    <DragDropContext
+                      onDragEnd={this.onDragEnd}
+                      className="right"
+                    >
+                      {
+                        this.state.dragData.columnOrder.map(columnId => {
+                          const column = this.state.dragData.columns[columnId]
+                          const tasks = column.taskIds.map(taskId => this.state.dragData.tasks[taskId])
+                          return (
+                            <Column
+                              key={column.id}
+                              column={column}
+                              tasks={tasks}
+                              deleteModule={this.deleteModule}
+                            />
+                          )
+                        })
+                      }
+                    </DragDropContext>
+                }
               </div>
               <div className="submit">
                 <FormItem className="submit-button">

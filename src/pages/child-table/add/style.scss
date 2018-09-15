@@ -70,6 +70,13 @@
           overflow-y: scroll;
           margin-left: 5px;
           padding-left: 10px;
+          .no-module {
+            margin: 100px auto;
+            text-align: center;
+            letter-spacing: 2px;
+            font-size: 24px;
+            font-weight: bold;
+          }
         }
         .submit {
           position: absolute;

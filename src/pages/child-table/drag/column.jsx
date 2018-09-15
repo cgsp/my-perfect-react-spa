@@ -29,7 +29,7 @@ export default class Column extends Component {
                 {...provided.droppableProps}
               >
                 {this.props.tasks.map((task, index) => (
-                  <Task key={task.id} task={task} index={index} {...this.props} />
+                  <Task key={task.taskId} task={task} index={index} {...this.props} />
                 ))}
                 {provided.placeholder}
               </TaskList>

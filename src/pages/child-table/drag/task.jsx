@@ -65,7 +65,7 @@ export default class Task extends Component {
     }
     return (
       <Draggable
-        draggableId={this.props.task.id}
+        draggableId={this.props.task.taskId}
         index={this.props.index}
       >
         {
@@ -77,7 +77,7 @@ export default class Task extends Component {
               isDragging={snapshot.isDragging}
             >
               <Module
-                deleteModule={() => this.props.deleteModule(this.props.task.id)}
+                deleteModule={() => this.props.deleteModule(this.props.task.taskId)}
               />
             </Container>
           )
