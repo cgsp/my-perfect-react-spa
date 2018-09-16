@@ -104,7 +104,8 @@ class ChildTableAdd extends Component {
           }
         }
         const { taskIds } = this.state.dragData.columns['column-1']
-        const modules = getModulesItemValue(values, taskIds)
+        const { tasks } = this.state.dragData
+        const modules = getModulesItemValue(values, taskIds, tasks)
         const options = {
           site,
           categories: [],
@@ -242,8 +243,7 @@ class ChildTableAdd extends Component {
 
           oldDragData.tasks[taskId] = {
             taskId,
-            content: taskContent,
-            values: {}
+            content: taskContent
           }
           oldDragData.columns['column-1'].taskIds.unshift(taskId)
           console.log(oldDragData)
