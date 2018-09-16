@@ -35,6 +35,9 @@ class ChildTableAdd extends Component {
       }
     }
 
+    // 最终表单的数据
+    this.options = {}
+
     // 模糊匹配
     this.handleParterSelectChange = this.handleParterSelectChange.bind(this)
     this.handleParterSelectSearch = this.handleParterSelectSearch.bind(this)
@@ -44,7 +47,20 @@ class ChildTableAdd extends Component {
     this.deleteModule = this.deleteModule.bind(this)
   }
 
-  handleSubmit = (e) => {
+  // 大表单的提交
+  allSubmit = async (e) => {
+    // 左侧表单的提交
+    await this.noModulehandleSubmit(e, (site) => {
+      this.options.site = site
+    })
+    if (!this.options.site) {
+      return
+    }
+
+    console.log(this.options)
+  }
+  // 左侧表单的提交
+  noModulehandleSubmit = (e, callBack) => {
     e.preventDefault()
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (err) {
@@ -56,21 +72,25 @@ class ChildTableAdd extends Component {
           appKey,
           toastWhenTrackPlayingStartInMsMinute,
           toastWhenTrackPlayingStartInMsSecond } = this.state
-        if (!appKey) {
-          message.error('请选择合作方')
-          return
-        }
+        // if (!appKey) {
+        //   message.error('请选择合作方')
+        //   return
+        // }
         let toastWhenTrackPlayingStartInMs
         // 如果选择了弹框提示app，则必须选择类型和频率
         if (values.toastWhenTrackPlayingTurnon) {
-          if (!toastWhenTrackPlayingStartInMsSecond) {
-            message.error('请输入弹出时间点，对应的秒数')
+          if (!toastWhenTrackPlayingStartInMsSecond && !toastWhenTrackPlayingStartInMsMinute) {
+            message.error('请输入弹出时间点')
             return
           }
           if (!toastWhenTrackPlayingStartInMsMinute) {
             toastWhenTrackPlayingStartInMs = toastWhenTrackPlayingStartInMsSecond - 0
           } else {
-            toastWhenTrackPlayingStartInMs = (toastWhenTrackPlayingStartInMsMinute - 0) * 60 + (toastWhenTrackPlayingStartInMsSecond - 0)
+            if (!toastWhenTrackPlayingStartInMsSecond) {
+              toastWhenTrackPlayingStartInMs = (toastWhenTrackPlayingStartInMsMinute - 0) * 60
+            } else {
+              toastWhenTrackPlayingStartInMs = (toastWhenTrackPlayingStartInMsMinute - 0) * 60 + (toastWhenTrackPlayingStartInMsSecond - 0)
+            }
           }
         } else {
           values.toastWhenTrackPlayingType = ''
@@ -92,12 +112,7 @@ class ChildTableAdd extends Component {
             }
           }
         }
-        const options = {
-          site,
-          categories: [],
-          modules: []
-        }
-        console.log(options)
+        callBack && callBack(site)
       })
 
     })
@@ -315,12 +330,11 @@ class ChildTableAdd extends Component {
           </div>
         </div>
         <div className="content">
-          <Form
-            className="form"
-            onSubmit={this.handleSubmit}
-          >
-            <div className="body">
-              <div className="left">
+          <div className="body">
+            <div className="left">
+              <Form
+                onSubmit={(e) => this.noModulehandleSubmit(e)}
+              >
                 <div className="basic">
                   <div className="content-title">
                     基本信息
@@ -584,40 +598,40 @@ class ChildTableAdd extends Component {
                       </FormItem> : null
                   }
                 </div>
-              </div>
-              <div className="right">
-                {
-                  taskLength === 0 ?
-                    <div className="no-module">请添加模块</div>
-                    :
-                    <DragDropContext
-                      onDragEnd={this.onDragEnd}
-                      className="right"
-                    >
-                      {
-                        this.state.dragData.columnOrder.map(columnId => {
-                          const column = this.state.dragData.columns[columnId]
-                          const tasks = column.taskIds.map(taskId => this.state.dragData.tasks[taskId])
-                          return (
-                            <Column
-                              key={column.id}
-                              column={column}
-                              tasks={tasks}
-                              deleteModule={this.deleteModule}
-                            />
-                          )
-                        })
-                      }
-                    </DragDropContext>
-                }
-              </div>
-              <div className="submit">
-                <FormItem className="submit-button">
-                  <Button type="primary" htmlType="submit">保存</Button>
-                </FormItem>
-              </div>
+              </Form>
             </div>
-          </Form>
+            <div className="right">
+              {
+                taskLength === 0 ?
+                  <div className="no-module">请添加模块</div>
+                  :
+                  <DragDropContext
+                    onDragEnd={this.onDragEnd}
+                    className="right"
+                  >
+                    {
+                      this.state.dragData.columnOrder.map(columnId => {
+                        const column = this.state.dragData.columns[columnId]
+                        const tasks = column.taskIds.map(taskId => this.state.dragData.tasks[taskId])
+                        return (
+                          <Column
+                            key={column.id}
+                            column={column}
+                            tasks={tasks}
+                            deleteModule={this.deleteModule}
+                          />
+                        )
+                      })
+                    }
+                  </DragDropContext>
+              }
+            </div>
+            <div className="submit">
+              <FormItem className="submit-button">
+                <Button type="primary" onClick={(e) => this.allSubmit(e)}>保存</Button>
+              </FormItem>
+            </div>
+          </div>
         </div>
       </div >
     )
