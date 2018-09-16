@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Input, message, Select } from 'antd'
+import { Form, Input, Select } from 'antd'
 import { PropTypes } from 'prop-types'
 import DeleteIcon from '../imgs/delete.png'
 import MoveIcon from '../imgs/move.png'
@@ -69,8 +69,8 @@ class ModuleMemberHas extends Component {
             {...formItemLayout}
             label="展示形式"
           >
-            {getFieldDecorator(`${moduleSymbol}~moduleType`, {
-              initialValue: 4,
+            {getFieldDecorator(`${moduleSymbol}~context-style`, {
+              initialValue: 1,
               rules: [
                 {
                   required: true, message: '请选择展示形式',
@@ -78,8 +78,8 @@ class ModuleMemberHas extends Component {
               ],
             })(
               <Select allowClear>
-                <Option value={4}>平铺</Option>
-                <Option value={5}>列表</Option>
+                <Option value={1}>平铺</Option>
+                <Option value={2}>列表</Option>
               </Select>
             )}
           </FormItem>
@@ -119,6 +119,34 @@ class ModuleMemberHas extends Component {
               )
             }
           </FormItem>
+          <div style={{ visibility: 'hidden', height: 0, overflow: 'hidden' }}>
+            <FormItem
+              {...formItemLayout}
+              label="资源类型"
+            >
+              {getFieldDecorator(`${moduleSymbol}~resourceType`, {
+                initialValue: 3
+              })(
+                <Select >
+                  <Option value={3}>自运营听单</Option>
+                </Select>
+              )}
+            </FormItem>
+          </div>
+          <div style={{ visibility: 'hidden', height: 0, overflow: 'hidden' }}>
+            <FormItem
+              {...formItemLayout}
+              label="moduleType"
+            >
+              {getFieldDecorator(`${moduleSymbol}~moduleType`, {
+                initialValue: 15
+              })(
+                <Select >
+                  <Option value={15}>会员专享</Option>
+                </Select>
+              )}
+            </FormItem>
+          </div>
         </div>
       </div>
     )
