@@ -78,6 +78,8 @@ export default class Task extends Component {
             >
               <Module
                 deleteModule={() => this.props.deleteModule(this.props.task.taskId)}
+                task={this.props.task}
+                getFieldDecorator={this.props.getFieldDecorator}
               />
             </Container>
           )

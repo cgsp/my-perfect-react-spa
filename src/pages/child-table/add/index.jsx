@@ -9,12 +9,18 @@ import './style.scss'
 import { transNameToModule } from '@Utils/transNameToModule'
 import { getMaxTaskId } from '@Utils/getMaxTaskId'
 import { judgeLimitOneModule } from '@Utils/judgeLimitOneModule'
+import { connect } from 'react-redux'
+import { triggerBegin } from '@Redux/triggerModuleFormSubmit'
 
 const FormItem = Form.Item
 const Option = Select.Option
 const TextArea = Input.TextArea
 const Confirm = Modal.confirm
 
+@connect(
+  state => state.triggerModuleFormSubmitReducer,
+  { triggerBegin }
+)
 class ChildTableAdd extends Component {
 
   constructor(props) {
@@ -47,20 +53,8 @@ class ChildTableAdd extends Component {
     this.deleteModule = this.deleteModule.bind(this)
   }
 
-  // 大表单的提交
-  allSubmit = async (e) => {
-    // 左侧表单的提交
-    await this.noModulehandleSubmit(e, (site) => {
-      this.options.site = site
-    })
-    if (!this.options.site) {
-      return
-    }
-
-    console.log(this.options)
-  }
   // 左侧表单的提交
-  noModulehandleSubmit = (e, callBack) => {
+  handleSubmit = (e) => {
     e.preventDefault()
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (err) {
@@ -112,7 +106,13 @@ class ChildTableAdd extends Component {
             }
           }
         }
-        callBack && callBack(site)
+        const options = {
+          site,
+          categories: [],
+          modules: []
+        }
+        console.log(options)
+        console.log(values)
       })
 
     })
@@ -240,10 +240,11 @@ class ChildTableAdd extends Component {
 
           oldDragData.tasks[taskId] = {
             taskId,
-            content: taskContent
+            content: taskContent,
+            values: {}
           }
           oldDragData.columns['column-1'].taskIds.unshift(taskId)
-          // console.log(oldDragData)
+          console.log(oldDragData)
           that.setState({
             dragData: oldDragData
           })
@@ -330,11 +331,12 @@ class ChildTableAdd extends Component {
           </div>
         </div>
         <div className="content">
-          <div className="body">
-            <div className="left">
-              <Form
-                onSubmit={(e) => this.noModulehandleSubmit(e)}
-              >
+          <Form
+            onSubmit={this.handleSubmit}
+            className="form"
+          >
+            <div className="body">
+              <div className="left">
                 <div className="basic">
                   <div className="content-title">
                     基本信息
@@ -598,40 +600,41 @@ class ChildTableAdd extends Component {
                       </FormItem> : null
                   }
                 </div>
-              </Form>
+              </div>
+              <div className="right">
+                {
+                  taskLength === 0 ?
+                    <div className="no-module">请添加模块</div>
+                    :
+                    <DragDropContext
+                      onDragEnd={this.onDragEnd}
+                      className="right"
+                    >
+                      {
+                        this.state.dragData.columnOrder.map(columnId => {
+                          const column = this.state.dragData.columns[columnId]
+                          const tasks = column.taskIds.map(taskId => this.state.dragData.tasks[taskId])
+                          return (
+                            <Column
+                              key={column.id}
+                              column={column}
+                              tasks={tasks}
+                              deleteModule={this.deleteModule}
+                              getFieldDecorator={getFieldDecorator}
+                            />
+                          )
+                        })
+                      }
+                    </DragDropContext>
+                }
+              </div>
+              <div className="submit">
+                <FormItem className="submit-button">
+                  <Button type="primary" htmlType="submit">保存</Button>
+                </FormItem>
+              </div>
             </div>
-            <div className="right">
-              {
-                taskLength === 0 ?
-                  <div className="no-module">请添加模块</div>
-                  :
-                  <DragDropContext
-                    onDragEnd={this.onDragEnd}
-                    className="right"
-                  >
-                    {
-                      this.state.dragData.columnOrder.map(columnId => {
-                        const column = this.state.dragData.columns[columnId]
-                        const tasks = column.taskIds.map(taskId => this.state.dragData.tasks[taskId])
-                        return (
-                          <Column
-                            key={column.id}
-                            column={column}
-                            tasks={tasks}
-                            deleteModule={this.deleteModule}
-                          />
-                        )
-                      })
-                    }
-                  </DragDropContext>
-              }
-            </div>
-            <div className="submit">
-              <FormItem className="submit-button">
-                <Button type="primary" onClick={(e) => this.allSubmit(e)}>保存</Button>
-              </FormItem>
-            </div>
-          </div>
+          </Form>
         </div>
       </div >
     )
