@@ -9,18 +9,15 @@ import './style.scss'
 import { transNameToModule } from '@Utils/transNameToModule'
 import { getMaxTaskId } from '@Utils/getMaxTaskId'
 import { judgeLimitOneModule } from '@Utils/judgeLimitOneModule'
-import { connect } from 'react-redux'
-import { triggerBegin } from '@Redux/triggerModuleFormSubmit'
+import { getModulesItemValue } from '@Utils/getModulesItemValue'
+
 
 const FormItem = Form.Item
 const Option = Select.Option
 const TextArea = Input.TextArea
 const Confirm = Modal.confirm
 
-@connect(
-  state => state.triggerModuleFormSubmitReducer,
-  { triggerBegin }
-)
+
 class ChildTableAdd extends Component {
 
   constructor(props) {
@@ -106,13 +103,18 @@ class ChildTableAdd extends Component {
             }
           }
         }
+        const { taskIds } = this.state.dragData.columns['column-1']
+        const modules = getModulesItemValue(values, taskIds)
         const options = {
           site,
           categories: [],
-          modules: []
+          modules
+        }
+        if (options.modules.length === 0 && options.categories.length === 0) {
+          message.error('请至少选择一个模块')
+          return
         }
         console.log(options)
-        console.log(values)
       })
 
     })
@@ -268,25 +270,9 @@ class ChildTableAdd extends Component {
           const deleteIndex = taskIds.indexOf(taskId)
           oldDragData.columns['column-1'].taskIds.splice(deleteIndex, 1)
           // console.log(oldDragData)
-          // 这么做是为了稍微有一点动画的效果，因为这个地方动画的效果没办法加入
           that.setState({
-            dragData: {
-              tasks: {},
-              columns: {
-                'column-1': {
-                  id: 'column-1',
-                  title: '模块设置',
-                  taskIds: [],
-                }
-              },
-              columnOrder: ['column-1']
-            }
+            dragData: oldDragData
           })
-          setTimeout(() => {
-            that.setState({
-              dragData: oldDragData
-            })
-          }, 100)
         })
       }
     })

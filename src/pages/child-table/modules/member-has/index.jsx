@@ -23,7 +23,7 @@ class ModuleMemberHas extends Component {
     const { taskId, content
     } = this.props.task
     const moduleSymbol = `${taskId}~${content}`
-    console.log(moduleSymbol)
+    // console.log(moduleSymbol)
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -77,7 +77,7 @@ class ModuleMemberHas extends Component {
                 }
               ],
             })(
-              <Select allowClear onChange={(v) => this.sourceChange(v)}>
+              <Select allowClear>
                 <Option value={4}>平铺</Option>
                 <Option value={5}>列表</Option>
               </Select>
