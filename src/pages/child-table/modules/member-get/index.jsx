@@ -69,7 +69,7 @@ class ModuleMemberGet extends Component {
             {...formItemLayout}
             label="会员活动天数"
           >
-            {getFieldDecorator(`${moduleSymbol}~context-days`, {
+            {getFieldDecorator(`${moduleSymbol}~context-itemId`, {
               initialValue: 1,
               rules: [
                 {
@@ -123,7 +123,6 @@ class ModuleMemberGet extends Component {
                 <TextArea
                   style={{ height: 100, maxHeight: 100 }}
                   placeholder="请输入备注说明"
-                  onPressEnter={e => e.preventDefault()}
                 />
               )
             }
