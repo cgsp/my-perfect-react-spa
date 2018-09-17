@@ -121,6 +121,7 @@ class ChildTableAdd extends Component {
         let youhuiStyleArr = []
         let huiyuanLingquNum = 0
         let huiyuanLingquStyleArr = []
+        let focusIdInValid = false
         options.modules.forEach(item => {
           if (item.moduleType === 13) {
             youhuiNum += 1
@@ -129,6 +130,11 @@ class ChildTableAdd extends Component {
           if (item.moduleType === 14) {
             huiyuanLingquNum += 1
             huiyuanLingquStyleArr.push(JSON.parse(item.context).style)
+          }
+          if (item.moduleType === 2) {
+            if (item.topContentIds.split(',').length > 4) {
+              focusIdInValid = true
+            }
           }
         })
         if (youhuiNum >= 3) {
@@ -147,6 +153,12 @@ class ChildTableAdd extends Component {
           message.error('会员领取模块，最多出现2个,且展示形式应不同')
           return
         }
+        if (focusIdInValid) {
+          message.error('焦点图模块，焦点图Id，最多输入4个')
+          return
+        }
+
+        // 判断焦点图id的数量，是否超过4个
         console.log(options)
       })
 

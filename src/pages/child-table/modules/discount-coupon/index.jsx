@@ -103,7 +103,7 @@ class ModuleDiscountCoupon extends Component {
                       couponIds: e.target.value
                     })
                   }}
-                  placeholder="请输入优惠券Id, 多个Id请换行输入"
+                  placeholder="请换行输入优惠券Id"
                 />
               )
             }

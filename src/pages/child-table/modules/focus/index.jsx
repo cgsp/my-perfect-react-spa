@@ -81,7 +81,7 @@ class ModuleFocus extends Component {
               })(
                 <TextArea
                   style={{ height: 100, maxHeight: 100 }}
-                  placeholder="请输入焦点图ID"
+                  placeholder="请换行输入焦点图ID，最多输入4个"
                 />
               )
             }
