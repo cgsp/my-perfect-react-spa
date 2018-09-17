@@ -25,8 +25,8 @@ export default class MainFrame extends Component {
 
   componentDidMount() {
     if (this.props.appNavListData.length <= 1) {
-      // this.props.getNavBarData()
-      // this.refs.mask.show()
+      this.props.getNavBarData()
+      this.refs.mask.show()
     }
   }
 

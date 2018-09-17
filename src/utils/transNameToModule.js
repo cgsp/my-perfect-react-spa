@@ -25,6 +25,9 @@ export const transNameToModule = (name) => {
     case '分类Tab':
       content = 'ModuleClassfiyTab'
       break
+    case '焦点图':
+      content = 'ModuleFocus'
+      break
     default:
       break
   }

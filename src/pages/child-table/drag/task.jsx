@@ -18,6 +18,8 @@ import ModuleMemberGet from '../modules/member-get'
 import ModuleMemberHas from '../modules/member-has'
 // 引入提示下载app模块
 import ModuleTipApp from '../modules/tip-app'
+// 引入焦点图模块
+import ModuleFocus from '../modules/focus'
 
 const Container = styled.div`
   margin-bottom: 20px;
@@ -59,6 +61,9 @@ export default class Task extends Component {
         break
       case 'ModuleTipApp':
         Module = ModuleTipApp
+        break
+      case 'ModuleFocus':
+        Module = ModuleFocus
         break
       default:
         break

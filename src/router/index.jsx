@@ -135,17 +135,17 @@ export default class RootRoutes extends Component {
       {
         path: '/child-table',
         component: ChildTable,
-        hide: true
+        hide: this.props.appRoutesList.indexOf('child-table') > -1
       },
       {
         path: '/child-table-add',
         component: ChildTableAdd,
-        hide: true
+        hide: this.props.appRoutesList.indexOf('child-table') > -1,
       },
       {
         path: '/child-table-edit',
         component: ChildTableEdit,
-        hide: true
+        hide: this.props.appRoutesList.indexOf('child-table') > -1,
       },
       {
         path: '/auth-account',

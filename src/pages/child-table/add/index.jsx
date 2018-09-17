@@ -10,6 +10,7 @@ import { transNameToModule } from '@Utils/transNameToModule'
 import { getMaxTaskId } from '@Utils/getMaxTaskId'
 import { judgeLimitOneModule } from '@Utils/judgeLimitOneModule'
 import { getModulesItemValue } from '@Utils/getModulesItemValue'
+import { isRepeatArr } from '@Utils/isRepeatArr'
 
 
 const FormItem = Form.Item
@@ -113,6 +114,37 @@ class ChildTableAdd extends Component {
         }
         if (options.modules.length === 0 && options.categories.length === 0) {
           message.error('请至少选择一个模块')
+          return
+        }
+        // 优惠券如果出现了2个，那么2个一个必须是首页弹出，一个必须是固定显示
+        let youhuiNum = 0
+        let youhuiStyleArr = []
+        let huiyuanLingquNum = 0
+        let huiyuanLingquStyleArr = []
+        options.modules.forEach(item => {
+          if (item.moduleType === 13) {
+            youhuiNum += 1
+            youhuiStyleArr.push(JSON.parse(item.context).style)
+          }
+          if (item.moduleType === 14) {
+            huiyuanLingquNum += 1
+            huiyuanLingquStyleArr.push(JSON.parse(item.context).style)
+          }
+        })
+        if (youhuiNum >= 3) {
+          message.error('优惠券模块，最多出现2个')
+          return
+        }
+        if (huiyuanLingquNum >= 3) {
+          message.error('会员领取模块，最多出现2个')
+          return
+        }
+        if (isRepeatArr(youhuiStyleArr)) {
+          message.error('优惠券模块，最多出现2个,且展示形式应不同')
+          return
+        }
+        if (isRepeatArr(huiyuanLingquStyleArr)) {
+          message.error('会员领取模块，最多出现2个,且展示形式应不同')
           return
         }
         console.log(options)
@@ -396,7 +428,6 @@ class ChildTableAdd extends Component {
                         <TextArea
                           style={{ height: 100, maxHeight: 100 }}
                           placeholder="请输入子站简介"
-                          onPressEnter={e => e.preventDefault()}
                         />
                       )
                     }

@@ -1,3 +1,5 @@
+import { myHuanHang } from '@Utils/myHuanHang'
+
 export const getModulesItemValue = (obj, taskIds, tasks) => {
   let modules = []
   const keys = Object.keys(obj)
@@ -11,7 +13,11 @@ export const getModulesItemValue = (obj, taskIds, tasks) => {
         // const content = key.split('~')[1]
         const modulekey = key.split('~')[2]
         if (taskId === keyTaskId) {
-          valueItem[modulekey] = obj[key]
+          if (modulekey === 'topContentIds') {
+            valueItem[modulekey] = myHuanHang(obj[key])
+          } else {
+            valueItem[modulekey] = obj[key]
+          }
           orderNumAdd = true
         }
       }
@@ -22,6 +28,9 @@ export const getModulesItemValue = (obj, taskIds, tasks) => {
       valueItemKeys.forEach(item => {
         if (item.indexOf('context') > -1) {
           valueItem.context[item.split('-')[1]] = valueItem[item]
+          if (item.split('-')[1] === 'couponIds') {
+            valueItem.context[item.split('-')[1]] = myHuanHang(valueItem[item])
+          }
           delete valueItem[item]
         }
       })

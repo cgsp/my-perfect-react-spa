@@ -7,4 +7,5 @@ export const moduleNameList = [
   { name: '提示下载App' },
   { name: '搜索条件' },
   { name: '分类Tab' },
+  { name: '焦点图' },
 ]

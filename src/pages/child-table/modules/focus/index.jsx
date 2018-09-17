@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import { Form, Input, Select, Radio, Button, message } from 'antd'
+import { Form, Input, Select, Radio } from 'antd'
 import { PropTypes } from 'prop-types'
 import DeleteIcon from '../imgs/delete.png'
 import MoveIcon from '../imgs/move.png'
-import { myHuanHang } from '@Utils/myHuanHang'
 import './style.scss'
 
 const FormItem = Form.Item
@@ -11,31 +10,15 @@ const Option = Select.Option
 const RadioGroup = Radio.Group
 const TextArea = Input.TextArea
 
-class ModuleDiscountCoupon extends Component {
+class ModuleFocus extends Component {
   static propTypes = {
     deleteModule: PropTypes.func
   }
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      rules: undefined
-    }
-    console.log(props)
-  }
-
-  getRules = () => {
-    this.setState({}, () => {
-      if (!this.state.couponIds) {
-        message.error('请选输入优惠券Id')
-        return
-      }
-      this.setState({
-        rules: '规则1\n规则2\n规则1\n规则2\n规则1\n规则2\n规则1\n规则2\n规则1\n规则2\n规则1\n规则2\n规则1\n规则2\n规则1\n规则2\n规则1\n规则2\n规则1\n规则2\n规则1\n规则2\n规则1\n规则2\n规则1\n规则2\n规则1\n规则2\n规则1\n规则2\n'
-      })
-      console.log(myHuanHang(this.state.couponIds))
-    })
-  }
+  // constructor(props) {
+  //   super(props)
+  //   console.log(props)
+  // }
 
   render() {
     const getFieldDecorator = this.props.getFieldDecorator
@@ -55,9 +38,9 @@ class ModuleDiscountCoupon extends Component {
     }
 
     return (
-      <div className="discount-coupon-module">
+      <div className="focus-module">
         <div className="module-title">
-          <span className="text">优惠券</span>
+          <span className="text">焦点图</span>
           <img className="delete" src={DeleteIcon} alt="delete" onClick={this.props.deleteModule} />
           <img className="move" src={MoveIcon} alt="move" />
         </div>
@@ -76,53 +59,32 @@ class ModuleDiscountCoupon extends Component {
                 ],
               })(
                 <RadioGroup>
-                  <Radio value={1}>首页弹出</Radio>
-                  <Radio value={2}>固定显示</Radio>
+                  <Radio value={1}>轮播</Radio>
+                  <Radio value={2}>平铺</Radio>
                 </RadioGroup>
               )
             }
           </FormItem>
           <FormItem
             {...formItemLayout}
-            label="优惠券"
+            label="焦点图ID"
           >
             {
-              getFieldDecorator(`${moduleSymbol}~context-couponIds`, {
+              getFieldDecorator(`${moduleSymbol}~topContentIds`, {
                 initialValue: undefined,
                 rules: [
                   {
                     required: true,
-                    message: '请输入优惠券Id',
+                    message: '请输入焦点图ID',
                   }
                 ]
               })(
                 <TextArea
                   style={{ height: 100, maxHeight: 100 }}
-                  onChange={(e) => {
-                    this.setState({
-                      couponIds: e.target.value
-                    })
-                  }}
-                  placeholder="请输入优惠券Id, 多个Id请换行输入"
+                  placeholder="请输入焦点图ID"
                 />
               )
             }
-          </FormItem>
-          <FormItem
-            {...formItemLayout}
-            label="查看规则"
-          >
-            <Button type="primary" onClick={this.getRules}>确定</Button>
-          </FormItem>
-          <FormItem
-            {...formItemLayout}
-            label="使用规则"
-          >
-            <TextArea
-              style={{ height: 100, maxHeight: 100 }}
-              value={this.state.rules}
-              disabled={true}
-            />
           </FormItem>
           <div style={{ visibility: 'hidden', height: 0, overflow: 'hidden' }}>
             <FormItem
@@ -130,10 +92,10 @@ class ModuleDiscountCoupon extends Component {
               label="moduleType"
             >
               {getFieldDecorator(`${moduleSymbol}~moduleType`, {
-                initialValue: 13
+                initialValue: 2
               })(
                 <Select >
-                  <Option value={13}>优惠券</Option>
+                  <Option value={2}>优惠券</Option>
                 </Select>
               )}
             </FormItem>
@@ -144,5 +106,5 @@ class ModuleDiscountCoupon extends Component {
   }
 }
 
-export default ModuleDiscountCoupon
+export default ModuleFocus
 
