@@ -7,8 +7,9 @@ export const getModulesItemValue = (obj, taskIds, tasks) => {
   taskIds.forEach((taskId, index) => {
     let valueItem = {}
     let orderNumAdd = false
+
     keys.forEach(key => {
-      if (key.indexOf('task-') > -1) {
+      if (key.indexOf('task-') > -1 && key.indexOf('categories-line') === -1) {
         const keyTaskId = key.split('~')[0]
         // const content = key.split('~')[1]
         const modulekey = key.split('~')[2]
@@ -46,6 +47,9 @@ export const getModulesItemValue = (obj, taskIds, tasks) => {
       }
       if (tasks[taskId].content === 'ModuleSearchCondition') {
         modules.push({ ...{ moduleType: 12 }, orderNum: index })
+      }
+      if (tasks[taskId].content === 'ModuleClassfiyTab') {
+        modules.push({ ...{ moduleType: 1 }, orderNum: index })
       }
     }
   })

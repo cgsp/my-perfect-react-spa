@@ -10,6 +10,7 @@ import { transNameToModule } from '@Utils/transNameToModule'
 import { getMaxTaskId } from '@Utils/getMaxTaskId'
 import { judgeLimitOneModule } from '@Utils/judgeLimitOneModule'
 import { getModulesItemValue } from '@Utils/getModulesItemValue'
+import { geCategoriesItemValue } from '@Utils/geCategoriesItemValue'
 import { isRepeatArr } from '@Utils/isRepeatArr'
 
 
@@ -107,13 +108,22 @@ class ChildTableAdd extends Component {
         const { taskIds } = this.state.dragData.columns['column-1']
         const { tasks } = this.state.dragData
         const modules = getModulesItemValue(values, taskIds, tasks)
+        const { categories, nameValid, idValid } = geCategoriesItemValue(values)
         const options = {
           site,
-          categories: [],
+          categories,
           modules
         }
-        if (options.modules.length === 0 && options.categories.length === 0) {
+        if (options.modules.length === 0) {
           message.error('请至少选择一个模块')
+          return
+        }
+        if (!nameValid) {
+          message.error('分类模块下，每个分类，分类名称不能重复')
+          return
+        }
+        if (!idValid) {
+          message.error('分类模块下，每个分类，如果内容类型相同，内容Id不能重复')
           return
         }
         // 优惠券如果出现了2个，那么2个一个必须是首页弹出，一个必须是固定显示
