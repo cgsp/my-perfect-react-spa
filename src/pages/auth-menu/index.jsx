@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-18 14:25:16
+ * @Last Modified time: 2018-09-18 16:29:25
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, message, Select, Modal } from 'antd'
@@ -14,12 +14,14 @@ import MaskLoading from '@Components/mask-loading'
 import SortList from '@Components/sort-list'
 
 import { apiAuthMenuList, apiAuthMenuDeleteMenu, apiAuthMenuUpdateMenu, apiAuthMenuAddMenu, apiAuthMenuChild } from '@Api/auth-menu'
+import { apiAuthTree } from '@Api/auth-role'
 
 import { connect } from 'react-redux'
 import { getNavBarData } from '@Redux/navBar'
 
 import AuthAccountListTable from './list-table'
 import WrapperAuthAccountAddOrEdit from './add-or-edit'
+import WrapperAuthMenulook from './look'
 import './style.scss'
 
 const FormItem = Form.Item
@@ -42,6 +44,8 @@ class AuthMenu extends Component {
       pageSize: 10,
       addOrEditVisible: false,
       addOrEditInitValues: {},
+      checkedKeys: [],
+      authData: []
     }
     this.pageOrPageSizeChange = this.pageOrPageSizeChange.bind(this)
     this.tableLineAddOrEdit = this.tableLineAddOrEdit.bind(this)
@@ -49,6 +53,8 @@ class AuthMenu extends Component {
     this.clickSort = this.clickSort.bind(this)
     this.addOrEditOk = this.addOrEditOk.bind(this)
     this.addOrEditCancel = this.addOrEditCancel.bind(this)
+    this.lookCancel = this.lookCancel.bind(this)
+    this.lookOk = this.lookOk.bind(this)
   }
 
   componentDidMount() {
@@ -376,6 +382,36 @@ class AuthMenu extends Component {
     this.parentId = 0
   }
 
+  look() {
+    this.refs.mask.show()
+    apiAuthTree()
+      .then(res => {
+        this.refs.mask.hide()
+        if (res.code !== ERR_OK) {
+          message.error(res.message)
+          return
+        }
+        const authData = JSON.parse(res.data).childResources
+        this.setState({
+          lookTitle: '菜单与按钮树形预览',
+          lookVisible: true,
+          lookInitValues: {},
+          checkedKeys: [],
+          checkedNodes: [],
+          authData
+        })
+      })
+  }
+  lookOk() {
+    this.setState({
+      lookVisible: false,
+    })
+  }
+
+  lookCancel() {
+    this.lookOk()
+  }
+
   render() {
     const tableOptions = {
       showTotal: this.showTableTotal,
@@ -394,6 +430,16 @@ class AuthMenu extends Component {
       addOrEditOk: this.addOrEditOk,
       addOrEditCancel: this.addOrEditCancel,
       handleType: this.state.handleType
+    }
+
+    const lookOptions = {
+      lookTitle: this.state.lookTitle,
+      lookVisible: this.state.lookVisible,
+      lookInitValues: this.state.lookInitValues,
+      lookOk: this.lookOk,
+      lookCancel: this.lookCancel,
+      checkedKeys: this.state.checkedKeys,
+      authData: this.state.authData
     }
 
     return (
@@ -463,7 +509,8 @@ class AuthMenu extends Component {
         <List className="handle-buttons">
           <Row>
             <Col span={24} className="line">
-              <Button type="primary" onClick={() => this.addLevel1Menu()}>新增一级菜单节点</Button>
+              <Button style={{ marginRight: 20 }} type="primary" onClick={() => this.addLevel1Menu()}>新增一级菜单节点</Button>
+              <Button type="primary" onClick={() => this.look()}>菜单与按钮树形预览</Button>
               <div className="sort-box">
                 <span className="sort-title">排序方式：</span>
                 <SortList clickSort={this.clickSort} />
@@ -476,6 +523,12 @@ class AuthMenu extends Component {
           this.state.addOrEditVisible
             ?
             <WrapperAuthAccountAddOrEdit {...addOrEditOptions} />
+            : null
+        }
+        {
+          this.state.lookVisible
+            ?
+            <WrapperAuthMenulook {...lookOptions} />
             : null
         }
         <MaskLoading ref="mask" />
