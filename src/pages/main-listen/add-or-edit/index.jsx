@@ -223,7 +223,11 @@ class MainListenAddOrEdit extends Component {
                   }
                 ],
               })(
-                <Select allowClear onChange={(v) => this.sourceChange(v)}>
+                <Select
+                  allowClear
+                  onChange={(v) => this.sourceChange(v)}
+                  getPopupContainer={trigger => trigger.parentNode}
+                >
                   <Option value="1">主站分类</Option>
                   <Option value="2">自运营分类</Option>
                 </Select>
@@ -241,7 +245,10 @@ class MainListenAddOrEdit extends Component {
                   }
                 ],
               })(
-                <Select allowClear>
+                <Select
+                  allowClear
+                  getPopupContainer={trigger => trigger.parentNode}
+                >
                   {
                     this.props.commonSmallTypes.map((item) => (
                       <Option key={item.id} value={item.id}>{item.name}</Option>

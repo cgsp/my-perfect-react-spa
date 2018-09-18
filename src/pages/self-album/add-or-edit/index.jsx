@@ -398,7 +398,11 @@ class SelfTagDimensionAddOrEdit extends Component {
                   }
                 ],
               })(
-                <Select allowClear onChange={(v) => this.sourceChange(v)}>
+                <Select
+                  getPopupContainer={trigger => trigger.parentNode}
+                  allowClear
+                  onChange={(v) => this.sourceChange(v)}
+                >
                   <Option value="1">主站分类</Option>
                   <Option value="2">自运营分类</Option>
                 </Select>
@@ -416,7 +420,10 @@ class SelfTagDimensionAddOrEdit extends Component {
                   }
                 ],
               })(
-                <Select allowClear>
+                <Select
+                  getPopupContainer={trigger => trigger.parentNode}
+                  allowClear
+                >
                   {
                     this.state.smallTypes.map((item) => (
                       <Option key={item.id} value={item.id}>{item.name}</Option>

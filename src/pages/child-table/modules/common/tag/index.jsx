@@ -207,7 +207,10 @@ class ChildTag extends Component {
               }
             ],
           })(
-            <Select allowClear>
+            <Select
+              allowClear
+              getPopupContainer={trigger => trigger.parentNode}
+            >
               <Option value={2}>主站专辑</Option>
               <Option value={8}>自运营专辑</Option>
             </Select>

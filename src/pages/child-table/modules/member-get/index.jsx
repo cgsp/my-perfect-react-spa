@@ -77,7 +77,10 @@ class ModuleMemberGet extends Component {
                 }
               ],
             })(
-              <Select allowClear>
+              <Select
+                allowClear
+                getPopupContainer={trigger => trigger.parentNode}
+              >
                 <Option value={1}>3天</Option>
                 <Option value={2}>7天</Option>
                 <Option value={3}>15天</Option>
@@ -135,7 +138,9 @@ class ModuleMemberGet extends Component {
               {getFieldDecorator(`${moduleSymbol}~moduleType`, {
                 initialValue: 14
               })(
-                <Select >
+                <Select
+                  getPopupContainer={trigger => trigger.parentNode}
+                >
                   <Option value={14}>会员领取</Option>
                 </Select>
               )}

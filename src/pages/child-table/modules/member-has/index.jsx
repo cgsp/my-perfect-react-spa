@@ -77,7 +77,10 @@ class ModuleMemberHas extends Component {
                 }
               ],
             })(
-              <Select allowClear>
+              <Select
+                allowClear
+                getPopupContainer={trigger => trigger.parentNode}
+              >
                 <Option value={1}>平铺</Option>
                 <Option value={2}>列表</Option>
               </Select>
@@ -127,7 +130,9 @@ class ModuleMemberHas extends Component {
               {getFieldDecorator(`${moduleSymbol}~resourceType`, {
                 initialValue: 3
               })(
-                <Select >
+                <Select
+                  getPopupContainer={trigger => trigger.parentNode}
+                >
                   <Option value={3}>自运营听单</Option>
                 </Select>
               )}
@@ -141,7 +146,9 @@ class ModuleMemberHas extends Component {
               {getFieldDecorator(`${moduleSymbol}~moduleType`, {
                 initialValue: 15
               })(
-                <Select >
+                <Select
+                  getPopupContainer={trigger => trigger.parentNode}
+                >
                   <Option value={15}>会员专享</Option>
                 </Select>
               )}

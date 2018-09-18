@@ -238,6 +238,7 @@ class SelfTagDimensionAddOrEdit extends Component {
                     allowClear
                     onChange={(v) => this.findNewValueType(v)}
                     disabled={this.props.addOrEditTitle === '编辑标签'}
+                    getPopupContainer={trigger => trigger.parentNode}
                   >
                     {
                       this.props.commonDimesions.map((item) => (

@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-11 17:27:52
+ * @Last Modified time: 2018-09-18 14:24:50
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, message, Select, Modal } from 'antd'
@@ -426,6 +426,7 @@ class AuthAccount extends Component {
                   showArrow={false}
                   filterOption={false}
                   notFoundContent={'根据此关键字，无法搜索'}
+                  getPopupContainer={trigger => trigger.parentNode}
                 >
                   {
                     this.state.roleSelectData.map(item => (
@@ -460,6 +461,7 @@ class AuthAccount extends Component {
                   showArrow={false}
                   filterOption={false}
                   notFoundContent={'根据此关键字，无法搜索'}
+                  getPopupContainer={trigger => trigger.parentNode}
                 >
                   {
                     this.state.userSelectData.map(item => (

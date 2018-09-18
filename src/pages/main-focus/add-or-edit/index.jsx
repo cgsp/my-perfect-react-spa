@@ -260,7 +260,11 @@ class MainFocusAddOrEdit extends Component {
                   }
                 ],
               })(
-                <Select allowClear onChange={(v) => this.sourceChange(v)}>
+                <Select
+                  allowClear
+                  onChange={(v) => this.sourceChange(v)}
+                  getPopupContainer={trigger => trigger.parentNode}
+                >
                   <Option value={1}>主站分类</Option>
                   <Option value={2}>自运营分类</Option>
                 </Select>
@@ -278,7 +282,10 @@ class MainFocusAddOrEdit extends Component {
                   }
                 ],
               })(
-                <Select allowClear>
+                <Select
+                  allowClear
+                  getPopupContainer={trigger => trigger.parentNode}
+                >
                   {
                     this.state.smallTypes.map((item) => (
                       <Option key={item.id} value={item.id}>{item.name}</Option>
@@ -300,7 +307,11 @@ class MainFocusAddOrEdit extends Component {
                   }
                 ],
               })(
-                <Select allowClear onChange={(v) => this.contentTypeChange(v)}>
+                <Select
+                  allowClear
+                  onChange={(v) => this.contentTypeChange(v)}
+                  getPopupContainer={trigger => trigger.parentNode}
+                >
                   <Option value={1}>单个用户</Option>
                   <Option value={2}>单个专辑</Option>
                   <Option value={3}>单个声音</Option>

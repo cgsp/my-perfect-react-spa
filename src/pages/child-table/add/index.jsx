@@ -399,6 +399,7 @@ class ChildTableAdd extends Component {
                       showArrow={false}
                       filterOption={false}
                       notFoundContent={'根据此关键字，无法搜索'}
+                      getPopupContainer={trigger => trigger.parentNode}
                     >
                       {
                         this.state.parterSelectData.map(item => (
@@ -595,7 +596,10 @@ class ChildTableAdd extends Component {
                             }
                           ],
                         })(
-                          <Select allowClear>
+                          <Select
+                            allowClear
+                            getPopupContainer={trigger => trigger.parentNode}
+                          >
                             <Option value={1}>页面第一次点击播放声音</Option>
                             <Option value={2}>每条声音</Option>
                           </Select>

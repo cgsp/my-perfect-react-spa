@@ -94,7 +94,9 @@ class ModuleFocus extends Component {
               {getFieldDecorator(`${moduleSymbol}~moduleType`, {
                 initialValue: 2
               })(
-                <Select >
+                <Select
+                  getPopupContainer={trigger => trigger.parentNode}
+                >
                   <Option value={2}>优惠券</Option>
                 </Select>
               )}

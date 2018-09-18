@@ -225,6 +225,7 @@ class AuthAccountAddOrEdit extends Component {
                     }
                     return type
                   })()}
+                  getPopupContainer={trigger => trigger.parentNode}
                 >
                   <Option value="一级菜单">一级菜单</Option>
                   <Option value="二级菜单">二级菜单</Option>
@@ -254,6 +255,7 @@ class AuthAccountAddOrEdit extends Component {
                     onChange={(v) => this.setState({
                       thirdOrButton: v
                     })}
+                    getPopupContainer={trigger => trigger.parentNode}
                   >
                     <Option value="三级菜单">三级菜单</Option>
                     <Option value="按钮">按钮</Option>

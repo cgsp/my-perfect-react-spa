@@ -175,7 +175,11 @@ class ModuleClassfiyTab extends Component {
                           }
                         ],
                       })(
-                        <Select allowClear placeholder="请选择内容类型">
+                        <Select
+                          allowClear
+                          placeholder="请选择内容类型"
+                          getPopupContainer={trigger => trigger.parentNode}
+                        >
                           <Option value={6}>分类</Option>
                           <Option value={3}>听单</Option>
                           <Option value={8}>自运营标签</Option>

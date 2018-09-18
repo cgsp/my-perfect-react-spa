@@ -221,7 +221,11 @@ class SelfListenAddOrEdit extends Component {
                   }
                 ],
               })(
-                <Select allowClear onChange={(v) => this.sourceChange(v)}>
+                <Select
+                  getPopupContainer={trigger => trigger.parentNode}
+                  allowClear
+                  onChange={(v) => this.sourceChange(v)}
+                >
                   <Option value="1">主站分类</Option>
                   <Option value="2">自运营分类</Option>
                 </Select>
@@ -239,7 +243,10 @@ class SelfListenAddOrEdit extends Component {
                   }
                 ],
               })(
-                <Select allowClear>
+                <Select
+                  getPopupContainer={trigger => trigger.parentNode}
+                  allowClear
+                >
                   {
                     this.props.commonSmallTypes.map((item) => (
                       <Option key={item.id} value={item.id}>{item.name}</Option>
@@ -261,7 +268,11 @@ class SelfListenAddOrEdit extends Component {
                   }
                 ],
               })(
-                <Select allowClear disabled={this.props.addOrEditTitle === '编辑听单'}>
+                <Select
+                  getPopupContainer={trigger => trigger.parentNode}
+                  allowClear
+                  disabled={this.props.addOrEditTitle === '编辑听单'}
+                >
                   <Option value="1">专辑</Option>
                   <Option value="2">声音</Option>
                 </Select>

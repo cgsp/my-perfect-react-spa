@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-14 17:51:31
+ * @Last Modified time: 2018-09-18 14:30:43
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -770,6 +770,7 @@ class SelfAlbum extends Component {
                     showArrow={false}
                     filterOption={false}
                     notFoundContent={'根据此关键字，无法搜索'}
+                    getPopupContainer={trigger => trigger.parentNode}
                   >
                     {
                       this.state.tagSelectData.map(item => (

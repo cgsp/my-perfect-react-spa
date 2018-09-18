@@ -132,7 +132,9 @@ class ModuleDiscountCoupon extends Component {
               {getFieldDecorator(`${moduleSymbol}~moduleType`, {
                 initialValue: 13
               })(
-                <Select >
+                <Select
+                  getPopupContainer={trigger => trigger.parentNode}
+                >
                   <Option value={13}>优惠券</Option>
                 </Select>
               )}

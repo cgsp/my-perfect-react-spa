@@ -147,6 +147,7 @@ class ChildTablesave extends Component {
                 showArrow={false}
                 filterOption={false}
                 notFoundContent={'根据此关键字，无法搜索'}
+                getPopupContainer={trigger => trigger.parentNode}
               >
                 {
                   this.state.parterSelectData.map(item => (

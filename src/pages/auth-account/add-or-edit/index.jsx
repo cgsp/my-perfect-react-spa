@@ -99,6 +99,7 @@ class AuthAccountAddOrEdit extends Component {
               <Select
                 mode="multiple"
                 allowClear
+                getPopupContainer={trigger => trigger.parentNode}
               >
                 {
                   this.state.roleList.map((item) => (
