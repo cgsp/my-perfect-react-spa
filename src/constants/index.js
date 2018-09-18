@@ -49,11 +49,15 @@
 
 const ROUTE_BASE = {
   dev: '',
-  pro: 'openapi-content-admin-app'
+  pro: ''
 }
+// const ROUTE_BASE = {
+//   dev: '',
+//   pro: ''
+// }
 
 const BASEURL = {
-  dev: '/openapi-content-admin-app',
+  dev: 'http://cms.test.9nali.com/openapi-content-admin-app',
   pro: 'http://cms.test.9nali.com/openapi-content-admin-app',
 }
 
@@ -87,6 +91,8 @@ const SONG_URL = {
   },
 }
 
+const noLoginCode = 399
+
 const ERR_OK = 0
 
-export { BASEURL, ROUTE_BASE, ERR_OK, DOWN_LOAD_URL, UP_IMG_ACTION, SONG_URL, UP_FOCUS_IMG_ACTION }
+export { BASEURL, ROUTE_BASE, ERR_OK, DOWN_LOAD_URL, UP_IMG_ACTION, SONG_URL, UP_FOCUS_IMG_ACTION, noLoginCode }

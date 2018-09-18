@@ -1,5 +1,5 @@
 {
-  "name": "open-self-admin",
+  "name": "openapi-content-admin-app",
   "version": "1.0.0",
   "private": true,
   "dependencies": {
@@ -72,7 +72,7 @@
     "react-hot-loader": "4.2.0",
     "sass-loader": "7.0.1"
   },
-  "homepage": "http://static2.test.ximalaya.com/lib/open-self-admin/last/build/",
+  "homepage": ".",
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,mjs}"
@@ -120,12 +120,5 @@
     "output": "build/",
     "te_prebuild": "node scripts/build.js",
     "pe_prebuild": "node scripts/build.js"
-  },
-  "proxy": {
-    "/openapi-content-admin-app": {
-      "target": "http://cms.test.9nali.com/",
-      "secure": true,
-      "changeOrigin": true
-    }
   }
 }

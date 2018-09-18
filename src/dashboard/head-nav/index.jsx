@@ -22,7 +22,7 @@ export default class HeadNav extends Component {
         return (
             <div className="header-container">
                 <div className="main-nav">
-                        <h1>开放平台自运营后台</h1>
+                        <h1 style={{fontSize: '20px'}}>开放平台自运营后台</h1>
                     <div className="user-panel">
                         {this.props.isLogin ? (
                             <ul className="nav-right-menu">

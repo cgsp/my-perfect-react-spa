@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-18 16:29:25
+ * @Last Modified time: 2018-09-18 18:02:23
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, message, Select, Modal } from 'antd'
@@ -321,7 +321,8 @@ class AuthMenu extends Component {
         })
     } else {
       // 根据parentId获取sort
-      if (values.level === 1) {
+
+      if (values.level === 1 && values.type !== 4) {
         values.parentId = this.parentId
       } else {
         values.parentId = this.resourceId

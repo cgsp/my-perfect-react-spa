@@ -30,13 +30,27 @@
 
 import { myLocalStorageGet } from '@Utils/myStorages'
 
-export const defaultHeader = {
-  'Content-Type': 'application/json;charset=UTF-8'
+const DEV = process.env.NODE_ENV !== 'production'
+let defaultHeader
+if (DEV) {
+  defaultHeader = {
+    'Content-Type': 'application/json;charset=UTF-8',
+    'Index-Url': 'http://localhost:3000'
+  }
+} else {
+  defaultHeader = {
+    'Content-Type': 'application/json;charset=UTF-8'
+  }
 }
 
 // 1111
-export const tokenHeader = {
+const tokenHeader = {
   'Content-Type': 'application/json;charset=UTF-8',
   Authorization: myLocalStorageGet('token', '')
+}
+
+export {
+  defaultHeader,
+  tokenHeader
 }
 
