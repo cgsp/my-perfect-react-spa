@@ -10,9 +10,9 @@ class ChildSingleVoice extends Component {
     deleteModule: PropTypes.func
   }
 
-  constructor(props) {
-    super(props)
-  }
+  // constructor(props) {
+  //   super(props)
+  // }
 
   render() {
     const getFieldDecorator = this.props.getFieldDecorator

@@ -5,13 +5,16 @@ import { PropTypes } from 'prop-types'
 const FormItem = Form.Item
 const Option = Select.Option
 
-class ChildMainList extends Component {
+class ChildAlbum extends Component {
   static propTypes = {
     deleteModule: PropTypes.func
   }
 
   constructor(props) {
     super(props)
+    this.state = {
+      moduleType: 4
+    }
   }
 
   render() {
@@ -37,7 +40,7 @@ class ChildMainList extends Component {
           label="展示形式"
         >
           {getFieldDecorator(`${moduleSymbol}~moduleType`, {
-            initialValue: 5,
+            initialValue: 4,
             rules: [
               {
                 required: true, message: '请选择展示形式',
@@ -52,28 +55,34 @@ class ChildMainList extends Component {
               }}
               getPopupContainer={trigger => trigger.parentNode}
             >
+              <Option value={4}>平铺</Option>
               <Option value={5}>列表</Option>
+              <Option value={7}>单品</Option>
             </Select>
           )}
         </FormItem>
-        <FormItem
-          {...formItemLayout}
-          label="展示数量"
-        >
-          {
-            getFieldDecorator(`${moduleSymbol}~displayNum`, {
-              initialValue: undefined,
-              rules: [
-                {
-                  required: true,
-                  message: '请输入展示数量',
-                }
-              ]
-            })(
-              <Input type="number" placeholder="请输入展示数量" onPressEnter={e => e.preventDefault()} />
-            )
-          }
-        </FormItem>
+        {
+          this.state.moduleType !== 7
+            ?
+            <FormItem
+              {...formItemLayout}
+              label="平铺行数或展示数量"
+            >
+              {
+                getFieldDecorator(`${moduleSymbol}~displayNum`, {
+                  initialValue: undefined,
+                  rules: [
+                    {
+                      required: true,
+                      message: '请输入平铺行数或展示数量',
+                    }
+                  ]
+                })(
+                  <Input type="number" placeholder="请输入平铺行数或展示数量" onPressEnter={e => e.preventDefault()} />
+                )
+              }
+            </FormItem> : null
+        }
         <FormItem
           {...formItemLayout}
           label="模块展示名称"
@@ -98,7 +107,7 @@ class ChildMainList extends Component {
         </FormItem>
         <FormItem
           {...formItemLayout}
-          label="榜单Id"
+          label="主站专辑ID"
         >
           {
             getFieldDecorator(`${moduleSymbol}~resourceId`, {
@@ -106,11 +115,11 @@ class ChildMainList extends Component {
               rules: [
                 {
                   required: true,
-                  message: '请输入榜单Id',
+                  message: '请输入主站专辑ID',
                 }
               ]
             })(
-              <Input type="number" placeholder="请输入榜单Id" onPressEnter={e => e.preventDefault()} />
+              <Input type="number" placeholder="请输入主站专辑ID" onPressEnter={e => e.preventDefault()} />
             )
           }
         </FormItem>
@@ -119,5 +128,5 @@ class ChildMainList extends Component {
   }
 }
 
-export default ChildMainList
+export default ChildAlbum
 

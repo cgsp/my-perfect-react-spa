@@ -1,0 +1,7 @@
+@import '../mixin.scss';
+.focus-module {
+  @include module-title;
+  .module-content {
+    height: auto;
+  }
+}

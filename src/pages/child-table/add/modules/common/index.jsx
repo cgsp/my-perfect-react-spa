@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Input, Select } from 'antd'
+import { Form, Select } from 'antd'
 import { PropTypes } from 'prop-types'
 import DeleteIcon from '../imgs/delete.png'
 import MoveIcon from '../imgs/move.png'

@@ -1,0 +1,7 @@
+@import '../mixin.scss';
+.discount-coupon-module {
+  @include module-title;
+  .module-content {
+    height: auto;
+  }
+}

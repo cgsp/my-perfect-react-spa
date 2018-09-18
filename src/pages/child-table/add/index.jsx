@@ -4,7 +4,7 @@ import { apiChildParter } from '@Api/child-table'
 import { ERR_OK } from '@Constants'
 import { moduleNameList } from '../config'
 import { DragDropContext } from 'react-beautiful-dnd'
-import Column from '../drag/column'
+import Column from './drag/column'
 import './style.scss'
 import { transNameToModule } from '@Utils/transNameToModule'
 import { getMaxTaskId } from '@Utils/getMaxTaskId'
@@ -426,7 +426,11 @@ class ChildTableAdd extends Component {
                           }
                         ]
                       })(
-                        <Input placeholder="请输入子站名称" onPressEnter={e => e.preventDefault()} />
+                        <Input
+                          placeholder="请输入子站名称"
+                          onPressEnter={e => e.preventDefault()}
+                          autoComplete="off"
+                        />
                       )
                     }
                   </FormItem>
