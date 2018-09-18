@@ -7,6 +7,11 @@ import './style.scss'
 import ChildSingleListen from './single-listen'
 import ChildMoreListen from './more-listen'
 import ChildCategory from './category'
+import ChildTag from './tag'
+import ChildMainList from './main-list'
+import ChildAlbum from './album'
+import ChildSingleVoice from './single-voice'
+
 
 const FormItem = Form.Item
 const Option = Select.Option
@@ -59,6 +64,18 @@ class ModuleCommon extends Component {
         break
       case 6:
         Child = ChildCategory
+        break
+      case 7:
+        Child = ChildTag
+        break
+      case 4:
+        Child = ChildMainList
+        break
+      case 2:
+        Child = ChildAlbum
+        break
+      case 1:
+        Child = ChildSingleVoice
         break
       default:
         break

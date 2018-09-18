@@ -25,13 +25,7 @@ class ModuleClassfiyTab extends Component {
           displayName: undefined,
           resourceType: undefined,
           resourceId: undefined
-        },
-        {
-          lineId: 'line-2',
-          displayName: undefined,
-          resourceType: undefined,
-          resourceId: undefined
-        },
+        }
       ]
     }
   }
@@ -165,7 +159,7 @@ class ModuleClassfiyTab extends Component {
                             }
                           ]
                         })(
-                          <Input placeholder="请输入展示名称" onPressEnter={e => e.preventDefault()} />
+                          <Input placeholder="请输入分类名" onPressEnter={e => e.preventDefault()} />
                         )
                       }
                     </FormItem>
