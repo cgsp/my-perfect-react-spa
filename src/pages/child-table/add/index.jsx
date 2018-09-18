@@ -660,6 +660,7 @@ class ChildTableAdd extends Component {
                               tasks={tasks}
                               deleteModule={this.deleteModule}
                               getFieldDecorator={getFieldDecorator}
+                              form={this.props.form}
                             />
                           )
                         })

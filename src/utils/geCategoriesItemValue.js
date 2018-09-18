@@ -1,7 +1,7 @@
 import { isRepeatArr } from '@Utils/isRepeatArr'
 
 export const geCategoriesItemValue = (obj) => {
-  let categories
+  // let categories
   let orderArr
   const keys = Object.keys(obj)
   for (let index = 0; index < keys.length; index++) {
