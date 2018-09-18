@@ -2,12 +2,13 @@
  * @Author: John.Guan
  * @Date: 2018-07-24 15:01:37
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-05 10:13:28
+ * @Last Modified time: 2018-09-18 15:48:49
  */
 import axios from 'axios'
 import qs from 'qs'
 import { myLocalStorageGet } from '@Utils/myStorages'
 import { BASEURL } from '@Constants'
+import { mySessionStorageClear } from '@Utils/myStorages'
 // import { message } from 'antd'
 // import { Toast } from 'antd-mobile'
 
@@ -47,7 +48,13 @@ axios.interceptors.request.use((config) => {
 axios.interceptors.response.use((response) => {
   // 对响应数据做点什么
   // Toast.hide();
-  // console.log('响应成功拦截器:', response);
+  console.log('响应成功拦截器:', response)
+  if (!DEV) {
+    if (response && response.data && response.data.code === 0) {
+      mySessionStorageClear()
+      window.location = 'http://www.baidu.com'
+    }
+  }
   return response
 }, (error) => {
   // 对响应错误做点什么
