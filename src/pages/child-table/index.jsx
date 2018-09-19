@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-19 11:24:57
+ * @Last Modified time: 2018-09-19 13:32:47
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -17,6 +17,8 @@ import SortList from '@Components/sort-list'
 import TimeControlHoc from '@Components/time-control-hoc'
 
 import { apiChildTableList, apiChildTableAdd, apiChildParter, apiGetSiteDetail } from '@Api/child-table'
+
+import { mySessionStorageRemove } from '@Utils/myStorages'
 
 import MainClassfiyListTable from './list-table'
 import WrapperChildTablesave from './save'
@@ -62,6 +64,8 @@ class ChildTable extends Component {
   }
 
   componentDidMount() {
+    // 清除下本地的缓存
+    mySessionStorageRemove('indexToEditData')
     // 初始化查询列表数据
     this.getListData({
       pageNo: 1,
@@ -207,17 +211,25 @@ class ChildTable extends Component {
   }
 
   // 列表页面的编辑
-  tableLineEdit(line) {
+  async tableLineEdit(line) {
     console.log('编辑', line)
-    this.props.history.push({
-      pathname: '/child-table-edit',
-      query: {
-        data: [{
-          name: 'guan',
-          age: 18
-        }]
+    try {
+      this.refs.mask.show()
+      const res = await apiGetSiteDetail(line.id)
+      this.refs.mask.hide()
+      if (res.code !== ERR_OK) {
+        message.error(res.msg)
+        return
       }
-    })
+      // 清除下本地的缓存
+      mySessionStorageRemove('indexToEditData')
+      this.props.history.push({
+        pathname: '/child-table-edit',
+        query: { ...res.data }
+      })
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   addBegin() {

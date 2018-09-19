@@ -53,7 +53,6 @@ export const apiChildGetDays = () => {
 // 获取详情的接口
 export const apiGetSiteDetail = (id) => {
   const url = `/sites/${id}`
-  console.log(url)
   return myAxios(
     {
       url,

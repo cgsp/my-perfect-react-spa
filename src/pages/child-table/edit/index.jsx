@@ -12,7 +12,8 @@ import { judgeLimitOneModule } from '@Utils/judgeLimitOneModule'
 import { getModulesItemValue } from '@Utils/getModulesItemValue'
 import { geCategoriesItemValue } from '@Utils/geCategoriesItemValue'
 import { isRepeatArr } from '@Utils/isRepeatArr'
-import { mySessionStorageGet, mySessionStorageSet } from '@Utils/myStorages'
+import { mySessionStorageGet, mySessionStorageSet, mySessionStorageRemove } from '@Utils/myStorages'
+import { apiChildTableAdd } from '@Api/child-table'
 
 
 const FormItem = Form.Item
@@ -28,7 +29,7 @@ class ChildTableEdit extends Component {
     // 编辑的时候，通过路由传递的数据
     let originData
     if (this.props.location.query) {
-      originData = this.props.location.query.data
+      originData = this.props.location.query
       mySessionStorageSet('indexToEditData', originData)
     } else {
       originData = mySessionStorageGet('indexToEditData', {})
@@ -47,7 +48,8 @@ class ChildTableEdit extends Component {
           }
         },
         columnOrder: ['column-1']
-      }
+      },
+      originData
     }
 
     // 最终表单的数据
@@ -180,8 +182,34 @@ class ChildTableEdit extends Component {
 
         // 判断焦点图id的数量，是否超过4个
         console.log(options)
+        this.editSite(options)
       })
 
+    })
+  }
+
+  // 编辑的辅助函数
+  editSite(options) {
+    // 还需要一个子站的ID
+    this.setState({}, () => {
+      const { id } = this.state.originData.site
+      options.site.extendConfigJson = JSON.stringify(options.site.extendConfigJson)
+      options.site.id = id
+      this.refs.mask.show()
+      apiChildTableAdd(options)
+        .then(res => {
+          this.refs.mask.hide()
+          if (res.code !== ERR_OK) {
+            message.error(res.msg)
+            return
+          }
+          message.success('编辑子站成功')
+          // 清除下本地的缓存
+          mySessionStorageRemove('indexToEditData')
+          this.props.history.push({
+            pathname: '/child-table'
+          })
+        })
     })
   }
   // 合作方的模糊匹配
