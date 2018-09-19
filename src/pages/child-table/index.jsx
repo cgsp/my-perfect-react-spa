@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-19 13:32:47
+ * @Last Modified time: 2018-09-19 15:16:53
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -221,6 +221,7 @@ class ChildTable extends Component {
         message.error(res.msg)
         return
       }
+      res.data.site.appName = line.appName
       // 清除下本地的缓存
       mySessionStorageRemove('indexToEditData')
       this.props.history.push({

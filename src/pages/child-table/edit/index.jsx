@@ -34,21 +34,35 @@ class ChildTableEdit extends Component {
     } else {
       originData = mySessionStorageGet('indexToEditData', {})
     }
+
     console.log(originData)
-    this.state = {
-      parterSelectData: [],
-      moduleNameList,
-      dragData: {
-        tasks: {},
-        columns: {
-          'column-1': {
-            id: 'column-1',
-            title: '模块设置',
-            taskIds: [],
-          }
-        },
-        columnOrder: ['column-1']
+    const site = JSON.parse(JSON.stringify(originData.site))
+    const modules = JSON.parse(JSON.stringify(originData.modules))
+
+    // 对modules进行处理，还原modules的初始值
+    let dragData = {
+      tasks: {},
+      columns: {
+        'column-1': {
+          id: 'column-1',
+          title: '模块设置',
+          taskIds: [],
+        }
       },
+      columnOrder: ['column-1']
+    }
+
+
+    this.state = {
+      parterSelectData: [
+        {
+          value: site.appKey,
+          text: site.appName
+        }
+      ],
+      appKey: site.appKey,
+      moduleNameList,
+      dragData,
       originData
     }
 
@@ -339,7 +353,8 @@ class ChildTableEdit extends Component {
 
           oldDragData.tasks[taskId] = {
             taskId,
-            content: taskContent
+            content: taskContent,
+            moduleValue: {}
           }
           oldDragData.columns['column-1'].taskIds.unshift(taskId)
           console.log(oldDragData)

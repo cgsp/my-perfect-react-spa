@@ -182,10 +182,6 @@ class ChildTablesave extends Component {
                 initialValue: this.props.saveInitValues.description,
                 rules: [
                   {
-                    max: 200,
-                    message: '子站简介应该小于200个字符',
-                  },
-                  {
                     required: true,
                     message: '请输入子站简介',
                   }

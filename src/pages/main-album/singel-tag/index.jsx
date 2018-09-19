@@ -145,6 +145,7 @@ class SingleTag extends Component {
   // 点击标签勾选的时候
   handleChoseTag = (e) => {
     const value = e.target.value - 0
+    console.log(value)
     this.setState({
     }, () => {
       // 判断一下，如果。这个value,在当前的nowChoosedTagsIdInNowDimension里面，那么删除

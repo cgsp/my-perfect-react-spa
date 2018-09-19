@@ -370,10 +370,6 @@ class SelfTagDimensionAddOrEdit extends Component {
                 initialValue: this.props.addOrEditInitValues.intro,
                 rules: [
                   {
-                    max: 200,
-                    message: '专辑简介应该小于200个字符',
-                  },
-                  {
                     required: true,
                     message: '请输入专辑简介',
                   }

@@ -2,7 +2,7 @@
  * @Author: John.Guan
  * @Date: 2018-07-24 15:01:37
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-19 14:27:47
+ * @Last Modified time: 2018-09-19 15:13:58
  */
 import axios from 'axios'
 import qs from 'qs'
@@ -50,6 +50,9 @@ axios.interceptors.response.use((response) => {
   // 对响应数据做点什么
   // Toast.hide();
   // console.log('响应成功拦截器:', response)
+  // mySessionStorageClear()
+  // window.location = 'http://ops.test.ximalaya.com/cas-server/login?service=http%3A%2F%2Fcms.test.9nali.com%2Fopenapi-content-admin-app%2Fcallback%3Fclient_name%3DCasClient'
+
   if (response && response.data && response.data.code === noLoginCode) {
     const str = JSON.stringify(response.data)
     alert('后端给前端399了,具体信息是-------' + str)

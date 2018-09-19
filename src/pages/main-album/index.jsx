@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-18 14:28:37
+ * @Last Modified time: 2018-09-19 14:41:46
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -547,8 +547,10 @@ class MainAlbum extends Component {
   }
   async allTagOk(options) {
     try {
+      this.refs.mask.show()
       options.type = '批量'
       const res = await apiMainAlbumMakeTag(options)
+      
       if (res.code !== ERR_OK) {
         message.error(res.msg)
         return
@@ -559,6 +561,7 @@ class MainAlbum extends Component {
         // 刷新维度列表页面
         this.searchList('批量打标签')
       })
+      this.refs.mask.hide()
 
     } catch (error) {
       console.log(error)
@@ -576,11 +579,13 @@ class MainAlbum extends Component {
   async singleTagOk(nowChoosedTagsIds) {
     console.log(nowChoosedTagsIds)
     try {
+      this.refs.mask.show()
       const options = {
         albumIds: [this.singleTagId],
         tagIds: nowChoosedTagsIds
       }
       const res = await apiMainAlbumMakeTag(options)
+      
       if (res.code !== ERR_OK) {
         message.error(res.msg)
         return
@@ -592,6 +597,7 @@ class MainAlbum extends Component {
         // 刷新维度列表页面
         this.searchList('打标签')
       })
+      this.refs.mask.hide()
 
     } catch (error) {
       console.log(error)
