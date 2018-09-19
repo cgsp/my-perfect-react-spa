@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-19 10:35:24
+ * @Last Modified time: 2018-09-19 11:24:57
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -16,7 +16,7 @@ import MaskLoading from '@Components/mask-loading'
 import SortList from '@Components/sort-list'
 import TimeControlHoc from '@Components/time-control-hoc'
 
-import { apiChildTableList, apiChildTableSave, apiChildParter } from '@Api/child-table'
+import { apiChildTableList, apiChildTableAdd, apiChildParter, apiGetSiteDetail } from '@Api/child-table'
 
 import MainClassfiyListTable from './list-table'
 import WrapperChildTablesave from './save'
@@ -229,16 +229,23 @@ class ChildTable extends Component {
 
   // 另存为的确定
   saveOk(values) {
-    this.handleSave(values, () => {
+    let newValues = this.saveDatail
+    newValues.site.siteName = values.siteName
+    newValues.site.appKey = values.appKey
+    newValues.site.description = values.description
+    this.handleSave(newValues, () => {
       this.saveCancel()
       this.searchList('另存为')
+      newValues = null
     })
   }
 
   // 另存为ajax
   handleSave(options, callBack) {
     this.refs.mask.show()
-    apiChildTableSave(options)
+    options.site.extendConfigJson = JSON.stringify(options.site.extendConfigJson)
+    this.refs.mask.show()
+    apiChildTableAdd(options)
       .then(res => {
         this.refs.mask.hide()
         if (res.code !== ERR_OK) {
@@ -254,38 +261,28 @@ class ChildTable extends Component {
     this.setState({
       saveVisible: false
     })
+    this.saveDatail = null
   }
 
   async tableLineSave(line) {
+    console.log(line)
     try {
-      if (line.appName && line.appKey) {
-        const options = {
-          appName: line.appName
-        }
-        this.refs.mask.show()
-        const parterRes = await apiChildParter(options)
-        this.refs.mask.hide()
-        if (parterRes.code !== ERR_OK) {
-          message.error(parterRes.msg)
-          return
-        }
-        const result = parterRes.data.slice(0, 20)
-        let parterSelectData = []
-        result.forEach(item => {
-          parterSelectData.push({
-            value: item.appKey,
-            text: item.appName
-          })
-        })
-        line.parterSelectData = parterSelectData.slice()
-      } else {
-        line.appKey = undefined
-        line.parterSelectData = []
+      this.refs.mask.show()
+      const res = await apiGetSiteDetail(line.id)
+      this.refs.mask.hide()
+      if (res.code !== ERR_OK) {
+        message.error(res.msg)
+        return
       }
+      this.saveDatail = res.data
+      console.log(this.saveDatail)
       this.setState({
         saveTitle: '子站另存为',
         saveVisible: true,
-        saveInitValues: line,
+        saveInitValues: {
+          parterSelectData: [],
+          appKey: undefined
+        },
       })
     } catch (error) {
       console.log(error)

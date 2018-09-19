@@ -26,18 +26,6 @@ export const apiChildParter = (options) => {
     })
 }
 
-// 另存为
-export const apiChildTableSave = (options) => {
-  return myAxios(
-    {
-      url: '/category/customizedCategory',
-      method: 'put',
-      params: {},
-      data: options,
-      headers: defaultHeader
-    })
-}
-
 // 新增
 export const apiChildTableAdd = (options) => {
   return myAxios(
@@ -55,6 +43,20 @@ export const apiChildGetDays = () => {
   return myAxios(
     {
       url: '/experience-vip/list',
+      method: 'get',
+      params: {},
+      data: {},
+      headers: defaultHeader
+    })
+}
+
+// 获取详情的接口
+export const apiGetSiteDetail = (id) => {
+  const url = `/sites/${id}`
+  console.log(url)
+  return myAxios(
+    {
+      url,
       method: 'get',
       params: {},
       data: {},
