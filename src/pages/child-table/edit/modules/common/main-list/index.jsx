@@ -37,7 +37,7 @@ class ChildMainList extends Component {
           label="展示形式"
         >
           {getFieldDecorator(`${moduleSymbol}~moduleType`, {
-            initialValue: 5,
+            initialValue: this.props.moduleValue.moduleType,
             rules: [
               {
                 required: true, message: '请选择展示形式',
@@ -62,7 +62,7 @@ class ChildMainList extends Component {
         >
           {
             getFieldDecorator(`${moduleSymbol}~displayNum`, {
-              initialValue: undefined,
+              initialValue: this.props.moduleValue.displayNum,
               rules: [
                 {
                   required: true,
@@ -80,7 +80,7 @@ class ChildMainList extends Component {
         >
           {
             getFieldDecorator(`${moduleSymbol}~displayName`, {
-              initialValue: undefined,
+              initialValue: this.props.moduleValue.displayName,
               rules: [
                 {
                   required: true,
@@ -102,7 +102,7 @@ class ChildMainList extends Component {
         >
           {
             getFieldDecorator(`${moduleSymbol}~resourceId`, {
-              initialValue: undefined,
+              initialValue: this.props.moduleValue.resourceId,
               rules: [
                 {
                   required: true,

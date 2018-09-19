@@ -18,10 +18,12 @@ class ModuleDiscountCoupon extends Component {
 
   constructor(props) {
     super(props)
+    // console.log(props.task.moduleValue)
     this.state = {
-      rules: undefined
+      rules: undefined,
+      moduleValue: props.task.moduleValue || {}
     }
-    console.log(props)
+    // console.log(props)
   }
 
   getRules = () => {
@@ -38,6 +40,7 @@ class ModuleDiscountCoupon extends Component {
   }
 
   render() {
+    const { moduleValue } = this.state
     const getFieldDecorator = this.props.getFieldDecorator
     const { taskId, content
     } = this.props.task
@@ -68,7 +71,7 @@ class ModuleDiscountCoupon extends Component {
           >
             {
               getFieldDecorator(`${moduleSymbol}~context-style`, {
-                initialValue: 1,
+                initialValue: moduleValue.context ? JSON.parse(moduleValue.context).style + '' : undefined,
                 rules: [
                   {
                     required: true, message: '请选择展示形式',
@@ -76,8 +79,8 @@ class ModuleDiscountCoupon extends Component {
                 ],
               })(
                 <RadioGroup>
-                  <Radio value={1}>首页弹出</Radio>
-                  <Radio value={2}>固定显示</Radio>
+                  <Radio value={'1'}>首页弹出</Radio>
+                  <Radio value={'2'}>固定显示</Radio>
                 </RadioGroup>
               )
             }
@@ -88,7 +91,7 @@ class ModuleDiscountCoupon extends Component {
           >
             {
               getFieldDecorator(`${moduleSymbol}~context-couponIds`, {
-                initialValue: undefined,
+                initialValue: moduleValue.context ? JSON.parse(moduleValue.context).couponIds.split(',').join('\n') : undefined,
                 rules: [
                   {
                     required: true,

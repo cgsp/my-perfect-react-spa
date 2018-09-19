@@ -86,6 +86,7 @@ export default class Task extends Component {
                 task={this.props.task}
                 getFieldDecorator={this.props.getFieldDecorator}
                 form={this.props.form}
+                categories={this.props.categories}
               />
             </Container>
           )

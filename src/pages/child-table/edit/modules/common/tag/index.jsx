@@ -1,18 +1,11 @@
 import React, { Component } from 'react'
 import { Form, Input, Select, message } from 'antd'
 import { PropTypes } from 'prop-types'
-import { ERR_OK } from '@Constants'
-import { getCommonDimesions } from '@Redux/commonTagAndDimesion'
-import { apiSelfTagTagList } from '@Api/self-tag-tag'
-import { connect } from 'react-redux'
 
 const FormItem = Form.Item
 const Option = Select.Option
 
-@connect(
-  state => state.commonTagAndDimesionsReducer,
-  { getCommonDimesions }
-)
+
 class ChildTag extends Component {
   static propTypes = {
     deleteModule: PropTypes.func
@@ -23,46 +16,8 @@ class ChildTag extends Component {
     console.log(props)
     this.state = {
       moduleType: 4,
-      tags: []
     }
-    this.dimensionChange = this.dimensionChange.bind(this)
-    // 获取公用的维度数据
-    this.props.getCommonDimesions()
-  }
 
-  dimensionChange(v) {
-    const { taskId, content
-    } = this.props.task
-    const moduleSymbol = `${taskId}~${content}`
-    this.props.form.setFieldsValue({
-      [`${moduleSymbol}~resourceId`]: undefined
-    })
-    if (!v) {
-      this.setState({
-        tags: []
-      })
-      return
-    }
-    this.getTags(v)
-  }
-
-  getTags = async (source) => {
-    try {
-      const options = {
-        dimensionId: source,
-        paged: false
-      }
-      const tagsRes = await apiSelfTagTagList(options)
-      if (tagsRes.code !== ERR_OK) {
-        message.error(tagsRes.msg)
-        return
-      }
-      this.setState({
-        tags: tagsRes.data.dataList
-      })
-    } catch (error) {
-      console.log(error)
-    }
   }
 
   render() {
@@ -88,7 +43,7 @@ class ChildTag extends Component {
           label="展示形式"
         >
           {getFieldDecorator(`${moduleSymbol}~moduleType`, {
-            initialValue: 4,
+            initialValue: this.props.moduleValue.moduleType,
             rules: [
               {
                 required: true, message: '请选择展示形式',
@@ -114,7 +69,7 @@ class ChildTag extends Component {
         >
           {
             getFieldDecorator(`${moduleSymbol}~displayNum`, {
-              initialValue: undefined,
+              initialValue: this.props.moduleValue.displayNum,
               rules: [
                 {
                   required: true,
@@ -132,7 +87,7 @@ class ChildTag extends Component {
         >
           {
             getFieldDecorator(`${moduleSymbol}~displayName`, {
-              initialValue: undefined,
+              initialValue: this.props.moduleValue.displayName,
               rules: [
                 {
                   required: true,
@@ -150,49 +105,17 @@ class ChildTag extends Component {
         </FormItem>
         <FormItem
           {...formItemLayout}
-          label={
-            <label className="ant-form-item-required">维度:</label>
-          }
-          colon={false}
-        >
-          <Select
-            placeholder="请选择维度"
-            allowClear
-            defaultValue={undefined}
-            onChange={(v) => this.dimensionChange(v)}
-            getPopupContainer={trigger => trigger.parentNode}
-          >
-            {
-              this.props.commonDimesions.map((item) => (
-                <Option key={item.id} value={item.id}>{item.dimensionName}</Option>
-              ))
-            }
-          </Select>
-        </FormItem>
-        <FormItem
-          {...formItemLayout}
-          label="自运营标签"
+          label="自运营标签Id"
         >
           {getFieldDecorator(`${moduleSymbol}~resourceId`, {
-            initialValue: undefined,
+            initialValue: this.props.moduleValue.resourceId,
             rules: [
               {
-                required: true, message: '请选择自运营标签',
+                required: true, message: '请输入自运营标签Id',
               }
             ],
           })(
-            <Select
-              allowClear
-              getPopupContainer={trigger => trigger.parentNode}
-              placeholder="请选择自运营标签"
-              notFoundContent="请先选择维度"
-            >
-              {
-                this.state.tags.map((item) => (
-                  <Option key={item.id} value={item.id}>{item.name}</Option>
-                ))
-              }
-            </Select>
+            <Input type="number" placeholder="请输入自运营标签Id" onPressEnter={e => e.preventDefault()} />
           )}
         </FormItem>
         <FormItem
@@ -200,7 +123,7 @@ class ChildTag extends Component {
           label="专辑来源"
         >
           {getFieldDecorator(`${moduleSymbol}~context-contentType`, {
-            initialValue: 2,
+            initialValue: this.props.moduleValue.context ? JSON.parse(this.props.moduleValue.context).contentType : undefined,
             rules: [
               {
                 required: true, message: '请选择专辑来源',

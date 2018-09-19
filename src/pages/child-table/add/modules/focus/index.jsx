@@ -97,7 +97,7 @@ class ModuleFocus extends Component {
                 <Select
                   getPopupContainer={trigger => trigger.parentNode}
                 >
-                  <Option value={2}>优惠券</Option>
+                  <Option value={2}>焦点图</Option>
                 </Select>
               )}
             </FormItem>

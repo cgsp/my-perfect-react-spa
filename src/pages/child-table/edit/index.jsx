@@ -755,6 +755,7 @@ class ChildTableEdit extends Component {
                               key={column.id}
                               column={column}
                               tasks={tasks}
+                              categories={this.state.categories}
                               deleteModule={this.deleteModule}
                               getFieldDecorator={getFieldDecorator}
                               form={this.props.form}

@@ -42,6 +42,7 @@ class ModuleCommon extends Component {
       [`${moduleSymbol}~resourceId`]: undefined,
       [`${moduleSymbol}~topContentIds`]: undefined,
       [`${moduleSymbol}~displayName`]: undefined,
+      [`${moduleSymbol}~context-contentType`]: undefined,
     })
     this.setState({
       resourceType: v

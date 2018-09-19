@@ -35,7 +35,7 @@ class ChildMoreListen extends Component {
           label="展示形式"
         >
           {getFieldDecorator(`${moduleSymbol}~moduleType`, {
-            initialValue: 4,
+            initialValue: this.props.moduleValue.moduleType,
             rules: [
               {
                 required: true, message: '请选择展示形式',
@@ -56,7 +56,7 @@ class ChildMoreListen extends Component {
         >
           {
             getFieldDecorator(`${moduleSymbol}~displayNum`, {
-              initialValue: undefined,
+              initialValue: this.props.moduleValue.displayNum,
               rules: [
                 {
                   required: true,
@@ -74,7 +74,7 @@ class ChildMoreListen extends Component {
         >
           {
             getFieldDecorator(`${moduleSymbol}~displayName`, {
-              initialValue: undefined,
+              initialValue: this.props.moduleValue.displayName,
               rules: [
                 {
                   required: true,
@@ -96,7 +96,7 @@ class ChildMoreListen extends Component {
         >
           {
             getFieldDecorator(`${moduleSymbol}~topContentIds`, {
-              initialValue: undefined,
+              initialValue: this.props.moduleValue.topContentIds ? this.props.moduleValue.topContentIds.split(',').join('\n') : undefined,
               rules: [
                 {
                   required: true,

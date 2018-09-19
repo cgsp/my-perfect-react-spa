@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
-import { Form, Input, Select, Radio } from 'antd'
+import { Form, Input, Select, Radio, message } from 'antd'
 import { PropTypes } from 'prop-types'
 import DeleteIcon from '../imgs/delete.png'
 import MoveIcon from '../imgs/move.png'
+import { apiChildGetDays } from '@Api/child-table'
+import { ERR_OK } from '@Constants'
 import './style.scss'
 
 const FormItem = Form.Item
@@ -17,10 +19,44 @@ class ModuleMemberGet extends Component {
 
   constructor(props) {
     super(props)
-    console.log(props)
+    this.state = {
+      moduleValue: props.task.moduleValue || {},
+      days: []
+    }
+  }
+  componentDidMount() {
+    this.getDays()
+  }
+  getDays() {
+    const { taskId, content
+    } = this.props.task
+    const moduleSymbol = `${taskId}~${content}`
+    apiChildGetDays()
+      .then(res => {
+        if (res.code !== ERR_OK) {
+          message.error(res.msg)
+          return
+        }
+        this.setState({
+          days: res.data
+        })
+
+        let context = this.props.task.moduleValue.context
+        let itemId
+        if (!context) {
+          itemId = undefined
+        } else {
+          let context = JSON.parse(context)
+          itemId = context.itemId
+        }
+        this.props.form.setFieldsValue({
+          [`${moduleSymbol}~context-itemId`]: itemId
+        })
+      })
   }
 
   render() {
+    const { moduleValue } = this.state
     const getFieldDecorator = this.props.getFieldDecorator
     const { taskId, content
     } = this.props.task
@@ -51,7 +87,7 @@ class ModuleMemberGet extends Component {
           >
             {
               getFieldDecorator(`${moduleSymbol}~context-style`, {
-                initialValue: 1,
+                initialValue: moduleValue.context ? JSON.parse(moduleValue.context).style + '' : undefined,
                 rules: [
                   {
                     required: true, message: '请选择展示形式',
@@ -59,8 +95,8 @@ class ModuleMemberGet extends Component {
                 ],
               })(
                 <RadioGroup>
-                  <Radio value={1}>首页弹出</Radio>
-                  <Radio value={2}>固定显示</Radio>
+                  <Radio value={'1'}>首页弹出</Radio>
+                  <Radio value={'2'}>固定显示</Radio>
                 </RadioGroup>
               )
             }
@@ -93,7 +129,7 @@ class ModuleMemberGet extends Component {
           >
             {
               getFieldDecorator(`${moduleSymbol}~context-nums`, {
-                initialValue: undefined,
+                initialValue: moduleValue.context ? JSON.parse(moduleValue.context).nums + '' : undefined,
                 rules: [
                   {
                     required: true,
@@ -111,7 +147,7 @@ class ModuleMemberGet extends Component {
           >
             {
               getFieldDecorator(`${moduleSymbol}~context-remark`, {
-                initialValue: undefined,
+                initialValue: moduleValue.context ? JSON.parse(moduleValue.context).remark + '' : undefined,
                 rules: [
                   {
                     required: true,

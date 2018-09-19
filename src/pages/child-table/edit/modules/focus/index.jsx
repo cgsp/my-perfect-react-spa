@@ -15,12 +15,16 @@ class ModuleFocus extends Component {
     deleteModule: PropTypes.func
   }
 
-  // constructor(props) {
-  //   super(props)
-  //   console.log(props)
-  // }
+  constructor(props) {
+    super(props)
+    this.state = {
+      moduleValue: props.task.moduleValue || {}
+    }
+    console.log(props)
+  }
 
   render() {
+    const { moduleValue } = this.state
     const getFieldDecorator = this.props.getFieldDecorator
     const { taskId, content
     } = this.props.task
@@ -51,7 +55,7 @@ class ModuleFocus extends Component {
           >
             {
               getFieldDecorator(`${moduleSymbol}~context-style`, {
-                initialValue: 1,
+                initialValue: moduleValue.context ? JSON.parse(moduleValue.context).style + '' : undefined,
                 rules: [
                   {
                     required: true, message: '请选择展示形式',
@@ -59,8 +63,8 @@ class ModuleFocus extends Component {
                 ],
               })(
                 <RadioGroup>
-                  <Radio value={1}>轮播</Radio>
-                  <Radio value={2}>平铺</Radio>
+                  <Radio value={'1'}>轮播</Radio>
+                  <Radio value={'2'}>平铺</Radio>
                 </RadioGroup>
               )
             }
@@ -71,7 +75,7 @@ class ModuleFocus extends Component {
           >
             {
               getFieldDecorator(`${moduleSymbol}~topContentIds`, {
-                initialValue: undefined,
+                initialValue: moduleValue.topContentIds ? moduleValue.topContentIds.split(',').join('\n') : undefined,
                 rules: [
                   {
                     required: true,
@@ -97,7 +101,7 @@ class ModuleFocus extends Component {
                 <Select
                   getPopupContainer={trigger => trigger.parentNode}
                 >
-                  <Option value={2}>优惠券</Option>
+                  <Option value={2}>焦点图</Option>
                 </Select>
               )}
             </FormItem>

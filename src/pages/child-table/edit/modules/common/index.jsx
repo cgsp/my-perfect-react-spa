@@ -27,7 +27,7 @@ class ModuleCommon extends Component {
     // console.log(this.props.task.moduleValue)
     this.state = {
       resourceType: 3,
-      moduleValue: this.props.task.moduleValue || {}
+      moduleValue: props.task.moduleValue || {}
     }
     this.changeChildModule = this.changeChildModule.bind(this)
   }
@@ -46,6 +46,7 @@ class ModuleCommon extends Component {
       [`${moduleSymbol}~resourceId`]: undefined,
       [`${moduleSymbol}~topContentIds`]: undefined,
       [`${moduleSymbol}~displayName`]: undefined,
+      [`${moduleSymbol}~context-contentType`]: undefined,
     })
   }
 

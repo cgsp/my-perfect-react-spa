@@ -18,9 +18,10 @@ class ModuleClassfiyTab extends Component {
 
   constructor(props) {
     super(props)
-    
-    this.state = {
-      lines: [
+    console.log(props.categories)
+    let lines
+    if (props.categories.length === 0) {
+      lines = [
         {
           lineId: 'line-1',
           displayName: undefined,
@@ -28,6 +29,19 @@ class ModuleClassfiyTab extends Component {
           resourceId: undefined
         }
       ]
+    } else {
+      lines = []
+      props.categories.forEach((item, index) => {
+        lines.push({
+          lineId: `line-${index + 1}`,
+          displayName: item.displayName,
+          resourceType: item.resourceType,
+          resourceId: item.resourceId
+        })
+      })
+    }
+    this.state = {
+      lines,
     }
   }
 
@@ -148,7 +162,7 @@ class ModuleClassfiyTab extends Component {
                     >
                       {
                         getFieldDecorator(`${moduleSymbol}~categories-${item.lineId}~displayName`, {
-                          initialValue: undefined,
+                          initialValue: item.displayName,
                           rules: [
                             {
                               required: true,
@@ -169,7 +183,7 @@ class ModuleClassfiyTab extends Component {
                     <FormItem
                     >
                       {getFieldDecorator(`${moduleSymbol}~categories-${item.lineId}~resourceType`, {
-                        initialValue: undefined,
+                        initialValue: item.resourceType,
                         rules: [
                           {
                             required: true, message: '请选择内容类型',
@@ -193,7 +207,7 @@ class ModuleClassfiyTab extends Component {
                     >
                       {
                         getFieldDecorator(`${moduleSymbol}~categories-${item.lineId}~resourceId`, {
-                          initialValue: undefined,
+                          initialValue: item.resourceId,
                           rules: [
                             {
                               required: true,

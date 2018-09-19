@@ -15,10 +15,14 @@ class ModuleValueWelfare extends Component {
 
   constructor(props) {
     super(props)
+    this.state = {
+      moduleValue: props.task.moduleValue || {}
+    }
     console.log(props)
   }
 
   render() {
+    const { moduleValue } = this.state
     const getFieldDecorator = this.props.getFieldDecorator
     const { taskId, content
     } = this.props.task
@@ -49,7 +53,7 @@ class ModuleValueWelfare extends Component {
           >
             {
               getFieldDecorator(`${moduleSymbol}~displayName`, {
-                initialValue: undefined,
+                initialValue: moduleValue.displayName,
                 rules: [
                   {
                     required: true,
@@ -70,7 +74,7 @@ class ModuleValueWelfare extends Component {
             label="展示形式"
           >
             {getFieldDecorator(`${moduleSymbol}~context-style`, {
-              initialValue: 1,
+              initialValue: moduleValue.context ? JSON.parse(moduleValue.context).style + '' : undefined,
               rules: [
                 {
                   required: true, message: '请选择展示形式',
@@ -81,8 +85,8 @@ class ModuleValueWelfare extends Component {
                 allowClear
                 getPopupContainer={trigger => trigger.parentNode}
               >
-                <Option value={1}>平铺</Option>
-                <Option value={2}>列表</Option>
+                <Option value={'1'}>平铺</Option>
+                <Option value={'2'}>列表</Option>
               </Select>
             )}
           </FormItem>
@@ -92,7 +96,7 @@ class ModuleValueWelfare extends Component {
           >
             {
               getFieldDecorator(`${moduleSymbol}~displayNum`, {
-                initialValue: undefined,
+                initialValue: moduleValue.displayNum,
                 rules: [
                   {
                     required: true,
@@ -110,7 +114,7 @@ class ModuleValueWelfare extends Component {
           >
             {
               getFieldDecorator(`${moduleSymbol}~resourceId`, {
-                initialValue: undefined,
+                initialValue: moduleValue.resourceId,
                 rules: [
                   {
                     required: true,

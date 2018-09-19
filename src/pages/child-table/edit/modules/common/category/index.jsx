@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import { Form, Input, Select, message } from 'antd'
 import { PropTypes } from 'prop-types'
-import { commonSmallTypes } from '@Api'
-import { ERR_OK } from '@Constants'
 
 const FormItem = Form.Item
 const Option = Select.Option
@@ -18,40 +16,6 @@ class ChildCategory extends Component {
     this.state = {
       moduleType: 4,
       smallTypes: []
-    }
-    this.sourceChange = this.sourceChange.bind(this)
-  }
-
-  componentDidMount() {
-    this.getSmallTypes('1')
-  }
-  sourceChange(v) {
-    const { taskId, content
-    } = this.props.task
-    const moduleSymbol = `${taskId}~${content}`
-    this.getSmallTypes(v)
-    this.props.form.setFieldsValue({
-      [`${moduleSymbol}~resourceId`]: undefined
-    })
-  }
-
-  getSmallTypes = async (source) => {
-    try {
-      if (!source) {
-        this.setState({
-          smallTypes: []
-        })
-      }
-      const smallTypeRes = await commonSmallTypes(source)
-      if (smallTypeRes.code !== ERR_OK) {
-        message.error(smallTypeRes.msg)
-        return
-      }
-      this.setState({
-        smallTypes: smallTypeRes.data
-      })
-    } catch (error) {
-      console.log(error)
     }
   }
 
@@ -98,44 +62,22 @@ class ChildCategory extends Component {
             </Select>
           )}
         </FormItem>
+
         <FormItem
           {...formItemLayout}
-          label={
-            <label className="ant-form-item-required">分类来源:</label>
-          }
-          colon={false}
-        >
-          <Select
-            onChange={(v) => this.sourceChange(v)}
-            defaultValue={this.props.moduleValue.source}
-            getPopupContainer={trigger => trigger.parentNode}
-          >
-            <Option value={1}>主站分类</Option>
-            <Option value={2}>自运营分类</Option>
-          </Select>
-        </FormItem>
-        <FormItem
-          {...formItemLayout}
-          label="分类"
+          label="分类ID"
         >
           {getFieldDecorator(`${moduleSymbol}~resourceId`, {
-            initialValue: undefined,
+            initialValue: this.props.moduleValue.resourceId,
             rules: [
               {
-                required: true, message: '请选择分类',
+                required: true, message: '请输入分类ID',
               }
             ],
           })(
-            <Select
-              allowClear
-              getPopupContainer={trigger => trigger.parentNode}
-            >
-              {
-                this.state.smallTypes.map((item) => (
-                  <Option key={item.id} value={item.id}>{item.name}</Option>
-                ))
-              }
-            </Select>
+            (
+              <Input type="number" placeholder="请输入分类ID" onPressEnter={e => e.preventDefault()} />
+            )
           )}
         </FormItem>
         {
@@ -147,7 +89,7 @@ class ChildCategory extends Component {
             >
               {
                 getFieldDecorator(`${moduleSymbol}~displayNum`, {
-                  initialValue: undefined,
+                  initialValue: this.props.moduleValue.displayNum,
                   rules: [
                     {
                       required: true,
@@ -166,7 +108,7 @@ class ChildCategory extends Component {
         >
           {
             getFieldDecorator(`${moduleSymbol}~displayName`, {
-              initialValue: undefined,
+              initialValue: this.props.moduleValue.displayName,
               rules: [
                 {
                   required: true,
