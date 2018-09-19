@@ -12,6 +12,8 @@ import { judgeLimitOneModule } from '@Utils/judgeLimitOneModule'
 import { getModulesItemValue } from '@Utils/getModulesItemValue'
 import { geCategoriesItemValue } from '@Utils/geCategoriesItemValue'
 import { isRepeatArr } from '@Utils/isRepeatArr'
+import { apiChildTableAdd } from '@Api/child-table'
+import MaskLoading from '@Components/mask-loading'
 
 
 const FormItem = Form.Item
@@ -65,10 +67,10 @@ class ChildTableAdd extends Component {
           appKey,
           toastWhenTrackPlayingStartInMsMinute,
           toastWhenTrackPlayingStartInMsSecond } = this.state
-        // if (!appKey) {
-        //   message.error('请选择合作方')
-        //   return
-        // }
+        if (!appKey) {
+          message.error('请选择合作方')
+          return
+        }
         let toastWhenTrackPlayingStartInMs
         // 如果选择了弹框提示app，则必须选择类型和频率
         if (values.toastWhenTrackPlayingTurnon) {
@@ -168,12 +170,33 @@ class ChildTableAdd extends Component {
           return
         }
 
-        // 判断焦点图id的数量，是否超过4个
         console.log(options)
+        this.createSite(options)
       })
 
     })
   }
+
+  // 创建的辅助函数
+
+  createSite(options) {
+    options.site.extendConfigJson = JSON.stringify(options.site.extendConfigJson)
+    this.refs.mask.show()
+    apiChildTableAdd(options)
+      .then(res => {
+        this.refs.mask.hide()
+        if (res.code !== ERR_OK) {
+          message.error(res.msg)
+          return
+        }
+        message.success('创建子站成功')
+        this.props.history.push({
+          pathname: '/child-table'
+        })
+      })
+  }
+
+
   // 合作方的模糊匹配
   handleParterSelectSearch(value) {
     // console.log(value)
@@ -684,6 +707,7 @@ class ChildTableAdd extends Component {
             </div>
           </Form>
         </div>
+        <MaskLoading ref="mask" />
       </div >
     )
   }

@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
-import { Form, Input, Select, Radio } from 'antd'
+import { Form, Input, Select, Radio, message } from 'antd'
 import { PropTypes } from 'prop-types'
 import DeleteIcon from '../imgs/delete.png'
 import MoveIcon from '../imgs/move.png'
+import { apiChildGetDays } from '@Api/child-table'
+import { ERR_OK } from '@Constants'
 import './style.scss'
 
 const FormItem = Form.Item
@@ -17,7 +19,26 @@ class ModuleMemberGet extends Component {
 
   constructor(props) {
     super(props)
-    console.log(props)
+    this.state = {
+      days: []
+    }
+  }
+
+  componentDidMount() {
+    this.getDays()
+  }
+
+  getDays() {
+    apiChildGetDays()
+      .then(res => {
+        if (res.code !== ERR_OK) {
+          message.error(res.msg)
+          return
+        }
+        this.setState({
+          days: res.data
+        })
+      })
   }
 
   render() {
@@ -70,7 +91,7 @@ class ModuleMemberGet extends Component {
             label="会员活动天数"
           >
             {getFieldDecorator(`${moduleSymbol}~context-itemId`, {
-              initialValue: 1,
+              initialValue: undefined,
               rules: [
                 {
                   required: true, message: '请选择会员活动天数',
@@ -81,9 +102,13 @@ class ModuleMemberGet extends Component {
                 allowClear
                 getPopupContainer={trigger => trigger.parentNode}
               >
-                <Option value={1}>3天</Option>
-                <Option value={2}>7天</Option>
-                <Option value={3}>15天</Option>
+                {
+                  this.state.days.map(item => {
+                    return (
+                      <Option key={item.itemId} value={item.itemId}>{item.itemName}</Option>
+                    )
+                  })
+                }
               </Select>
             )}
           </FormItem>

@@ -42,10 +42,22 @@ export const apiChildTableSave = (options) => {
 export const apiChildTableAdd = (options) => {
   return myAxios(
     {
-      url: '/category/customizedCategory',
+      url: '/sites',
       method: 'post',
       params: {},
       data: options,
+      headers: defaultHeader
+    })
+}
+
+// 获取会员领取的天数
+export const apiChildGetDays = () => {
+  return myAxios(
+    {
+      url: '/experience-vip/list',
+      method: 'get',
+      params: {},
+      data: {},
       headers: defaultHeader
     })
 }
