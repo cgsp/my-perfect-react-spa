@@ -2,7 +2,7 @@
  * @Author: John.Guan
  * @Date: 2018-07-24 15:01:37
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-18 20:41:37
+ * @Last Modified time: 2018-09-19 09:55:11
  */
 import axios from 'axios'
 import qs from 'qs'
@@ -53,13 +53,15 @@ axios.interceptors.response.use((response) => {
   if (response && response.data && response.data.code === noLoginCode) {
     mySessionStorageClear()
     window.location = response.data.data
+  } else {
+    return response
   }
   // if (response && response.data && response.data.code === noLoginCode) {
   //   mySessionStorageClear()
   //   console.log(response.data.data)
   //   // window.location = response.data.data
   // }
-  return response
+
 }, (error) => {
   // 对响应错误做点什么
   // Toast.fail('响应失败', 0, null, true);
