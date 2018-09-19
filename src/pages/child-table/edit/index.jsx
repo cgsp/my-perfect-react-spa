@@ -14,6 +14,7 @@ import { geCategoriesItemValue } from '@Utils/geCategoriesItemValue'
 import { isRepeatArr } from '@Utils/isRepeatArr'
 import { mySessionStorageGet, mySessionStorageSet, mySessionStorageRemove } from '@Utils/myStorages'
 import { apiChildTableAdd } from '@Api/child-table'
+import { recoveryModule } from '@Utils/recoveryModule'
 
 
 const FormItem = Form.Item
@@ -38,21 +39,27 @@ class ChildTableEdit extends Component {
     console.log(originData)
     const site = JSON.parse(JSON.stringify(originData.site))
     const modules = JSON.parse(JSON.stringify(originData.modules))
+    const categories = JSON.parse(JSON.stringify(originData.categories))
 
     // 对modules进行处理，还原modules的初始值
-    let dragData = {
-      tasks: {},
-      columns: {
-        'column-1': {
-          id: 'column-1',
-          title: '模块设置',
-          taskIds: [],
-        }
-      },
-      columnOrder: ['column-1']
+    let dragData = recoveryModule(modules)
+    // console.log(dragData)
+    let defaultSecond
+    let defaultMinute
+    const extendConfigJson = JSON.parse(site.extendConfigJson)
+    if (!extendConfigJson.toastWhenTrackPlaying.startInMs) {
+      defaultSecond = 0
+      defaultMinute = 0
+    } else {
+      const temp1 = extendConfigJson.toastWhenTrackPlaying.startInMs
+      const temp2 = extendConfigJson.toastWhenTrackPlaying.startInMs
+      defaultSecond = temp1 % 60
+      // console.log(defaultSecond)
+      defaultMinute = temp2 / 60
+      defaultMinute = Math.floor(defaultMinute)
     }
 
-
+    console.log(defaultMinute)
     this.state = {
       parterSelectData: [
         {
@@ -63,7 +70,14 @@ class ChildTableEdit extends Component {
       appKey: site.appKey,
       moduleNameList,
       dragData,
-      originData
+      site,
+      modules,
+      categories,
+      originData,
+      toastWhenTrackPlayingStartInMsSecond: defaultSecond,
+      toastWhenTrackPlayingStartInMsMinute: defaultMinute,
+      defaultSecond,
+      defaultMinute
     }
 
     // 最终表单的数据
@@ -210,7 +224,7 @@ class ChildTableEdit extends Component {
   editSite(options) {
     // 还需要一个子站的ID
     this.setState({}, () => {
-      const { id } = this.state.originData.site
+      const { id } = this.state.site
       options.site.extendConfigJson = JSON.stringify(options.site.extendConfigJson)
       options.site.id = id
       this.refs.mask.show()
@@ -392,6 +406,18 @@ class ChildTableEdit extends Component {
   render() {
     const taskLength = this.state.dragData.columns['column-1'].taskIds.length
     const { getFieldDecorator } = this.props.form
+    let site = this.state.originData.site
+    const extendConfigJson = JSON.parse(site.extendConfigJson)
+    let defaultSecond
+    let defaultMinute
+    if (!extendConfigJson.toastWhenTrackPlaying.startInMs) {
+      defaultSecond = 0
+      defaultMinute = 0
+    } else {
+      defaultSecond = extendConfigJson.toastWhenTrackPlaying.startInMs % 60
+      defaultMinute = extendConfigJson.toastWhenTrackPlaying.startInMs / 60
+      defaultMinute = Math.floor(defaultMinute)
+    }
 
     const formItemLayout = {
       labelCol: {
@@ -471,7 +497,7 @@ class ChildTableEdit extends Component {
                   >
                     {
                       getFieldDecorator('siteName', {
-                        initialValue: undefined,
+                        initialValue: site.siteName,
                         rules: [
                           {
                             required: true,
@@ -497,7 +523,7 @@ class ChildTableEdit extends Component {
                   >
                     {
                       getFieldDecorator('description', {
-                        initialValue: undefined,
+                        initialValue: site.description,
                         rules: [
                           {
                             required: true,
@@ -523,7 +549,7 @@ class ChildTableEdit extends Component {
                     {getFieldDecorator('enableCopyrightFilter',
                       {
                         valuePropName: 'checked',
-                        initialValue: true,
+                        initialValue: site.enableCopyrightFilter,
                         rules: [
                           {
                             required: true,
@@ -574,7 +600,7 @@ class ChildTableEdit extends Component {
                     {getFieldDecorator('dockTab',
                       {
                         valuePropName: 'checked',
-                        initialValue: true,
+                        initialValue: extendConfigJson.dockTab,
                         rules: [
                           {
                             required: true,
@@ -593,7 +619,7 @@ class ChildTableEdit extends Component {
                     {getFieldDecorator('soundPatch',
                       {
                         valuePropName: 'checked',
-                        initialValue: false,
+                        initialValue: extendConfigJson.soundPatch,
                         rules: [
                           {
                             required: true,
@@ -612,7 +638,7 @@ class ChildTableEdit extends Component {
                     {getFieldDecorator('toastInAlbumDetailPage',
                       {
                         valuePropName: 'checked',
-                        initialValue: false,
+                        initialValue: extendConfigJson.toastInAlbumDetailPage,
                         rules: [
                           {
                             required: true,
@@ -631,7 +657,7 @@ class ChildTableEdit extends Component {
                     {getFieldDecorator('toastWhenTrackPlayingTurnon',
                       {
                         valuePropName: 'checked',
-                        initialValue: true,
+                        initialValue: extendConfigJson.toastWhenTrackPlaying.turnon,
                         rules: [
                           {
                             required: true,
@@ -650,7 +676,7 @@ class ChildTableEdit extends Component {
                         label="出现频率"
                       >
                         {getFieldDecorator('toastWhenTrackPlayingType', {
-                          initialValue: 1,
+                          initialValue: extendConfigJson.toastWhenTrackPlaying.type,
                           rules: [
                             {
                               required: true, message: '请选择出现频率',
@@ -677,6 +703,9 @@ class ChildTableEdit extends Component {
                           <div className="tan-time">
                             <span>第</span>
                             <Input
+                              defaultValue={
+                                this.state.defaultMinute
+                              }
                               className="input"
                               type="number"
                               onChange={(e) => {
@@ -690,6 +719,9 @@ class ChildTableEdit extends Component {
                           <div className="tan-time">
                             <span>第</span>
                             <Input
+                              defaultValue={
+                                this.state.defaultSecond
+                              }
                               className="input"
                               type="number"
                               onChange={(e) => {

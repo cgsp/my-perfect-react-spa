@@ -108,7 +108,8 @@ class ChildTableAdd extends Component {
               turnon: values.toastWhenTrackPlayingTurnon,
               type: values.toastWhenTrackPlayingType,
               startInMs: toastWhenTrackPlayingStartInMs
-            }
+            },
+            dockTab: values.dockTab
           }
         }
         const { taskIds } = this.state.dragData.columns['column-1']
