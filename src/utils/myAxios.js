@@ -2,7 +2,7 @@
  * @Author: John.Guan
  * @Date: 2018-07-24 15:01:37
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-19 09:55:11
+ * @Last Modified time: 2018-09-19 14:27:47
  */
 import axios from 'axios'
 import qs from 'qs'
@@ -51,6 +51,8 @@ axios.interceptors.response.use((response) => {
   // Toast.hide();
   // console.log('响应成功拦截器:', response)
   if (response && response.data && response.data.code === noLoginCode) {
+    const str = JSON.stringify(response.data)
+    alert('后端给前端399了,具体信息是-------' + str)
     mySessionStorageClear()
     window.location = response.data.data
   } else {
