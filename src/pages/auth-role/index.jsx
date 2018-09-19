@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-10 16:48:03
+ * @Last Modified time: 2018-09-19 11:57:21
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Modal, message } from 'antd'
@@ -314,9 +314,22 @@ class AuthRole extends Component {
             }
           }
 
-          // 如果这个节点是一级，直接不要
+          // 如果这个节点是一级，且这个一级节点有孩子，那么直接不要
+          // 如果这个节点是一级，且没孩子，那么直接要
           if (item.type === 3 && item.level === 1 && resDataChecked.indexOf(item.resourceId) > -1) {
-            itemChildrenAllChecked = false
+            let noChild = true
+            for (let j = 0; j < resDataResources.length; j++) {
+              const ele = resDataResources[j]
+              if (ele.parentId === item.resourceId) {
+                noChild = false
+                break
+              }
+            }
+            if (noChild) {
+              itemChildrenAllChecked = true
+            } else {
+              itemChildrenAllChecked = false
+            }
           }
 
 
