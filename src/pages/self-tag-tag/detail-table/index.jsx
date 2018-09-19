@@ -18,59 +18,128 @@ export default class SelfTagDimensionDetailTable extends Component {
 
 
   render() {
-    const columns = [
-      {
-        title: '专辑Id',
-        dataIndex: 'id',
-        key: 'id',
-        render: (text, record) =>
-          (
-            <a href={record.url} target="_blank" style={{ display: 'inline-block', cursor: 'pointer' }}>
-              {text}
-            </a>
-          )
-      },
-      {
-        title: '专辑名称',
-        dataIndex: 'title',
-        key: 'title'
-      },
-      {
-        title: '状态',
-        dataIndex: 'onlineStatus',
-        key: 'onlineStatus',
-        render: (text, record) =>
-          (
-            <span>{text === 1 ? '已上架' : '已下架'}</span>
-          )
-      },
-      {
-        title: '声音数',
-        dataIndex: 'tracksNum',
-        key: 'tracksNum'
-      },
-      {
-        title: '创建时间',
-        dataIndex: 'createTime',
-        key: 'createTime',
-        render: (text, record) => {
-          const str = myGetStrTime(text)
-          return (
-            <span>{str}</span>
-          )
-        }
-      },
-      {
-        title: '更新时间',
-        dataIndex: 'updateTime',
-        key: 'updateTime',
-        render: (text, record) => {
-          const str = myGetStrTime(text)
-          return (
-            <span>{str}</span>
-          )
-        }
-      }]
+    let columns
+    if (this.props.detailTitle === '主站') {
+      columns = [
+        {
+          title: '专辑Id',
+          dataIndex: 'id',
+          key: 'id',
+          render: (text, record) =>
+            (
+              <a href={record.url} target="_blank" style={{ display: 'inline-block', cursor: 'pointer' }}>
+                {text}
+              </a>
+            )
+        },
+        {
+          title: '专辑名称',
+          dataIndex: 'title',
+          key: 'title'
+        },
+        {
+          title: '状态',
+          dataIndex: 'onlineStatus',
+          key: 'onlineStatus',
+          render: (text, record) =>
+            (
+              <span>{text === 1 ? '已上架' : '已下架'}</span>
+            )
+        },
+        {
+          title: '声音数',
+          dataIndex: 'tracksNum',
+          key: 'tracksNum'
+        },
+        {
+          title: '创建时间',
+          dataIndex: 'createTime',
+          key: 'createTime',
+          render: (text, record) => {
+            const str = myGetStrTime(text)
+            return (
+              <span>{str}</span>
+            )
+          }
+        },
+        {
+          title: '更新时间',
+          dataIndex: 'updateTime',
+          key: 'updateTime',
+          render: (text, record) => {
+            const str = myGetStrTime(text)
+            return (
+              <span>{str}</span>
+            )
+          }
+        }]
+    }else{
+      columns = [
+        {
+          title: '主站专辑Id',
+          dataIndex: 'id',
+          key: 'id',
+          render: (text, record) =>
+            (
+              <a href={record.url} target="_blank" style={{ display: 'inline-block', cursor: 'pointer' }}>
+                {text}
+              </a>
+            )
+        },
+        {
+          title: '自运营专辑ID',
+          dataIndex: 'openapiId',
+          key: 'openapiId',
+          render: (text, record) =>
+            (
+              <a href={record.url} target="_blank" style={{ display: 'inline-block', cursor: 'pointer' }}>
+                {text}
+              </a>
+            )
+        },
+        {
+          title: '专辑名称',
+          dataIndex: 'title',
+          key: 'title'
+        },
+        {
+          title: '状态',
+          dataIndex: 'onlineStatus',
+          key: 'onlineStatus',
+          render: (text, record) =>
+            (
+              <span>{text === 1 ? '已上架' : '已下架'}</span>
+            )
+        },
+        {
+          title: '声音数',
+          dataIndex: 'tracksNum',
+          key: 'tracksNum'
+        },
+        {
+          title: '创建时间',
+          dataIndex: 'createTime',
+          key: 'createTime',
+          render: (text, record) => {
+            const str = myGetStrTime(text)
+            return (
+              <span>{str}</span>
+            )
+          }
+        },
+        {
+          title: '更新时间',
+          dataIndex: 'updateTime',
+          key: 'updateTime',
+          render: (text, record) => {
+            const str = myGetStrTime(text)
+            return (
+              <span>{str}</span>
+            )
+          }
+        }]
+    }
+    // console.log(this.props.detailTitle)
     return (
       <Modal
         title="专辑列表"

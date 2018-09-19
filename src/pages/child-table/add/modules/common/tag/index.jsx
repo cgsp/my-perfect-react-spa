@@ -64,6 +64,53 @@ class ChildTag extends Component {
       console.log(error)
     }
   }
+  // <FormItem
+  //         {...formItemLayout}
+  //         label={
+  //           <label className="ant-form-item-required">维度:</label>
+  //         }
+  //         colon={false}
+  //       >
+  //         <Select
+  //           placeholder="请选择维度"
+  //           allowClear
+  //           defaultValue={undefined}
+  //           onChange={(v) => this.dimensionChange(v)}
+  //           getPopupContainer={trigger => trigger.parentNode}
+  //         >
+  //           {
+  //             this.props.commonDimesions.map((item) => (
+  //               <Option key={item.id} value={item.id}>{item.dimensionName}</Option>
+  //             ))
+  //           }
+  //         </Select>
+  //       </FormItem>
+  // <FormItem
+  //         {...formItemLayout}
+  //         label="自运营标签"
+  //       >
+  //         {getFieldDecorator(`${moduleSymbol}~resourceId`, {
+  //           initialValue: undefined,
+  //           rules: [
+  //             {
+  //               required: true, message: '请选择自运营标签',
+  //             }
+  //           ],
+  //         })(
+  //           <Select
+  //             allowClear
+  //             getPopupContainer={trigger => trigger.parentNode}
+  //             placeholder="请选择自运营标签"
+  //             notFoundContent="请先选择维度"
+  //           >
+  //             {
+  //               this.state.tags.map((item) => (
+  //                 <Option key={item.id} value={item.id}>{item.name}</Option>
+  //               ))
+  //             }
+  //           </Select>
+  //         )}
+  //       </FormItem>
 
   render() {
     const getFieldDecorator = this.props.getFieldDecorator
@@ -150,50 +197,21 @@ class ChildTag extends Component {
         </FormItem>
         <FormItem
           {...formItemLayout}
-          label={
-            <label className="ant-form-item-required">维度:</label>
+          label="自运营标签Id"
+        >
+          {
+            getFieldDecorator(`${moduleSymbol}~resourceId`, {
+              initialValue: undefined,
+              rules: [
+                {
+                  required: true,
+                  message: '请输入自运营标签Id',
+                }
+              ]
+            })(
+              <Input type="number" placeholder="请输入自运营标签Id" onPressEnter={e => e.preventDefault()} />
+            )
           }
-          colon={false}
-        >
-          <Select
-            placeholder="请选择维度"
-            allowClear
-            defaultValue={undefined}
-            onChange={(v) => this.dimensionChange(v)}
-            getPopupContainer={trigger => trigger.parentNode}
-          >
-            {
-              this.props.commonDimesions.map((item) => (
-                <Option key={item.id} value={item.id}>{item.dimensionName}</Option>
-              ))
-            }
-          </Select>
-        </FormItem>
-        <FormItem
-          {...formItemLayout}
-          label="自运营标签"
-        >
-          {getFieldDecorator(`${moduleSymbol}~resourceId`, {
-            initialValue: undefined,
-            rules: [
-              {
-                required: true, message: '请选择自运营标签',
-              }
-            ],
-          })(
-            <Select
-              allowClear
-              getPopupContainer={trigger => trigger.parentNode}
-              placeholder="请选择自运营标签"
-              notFoundContent="请先选择维度"
-            >
-              {
-                this.state.tags.map((item) => (
-                  <Option key={item.id} value={item.id}>{item.name}</Option>
-                ))
-              }
-            </Select>
-          )}
         </FormItem>
         <FormItem
           {...formItemLayout}

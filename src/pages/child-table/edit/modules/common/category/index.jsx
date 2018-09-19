@@ -78,7 +78,7 @@ class ChildCategory extends Component {
           label="展示形式"
         >
           {getFieldDecorator(`${moduleSymbol}~moduleType`, {
-            initialValue: 4,
+            initialValue: this.props.moduleValue.moduleType,
             rules: [
               {
                 required: true, message: '请选择展示形式',
@@ -107,7 +107,7 @@ class ChildCategory extends Component {
         >
           <Select
             onChange={(v) => this.sourceChange(v)}
-            defaultValue={1}
+            defaultValue={this.props.moduleValue.source}
             getPopupContainer={trigger => trigger.parentNode}
           >
             <Option value={1}>主站分类</Option>

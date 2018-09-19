@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Form, Input, Select, message } from 'antd'
 import { PropTypes } from 'prop-types'
-import { commonSmallTypes } from '@Api'
+// import { commonSmallTypes } from '@Api'
 import { ERR_OK } from '@Constants'
 
 const FormItem = Form.Item
@@ -19,41 +19,81 @@ class ChildCategory extends Component {
       moduleType: 4,
       smallTypes: []
     }
-    this.sourceChange = this.sourceChange.bind(this)
+    // this.sourceChange = this.sourceChange.bind(this)
   }
+  //   <FormItem
+  //   {...formItemLayout}
+  //   label={
+  //     <label className="ant-form-item-required">分类来源:</label>
+  //   }
+  //   colon={false}
+  // >
+  //   <Select
+  //     onChange={(v) => this.sourceChange(v)}
+  //     defaultValue={1}
+  //     getPopupContainer={trigger => trigger.parentNode}
+  //   >
+  //     <Option value={1}>主站分类</Option>
+  //     <Option value={2}>自运营分类</Option>
+  //   </Select>
+  // </FormItem>
+  // <FormItem
+  //         {...formItemLayout}
+  //         label="分类"
+  //       >
+  //         {getFieldDecorator(`${moduleSymbol}~resourceId`, {
+  //           initialValue: undefined,
+  //           rules: [
+  //             {
+  //               required: true, message: '请选择分类',
+  //             }
+  //           ],
+  //         })(
+  //           <Select
+  //             allowClear
+  //             getPopupContainer={trigger => trigger.parentNode}
+  //           >
+  //             {
+  //               this.state.smallTypes.map((item) => (
+  //                 <Option key={item.id} value={item.id}>{item.name}</Option>
+  //               ))
+  //             }
+  //           </Select>
+  //         )}
+  //       </FormItem>
 
-  componentDidMount() {
-    this.getSmallTypes('1')
-  }
-  sourceChange(v) {
-    const { taskId, content
-    } = this.props.task
-    const moduleSymbol = `${taskId}~${content}`
-    this.getSmallTypes(v)
-    this.props.form.setFieldsValue({
-      [`${moduleSymbol}~resourceId`]: undefined
-    })
-  }
+  // componentDidMount() {
+  //   this.getSmallTypes('1')
+  // }
+  // sourceChange(v) {
+  //   const { taskId, content
+  //   } = this.props.task
+  //   const moduleSymbol = `${taskId}~${content}`
+  //   this.getSmallTypes(v)
+  //   this.props.form.setFieldsValue({
+  //     [`${moduleSymbol}~resourceId`]: undefined
+  //   })
+  // }
 
-  getSmallTypes = async (source) => {
-    try {
-      if (!source) {
-        this.setState({
-          smallTypes: []
-        })
-      }
-      const smallTypeRes = await commonSmallTypes(source)
-      if (smallTypeRes.code !== ERR_OK) {
-        message.error(smallTypeRes.msg)
-        return
-      }
-      this.setState({
-        smallTypes: smallTypeRes.data
-      })
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  // getSmallTypes = async (source) => {
+  //   try {
+  //     if (!source) {
+  //       this.setState({
+  //         smallTypes: []
+  //       })
+  //     }
+  //     const smallTypeRes = await commonSmallTypes(source)
+  //     if (smallTypeRes.code !== ERR_OK) {
+  //       message.error(smallTypeRes.msg)
+  //       return
+  //     }
+  //     this.setState({
+  //       smallTypes: smallTypeRes.data
+  //     })
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
 
   render() {
     const getFieldDecorator = this.props.getFieldDecorator
@@ -100,43 +140,21 @@ class ChildCategory extends Component {
         </FormItem>
         <FormItem
           {...formItemLayout}
-          label={
-            <label className="ant-form-item-required">分类来源:</label>
+          label="分类ID"
+        >
+          {
+            getFieldDecorator(`${moduleSymbol}~resourceId`, {
+              initialValue: undefined,
+              rules: [
+                {
+                  required: true,
+                  message: '请输入分类Id',
+                }
+              ]
+            })(
+              <Input type="number" placeholder="请输入分类Id" onPressEnter={e => e.preventDefault()} />
+            )
           }
-          colon={false}
-        >
-          <Select
-            onChange={(v) => this.sourceChange(v)}
-            defaultValue={1}
-            getPopupContainer={trigger => trigger.parentNode}
-          >
-            <Option value={1}>主站分类</Option>
-            <Option value={2}>自运营分类</Option>
-          </Select>
-        </FormItem>
-        <FormItem
-          {...formItemLayout}
-          label="分类"
-        >
-          {getFieldDecorator(`${moduleSymbol}~resourceId`, {
-            initialValue: undefined,
-            rules: [
-              {
-                required: true, message: '请选择分类',
-              }
-            ],
-          })(
-            <Select
-              allowClear
-              getPopupContainer={trigger => trigger.parentNode}
-            >
-              {
-                this.state.smallTypes.map((item) => (
-                  <Option key={item.id} value={item.id}>{item.name}</Option>
-                ))
-              }
-            </Select>
-          )}
         </FormItem>
         {
           this.state.moduleType !== 7

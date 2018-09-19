@@ -24,8 +24,10 @@ class ModuleCommon extends Component {
   constructor(props) {
     super(props)
     // console.log(props)
+    // console.log(this.props.task.moduleValue)
     this.state = {
-      resourceType: 3
+      resourceType: 3,
+      moduleValue: this.props.task.moduleValue || {}
     }
     this.changeChildModule = this.changeChildModule.bind(this)
   }
@@ -35,6 +37,15 @@ class ModuleCommon extends Component {
     // console.log(v)
     this.setState({
       resourceType: v
+    })
+    const { taskId, content } = this.props.task
+    const moduleSymbol = `${taskId}~${content}`
+    this.props.form.setFieldsValue({
+      [`${moduleSymbol}~moduleType`]: undefined,
+      [`${moduleSymbol}~displayNum`]: undefined,
+      [`${moduleSymbol}~resourceId`]: undefined,
+      [`${moduleSymbol}~topContentIds`]: undefined,
+      [`${moduleSymbol}~displayName`]: undefined,
     })
   }
 
@@ -115,6 +126,7 @@ class ModuleCommon extends Component {
             getFieldDecorator={getFieldDecorator}
             task={this.props.task}
             form={this.props.form}
+            moduleValue={this.state.moduleValue}
           />
         </div>
       </div>

@@ -33,6 +33,16 @@ class ModuleCommon extends Component {
   changeChildModule(v) {
     // console.log(typeof v)
     // console.log(v)
+    // this.
+    const { taskId, content } = this.props.task
+    const moduleSymbol = `${taskId}~${content}`
+    this.props.form.setFieldsValue({
+      [`${moduleSymbol}~moduleType`]: undefined,
+      [`${moduleSymbol}~displayNum`]: undefined,
+      [`${moduleSymbol}~resourceId`]: undefined,
+      [`${moduleSymbol}~topContentIds`]: undefined,
+      [`${moduleSymbol}~displayName`]: undefined,
+    })
     this.setState({
       resourceType: v
     })
