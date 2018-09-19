@@ -78,6 +78,10 @@ class ChildTableAdd extends Component {
             message.error('请输入弹出时间点')
             return
           }
+          if (toastWhenTrackPlayingStartInMsSecond && (toastWhenTrackPlayingStartInMsSecond - 0) > 59) {
+            message.error('弹出时间点, 设置的秒数不能大于59')
+            return
+          }
           if (!toastWhenTrackPlayingStartInMsMinute) {
             toastWhenTrackPlayingStartInMs = toastWhenTrackPlayingStartInMsSecond - 0
           } else {

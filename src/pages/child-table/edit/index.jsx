@@ -77,15 +77,19 @@ class ChildTableEdit extends Component {
           appKey,
           toastWhenTrackPlayingStartInMsMinute,
           toastWhenTrackPlayingStartInMsSecond } = this.state
-        // if (!appKey) {
-        //   message.error('请选择合作方')
-        //   return
-        // }
+        if (!appKey) {
+          message.error('请选择合作方')
+          return
+        }
         let toastWhenTrackPlayingStartInMs
         // 如果选择了弹框提示app，则必须选择类型和频率
         if (values.toastWhenTrackPlayingTurnon) {
           if (!toastWhenTrackPlayingStartInMsSecond && !toastWhenTrackPlayingStartInMsMinute) {
             message.error('请输入弹出时间点')
+            return
+          }
+          if (toastWhenTrackPlayingStartInMsSecond && (toastWhenTrackPlayingStartInMsSecond - 0) > 59) {
+            message.error('弹出时间点, 设置的秒数不能大于59')
             return
           }
           if (!toastWhenTrackPlayingStartInMsMinute) {

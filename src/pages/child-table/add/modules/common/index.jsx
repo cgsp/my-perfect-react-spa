@@ -91,15 +91,21 @@ class ModuleCommon extends Component {
         <div className="module-content">
           <FormItem
             {...formItemLayout}
-            label={<label className="ant-form-item-required">内容类型:</label>}
-            colon={false}
+            label="内容类型"
           >
             {getFieldDecorator(`${moduleSymbol}~resourceType`, {
-              initialValue: 3
+              initialValue: 3,
+              rules: [
+                {
+                  required: true,
+                  message: '请选择内容类型',
+                }
+              ]
             })(
               <Select
                 onSelect={this.changeChildModule}
                 getPopupContainer={trigger => trigger.parentNode}
+                placeholder="请选择内容类型"
               >
                 <Option value={3}>听单</Option>
                 <Option value={9}>多个听单</Option>
