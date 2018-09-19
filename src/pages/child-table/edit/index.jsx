@@ -13,8 +13,9 @@ import { getModulesItemValue } from '@Utils/getModulesItemValue'
 import { geCategoriesItemValue } from '@Utils/geCategoriesItemValue'
 import { isRepeatArr } from '@Utils/isRepeatArr'
 import { mySessionStorageGet, mySessionStorageSet, mySessionStorageRemove } from '@Utils/myStorages'
-import { apiChildTableAdd } from '@Api/child-table'
+import { apiChildTableEdit } from '@Api/child-table'
 import { recoveryModule } from '@Utils/recoveryModule'
+import MaskLoading from '@Components/mask-loading'
 
 
 const FormItem = Form.Item
@@ -228,7 +229,7 @@ class ChildTableEdit extends Component {
       options.site.extendConfigJson = JSON.stringify(options.site.extendConfigJson)
       options.site.id = id
       this.refs.mask.show()
-      apiChildTableAdd(options)
+      apiChildTableEdit(options)
         .then(res => {
           this.refs.mask.hide()
           if (res.code !== ERR_OK) {
@@ -773,6 +774,7 @@ class ChildTableEdit extends Component {
               </div>
             </div>
           </Form>
+          <MaskLoading ref="mask" />
         </div>
       </div >
     )

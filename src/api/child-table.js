@@ -38,6 +38,18 @@ export const apiChildTableAdd = (options) => {
     })
 }
 
+// 编辑
+export const apiChildTableEdit = (options) => {
+  return myAxios(
+    {
+      url: '/sites',
+      method: 'put',
+      params: {},
+      data: options,
+      headers: defaultHeader
+    })
+}
+
 // 获取会员领取的天数
 export const apiChildGetDays = () => {
   return myAxios(
