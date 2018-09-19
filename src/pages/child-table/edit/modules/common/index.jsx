@@ -26,7 +26,7 @@ class ModuleCommon extends Component {
     // console.log(props)
     // console.log(this.props.task.moduleValue)
     this.state = {
-      resourceType: 3,
+      resourceType: this.props.task.moduleValue.resourceType ? this.props.task.moduleValue.resourceType : undefined,
       moduleValue: props.task.moduleValue || {}
     }
     this.changeChildModule = this.changeChildModule.bind(this)
@@ -107,7 +107,7 @@ class ModuleCommon extends Component {
             colon={false}
           >
             {getFieldDecorator(`${moduleSymbol}~resourceType`, {
-              initialValue: 3
+              initialValue: this.state.resourceType
             })(
               <Select
                 onSelect={this.changeChildModule}
