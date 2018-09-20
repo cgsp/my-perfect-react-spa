@@ -19,31 +19,26 @@ export default class MainListTable extends Component {
         title: '主站ID',
         dataIndex: 'rankingListId',
         key: 'rankingListId',
-        width: 60
       },
       {
         title: '榜单ID',
         dataIndex: 'id',
         key: 'id',
-        width: 60
       },
       {
         title: '榜单标题',
         dataIndex: 'rankTitle',
         key: 'rankTitle',
-        width: 100
       },
       {
         title: '榜单副标题',
         dataIndex: 'rankSubTitle',
         key: 'rankSubTitle',
-        width: 100
       },
       {
         title: '周期类型',
         dataIndex: 'periodType',
         key: 'periodType',
-        width: 100
       },
       {
         title: '内容数',
@@ -52,7 +47,6 @@ export default class MainListTable extends Component {
         render: (text, record) => {
           return <span style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.props.tableLineShowDetails(record)}>{text}</span>
         },
-        width: 100
       },
       {
         title: '内容类型',
@@ -61,7 +55,6 @@ export default class MainListTable extends Component {
         render(text, record) {
           return <span>{text === 1 ? '声音榜单' : '专辑榜单'}</span>
         },
-        width: 100
       },
       {
         title: '创建时间',
@@ -73,7 +66,6 @@ export default class MainListTable extends Component {
             <span>{str}</span>
           )
         },
-        width: 80
       },
       {
         title: '更新时间',
@@ -85,11 +77,15 @@ export default class MainListTable extends Component {
             <span>{str}</span>
           )
         },
-        width: 80
       }]
     return (
       <div>
-        <Table columns={columns} dataSource={this.props.tableData} pagination={false} />
+        <Table
+          columns={columns}
+          dataSource={this.props.tableData}
+          pagination={false}
+          scroll={{ x: 1400 }}
+        />
         <div style={{ textAlign: 'right', marginTop: 30 }}>
           <Pagination
             showSizeChanger
