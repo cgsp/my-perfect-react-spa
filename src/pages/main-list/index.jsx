@@ -408,7 +408,7 @@ class SelfTagTag extends Component {
                   showToday={false}
                   value={searchCreateTimeBegin}
                   format="YYYY-MM-DD HH:mm:ss"
-                  placeholder="请选择开始时间"
+                  placeholder="请选择起始时间"
                   disabledDate={this.props.disabledCreateBeginDate}
                   disabledTime={this.props.disabledCreateBeiginTime}
                   onChange={this.props.onCreateBeginDateAndTimeChange}
@@ -453,7 +453,7 @@ class SelfTagTag extends Component {
                   }
                   showToday={false}
                   format="YYYY-MM-DD HH:mm:ss"
-                  placeholder="请选择开始时间"
+                  placeholder="请选择起始时间"
                   value={searchUpdateTimeBegin}
                   disabledDate={this.props.disabledUpdateBeginDate}
                   disabledTime={this.props.disabledUpdateBeiginTime}

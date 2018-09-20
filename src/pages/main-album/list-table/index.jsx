@@ -34,7 +34,7 @@ export default class SelfAlbumListTable extends Component {
     }
     const columns = [
       {
-        title: '主站专辑ID',
+        title: 'ID',
         dataIndex: 'id',
         key: 'id',
         render: (text, record) =>
@@ -43,13 +43,13 @@ export default class SelfAlbumListTable extends Component {
               {text}
             </a>
           ),
-        width: 100
+        // width: 100
       },
       {
         title: '专辑名称',
         dataIndex: 'title',
         key: 'title',
-        width: 90
+        // width: 90
       },
       {
         title: '是否付费',
@@ -58,7 +58,7 @@ export default class SelfAlbumListTable extends Component {
         render: (text, record) => {
           return <span>{text === 1 ? '付费' : '免费'}</span>
         },
-        width: 60
+        // width: 60
       },
       {
         title: '价格类型',
@@ -75,13 +75,13 @@ export default class SelfAlbumListTable extends Component {
           }
           return <span>{str}</span>
         },
-        width: 60
+        // width: 60
       },
       {
         title: '分类',
         dataIndex: 'categoryTitle',
         key: 'categoryTitle',
-        width: 60
+        // width: 60
       },
       {
         title: '声音数',
@@ -90,7 +90,7 @@ export default class SelfAlbumListTable extends Component {
         render: (text, record) => {
           return <span style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.props.tableLineShowDetails(record)}>{text ? text.length : 0}</span>
         },
-        width: 60
+        // width: 60
       },
       {
         title: '主站标签',
@@ -99,7 +99,7 @@ export default class SelfAlbumListTable extends Component {
         render: (text, record) => {
           return <span>{text}</span>
         },
-        width: 100
+        // width: 100
       },
       {
         title: '自运营标签',
@@ -108,13 +108,13 @@ export default class SelfAlbumListTable extends Component {
         render: (text, record) => {
           return <span>{text}</span>
         },
-        width: 100
+        // width: 100
       },
       {
         title: '播放数',
         dataIndex: 'playCount',
         key: 'playCount',
-        width: 60
+        // width: 60
       },
       {
         title: '状态',
@@ -123,7 +123,7 @@ export default class SelfAlbumListTable extends Component {
         render: (text, record) => {
           return <span>{text === 1 ? '已上架' : '已下架'}</span>
         },
-        width: 60
+        // width: 60
       },
       {
         title: '创建时间',
@@ -135,7 +135,6 @@ export default class SelfAlbumListTable extends Component {
             <span>{str}</span>
           )
         },
-        width: 100
       },
       {
         title: '更新时间',
@@ -147,7 +146,6 @@ export default class SelfAlbumListTable extends Component {
             <span>{str}</span>
           )
         },
-        width: 100
       },
       {
         title: '操作',
@@ -160,11 +158,10 @@ export default class SelfAlbumListTable extends Component {
               <i style={{ color: 'green', cursor: 'pointer' }} onClick={() => this.props.tableLineSave(record)}>另存为</i>
             </span>)
         },
-        width: 140
       }]
     return (
       <div>
-        <Table columns={columns} rowSelection={rowSelection} dataSource={this.props.tableData} pagination={false} scroll={{ x: 1200 }} />
+        <Table columns={columns} rowSelection={rowSelection} dataSource={this.props.tableData} pagination={false} scroll={{ x: 1600 }} />
         <div style={{ textAlign: 'right', marginTop: 30 }}>
           <Pagination
             showSizeChanger

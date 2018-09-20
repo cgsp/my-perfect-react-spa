@@ -30,20 +30,19 @@ export default class MainListenListTable extends Component {
     }
     const columns = [
       {
-        title: '自运营Id',
-        dataIndex: 'id',
-        key: 'id',
-      },
-      {
-        title: '主站Id',
+        title: 'ID',
         dataIndex: 'syncColumnId',
         key: 'syncColumnId'
+      },
+      {
+        title: '自运营ID',
+        dataIndex: 'id',
+        key: 'id',
       },
       {
         title: '听单名称',
         dataIndex: 'title',
         key: 'title',
-        width: 150,
         render: (text, record) => {
           const old = text
           let newtext
@@ -52,7 +51,7 @@ export default class MainListenListTable extends Component {
           } else {
             newtext = text
           }
-          return <span style={{ display: 'inline-block', width: '100%', height: 40, cursor: 'pointer' }} title={old}>{newtext}</span>
+          return <span style={{ cursor: 'pointer' }} title={old}>{newtext}</span>
         }
       },
       {
@@ -128,7 +127,6 @@ export default class MainListenListTable extends Component {
         title: '创建时间',
         dataIndex: 'createdAt',
         key: 'createdAt',
-        width: 120,
         render: (text, record) => {
           const str = myGetStrTime(text)
           return (
@@ -140,7 +138,6 @@ export default class MainListenListTable extends Component {
         title: '更新时间',
         dataIndex: 'updatedAt',
         key: 'updatedAt',
-        width: 120,
         render: (text, record) => {
           const str = myGetStrTime(text)
           return (
@@ -159,7 +156,13 @@ export default class MainListenListTable extends Component {
       }]
     return (
       <div>
-        <Table columns={columns} rowSelection={rowSelection} dataSource={this.props.tableData} pagination={false} />
+        <Table
+          columns={columns}
+          rowSelection={rowSelection}
+          dataSource={this.props.tableData}
+          pagination={false}
+          scroll={{ x: 1300 }}
+        />
         <div style={{ textAlign: 'right', marginTop: 30 }}>
           <Pagination
             showSizeChanger

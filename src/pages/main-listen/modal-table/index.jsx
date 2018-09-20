@@ -21,7 +21,7 @@ export default class MainListenModalTable extends Component {
     let columns
     if (this.props.modalTableTitile === '专辑列表') {
       columns = [{
-        title: '专辑Id',
+        title: '专辑ID',
         dataIndex: 'id',
         key: 'id',
         width: 100,
@@ -66,7 +66,7 @@ export default class MainListenModalTable extends Component {
         title: '创建时间',
         dataIndex: 'createTime',
         key: 'createTime',
-        width: 100,
+        width: 110,
         render: (text, record) => {
           const str = myGetStrTime(text)
           return (
@@ -78,7 +78,7 @@ export default class MainListenModalTable extends Component {
         title: '更新时间',
         dataIndex: 'updateTime',
         key: 'updateTime',
-        width: 100,
+        width: 110,
         render: (text, record) => {
           const str = myGetStrTime(text)
           return (
@@ -127,7 +127,7 @@ export default class MainListenModalTable extends Component {
         title: '创建时间',
         dataIndex: 'createTime',
         key: 'createTime',
-        width: 100,
+        width: 110,
         render: (text, record) => {
           const str = myGetStrTime(text)
           return (
@@ -139,7 +139,7 @@ export default class MainListenModalTable extends Component {
         title: '更新时间',
         dataIndex: 'updateTime',
         key: 'updateTime',
-        width: 100,
+        width: 110,
         render: (text, record) => {
           const str = myGetStrTime(text)
           return (

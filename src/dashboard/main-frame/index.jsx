@@ -52,7 +52,7 @@ export default class MainFrame extends Component {
           <HeadNav />
         </Header>
         <Layout style={{ background: '#041527', maxHeight: '100%' }}>
-          <Sider style={{ background: '#041527', maxHeight: '100%', overflow: 'scroll', marginBottom: '30px' }} width={220}>
+          <Sider style={{ background: '#041527', maxHeight: '100%', overflow: 'scroll', marginBottom: '30px' }} width={200}>
             <NavList navListData={this.props.appNavListData} />
           </Sider>
           <Content style={{ padding: 10, background: '#fff', paddingRight: 0 }}>

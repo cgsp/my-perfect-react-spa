@@ -29,7 +29,7 @@ export default class SelfTagDimensionDetailTable extends Component {
   render() {
     const columns = [
       {
-        title: '声音Id',
+        title: 'ID',
         dataIndex: 'id',
         key: 'id',
         render: (text, record) =>

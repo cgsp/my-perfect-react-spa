@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-19 17:52:45
+ * @Last Modified time: 2018-09-20 13:12:46
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -664,7 +664,8 @@ class MainAlbum extends Component {
             <Col span={8}>
               <FormItem
                 className="form-item"
-                label={<span className="form-label">关键词搜索</span>}
+                label={<span className="form-label">关键词搜索:</span>}
+                colon={false}
               >
                 <Input
                   style={{ width: 190 }} placeholder="请输入关键词搜索" onChange={e => this.setState({ searchKw: e.target.value })}
@@ -674,7 +675,8 @@ class MainAlbum extends Component {
             <Col span={8}>
               <FormItem
                 className="form-item"
-                label={<span className="form-label">主站专辑ID</span>}
+                label={<span className="form-label">主站专辑ID:</span>}
+                colon={false}
               >
                 <InputNumber
                   ref="searchIdref"
@@ -685,7 +687,8 @@ class MainAlbum extends Component {
             <Col span={8}>
               <FormItem
                 className="form-item"
-                label={<span className="form-label">专辑名称</span>}
+                label={<span className="form-label">专辑名称:</span>}
+                colon={false}
               >
                 <Input style={{ width: 190 }} placeholder="请输入专辑名称" onChange={e => this.setState({ searchTitle: e.target.value })} />
               </FormItem>
@@ -693,7 +696,8 @@ class MainAlbum extends Component {
             <Col span={8}>
               <FormItem
                 className="form-item"
-                label={<span className="form-label">分类</span>}
+                label={<span className="form-label">分类:</span>}
+                colon={false}
               >
                 <Select
                   placeholder="请选择分类"
@@ -715,7 +719,8 @@ class MainAlbum extends Component {
             <Col span={8}>
               <FormItem
                 className="form-item"
-                label={<span className="form-label">主站标签</span>}
+                label={<span className="form-label">主站标签:</span>}
+                colon={false}
               >
                 <Input
                   style={{ width: 190 }} placeholder="请输入主站标签" onChange={e => this.setState({ searchTag: e.target.value })}
@@ -725,7 +730,8 @@ class MainAlbum extends Component {
             <Col span={8}>
               <FormItem
                 className="form-item"
-                label={<span className="form-label">价格类型</span>}
+                label={<span className="form-label">价格类型:</span>}
+                colon={false}
               >
                 <Select
                   style={{ width: 190 }}
@@ -742,7 +748,8 @@ class MainAlbum extends Component {
             <Col span={8}>
               <FormItem
                 className="form-item"
-                label={<span className="form-label">是否付费</span>}
+                label={<span className="form-label">是否付费:</span>}
+                colon={false}
               >
                 <Select
                   style={{ width: 190 }}
@@ -759,7 +766,8 @@ class MainAlbum extends Component {
             <Col span={8}>
               <FormItem
                 className="form-item"
-                label={<span className="form-label">状态</span>}
+                label={<span className="form-label">状态:</span>}
+                colon={false}
               >
                 <Select
                   style={{ width: 190 }}
@@ -776,7 +784,8 @@ class MainAlbum extends Component {
             <Col span={8}>
               <FormItem
                 className="form-item"
-                label={<span className="form-label">创建时间</span>}
+                label={<span className="form-label">创建起始时间:</span>}
+                colon={false}
               >
                 <DatePicker
                   style={{ width: 190 }}
@@ -789,7 +798,7 @@ class MainAlbum extends Component {
                   showToday={false}
                   value={searchCreateTimeBegin}
                   format="YYYY-MM-DD HH:mm:ss"
-                  placeholder="请选择开始时间"
+                  placeholder="请选择起始时间"
                   disabledDate={this.props.disabledCreateBeginDate}
                   disabledTime={this.props.disabledCreateBeiginTime}
                   onChange={this.props.onCreateBeginDateAndTimeChange}
@@ -800,7 +809,8 @@ class MainAlbum extends Component {
             <Col span={8}>
               <FormItem
                 className="form-item"
-                label={<span className="form-label">创建时间</span>}
+                label={<span className="form-label">创建结束时间:</span>}
+                colon={false}
               >
                 <DatePicker
                   style={{ width: 190 }}
@@ -824,7 +834,8 @@ class MainAlbum extends Component {
             <Col span={8}>
               <FormItem
                 className="form-item"
-                label={<span className="form-label">更新时间</span>}
+                label={<span className="form-label">更新起始时间:</span>}
+                colon={false}
               >
                 <DatePicker
                   style={{ width: 190 }}
@@ -834,7 +845,7 @@ class MainAlbum extends Component {
                   }
                   showToday={false}
                   format="YYYY-MM-DD HH:mm:ss"
-                  placeholder="请选择开始时间"
+                  placeholder="请选择起始时间"
                   value={searchUpdateTimeBegin}
                   disabledDate={this.props.disabledUpdateBeginDate}
                   disabledTime={this.props.disabledUpdateBeiginTime}
@@ -846,7 +857,8 @@ class MainAlbum extends Component {
             <Col span={8}>
               <FormItem
                 className="form-item"
-                label={<span className="form-label">更新时间</span>}
+                label={<span className="form-label">更新结束时间</span>}
+                colon={false}
               >
                 <DatePicker
                   style={{ width: 190 }}
