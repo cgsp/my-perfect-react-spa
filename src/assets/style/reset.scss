@@ -86,7 +86,6 @@ video {
   padding: 0;
   border: 0;
   vertical-align: middle;
-  font-size: 1.2rem;
 }
 
 /* HTML5 display-role reset for older browsers */
@@ -134,4 +133,24 @@ table {
 
 a {
   text-decoration: none;
+}
+
+.ant-input {
+  font-size: 1.2rem !important;
+}
+
+.ant-menu-item {
+  font-size: 1.2rem !important;
+  a {
+    font-size: 1.2rem !important;
+  }
+}
+
+.ant-menu-submenu {
+  .ant-menu-submenu-title {
+    font-size: 1.2rem !important;
+  }
+  a {
+    font-size: 1.2rem !important;
+  }
 }

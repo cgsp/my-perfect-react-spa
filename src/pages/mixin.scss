@@ -1,0 +1,85 @@
+@mixin search() {
+  .search-list {
+    padding-left: 10px;
+    margin-bottom: 30px;
+    .form-item {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      .form-label {
+        min-width: 90px;
+        display: inline-block;
+        text-align: left;
+      }
+    }
+    .search-btn {
+      text-align: left;
+      .searchBtn {
+        margin-top: 14px;
+      }
+    }
+  }
+  .handle-buttons {
+    margin-bottom: 30px;
+    .line {
+      text-align: left;
+      .btn {
+        margin-left: 10px;
+        &:first-child {
+          margin-left: 0;
+        }
+      }
+      .sort-box {
+        float: right;
+        .sort-title {
+          position: relative;
+        }
+      }
+    }
+  }
+  div,
+  span,
+  p,
+  blockquote,
+  pre,
+  a,
+  strong,
+  sub,
+  u,
+  i,
+  dl,
+  dt,
+  dd,
+  ol,
+  ul,
+  li,
+  fieldset,
+  form,
+  label,
+  legend,
+  table,
+  caption,
+  tbody,
+  tfoot,
+  thead,
+  tr,
+  th,
+  td,
+  header,
+  menu,
+  nav,
+  section {
+    font-size: 1.2rem;
+  }
+  ::-webkit-input-placeholder {
+    font-size: 1.2rem;
+  }
+  :-moz-placeholder {
+    font-size: 1.2rem;
+  }
+  ::-moz-placeholder {
+    font-size: 1.2rem;
+  }
+  :-ms-input-placeholder {
+    font-size: 1.2rem;
+  }
+}

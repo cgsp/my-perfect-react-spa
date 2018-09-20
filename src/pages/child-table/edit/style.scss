@@ -1,4 +1,6 @@
+@import '../../mixin.scss';
 .child-table-add {
+  @include search;
   position: fixed;
   z-index: 100;
   top: 0;

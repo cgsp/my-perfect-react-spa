@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-20 15:51:45
+ * @Last Modified time: 2018-09-20 17:52:18
  */
 
 
@@ -482,7 +482,7 @@ class SelfTagTag extends Component {
 
 
     return (
-      <div className="self-tag-dimension">
+      <div className="self-tag-tag">
         {/* 搜索 */}
         <List className="search-list" bordered>
           <Form

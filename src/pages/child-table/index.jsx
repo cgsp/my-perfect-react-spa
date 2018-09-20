@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-20 15:56:30
+ * @Last Modified time: 2018-09-20 18:15:35
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -412,7 +412,7 @@ class ChildTable extends Component {
               <Col span={8}>
                 <FormItem
                   className="form-item"
-                  label={<span className="form-label">合作方</span>}
+                  label={<span className="form-label">合作方:</span>}
                   colon={false}
                 >
                   <Select
@@ -440,7 +440,7 @@ class ChildTable extends Component {
               <Col span={8}>
                 <FormItem
                   className="form-item"
-                  label={<span className="form-label">创建起始时间</span>}
+                  label={<span className="form-label">创建起始时间:</span>}
                   colon={false}
                 >
                   <DatePicker
@@ -465,7 +465,7 @@ class ChildTable extends Component {
               <Col span={8}>
                 <FormItem
                   className="form-item"
-                  label={<span className="form-label">创建结束时间</span>}
+                  label={<span className="form-label">创建结束时间:</span>}
                   colon={false}
                 >
                   <DatePicker
@@ -490,7 +490,7 @@ class ChildTable extends Component {
               <Col span={8}>
                 <FormItem
                   className="form-item"
-                  label={<span className="form-label">更新起始时间</span>}
+                  label={<span className="form-label">更新起始时间:</span>}
                   colon={false}
                 >
                   <DatePicker
@@ -513,7 +513,7 @@ class ChildTable extends Component {
               <Col span={8}>
                 <FormItem
                   className="form-item"
-                  label={<span className="form-label">更新结束时间</span>}
+                  label={<span className="form-label">更新结束时间:</span>}
                   colon={false}
                 >
                   <DatePicker
