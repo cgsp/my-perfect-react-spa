@@ -3,8 +3,12 @@ import { Form, Input, Select, Radio, Button, message } from 'antd'
 import { PropTypes } from 'prop-types'
 import DeleteIcon from '../imgs/delete.png'
 import MoveIcon from '../imgs/move.png'
-import { myHuanHang } from '@Utils/myHuanHang'
+// import { myHuanHang } from '@Utils/myHuanHang'
+import { apiGetSiteRules } from '@Api/child-table'
+import { ERR_OK } from '@Constants'
 import './style.scss'
+import MaskLoading from '@Components/mask-loading'
+
 
 const FormItem = Form.Item
 const Option = Select.Option
@@ -38,10 +42,28 @@ class ModuleDiscountCoupon extends Component {
         message.error('请选输入优惠券Id')
         return
       }
-      this.setState({
-        rules: '规则1\n规则2\n规则1\n规则2\n规则1\n规则2\n规则1\n规则2\n规则1\n规则2\n规则1\n规则2\n规则1\n规则2\n规则1\n规则2\n规则1\n规则2\n规则1\n规则2\n规则1\n规则2\n规则1\n规则2\n规则1\n规则2\n规则1\n规则2\n规则1\n规则2\n'
-      })
-      console.log(myHuanHang(this.state.couponIds))
+      this.refs.mask.show()
+      apiGetSiteRules(this.state.couponIds.split('\n').join(','))
+        .then(res => {
+          this.refs.mask.hide()
+          if (res.code !== ERR_OK) {
+            // message.error(res.msg)
+            alert(res.msg)
+            return
+          }
+          let str = ''
+          let index = 0
+          for (const key in res.data) {
+            const item = res.data[key]
+            str += `第${index + 1}条：${item.description}\n`
+            index++
+          }
+          this.setState({
+            rules: str,
+            errTips: undefined
+          })
+        })
+      // console.log(myHuanHang(this.state.couponIds))
     })
   }
 
@@ -123,16 +145,20 @@ class ModuleDiscountCoupon extends Component {
           >
             <Button type="primary" onClick={this.getRules}>确定</Button>
           </FormItem>
-          <FormItem
-            {...formItemLayout}
-            label="使用规则"
-          >
-            <TextArea
-              style={{ height: 100, maxHeight: 100 }}
-              value={this.state.rules}
-              disabled={true}
-            />
-          </FormItem>
+          {
+            this.state.rules ?
+              <FormItem
+                {...formItemLayout}
+                label="使用规则"
+              >
+                <TextArea
+                  style={{ height: 100, maxHeight: 100 }}
+                  value={this.state.rules}
+                  disabled={true}
+                />
+              </FormItem> : null
+          }
+
           {
             this.state.errTips ?
               <FormItem
@@ -164,6 +190,7 @@ class ModuleDiscountCoupon extends Component {
             </FormItem>
           </div>
         </div>
+        <MaskLoading ref="mask" />
       </div>
     )
   }

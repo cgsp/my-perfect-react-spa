@@ -75,6 +75,18 @@ export const apiGetSiteDetail = (id) => {
     })
 }
 
+// 获取详情的接口
+export const apiGetSiteRules = (ids) => {
+  return myAxios(
+    {
+      url: '/coupons/detail',
+      method: 'get',
+      params: { couponIds: ids },
+      data: {},
+      headers: defaultHeader
+    })
+}
+
 
 
 
