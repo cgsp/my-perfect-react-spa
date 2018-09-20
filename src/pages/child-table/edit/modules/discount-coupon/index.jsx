@@ -19,9 +19,15 @@ class ModuleDiscountCoupon extends Component {
   constructor(props) {
     super(props)
     // console.log(props.task.moduleValue)
+    let couponIds
+    if (props.task.moduleValue && props.task.moduleValue.context) {
+      couponIds = JSON.parse(props.task.moduleValue.context).couponIds
+    }
     this.state = {
       rules: undefined,
-      moduleValue: props.task.moduleValue || {}
+      moduleValue: props.task.moduleValue || {},
+      couponIds: couponIds,
+      errTips: undefined
     }
     // console.log(props)
   }
@@ -127,6 +133,20 @@ class ModuleDiscountCoupon extends Component {
               disabled={true}
             />
           </FormItem>
+          {
+            this.state.errTips ?
+              <FormItem
+                {...formItemLayout}
+                label="错误信息"
+              >
+                <TextArea
+                  style={{ height: 100, maxHeight: 100, borderColor: 'red' }}
+                  value={this.state.errTips}
+                  disabled={true}
+                />
+              </FormItem>
+              : null
+          }
           <div style={{ visibility: 'hidden', height: 0, overflow: 'hidden' }}>
             <FormItem
               {...formItemLayout}
