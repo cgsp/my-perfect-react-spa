@@ -46,7 +46,7 @@ class ModuleMemberGet extends Component {
         if (!context) {
           itemId = undefined
         } else {
-          let context = JSON.parse(context)
+          context = JSON.parse(context)
           itemId = context.itemId
         }
         this.props.form.setFieldsValue({

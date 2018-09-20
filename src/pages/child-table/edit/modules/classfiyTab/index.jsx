@@ -18,6 +18,7 @@ class ModuleClassfiyTab extends Component {
 
   constructor(props) {
     super(props)
+    // debugger
     console.log(props.categories)
     let lines
     if (props.categories.length === 0) {
@@ -31,17 +32,21 @@ class ModuleClassfiyTab extends Component {
       ]
     } else {
       lines = []
-      props.categories.forEach((item, index) => {
+      let oldLines = props.categories.slice()
+      oldLines.forEach((item, index) => {
+        const ele = JSON.parse(JSON.stringify(item))
         lines.push({
           lineId: `line-${index + 1}`,
-          displayName: item.displayName,
-          resourceType: item.resourceType,
-          resourceId: item.resourceId
+          displayName: ele.displayName,
+          resourceType: ele.resourceType,
+          resourceId: ele.resourceId
         })
       })
     }
+    // console.log(lines)
+    // debugger
     this.state = {
-      lines,
+      lines: lines.slice()
     }
   }
 
@@ -100,14 +105,24 @@ class ModuleClassfiyTab extends Component {
     }
     that.setState({}, () => {
       let lines = this.state.lines.slice()
-      let upLine = lines[index - 1]
-      let downLine = lines[index]
-      const tempId = upLine.lineId
-      upLine.lineId = downLine.lineId
-      downLine.lineId = tempId
+      // let upLine = lines[index - 1]
+      // let downLine = lines[index]
+      // const tempId = upLine.lineId
+      // upLine.lineId = downLine.lineId
+      // downLine.lineId = tempId
+      // that.setState({
+      //   lines
+      // })
+
+      let upLine = JSON.stringify(lines[index - 1])
+      let downLine = JSON.stringify(lines[index])
+      const temp = upLine
+      lines[index - 1] = JSON.parse(downLine)
+      lines[index] = JSON.parse(temp)
       that.setState({
         lines
       })
+
     })
   }
 
@@ -119,11 +134,16 @@ class ModuleClassfiyTab extends Component {
         message.error('已经处于最下面了')
         return
       }
-      let upLine = lines[index]
-      let downLine = lines[index + 1]
-      const tempId = upLine.lineId
-      upLine.lineId = downLine.lineId
-      downLine.lineId = tempId
+      // let upLine = lines[index]
+      // let downLine = lines[index + 1]
+      // const tempId = upLine.lineId
+      // upLine.lineId = downLine.lineId
+      // downLine.lineId = tempId
+      let upLine = JSON.stringify(lines[index])
+      let downLine = JSON.stringify(lines[index + 1])
+      const temp = upLine
+      lines[index] = JSON.parse(downLine)
+      lines[index + 1] = JSON.parse(temp)
       that.setState({
         lines
       })
