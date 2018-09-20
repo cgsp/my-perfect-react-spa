@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-18 14:32:16
+ * @Last Modified time: 2018-09-20 15:28:53
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal, message, InputNumber } from 'antd'
@@ -20,6 +20,8 @@ import { commonSmallTypes } from '@Api'
 import { connect } from 'react-redux'
 import { getCommonSmallTypes } from '@Redux/commonSmallType'
 import TimeControlHoc from '@Components/time-control-hoc'
+
+import './style.scss'
 
 const FormItem = Form.Item
 const Option = Select.Option
@@ -561,30 +563,42 @@ class SelfListen extends Component {
 
 
     return (
-      <div className="auth-role">
+      <div className="self-listen">
         {/* 搜索 */}
-        <List bordered style={{ paddingLeft: 10, marginBottom: 30 }}>
+        <List className="search-list" bordered>
           <Form
             className="ant-advanced-search-form"
             onSubmit={this.handleSearch}
             layout="inline"
           >
             <Row>
-              <Col span={6}>
-                <FormItem label={<span style={{ minWidth: 57, display: 'inline-block', textAlign: 'left' }}>自运营Id</span>} style={{ marginBottom: 10, marginTop: 10 }}>
+              <Col span={8}>
+                <FormItem
+                  className="form-item"
+                  label={<span className="form-label">ID:</span>}
+                  colon={false}
+                >
                   <InputNumber
                     ref="idref"
-                    style={{ width: 190 }} placeholder="请输入自运营Id" onChange={v => this.setState({ id: v })}
+                    style={{ width: 190 }} placeholder="请输入ID" onChange={v => this.setState({ id: v })}
                   />
                 </FormItem>
               </Col>
-              <Col span={6}>
-                <FormItem label="听单名称" style={{ marginBottom: 10, marginTop: 10 }}>
+              <Col span={8}>
+                <FormItem
+                  className="form-item"
+                  label={<span className="form-label">听单名称:</span>}
+                  colon={false}
+                >
                   <Input style={{ width: 190 }} placeholder="请输入听单名称" onChange={e => this.setState({ title: e.target.value })} />
                 </FormItem>
               </Col>
-              <Col span={6}>
-                <FormItem label="听单类型" style={{ marginBottom: 10, marginTop: 10 }}>
+              <Col span={8}>
+                <FormItem
+                  className="form-item"
+                  label={<span className="form-label">听单类型:</span>}
+                  colon={false}
+                >
                   <Select
                     placeholder="请选择听单类型"
                     style={{ width: 190 }}
@@ -597,10 +611,14 @@ class SelfListen extends Component {
                   </Select>
                 </FormItem>
               </Col>
-              <Col span={6}>
-                <FormItem label={<span style={{ minWidth: 57, display: 'inline-block', textAlign: 'left' }}>分类来源</span>} style={{ marginBottom: 10, marginTop: 10 }}>
+              <Col span={8}>
+                <FormItem
+                  className="form-item"
+                  label={<span className="form-label">分类来源:</span>}
+                  colon={false}
+                >
                   <Select
-                    placeholder="请选择分类"
+                    placeholder="请选择分类来源"
                     style={{ width: 190 }}
                     allowClear
                     onChange={value => {
@@ -617,11 +635,12 @@ class SelfListen extends Component {
                   </Select>
                 </FormItem>
               </Col>
-
-            </Row>
-            <Row>
-              <Col span={6}>
-                <FormItem label={<span style={{ minWidth: 57, display: 'inline-block', textAlign: 'left' }}>分类</span>} style={{ marginBottom: 10, marginTop: 10 }}>
+              <Col span={8}>
+                <FormItem
+                  className="form-item"
+                  label={<span className="form-label">分类:</span>}
+                  colon={false}
+                >
                   <Select
                     placeholder="请选择分类"
                     style={{ width: 190 }}
@@ -639,8 +658,12 @@ class SelfListen extends Component {
                   </Select>
                 </FormItem>
               </Col>
-              <Col span={6}>
-                <FormItem label={<span style={{ minWidth: 57, display: 'inline-block', textAlign: 'left' }}>状态</span>} style={{ marginBottom: 10, marginTop: 10 }}>
+              <Col span={8}>
+                <FormItem
+                  className="form-item"
+                  label={<span className="form-label">状态:</span>}
+                  colon={false}
+                >
                   <Select
                     placeholder="请选择状态"
                     style={{ width: 190 }}
@@ -653,8 +676,12 @@ class SelfListen extends Component {
                   </Select>
                 </FormItem>
               </Col>
-              <Col span={6}>
-                <FormItem label="创建时间" style={{ marginBottom: 10, marginTop: 10 }}>
+              <Col span={8}>
+                <FormItem
+                  className="form-item"
+                  label={<span className="form-label">创建起始时间:</span>}
+                  colon={false}
+                >
                   <DatePicker
                     showTime={
                       {
@@ -675,8 +702,12 @@ class SelfListen extends Component {
                 </FormItem>
 
               </Col>
-              <Col span={6}>
-                <FormItem label="创建时间" style={{ marginBottom: 10, marginTop: 10 }}>
+              <Col span={8}>
+                <FormItem
+                  className="form-item"
+                  label={<span className="form-label">创建结束时间:</span>}
+                  colon={false}
+                >
                   <DatePicker
                     showTime={
                       {
@@ -696,11 +727,12 @@ class SelfListen extends Component {
                   />
                 </FormItem>
               </Col>
-
-            </Row>
-            <Row>
-              <Col span={6}>
-                <FormItem label="更新时间" style={{ marginBottom: 10, marginTop: 10 }}>
+              <Col span={8}>
+                <FormItem
+                  className="form-item"
+                  label={<span className="form-label">更新起始时间:</span>}
+                  colon={false}
+                >
                   <DatePicker
                     showTime={
                       { defaultValue: moment().startOf('day'), hideDisabledOptions: true }
@@ -718,8 +750,12 @@ class SelfListen extends Component {
                   />
                 </FormItem>
               </Col>
-              <Col span={6}>
-                <FormItem label="更新时间" style={{ marginBottom: 10, marginTop: 10 }}>
+              <Col span={8}>
+                <FormItem
+                  className="form-item"
+                  label={<span className="form-label">更新结束时间:</span>}
+                  colon={false}
+                >
                   <DatePicker
                     showTime={
                       { defaultValue: moment().endOf('day'), hideDisabledOptions: true }
@@ -736,7 +772,9 @@ class SelfListen extends Component {
                   />
                 </FormItem>
               </Col>
-              <Col span={6} style={{ textAlign: 'left' }}>
+            </Row>
+            <Row>
+              <Col span={8} style={{ textAlign: 'left' }}>
                 <Button style={{ marginTop: 14 }} type="primary" htmlType="submit">查询</Button>
               </Col>
             </Row>
@@ -750,7 +788,7 @@ class SelfListen extends Component {
               <Button style={{ marginLeft: 20 }} type="primary" onClick={() => this.exportListen()}>听单批量导出</Button>
               <Button style={{ marginLeft: 20 }} type="primary" onClick={() => this.exportContent()}>内容批量导出</Button>
               <div style={{ float: 'right' }}>
-                <span style={{ position: 'relative', top: -9 }}>排序方式：</span>
+                <span style={{ position: 'relative' }}>排序方式：</span>
                 <SortList clickSort={this.clickSort} />
               </div>
             </Col>

@@ -25,7 +25,7 @@ export default class SelfTagTagListTable extends Component {
     }
     const columns = [
       {
-        title: '标签Id',
+        title: 'ID',
         dataIndex: 'id',
         key: 'id',
       },
@@ -33,19 +33,16 @@ export default class SelfTagTagListTable extends Component {
         title: '标签名称',
         dataIndex: 'name',
         key: 'name',
-        width: 130
       },
       {
         title: '所属维度',
         dataIndex: 'dimensionName',
         key: 'dimensionName',
-        width: 100,
       },
       {
         title: '主站专辑数',
         dataIndex: 'xmlyContentsNum',
         key: 'xmlyContentsNum',
-        width: 80,
         render: (text, record) => (
           <span style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.props.tableLineShowDetails(record, '主站')}>{text}</span>
         )
@@ -54,7 +51,6 @@ export default class SelfTagTagListTable extends Component {
         title: '自运营专辑数',
         dataIndex: 'openapiContentsNum',
         key: 'openapiContentsNum',
-        width: 80,
         render: (text, record) => (
           <span style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.props.tableLineShowDetails(record, '自运营')}>{text}</span>
         )
@@ -100,7 +96,7 @@ export default class SelfTagTagListTable extends Component {
       }]
     return (
       <div>
-        <Table columns={columns} rowSelection={rowSelection} dataSource={this.props.tableData} pagination={false} />
+        <Table columns={columns} rowSelection={rowSelection} dataSource={this.props.tableData} pagination={false} scroll={{ x: 1200 }} />
         <div style={{ textAlign: 'right', marginTop: 30 }}>
           <Pagination
             showSizeChanger

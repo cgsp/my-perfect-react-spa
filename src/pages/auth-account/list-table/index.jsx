@@ -25,7 +25,6 @@ export default class AuthAccountListTable extends Component {
         title: '真实姓名',
         dataIndex: 'realName',
         key: 'realName',
-        width: 100
       },
       {
         title: '角色名称',
@@ -84,7 +83,7 @@ export default class AuthAccountListTable extends Component {
       }]
     return (
       <div>
-        <Table columns={columns} dataSource={this.props.tableData} pagination={false} scroll={{ x: 1400 }} />
+        <Table columns={columns} dataSource={this.props.tableData} pagination={false} scroll={{ x: 1000 }} />
         <div style={{ textAlign: 'right', marginTop: 30 }}>
           <Pagination
             showSizeChanger

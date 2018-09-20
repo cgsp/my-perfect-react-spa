@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-19 18:17:38
+ * @Last Modified time: 2018-09-20 15:51:45
  */
 
 
@@ -491,18 +491,20 @@ class SelfTagTag extends Component {
             layout="inline"
           >
             <Row>
-              <Col span={6}>
+              <Col span={8}>
                 <FormItem
                   className="form-item"
-                  label={<span className="form-label">标签名称</span>}
+                  label={<span className="form-label">标签名称:</span>}
+                  colon={false}
                 >
                   <Input style={{ width: 190 }} placeholder="请输入标签名称" onChange={e => this.setState({ searchTagName: e.target.value })} />
                 </FormItem>
               </Col>
-              <Col span={6}>
+              <Col span={8}>
                 <FormItem
                   className="form-item"
-                  label={<span className="form-label">维度</span>}
+                  label={<span className="form-label">维度:</span>}
+                  colon={false}
                 >
                   <Select
                     style={{ width: 190 }}
@@ -519,10 +521,11 @@ class SelfTagTag extends Component {
                   </Select>
                 </FormItem>
               </Col>
-              <Col span={6}>
+              <Col span={8}>
                 <FormItem
                   className="form-item"
-                  label={<span className="form-label">创建时间</span>}
+                  label={<span className="form-label">创建起始时间:</span>}
+                  colon={false}
                 >
                   <DatePicker
                     style={{ width: 190 }}
@@ -544,10 +547,11 @@ class SelfTagTag extends Component {
                 </FormItem>
 
               </Col>
-              <Col span={6}>
+              <Col span={8}>
                 <FormItem
                   className="form-item"
-                  label={<span className="form-label">创建时间</span>}
+                  label={<span className="form-label">创建结束时间:</span>}
+                  colon={false}
                 >
                   <DatePicker
                     style={{ width: 190 }}
@@ -568,12 +572,11 @@ class SelfTagTag extends Component {
                   />
                 </FormItem>
               </Col>
-            </Row>
-            <Row>
-              <Col span={6}>
+              <Col span={8}>
                 <FormItem
                   className="form-item"
-                  label={<span className="form-label">更新时间</span>}
+                  label={<span className="form-label">更新起始时间:</span>}
+                  colon={false}
                 >
                   <DatePicker
                     style={{ width: 190 }}
@@ -592,10 +595,11 @@ class SelfTagTag extends Component {
                   />
                 </FormItem>
               </Col>
-              <Col span={6}>
+              <Col span={8}>
                 <FormItem
                   className="form-item"
-                  label={<span className="form-label">更新时间</span>}
+                  label={<span className="form-label">更新结束时间:</span>}
+                  colon={false}
                 >
                   <DatePicker
                     style={{ width: 190 }}
@@ -613,7 +617,9 @@ class SelfTagTag extends Component {
                   />
                 </FormItem>
               </Col>
-              <Col span={6} className="search-btn">
+            </Row>
+            <Row>
+              <Col span={8} className="search-btn">
                 <Button className="searchBtn" type="primary" htmlType="submit">查询</Button>
               </Col>
             </Row>

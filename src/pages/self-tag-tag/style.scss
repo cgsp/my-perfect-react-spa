@@ -1,4 +1,4 @@
-.self-tag-dimension {
+.self-tag-tag {
   .search-list {
     padding-left: 10px;
     margin-bottom: 30px;
@@ -6,7 +6,7 @@
       margin-top: 10px;
       margin-bottom: 10px;
       .form-label {
-        min-width: 57px;
+        min-width: 90px;
         display: inline-block;
         text-align: left;
       }
@@ -32,7 +32,6 @@
         float: right;
         .sort-title {
           position: relative;
-          top: -10px;
         }
       }
     }

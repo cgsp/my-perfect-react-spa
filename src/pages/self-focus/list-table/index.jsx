@@ -19,7 +19,6 @@ export default class SelfFocusListTable extends Component {
         title: 'ID',
         dataIndex: 'id',
         key: 'id',
-        width: 90
       },
       {
         title: '焦点图名称',
@@ -107,7 +106,6 @@ export default class SelfFocusListTable extends Component {
         render: (text, record) => {
           return <span>{text === 1 ? '已上架' : '已下架'}</span>
         },
-        width: 80
       },
       {
         title: '创建时间',
@@ -119,7 +117,6 @@ export default class SelfFocusListTable extends Component {
             <span>{str}</span>
           )
         },
-        width: 110
       },
       {
         title: '更新时间',
@@ -131,7 +128,6 @@ export default class SelfFocusListTable extends Component {
             <span>{str}</span>
           )
         },
-        width: 110
       },
       {
         title: '操作',
@@ -142,12 +138,17 @@ export default class SelfFocusListTable extends Component {
               <i style={{ color: '#3f90f7', cursor: 'pointer' }} onClick={() => this.props.tableLineEdit(record)}>编辑</i>
             </span>)
         },
-        width: 90
       }]
     return (
       <div>
-        <Table columns={columns} dataSource={this.props.tableData} pagination={false} />
-        <div style={{ textAlign: 'right', marginTop: 30 }}>
+        <Table
+          columns={columns}
+          dataSource={this.props.tableData}
+          pagination={false}
+          scroll={{ x: 1600 }}
+        />
+        <div style={{ textAlign: 'right', marginTop: 30 }}
+        >
           <Pagination
             showSizeChanger
             showQuickJumper

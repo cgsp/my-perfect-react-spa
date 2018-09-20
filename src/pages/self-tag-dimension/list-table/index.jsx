@@ -27,13 +27,11 @@ export default class SelfTagDimensionListTable extends Component {
       title: '维度名称',
       dataIndex: 'dimensionName',
       key: 'dimensionName',
-      width: 100,
     },
     {
       title: '标签数',
       dataIndex: 'tagsNum',
       key: 'tagsNum',
-      width: 80,
       render: (text, record) => (
         <span style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.props.tableLineShowDetails(record)}>{text}</span>
       )
@@ -42,7 +40,6 @@ export default class SelfTagDimensionListTable extends Component {
       title: '标签名称类型',
       dataIndex: 'valueType',
       key: 'valueType',
-      width: 100,
       render: (text, record) => {
         switch (text) {
           case 1:
@@ -64,7 +61,6 @@ export default class SelfTagDimensionListTable extends Component {
       title: '标签支持多选',
       dataIndex: 'choiceType',
       key: 'choiceType',
-      width: 100,
       render: (text, record) => {
         switch (text) {
           case 2:
@@ -122,7 +118,7 @@ export default class SelfTagDimensionListTable extends Component {
     }]
     return (
       <div>
-        <Table columns={columns} rowSelection={rowSelection} dataSource={this.props.tableData} pagination={false} />
+        <Table columns={columns} rowSelection={rowSelection} dataSource={this.props.tableData} pagination={false} scroll={{ x: 1200 }} />
         <div style={{ textAlign: 'right', marginTop: 30 }}>
           <Pagination
             showSizeChanger

@@ -133,7 +133,10 @@ class ChildTablesave extends Component {
           >
             <FormItem
               {...formItemLayout}
-              label="合作方"
+              label={
+                <label className="ant-form-item-required">合作方:</label>
+              }
+              colon={false}
             >
               <Select
                 showSearch

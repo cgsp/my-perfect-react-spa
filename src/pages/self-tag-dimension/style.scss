@@ -6,7 +6,7 @@
       margin-top: 10px;
       margin-bottom: 10px;
       .form-label {
-        min-width: 57px;
+        min-width: 90px;
         display: inline-block;
         text-align: left;
       }
@@ -32,7 +32,6 @@
         float: right;
         .sort-title {
           position: relative;
-          top: -10px;
         }
       }
     }
@@ -41,4 +40,9 @@
 
 .ant-message {
   z-index: 200000 !important;
+}
+.self-tag-dimension-modal{
+  .ant-form-item-label{
+    text-align-last: left;
+  }
 }

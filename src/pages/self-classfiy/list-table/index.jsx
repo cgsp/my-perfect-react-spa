@@ -74,7 +74,6 @@ export default class MainClassfiyListTable extends Component {
         render: (text, record) => {
           return <span>{text === 1 ? '已上架' : '已下架'}</span>
         },
-        width: 60
       },
       {
         title: '创建时间',
@@ -107,7 +106,6 @@ export default class MainClassfiyListTable extends Component {
               <i style={{ color: 'green', cursor: 'pointer' }} onClick={() => this.props.tableLineEdit(record)}>编辑</i>
             </span>)
         },
-        width: 140
       }]
     return (
       <div>

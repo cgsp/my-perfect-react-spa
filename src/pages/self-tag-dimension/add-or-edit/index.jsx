@@ -98,7 +98,7 @@ class SelfTagDimensionAddOrEdit extends Component {
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
-        sm: { span: 8 },
+        sm: { span: 7, offset: 1 },
       },
       wrapperCol: {
         xs: { span: 24 },
@@ -130,6 +130,7 @@ class SelfTagDimensionAddOrEdit extends Component {
         width={800}
         destroyOnClose={true}
         zIndex={10000}
+        className="self-tag-dimension-modal"
       >
         <div style={{ maxHeight: 550, overflowY: 'scroll', paddingRight: 40 }}>
           <Form

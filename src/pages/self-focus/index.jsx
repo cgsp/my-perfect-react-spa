@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-18 14:31:31
+ * @Last Modified time: 2018-09-20 15:16:42
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -358,218 +358,233 @@ class SelfFocus extends Component {
             onSubmit={this.handleSearch}
             layout="inline"
           >
-            <Col span={8}>
-              <FormItem
-                className="form-item"
-                label={<span className="form-label">ID</span>}
-              >
-                <InputNumber
-                  ref="searchIdref"
-                  style={{ width: 190 }} placeholder="请输入ID" onChange={v => this.setState({ searchId: v })}
-                />
-              </FormItem>
-            </Col>
-            <Col span={8}>
-              <FormItem
-                className="form-item"
-                label={<span className="form-label">焦点图名称</span>}
-              >
-                <Input style={{ width: 190 }} placeholder="请输入焦点图名称" onChange={e => this.setState({ searchName: e.target.value })} />
-              </FormItem>
-            </Col>
-            <Col span={8}>
-              <FormItem
-                className="form-item"
-                label={<span className="form-label">跳转类型</span>}
-              >
-                <Select
-                  style={{ width: 190 }}
-                  placeholder="请选择"
-                  allowClear
-                  onChange={value => this.setState({ contentType: value })}
-                  getPopupContainer={trigger => trigger.parentNode}
+            <Row>
+              <Col span={8}>
+                <FormItem
+                  className="form-item"
+                  label={<span className="form-label">ID:</span>}
+                  colon={false}
                 >
-                  <Option value={1}>单个用户</Option>
-                  <Option value={2}>单个专辑</Option>
-                  <Option value={3}>单个声音</Option>
-                  <Option value={4}>链接</Option>
-                  <Option value={9}>听单</Option>
-                </Select>
-              </FormItem>
-            </Col>
-            <Col span={8}>
-              <FormItem
-                className="form-item"
-                label={<span className="form-label">分类来源</span>}
-              >
-                <Select
-                  style={{ width: 190 }}
-                  placeholder="请选择分类来源"
-                  allowClear
-                  onChange={value => {
-                    this.getCategories(value)
-                    this.setState({
-                      categorySource: value,
-                      categoryId: undefined
-                    })
-                  }}
-                  getPopupContainer={trigger => trigger.parentNode}
+                  <InputNumber
+                    ref="searchIdref"
+                    style={{ width: 190 }} placeholder="请输入ID" onChange={v => this.setState({ searchId: v })}
+                  />
+                </FormItem>
+              </Col>
+              <Col span={8}>
+                <FormItem
+                  className="form-item"
+                  label={<span className="form-label">焦点图名称:</span>}
+                  colon={false}
                 >
-                  <Option value={1}>主站</Option>
-                  <Option value={2}>自运营</Option>
-                </Select>
-              </FormItem>
-            </Col>
-            <Col span={8}>
-              <FormItem
-                className="form-item"
-                label={<span className="form-label">分类</span>}
-              >
-                <Select
-                  placeholder="请选择分类"
-                  style={{ width: 190 }}
-                  allowClear
-                  onChange={value => this.setState({ categoryId: value })}
-                  value={this.state.categoryId}
-                  getPopupContainer={trigger => trigger.parentNode}
-                  notFoundContent="请先选择分类来源"
+                  <Input style={{ width: 190 }} placeholder="请输入焦点图名称" onChange={e => this.setState({ searchName: e.target.value })} />
+                </FormItem>
+              </Col>
+              <Col span={8}>
+                <FormItem
+                  className="form-item"
+                  label={<span className="form-label">跳转类型:</span>}
+                  colon={false}
                 >
-                  {
-                    this.state.categories.map((item) => (
-                      <Option key={item.id} value={item.id}>{item.name}</Option>
-                    ))
-                  }
-                </Select>
-              </FormItem>
-            </Col>
-            <Col span={8}>
-              <FormItem
-                className="form-item"
-                label={<span className="form-label">是否外部链接</span>}
-              >
-                <Select
-                  style={{ width: 190 }}
-                  placeholder="请选择"
-                  allowClear
-                  onChange={value => this.setState({ isExternalUrl: value })}
-                  getPopupContainer={trigger => trigger.parentNode}
+                  <Select
+                    style={{ width: 190 }}
+                    placeholder="请选择"
+                    allowClear
+                    onChange={value => this.setState({ contentType: value })}
+                    getPopupContainer={trigger => trigger.parentNode}
+                  >
+                    <Option value={1}>单个用户</Option>
+                    <Option value={2}>单个专辑</Option>
+                    <Option value={3}>单个声音</Option>
+                    <Option value={4}>链接</Option>
+                    <Option value={9}>听单</Option>
+                  </Select>
+                </FormItem>
+              </Col>
+              <Col span={8}>
+                <FormItem
+                  className="form-item"
+                  label={<span className="form-label">分类来源:</span>}
+                  colon={false}
                 >
-                  <Option value={1}>是</Option>
-                  <Option value={0}>否</Option>
-                </Select>
-              </FormItem>
-            </Col>
-            <Col span={8}>
-              <FormItem
-                className="form-item"
-                label={<span className="form-label">状态</span>}
-              >
-                <Select
-                  style={{ width: 190 }}
-                  placeholder="请选择"
-                  allowClear
-                  onChange={value => this.setState({ onlineStatus: value })}
-                  getPopupContainer={trigger => trigger.parentNode}
+                  <Select
+                    style={{ width: 190 }}
+                    placeholder="请选择分类来源"
+                    allowClear
+                    onChange={value => {
+                      this.getCategories(value)
+                      this.setState({
+                        categorySource: value,
+                        categoryId: undefined
+                      })
+                    }}
+                    getPopupContainer={trigger => trigger.parentNode}
+                  >
+                    <Option value={1}>主站</Option>
+                    <Option value={2}>自运营</Option>
+                  </Select>
+                </FormItem>
+              </Col>
+              <Col span={8}>
+                <FormItem
+                  className="form-item"
+                  label={<span className="form-label">分类:</span>}
+                  colon={false}
                 >
-                  <Option value={1}>已上架</Option>
-                  <Option value={2}>已下架</Option>
-                </Select>
-              </FormItem>
-            </Col>
-            <Col span={8}>
-              <FormItem
-                className="form-item"
-                label={<span className="form-label">创建时间</span>}
-              >
-                <DatePicker
-                  style={{ width: 190 }}
-                  showTime={
+                  <Select
+                    placeholder="请选择分类"
+                    style={{ width: 190 }}
+                    allowClear
+                    onChange={value => this.setState({ categoryId: value })}
+                    value={this.state.categoryId}
+                    getPopupContainer={trigger => trigger.parentNode}
+                    notFoundContent="请先选择分类来源"
+                  >
                     {
-                      defaultValue: moment().startOf('day'),
-                      hideDisabledOptions: true,
+                      this.state.categories.map((item) => (
+                        <Option key={item.id} value={item.id}>{item.name}</Option>
+                      ))
                     }
-                  }
-                  showToday={false}
-                  value={searchCreateTimeBegin}
-                  format="YYYY-MM-DD HH:mm:ss"
-                  placeholder="请选择起始时间"
-                  disabledDate={this.props.disabledCreateBeginDate}
-                  disabledTime={this.props.disabledCreateBeiginTime}
-                  onChange={this.props.onCreateBeginDateAndTimeChange}
-                  getCalendarContainer={trigger => trigger.parentNode}
-                />
-              </FormItem>
-            </Col>
-            <Col span={8}>
-              <FormItem
-                className="form-item"
-                label={<span className="form-label">创建时间</span>}
-              >
-                <DatePicker
-                  style={{ width: 190 }}
-                  showTime={
-                    {
-                      defaultValue: moment().endOf('day'),
-                      hideDisabledOptions: true,
+                  </Select>
+                </FormItem>
+              </Col>
+              <Col span={8}>
+                <FormItem
+                  className="form-item"
+                  label={<span className="form-label">是否外部链接:</span>}
+                  colon={false}
+                >
+                  <Select
+                    style={{ width: 190 }}
+                    placeholder="请选择"
+                    allowClear
+                    onChange={value => this.setState({ isExternalUrl: value })}
+                    getPopupContainer={trigger => trigger.parentNode}
+                  >
+                    <Option value={1}>是</Option>
+                    <Option value={0}>否</Option>
+                  </Select>
+                </FormItem>
+              </Col>
+              <Col span={8}>
+                <FormItem
+                  className="form-item"
+                  label={<span className="form-label">状态:</span>}
+                  colon={false}
+                >
+                  <Select
+                    style={{ width: 190 }}
+                    placeholder="请选择"
+                    allowClear
+                    onChange={value => this.setState({ onlineStatus: value })}
+                    getPopupContainer={trigger => trigger.parentNode}
+                  >
+                    <Option value={1}>已上架</Option>
+                    <Option value={2}>已下架</Option>
+                  </Select>
+                </FormItem>
+              </Col>
+              <Col span={8}>
+                <FormItem
+                  className="form-item"
+                  label={<span className="form-label">创建起始时间:</span>}
+                  colon={false}
+                >
+                  <DatePicker
+                    style={{ width: 190 }}
+                    showTime={
+                      {
+                        defaultValue: moment().startOf('day'),
+                        hideDisabledOptions: true,
+                      }
                     }
-                  }
-                  showToday={false}
-                  value={searchCreateTimeEnd}
-                  format="YYYY-MM-DD HH:mm:ss"
-                  placeholder="请选择结束时间"
-                  disabledDate={this.props.disabledCreateEndDate}
-                  disabledTime={this.props.disabledCreateEndTime}
-                  onChange={this.props.onCreateEndDateAndTimeChange}
-                  getCalendarContainer={trigger => trigger.parentNode}
-                />
-              </FormItem>
-            </Col>
-            <Col span={8}>
-              <FormItem
-                className="form-item"
-                label={<span className="form-label">更新时间</span>}
-              >
-                <DatePicker
-                  style={{ width: 190 }}
-                  showTime={
-                    { defaultValue: moment().startOf('day'), hideDisabledOptions: true }
+                    showToday={false}
+                    value={searchCreateTimeBegin}
+                    format="YYYY-MM-DD HH:mm:ss"
+                    placeholder="请选择起始时间"
+                    disabledDate={this.props.disabledCreateBeginDate}
+                    disabledTime={this.props.disabledCreateBeiginTime}
+                    onChange={this.props.onCreateBeginDateAndTimeChange}
+                    getCalendarContainer={trigger => trigger.parentNode}
+                  />
+                </FormItem>
+              </Col>
+              <Col span={8}>
+                <FormItem
+                  className="form-item"
+                  label={<span className="form-label">创建结束时间:</span>}
+                  colon={false}
+                >
+                  <DatePicker
+                    style={{ width: 190 }}
+                    showTime={
+                      {
+                        defaultValue: moment().endOf('day'),
+                        hideDisabledOptions: true,
+                      }
+                    }
+                    showToday={false}
+                    value={searchCreateTimeEnd}
+                    format="YYYY-MM-DD HH:mm:ss"
+                    placeholder="请选择结束时间"
+                    disabledDate={this.props.disabledCreateEndDate}
+                    disabledTime={this.props.disabledCreateEndTime}
+                    onChange={this.props.onCreateEndDateAndTimeChange}
+                    getCalendarContainer={trigger => trigger.parentNode}
+                  />
+                </FormItem>
+              </Col>
+              <Col span={8}>
+                <FormItem
+                  className="form-item"
+                  label={<span className="form-label">更新起始时间:</span>}
+                  colon={false}
+                >
+                  <DatePicker
+                    style={{ width: 190 }}
+                    showTime={
+                      { defaultValue: moment().startOf('day'), hideDisabledOptions: true }
 
-                  }
-                  showToday={false}
-                  format="YYYY-MM-DD HH:mm:ss"
-                  placeholder="请选择起始时间"
-                  value={searchUpdateTimeBegin}
-                  disabledDate={this.props.disabledUpdateBeginDate}
-                  disabledTime={this.props.disabledUpdateBeiginTime}
-                  onChange={this.props.onUpdateBeginDateAndTimeChange}
-                  getCalendarContainer={trigger => trigger.parentNode}
-                />
-              </FormItem>
-            </Col>
-            <Col span={8}>
-              <FormItem
-                className="form-item"
-                label={<span className="form-label">更新时间</span>}
-              >
-                <DatePicker
-                  style={{ width: 190 }}
-                  showTime={
-                    { defaultValue: moment().endOf('day'), hideDisabledOptions: true }
-                  }
-                  showToday={false}
-                  format="YYYY-MM-DD HH:mm:ss"
-                  placeholder="请选择结束时间"
-                  value={searchUpdateTimeEnd}
-                  disabledDate={this.props.disabledUpdateEndDate}
-                  disabledTime={this.props.disabledUpdateEndTime}
-                  onChange={this.props.onUpdateEndDateAndTimeChange}
-                  getCalendarContainer={trigger => trigger.parentNode}
-                />
-              </FormItem>
-            </Col>
-            <Col span={8} className="search-btn">
-              <Button className="searchBtn" type="primary" htmlType="submit">查询</Button>
-            </Col>
+                    }
+                    showToday={false}
+                    format="YYYY-MM-DD HH:mm:ss"
+                    placeholder="请选择起始时间"
+                    value={searchUpdateTimeBegin}
+                    disabledDate={this.props.disabledUpdateBeginDate}
+                    disabledTime={this.props.disabledUpdateBeiginTime}
+                    onChange={this.props.onUpdateBeginDateAndTimeChange}
+                    getCalendarContainer={trigger => trigger.parentNode}
+                  />
+                </FormItem>
+              </Col>
+              <Col span={8}>
+                <FormItem
+                  className="form-item"
+                  label={<span className="form-label">更新结束时间:</span>}
+                  colon={false}
+                >
+                  <DatePicker
+                    style={{ width: 190 }}
+                    showTime={
+                      { defaultValue: moment().endOf('day'), hideDisabledOptions: true }
+                    }
+                    showToday={false}
+                    format="YYYY-MM-DD HH:mm:ss"
+                    placeholder="请选择结束时间"
+                    value={searchUpdateTimeEnd}
+                    disabledDate={this.props.disabledUpdateEndDate}
+                    disabledTime={this.props.disabledUpdateEndTime}
+                    onChange={this.props.onUpdateEndDateAndTimeChange}
+                    getCalendarContainer={trigger => trigger.parentNode}
+                  />
+                </FormItem>
+              </Col>
+            </Row>
+            <Row>
+              <Col span={8} className="search-btn">
+                <Button className="searchBtn" type="primary" htmlType="submit">查询</Button>
+              </Col>
+            </Row>
           </Form>
         </List>
         {/* 表头功能按钮 */}

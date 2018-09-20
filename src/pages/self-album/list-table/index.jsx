@@ -33,10 +33,9 @@ export default class SelfAlbumListTable extends Component {
     }
     const columns = [
       {
-        title: '自运营专辑ID',
+        title: 'ID',
         dataIndex: 'id',
         key: 'id',
-        width: 80,
       },
       {
         title: '主站专辑ID',
@@ -148,7 +147,6 @@ export default class SelfAlbumListTable extends Component {
       {
         title: '操作',
         key: 'action',
-        width: 100,
         render: (text, record) => {
           return (
             <span>
@@ -158,7 +156,7 @@ export default class SelfAlbumListTable extends Component {
       }]
     return (
       <div>
-        <Table columns={columns} rowSelection={rowSelection} dataSource={this.props.tableData} pagination={false} scroll={{ x: 1400 }} />
+        <Table columns={columns} rowSelection={rowSelection} dataSource={this.props.tableData} pagination={false} scroll={{ x: 1600 }} />
         <div style={{ textAlign: 'right', marginTop: 30 }}>
           <Pagination
             showSizeChanger
