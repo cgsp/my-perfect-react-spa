@@ -3,46 +3,48 @@ import MainFrame from '../dashboard/main-frame'
 import { Route, withRouter, Switch, Redirect } from 'react-router-dom'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
-// import { asyncComponent } from './asyncComponent'
+import { asyncComponent } from './asyncComponent'
 
 // 让路由对应的组件都是异步加载
-// const NoMatch404 = asyncComponent(() => import('@Pages/no-match-404'))
-// const Index = asyncComponent(() => import('@Pages/index'))
-// const MainAlbum = asyncComponent(() => import('@Pages/main-album'))
-// const MainFocus = asyncComponent(() => import('@Pages/main-focus'))
-// const MainListen = asyncComponent(() => import('@Pages/main-listen'))
-// const MainClassfiy = asyncComponent(() => import('@Pages/main-classfiy'))
-// const MainList = asyncComponent(() => import('@Pages/main-list'))
-// const SelfAlbum = asyncComponent(() => import('@Pages/self-album'))
-// const SelfFocus = asyncComponent(() => import('@Pages/self-focus'))
-// const SelfListen = asyncComponent(() => import('@Pages/self-listen'))
-// const SelfClassfiy = asyncComponent(() => import('@Pages/self-classfiy'))
-// const SelfTagTag = asyncComponent(() => import('@Pages/self-tag-tag'))
-// const SelfTagDimension = asyncComponent(() => import('@Pages/self-tag-dimension'))
-// const ChildTable = asyncComponent(() => import('@Pages/child-table'))
-// const AuthAccount = asyncComponent(() => import('@Pages/auth-account'))
-// const AuthRole = asyncComponent(() => import('@Pages/auth-role'))
-// const AuthMenu = asyncComponent(() => import('@Pages/auth-menu'))
+const NoMatch404 = asyncComponent(() => import('@Pages/no-match-404'))
+const Index = asyncComponent(() => import('@Pages/index'))
+const MainAlbum = asyncComponent(() => import('@Pages/main-album'))
+const MainFocus = asyncComponent(() => import('@Pages/main-focus'))
+const MainListen = asyncComponent(() => import('@Pages/main-listen'))
+const MainClassfiy = asyncComponent(() => import('@Pages/main-classfiy'))
+const MainList = asyncComponent(() => import('@Pages/main-list'))
+const SelfAlbum = asyncComponent(() => import('@Pages/self-album'))
+const SelfFocus = asyncComponent(() => import('@Pages/self-focus'))
+const SelfListen = asyncComponent(() => import('@Pages/self-listen'))
+const SelfClassfiy = asyncComponent(() => import('@Pages/self-classfiy'))
+const SelfTagTag = asyncComponent(() => import('@Pages/self-tag-tag'))
+const SelfTagDimension = asyncComponent(() => import('@Pages/self-tag-dimension'))
+const ChildTable = asyncComponent(() => import('@Pages/child-table'))
+const ChildTableAdd = asyncComponent(() => import('@Pages/child-table/add'))
+const ChildTableEdit = asyncComponent(() => import('@Pages/child-table/edit'))
+const AuthAccount = asyncComponent(() => import('@Pages/auth-account'))
+const AuthRole = asyncComponent(() => import('@Pages/auth-role'))
+const AuthMenu = asyncComponent(() => import('@Pages/auth-menu'))
 
-import NoMatch404 from '@Pages/no-match-404'
-import Index from '@Pages/index'
-import MainAlbum from '@Pages/main-album'
-import MainFocus from '@Pages/main-focus'
-import MainListen from '@Pages/main-listen'
-import MainClassfiy from '@Pages/main-classfiy'
-import MainList from '@Pages/main-list'
-import SelfAlbum from '@Pages/self-album'
-import SelfFocus from '@Pages/self-focus'
-import SelfListen from '@Pages/self-listen'
-import SelfClassfiy from '@Pages/self-classfiy'
-import SelfTagTag from '@Pages/self-tag-tag'
-import SelfTagDimension from '@Pages/self-tag-dimension'
-import ChildTable from '@Pages/child-table'
-import ChildTableAdd from '@Pages/child-table/add'
-import ChildTableEdit from '@Pages/child-table/edit'
-import AuthAccount from '@Pages/auth-account'
-import AuthRole from '@Pages/auth-role'
-import AuthMenu from '@Pages/auth-menu'
+// import NoMatch404 from '@Pages/no-match-404'
+// import Index from '@Pages/index'
+// import MainAlbum from '@Pages/main-album'
+// import MainFocus from '@Pages/main-focus'
+// import MainListen from '@Pages/main-listen'
+// import MainClassfiy from '@Pages/main-classfiy'
+// import MainList from '@Pages/main-list'
+// import SelfAlbum from '@Pages/self-album'
+// import SelfFocus from '@Pages/self-focus'
+// import SelfListen from '@Pages/self-listen'
+// import SelfClassfiy from '@Pages/self-classfiy'
+// import SelfTagTag from '@Pages/self-tag-tag'
+// import SelfTagDimension from '@Pages/self-tag-dimension'
+// import ChildTable from '@Pages/child-table'
+// import ChildTableAdd from '@Pages/child-table/add'
+// import ChildTableEdit from '@Pages/child-table/edit'
+// import AuthAccount from '@Pages/auth-account'
+// import AuthRole from '@Pages/auth-role'
+// import AuthMenu from '@Pages/auth-menu'
 
 // {
 //   path: '/child-table',
