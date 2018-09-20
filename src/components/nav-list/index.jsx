@@ -47,7 +47,7 @@ export default class NavList extends Component {
         className="app-sibe-bar"
         theme="dark"
         onClick={this.handleClick}
-        style={{ width: 256 }}
+        style={{ width: 220 }}
         selectedKeys={[
           currentPath ? currentPath : this.state.currentKey
         ]}
