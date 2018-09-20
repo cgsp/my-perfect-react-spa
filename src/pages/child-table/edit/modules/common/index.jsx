@@ -25,8 +25,16 @@ class ModuleCommon extends Component {
     super(props)
     // console.log(props)
     // console.log(this.props.task.moduleValue)
+    let resourceType
+
+    if (props.task.moduleValue) {
+      resourceType = props.task.moduleValue.resourceType
+    } else {
+      resourceType = 3
+    }
+
     this.state = {
-      resourceType: this.props.task.moduleValue.resourceType ? this.props.task.moduleValue.resourceType : undefined,
+      resourceType,
       moduleValue: props.task.moduleValue || {}
     }
     this.changeChildModule = this.changeChildModule.bind(this)

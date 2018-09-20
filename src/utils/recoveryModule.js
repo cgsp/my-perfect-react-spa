@@ -46,12 +46,12 @@ export const recoveryModule = (modules) => {
   }
 
   modules.forEach((module, index) => {
-    dragData.tasks[`task-${module.orderNum}`] = {
-      taskId: `task-${module.orderNum}`,
+    dragData.tasks[`task-${module.orderNum + 1}`] = {
+      taskId: `task-${module.orderNum + 1}`,
       content: transNumToModule(module.moduleType),
       moduleValue: module
     }
-    dragData.columns['column-1'].taskIds.push(`task-${module.orderNum}`)
+    dragData.columns['column-1'].taskIds.push(`task-${module.orderNum + 1}`)
   })
 
   return dragData

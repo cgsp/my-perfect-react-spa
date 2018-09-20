@@ -358,24 +358,26 @@ class ChildTableEdit extends Component {
 
         that.setState({}, () => {
           let oldDragData = that.state.dragData
-          oldDragData = JSON.parse(JSON.stringify(oldDragData))
+          let newDragData = JSON.parse(JSON.stringify(oldDragData))
           const taskContent = transNameToModule(name)
-          const limit = judgeLimitOneModule(taskContent, oldDragData.tasks)
+          const limit = judgeLimitOneModule(taskContent, newDragData.tasks)
           if (limit) {
             message.error('提示下载App, 搜索条件，分类Tab模块，分别只能添加一次')
             return
           }
-          const taskId = `task-${getMaxTaskId(oldDragData.tasks) + 1}`
+          const taskId = `task-${getMaxTaskId(newDragData.tasks) + 1}`
 
-          oldDragData.tasks[taskId] = {
+          newDragData.tasks[taskId] = {
             taskId,
             content: taskContent,
-            moduleValue: {}
+            // moduleValue: {}
           }
-          oldDragData.columns['column-1'].taskIds.unshift(taskId)
-          console.log(oldDragData)
+          
+          newDragData.columns['column-1'].taskIds.unshift(taskId)
+          console.log(newDragData)
+          // debugger
           that.setState({
-            dragData: oldDragData
+            dragData: newDragData
           })
         })
       }

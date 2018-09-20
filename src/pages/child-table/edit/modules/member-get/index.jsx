@@ -41,7 +41,7 @@ class ModuleMemberGet extends Component {
           days: res.data
         })
 
-        let context = this.props.task.moduleValue.context
+        let context = this.props.task.moduleValue ? this.props.task.moduleValue.context : undefined
         let itemId
         if (!context) {
           itemId = undefined
