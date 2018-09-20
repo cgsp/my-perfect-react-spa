@@ -23,7 +23,7 @@ export default class HeadNav extends Component {
       <div className="header-container">
         <div className="main-nav">
           <h1 style={{ fontSize: '20px' }}>开放平台自运营后台</h1>
-          <div className="user-panel"></div>
+          <div className="user-panel" />
         </div>
       </div>
     )

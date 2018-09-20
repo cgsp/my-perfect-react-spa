@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Input, Modal, Tree } from 'antd'
+import { Form, Modal, Tree } from 'antd'
 import { PropTypes } from 'prop-types'
 const TreeNode = Tree.TreeNode
 const FormItem = Form.Item
@@ -47,7 +47,6 @@ class lookRole extends Component {
   }
 
   render() {
-    const { getFieldDecorator } = this.props.form
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },

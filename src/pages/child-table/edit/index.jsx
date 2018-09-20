@@ -412,16 +412,16 @@ class ChildTableEdit extends Component {
     const { getFieldDecorator } = this.props.form
     let site = this.state.originData.site
     const extendConfigJson = JSON.parse(site.extendConfigJson)
-    let defaultSecond
-    let defaultMinute
-    if (!extendConfigJson.toastWhenTrackPlaying.startInMs) {
-      defaultSecond = 0
-      defaultMinute = 0
-    } else {
-      defaultSecond = extendConfigJson.toastWhenTrackPlaying.startInMs % 60
-      defaultMinute = extendConfigJson.toastWhenTrackPlaying.startInMs / 60
-      defaultMinute = Math.floor(defaultMinute)
-    }
+    // let defaultSecond
+    // let defaultMinute
+    // if (!extendConfigJson.toastWhenTrackPlaying.startInMs) {
+    //   defaultSecond = 0
+    //   defaultMinute = 0
+    // } else {
+    //   defaultSecond = extendConfigJson.toastWhenTrackPlaying.startInMs % 60
+    //   defaultMinute = extendConfigJson.toastWhenTrackPlaying.startInMs / 60
+    //   defaultMinute = Math.floor(defaultMinute)
+    // }
 
     const formItemLayout = {
       labelCol: {

@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import { Form, Input, Select, message } from 'antd'
+import { Form, Input, Select } from 'antd'
 import { PropTypes } from 'prop-types'
 // import { commonSmallTypes } from '@Api'
-import { ERR_OK } from '@Constants'
 
 const FormItem = Form.Item
 const Option = Select.Option
