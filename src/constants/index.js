@@ -58,6 +58,7 @@ const ROUTE_BASE = {
 
 const BASEURL = {
   dev: 'http://cms.test.9nali.com/openapi-content-admin-app',
+  // dev: 'http://192.168.127.97:8080/openapi-content-admin-app',
   pro: 'http://cms.test.9nali.com/openapi-content-admin-app',
 }
 
@@ -86,13 +87,15 @@ const SONG_URL = {
     track: 'http://test.ximalaya.com/tracks'
   },
   pro: {
-    album: 'http://ximalaya.com/album',
-    track: 'http://ximalaya.com/tracks'
+    album: 'http://test.ximalaya.com/album',
+    track: 'http://test.ximalaya.com/tracks'
   },
 }
 
 const noLoginCode = 399
 
+const noAuthCode = 377
+
 const ERR_OK = 0
 
-export { BASEURL, ROUTE_BASE, ERR_OK, DOWN_LOAD_URL, UP_IMG_ACTION, SONG_URL, UP_FOCUS_IMG_ACTION, noLoginCode }
+export { BASEURL, ROUTE_BASE, ERR_OK, DOWN_LOAD_URL, UP_IMG_ACTION, SONG_URL, UP_FOCUS_IMG_ACTION, noLoginCode, noAuthCode }

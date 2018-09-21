@@ -1,5 +1,5 @@
 import { apiGetNavList } from '@Api'
-import { ERR_OK } from '@Constants'
+import { ERR_OK, noAuthCode } from '@Constants'
 import { mySessionStorageGet, mySessionStorageSet } from '@Utils/myStorages'
 import { message } from 'antd'
 
@@ -44,12 +44,12 @@ function screenRoutesList(arr) {
   return routesList
 }
 
-export function getNavBarData() {
+export function getNavBarData(callBack) {
   return (dispatch) => {
     // 发送请求
     apiGetNavList()
       .then((res) => {
-        if (res.code !== ERR_OK) {
+        if (res.code !== ERR_OK && res.code !== noAuthCode) {
           message.error(res.message)
           return
         }
@@ -58,13 +58,22 @@ export function getNavBarData() {
           routePath: 'index',
           icon: 'laptop'
         }]
-        const resNav = JSON.parse(JSON.parse(res.data).menuTree).childResources
-        // console.log(JSON.parse(res.data))
-        menuTree = menuTree.concat(resNav || [])
-        // console.log(menuTree)
+        // 如果正常
+        if (res.code === ERR_OK) {
+          // console.log(JSON.parse(res.data))
+          let resNav
+          if (res.data.menuTree) {
+            resNav = JSON.parse(JSON.parse(res.data).menuTree).childResources
+          }
+          else {
+            resNav = undefined
+          }
+          menuTree = menuTree.concat(resNav || [])
+        }
         dispatch(getSuccess(menuTree))
         mySessionStorageSet('app-nav-list', menuTree)
         mySessionStorageSet('app-route-list', screenRoutesList(menuTree))
+        callBack && callBack(res)
       })
   }
 }

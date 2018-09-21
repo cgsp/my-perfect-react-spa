@@ -24,9 +24,14 @@ export default class MainFrame extends Component {
   }
 
   componentDidMount() {
-    if (this.props.appNavListData.length <= 1) {
-      this.props.getNavBarData()
+    if (this.props.appNavListData.length <=1) {
       this.refs.mask.show()
+      this.props.getNavBarData(
+        () => {
+          // console.log(res)
+          this.refs.mask.hide()
+        }
+      )
     }
   }
 
@@ -34,13 +39,13 @@ export default class MainFrame extends Component {
   //   console.log(this.props.appNavListData)
   // }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    // console.log(nextProps)
-    if (nextProps.appNavListData.length > 1) {
-      this.refs.mask.hide()
-    }
-    return true
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   // console.log(nextProps)
+  //   if (nextProps.appNavListData.length > 1) {
+  //     this.refs.mask.hide()
+  //   }
+  //   return true
+  // }
 
   render() {
     const { children } = this.props

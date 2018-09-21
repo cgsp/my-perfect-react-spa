@@ -2,14 +2,14 @@
  * @Author: John.Guan
  * @Date: 2018-07-24 15:01:37
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-21 10:02:26
+ * @Last Modified time: 2018-09-21 15:18:05
  */
 import axios from 'axios'
 import qs from 'qs'
 import { myLocalStorageGet } from '@Utils/myStorages'
 import { BASEURL } from '@Constants'
 import { mySessionStorageClear } from '@Utils/myStorages'
-import { noLoginCode } from '@Constants'
+import { noLoginCode, noAuthCode } from '@Constants'
 // import { message } from 'antd'
 // import { Toast } from 'antd-mobile'
 
@@ -50,29 +50,25 @@ axios.interceptors.response.use((response) => {
   // 对响应数据做点什么
   // Toast.hide();
   // console.log('响应成功拦截器:', response)
-  // mySessionStorageClear()
-  // window.location = 'http://ops.test.ximalaya.com/cas-server/login?service=http%3A%2F%2Fcms.test.9nali.com%2Fopenapi-content-admin-app%2Fcallback%3Fclient_name%3DCasClient'
 
   if (response && response.data && response.data.code === noLoginCode) {
     // const str = JSON.stringify(response.data)
     // alert('后端给前端399了,具体信息是-------' + str)
     mySessionStorageClear()
     window.location = response.data.data
-  } else {
+  }
+  else if (response && response.data && response.data.code === noAuthCode) {
+    // const str = JSON.stringify(response.data)
+    // alert('后端给前端377了,具体信息是-------' + str)
+    mySessionStorageClear()
     return response
   }
-  // if (response && response.data && response.data.code === noLoginCode) {
-  //   mySessionStorageClear()
-  //   console.log(response.data.data)
-  //   // window.location = response.data.data
-  // }
+  else {
+    return response
+  }
 
 }, (error) => {
   // 对响应错误做点什么
-  // Toast.fail('响应失败', 0, null, true);
-  // setTimeout(() => {
-  //   Toast.hide();
-  // }, 600);
   // console.log('响应失败拦截器:', error);
   return Promise.reject(error)
 })
