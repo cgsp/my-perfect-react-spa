@@ -29,7 +29,7 @@ class Index extends Component {
         <div className="img">
           <img src={noAuthImg} alt="" />
         </div>
-        <span className="text">当前您没有该系统访问权限，请联系管理员！</span>
+        <span className="text">请联系管理员，配置权限！</span>
       </div>
     )
     return (
