@@ -37,7 +37,7 @@ export default class Task extends Component {
     // 判断是哪个模块
     const content = this.props.task.content
     // debugger
-    console.log(content)
+    // console.log(content)
     let Module
     switch (content) {
       case 'ModuleSearchCondition':

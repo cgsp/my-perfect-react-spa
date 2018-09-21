@@ -13,10 +13,10 @@ class ModuleMemberHas extends Component {
     deleteModule: PropTypes.func
   }
 
-  constructor(props) {
-    super(props)
-    console.log(props)
-  }
+  // constructor(props) {
+  //   super(props)
+  //   // console.log(props)
+  // }
 
   render() {
     const getFieldDecorator = this.props.getFieldDecorator

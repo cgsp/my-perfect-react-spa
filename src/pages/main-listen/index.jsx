@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-20 14:01:52
+ * @Last Modified time: 2018-09-21 09:59:07
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal, message, InputNumber } from 'antd'
@@ -164,7 +164,7 @@ class SelfListen extends Component {
 
   tableLineSave(line) {
     this.refs.mask.show()
-    console.log('另存为', line)
+    // console.log('另存为', line)
     const that = this
     this.props.getCommonSmallTypes(line.source, () => {
       that.setState({
@@ -186,7 +186,7 @@ class SelfListen extends Component {
           message.error(res.msg)
           return
         }
-        console.log(res)
+        // console.log(res)
         if (res.data.clickUrl && res.data.invalidCount !== 0) {
           const content = (
             <div>
@@ -221,7 +221,7 @@ class SelfListen extends Component {
   }
 
   tableLineShowDetails(line) {
-    console.log('查看详情', line)
+    // console.log('查看详情', line)
     if (line.contentType === 2) {
       this.type = '声音'
       this.setState({
@@ -265,7 +265,7 @@ class SelfListen extends Component {
   }
 
   tableSelect(selectedRowKeys) {
-    console.log('selectedRowKeys changed: ', selectedRowKeys)
+    // console.log('selectedRowKeys changed: ', selectedRowKeys)
     this.setState({
       selectedRowKeys
     })
@@ -281,7 +281,7 @@ class SelfListen extends Component {
 
   export(url) {
     const DEV = process.env.NODE_ENV !== 'production'
-    console.log(process.env.NODE_ENV)
+    // console.log(process.env.NODE_ENV)
     let baseURL
     if (DEV) {
       baseURL = DOWN_LOAD_URL.dev
@@ -343,7 +343,7 @@ class SelfListen extends Component {
         }
       }
       str = str.slice(0, -1)
-      console.log(str)
+      // console.log(str)
 
       let a = document.createElement('a')
       document.body.appendChild(a)
@@ -400,7 +400,7 @@ class SelfListen extends Component {
   }
 
   modalPageOrPageSizeChange(current, pageSize) {
-    console.log(this.modalMainId)
+    // console.log(this.modalMainId)
     this.getModalListData({
       pageNo: current,
       pageSize,

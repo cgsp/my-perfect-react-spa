@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-20 15:10:08
+ * @Last Modified time: 2018-09-21 09:59:17
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -274,7 +274,7 @@ class SelfAlbum extends Component {
 
   // 列表页面的勾选
   tableSelect(selectedRowKeys) {
-    console.log('selectedRowKeys changed: ', selectedRowKeys)
+    // console.log('selectedRowKeys changed: ', selectedRowKeys)
     this.setState({
       selectedRowKeys
     })
@@ -325,7 +325,7 @@ class SelfAlbum extends Component {
 
       delete options.selectedRowKeys
 
-      console.log(options.albumIds)
+      // console.log(options.albumIds)
       let newOptions
       if (type === '专辑批量导出') {
         if (options.albumIds.length !== 0) {
@@ -377,7 +377,7 @@ class SelfAlbum extends Component {
       }
     }
     str = str.slice(0, -1)
-    console.log(str)
+    // console.log(str)
 
     let a = document.createElement('a')
     document.body.appendChild(a)
@@ -389,7 +389,7 @@ class SelfAlbum extends Component {
 
   // 列表页面的编辑
   tableLineEdit(line) {
-    console.log('编辑', line)
+    // console.log('编辑', line)
     this.refs.mask.show()
     this.props.getCommonDimesionsAndTags(() => {
       apiAlbumGetMainPeople(line.sourceId)
@@ -467,7 +467,7 @@ class SelfAlbum extends Component {
 
   // 查看专辑数的详情--弹框列表
   tableLineShowDetails(line, type) {
-    console.log('查看详情', line)
+    // console.log('查看详情', line)
     this.detailAlbumId = line.id
     this.setState({
       detailPageNo: 1,
@@ -563,7 +563,7 @@ class SelfAlbum extends Component {
                 text: item.name
               })
             })
-            console.log(res)
+            // console.log(res)
             callback(arr)
           }
         })
@@ -575,7 +575,7 @@ class SelfAlbum extends Component {
     this.setState({
       ctagId: value,
     }, () => {
-      console.log(this.state.ctagId)
+      // console.log(this.state.ctagId)
     })
   }
 

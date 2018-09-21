@@ -59,7 +59,7 @@ export function getNavBarData() {
           icon: 'laptop'
         }]
         const resNav = JSON.parse(JSON.parse(res.data).menuTree).childResources
-        console.log(JSON.parse(res.data))
+        // console.log(JSON.parse(res.data))
         menuTree = menuTree.concat(resNav || [])
         // console.log(menuTree)
         dispatch(getSuccess(menuTree))

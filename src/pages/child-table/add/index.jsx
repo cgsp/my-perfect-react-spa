@@ -175,7 +175,7 @@ class ChildTableAdd extends Component {
           return
         }
 
-        console.log(options)
+        // console.log(options)
         this.createSite(options)
       })
 
@@ -239,7 +239,7 @@ class ChildTableAdd extends Component {
                 text: item.appName
               })
             })
-            console.log(res)
+            // console.log(res)
             callback(arr)
           }
         })
@@ -252,7 +252,7 @@ class ChildTableAdd extends Component {
     this.setState({
       appKey: value,
     }, () => {
-      console.log(this.state.appKey)
+      // console.log(this.state.appKey)
     })
   }
 
@@ -295,8 +295,8 @@ class ChildTableAdd extends Component {
           [newColumn.id]: newColumn,
         }
       }
-      console.log(newState.columns['column-1']
-        .taskIds)
+      // console.log(newState.columns['column-1']
+        // .taskIds)
       // console.log(newState)
       this.setState({
         dragData: newState

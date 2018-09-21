@@ -207,7 +207,7 @@ class MainAlbum extends Component {
 
   // 列表页面的另存为
   tableLineEdit(line) {
-    console.log('编辑', line)
+    // console.log('编辑', line)
     this.editId = line.id
     this.editSourceId = line.sourceId
     this.editOnlineStatus = line.onlineStatus
@@ -343,7 +343,7 @@ class MainAlbum extends Component {
 
   // 查看专辑数的详情--弹框列表
   tableLineShowDetails(line, type) {
-    console.log('查看详情', line)
+    // console.log('查看详情', line)
     this.detailId = line.id
     let detailTitle
     if (line.contentType === 1) {

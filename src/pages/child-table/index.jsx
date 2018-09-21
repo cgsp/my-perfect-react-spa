@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-20 18:15:35
+ * @Last Modified time: 2018-09-21 10:08:41
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -212,7 +212,7 @@ class ChildTable extends Component {
 
   // 列表页面的编辑
   async tableLineEdit(line) {
-    console.log('编辑', line)
+    // console.log('编辑', line)
     try {
       this.refs.mask.show()
       const res = await apiGetSiteDetail(line.id)
@@ -278,7 +278,7 @@ class ChildTable extends Component {
   }
 
   async tableLineSave(line) {
-    console.log(line)
+    // console.log(line)
     try {
       this.refs.mask.show()
       const res = await apiGetSiteDetail(line.id)
@@ -288,7 +288,7 @@ class ChildTable extends Component {
         return
       }
       this.saveDatail = res.data
-      console.log(this.saveDatail)
+      // console.log(this.saveDatail)
       this.setState({
         saveTitle: '子站另存为',
         saveVisible: true,
@@ -339,7 +339,7 @@ class ChildTable extends Component {
                 text: item.appName
               })
             })
-            console.log(res)
+            // console.log(res)
             callback(arr)
           }
         })
@@ -352,7 +352,7 @@ class ChildTable extends Component {
     this.setState({
       appKey: value,
     }, () => {
-      console.log(this.state.appKey)
+      // console.log(this.state.appKey)
     })
   }
 

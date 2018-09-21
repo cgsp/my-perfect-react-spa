@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-20 17:52:18
+ * @Last Modified time: 2018-09-21 10:01:41
  */
 
 
@@ -219,7 +219,7 @@ class SelfTagTag extends Component {
 
   // 列表页面的勾选
   tableSelect(selectedRowKeys) {
-    console.log('selectedRowKeys changed: ', selectedRowKeys)
+    // console.log('selectedRowKeys changed: ', selectedRowKeys)
     this.setState({
       selectedRowKeys
     })
@@ -261,14 +261,14 @@ class SelfTagTag extends Component {
 
       delete options.selectedRowKeys
 
-      console.log(options.ids)
+      // console.log(options.ids)
       if (options.ids.length === 0) {
         delete options.ids
       } else {
         options.ids = options.ids.join()
       }
 
-      console.log(options.ids)
+      // console.log(options.ids)
 
       const DEV = process.env.NODE_ENV !== 'production'
       let baseURL
@@ -286,7 +286,7 @@ class SelfTagTag extends Component {
         }
       }
       str = str.slice(0, -1)
-      console.log(str)
+      // console.log(str)
 
       let a = document.createElement('a')
       document.body.appendChild(a)
@@ -299,7 +299,7 @@ class SelfTagTag extends Component {
 
   // 列表页面的编辑
   tableLineEdit(line) {
-    console.log('编辑', line)
+    // console.log('编辑', line)
     this.setState({
       addOrEditTitle: '编辑标签',
       addOrEditVisible: true,
@@ -309,7 +309,7 @@ class SelfTagTag extends Component {
 
   // 删除标签的处理
   tableLineDelete(line) {
-    console.log('删除', line)
+    // console.log('删除', line)
     Modal.confirm({
       title: '确定要删除吗？',
       content: '删除了之后，所有专辑对应的该标签都会被删除',
@@ -374,7 +374,7 @@ class SelfTagTag extends Component {
 
   // 查看专辑数的详情--弹框列表
   tableLineShowDetails(line, type) {
-    console.log('查看详情', line)
+    // console.log('查看详情', line)
     if (type === '主站') {
       this.detailContentType = 1
     } else {

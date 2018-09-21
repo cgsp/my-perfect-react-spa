@@ -125,7 +125,7 @@ class SelfTagDimensionAddOrEdit extends Component {
         values.categorySource = values.categorySource - 0
         values.sourceId = values.sourceId - 0
         this.props.addOrEditOk(values)
-        console.log(values)
+        // console.log(values)
       })
     })
   }
@@ -137,7 +137,7 @@ class SelfTagDimensionAddOrEdit extends Component {
   }
 
   deleteTag = (id) => {
-    console.log(id)
+    // console.log(id)
     this.setState({
     }, () => {
       const { nowChoosedTagsIds, nowChoosedTags } = this.state

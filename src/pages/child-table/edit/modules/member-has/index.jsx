@@ -18,7 +18,7 @@ class ModuleMemberHas extends Component {
     this.state = {
       moduleValue: props.task.moduleValue || {}
     }
-    console.log(props)
+    // console.log(props)
   }
 
   render() {

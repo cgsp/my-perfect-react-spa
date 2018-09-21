@@ -45,7 +45,7 @@ class ChildTablesave extends Component {
           message.error('请选择合作方')
           return
         }
-        console.log(values)
+        // console.log(values)
         this.props.saveOk(values)
       })
     })
@@ -88,7 +88,7 @@ class ChildTablesave extends Component {
                 text: item.appName
               })
             })
-            console.log(res)
+            // console.log(res)
             callback(arr)
           }
         })
@@ -101,7 +101,7 @@ class ChildTablesave extends Component {
     this.setState({
       appKey: value,
     }, () => {
-      console.log(this.state.appKey)
+      // console.log(this.state.appKey)
     })
   }
 

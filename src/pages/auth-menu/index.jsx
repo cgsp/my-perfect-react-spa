@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-18 18:02:23
+ * @Last Modified time: 2018-09-21 09:54:05
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, message, Select, Modal } from 'antd'
@@ -175,7 +175,7 @@ class AuthMenu extends Component {
           return
         }
         const data = JSON.parse(res.data)
-        console.log(data)
+        // console.log(data)
         let tableData
         if (data.total === 0) {
           tableData = []
@@ -200,7 +200,7 @@ class AuthMenu extends Component {
 
   // 删除的逻辑
   tableLineDelete(line) {
-    console.log(line)
+    // console.log(line)
     const that = this
     confirm({
       title: '确定要删除吗？',
@@ -224,7 +224,7 @@ class AuthMenu extends Component {
 
   // 列表页面的编辑
   tableLineAddOrEdit(line, type) {
-    console.log(type, line)
+    // console.log(type, line)
     const addOrEditVisible = true
     this.parentId = line.parentId
     this.sort = line.sort

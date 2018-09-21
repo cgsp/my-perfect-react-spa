@@ -82,7 +82,7 @@ class MainAllTag extends Component {
 
         const options = { albumIds: [...new Set(newArr)], tagIds: nowChoosedTagsIds }
         this.props.allTagOk(options)
-        console.log(options)
+        // console.log(options)
       })
     })
   }

@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-20 14:46:54
+ * @Last Modified time: 2018-09-21 09:58:31
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -225,7 +225,7 @@ class SelfTagTag extends Component {
 
   // 查看专辑数的详情--弹框列表
   tableLineShowDetails(line, type) {
-    console.log('查看详情', line)
+    // console.log('查看详情', line)
     this.rankId = line.id
     this.setState({
       detailPageNo: 1,

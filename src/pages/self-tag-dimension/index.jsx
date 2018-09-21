@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-20 15:46:30
+ * @Last Modified time: 2018-09-21 10:01:07
  */
 
 
@@ -214,7 +214,7 @@ class SelfDimension extends Component {
 
   // 列表页面的勾选
   tableSelect(selectedRowKeys) {
-    console.log('selectedRowKeys changed: ', selectedRowKeys)
+    // console.log('selectedRowKeys changed: ', selectedRowKeys)
     this.setState({
       selectedRowKeys
     })
@@ -248,14 +248,14 @@ class SelfDimension extends Component {
 
       delete options.selectedRowKeys
 
-      console.log(options.ids)
+      // console.log(options.ids)
       if (options.ids.length === 0) {
         delete options.ids
       } else {
         options.ids = options.ids.join()
       }
 
-      console.log(options.ids)
+      // console.log(options.ids)
 
       const DEV = process.env.NODE_ENV !== 'production'
       let baseURL
@@ -273,7 +273,7 @@ class SelfDimension extends Component {
         }
       }
       str = str.slice(0, -1)
-      console.log(str)
+      // console.log(str)
 
       let a = document.createElement('a')
       document.body.appendChild(a)
@@ -286,7 +286,7 @@ class SelfDimension extends Component {
 
   // 列表页面的编辑
   tableLineEdit(line) {
-    console.log('编辑', line)
+    // console.log('编辑', line)
     this.setState({
       addOrEditTitle: '编辑维度',
       addOrEditVisible: true,
@@ -296,7 +296,7 @@ class SelfDimension extends Component {
   }
 
   tableLineDelete(line) {
-    console.log('删除', line)
+    // console.log('删除', line)
     Modal.confirm({
       title: '确定要删除吗？',
       content: '删除了之后，所有专辑对应的该维度，包括其标签都会被删除',
@@ -316,7 +316,7 @@ class SelfDimension extends Component {
 
   // 列表页面，在当前维度下面添加标签
   tableLineAdd(line) {
-    console.log('添加标签', line)
+    // console.log('添加标签', line)
     this.addTagDimensionId = line.id
     this.setState({
       addOrEditTitle: '添加标签',
@@ -338,7 +338,7 @@ class SelfDimension extends Component {
 
   // 新增或者编辑维度，添加标签，点击弹框的确定
   addOrEditOk(values, title) {
-    console.log(values, title)
+    // console.log(values, title)
     if (title === '添加标签') {
       values.dimensionId = this.addTagDimensionId
     } else if (title === '编辑维度') {
@@ -399,7 +399,7 @@ class SelfDimension extends Component {
 
   // 查看专辑数的详情--弹框列表
   tableLineShowDetails(line) {
-    console.log('查看详情', line)
+    // console.log('查看详情', line)
     this.detailDimensionId = line.id
     this.detailValueType = line.valueType
     this.setState({

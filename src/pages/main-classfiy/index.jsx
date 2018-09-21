@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-20 14:21:38
+ * @Last Modified time: 2018-09-21 09:58:04
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber, Modal } from 'antd'
@@ -214,7 +214,7 @@ class MainAlbum extends Component {
 
   // 列表页面的另存为
   tableLineSave(line) {
-    console.log('另存为', line)
+    // console.log('另存为', line)
     this.saveId = line.id
     this.saveSourceId = line.sourceId
     this.saveOnlineStatus = line.onlineStatus
@@ -291,7 +291,7 @@ class MainAlbum extends Component {
 
   // 查看专辑数的详情--弹框列表
   tableLineShowDetails(line, type) {
-    console.log('查看详情', line)
+    // console.log('查看详情', line)
     this.detailId = line.id
     let detailTitle
     if (line.contentType === 1) {

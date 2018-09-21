@@ -47,8 +47,11 @@ class ModuleDiscountCoupon extends Component {
         .then(res => {
           this.refs.mask.hide()
           if (res.code !== ERR_OK) {
-            // message.error(res.msg)
-            alert(res.msg)
+            message.error(res.msg)
+            this.setState({
+              rules: undefined,
+              errTips: res.msg
+            })
             return
           }
           let str = ''

@@ -44,7 +44,7 @@ class SelfTagDimensionAddOrEdit extends Component {
           this.setState({}, () => {
             num1 = this.state.num1 - 0
             num2 = this.state.num2 - 0
-            console.log(num1, num2)
+            // console.log(num1, num2)
             if (!num1 && num1 !== 0) {
               message.error('请输入数值')
               return
@@ -77,7 +77,7 @@ class SelfTagDimensionAddOrEdit extends Component {
               message.error('标签名称长度应小于10个字符')
               return
             }
-            console.log('提交', values)
+            // console.log('提交', values)
             this.props.addOrEditOk(values, title)
           }
         }
@@ -86,7 +86,7 @@ class SelfTagDimensionAddOrEdit extends Component {
             message.error('标签名称长度应小于10个字符')
             return
           }
-          console.log('提交', values)
+          // console.log('提交', values)
           this.props.addOrEditOk(values, title)
         }
       }

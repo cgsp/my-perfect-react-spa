@@ -37,7 +37,7 @@ class AuthAccountAddOrEdit extends Component {
       delete values.roleIds
 
       this.props.addOrEditOk(values)
-      console.log(values)
+      // console.log(values)
     })
   }
 

@@ -58,7 +58,7 @@ class lookRole extends Component {
       },
     }
 
-    console.log(this.props.checkedKeys)
+    // console.log(this.props.checkedKeys)
     const checkedKeys = this.props.checkedKeys.map(item => item + '')
     return (
       <Modal

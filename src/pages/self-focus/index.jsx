@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-20 15:16:42
+ * @Last Modified time: 2018-09-21 10:09:18
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -227,7 +227,7 @@ class SelfFocus extends Component {
 
   // 列表页面的编辑
   async tableLineEdit(line) {
-    console.log('编辑', line)
+    // console.log('编辑', line)
     this.editBannerId = line.bannerId
     this.editId = line.id
     try {

@@ -55,7 +55,7 @@ export const geCategoriesItemValue = (obj) => {
     idValid = false
   }
 
-  console.log(idValid)
+  // console.log(idValid)
 
   return {
     categories: tempArr,

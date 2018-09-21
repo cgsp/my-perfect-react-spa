@@ -19,7 +19,7 @@ class ModuleClassfiyTab extends Component {
   constructor(props) {
     super(props)
     // debugger
-    console.log(props.categories)
+    // console.log(props.categories)
     let lines
     if (props.categories.length === 0) {
       lines = [

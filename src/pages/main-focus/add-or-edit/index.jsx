@@ -104,12 +104,12 @@ class MainFocusAddOrEdit extends Component {
   }
 
   handleImgCancel = () => {
-    console.log('删除')
+    // console.log('删除')
     this.setState({ previewVisible: false })
   }
 
   handleImgPreview = (file) => {
-    console.log('初始化')
+    // console.log('初始化')
     this.setState({
       previewImage: file.url || file.thumbUrl,
       previewVisible: true,

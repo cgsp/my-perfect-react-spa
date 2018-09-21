@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-20 13:47:56
+ * @Last Modified time: 2018-09-21 10:09:04
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -233,7 +233,7 @@ class MainFocus extends Component {
 
   // 列表页面的另存为
   async tableLineSave(line) {
-    console.log('另存为', line)
+    // console.log('另存为', line)
     this.saveBannerId = line.bannerId
     try {
       const categorySource = 1

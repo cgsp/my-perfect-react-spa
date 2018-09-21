@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-20 13:12:46
+ * @Last Modified time: 2018-09-21 10:08:54
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -275,7 +275,7 @@ class MainAlbum extends Component {
 
   // 列表页面的勾选
   tableSelect(selectedRowKeys) {
-    console.log('selectedRowKeys changed: ', selectedRowKeys)
+    // console.log('selectedRowKeys changed: ', selectedRowKeys)
     this.setState({
       selectedRowKeys
     })
@@ -326,7 +326,7 @@ class MainAlbum extends Component {
 
       delete options.selectedRowKeys
 
-      console.log(options.albumIds)
+      // console.log(options.albumIds)
       let newOptions
       if (type === '专辑批量导出') {
         if (options.albumIds.length !== 0) {
@@ -378,7 +378,7 @@ class MainAlbum extends Component {
       }
     }
     str = str.slice(0, -1)
-    console.log(str)
+    // console.log(str)
 
     let a = document.createElement('a')
     document.body.appendChild(a)
@@ -390,7 +390,7 @@ class MainAlbum extends Component {
 
   // 列表页面的另存为
   tableLineSave(line) {
-    console.log('另存为', line)
+    // console.log('另存为', line)
     this.saveId = line.id
     this.saveTags = line.tags
     this.refs.mask.show()
@@ -413,7 +413,7 @@ class MainAlbum extends Component {
   }
 
   tableLineTag(line) {
-    console.log('打标签', line)
+    // console.log('打标签', line)
     this.refs.mask.show()
     this.props.getCommonDimesionsAndTags(() => {
       this.setState({
@@ -467,7 +467,7 @@ class MainAlbum extends Component {
 
   // 查看专辑数的详情--弹框列表
   tableLineShowDetails(line, type) {
-    console.log('查看详情', line)
+    // console.log('查看详情', line)
     this.detailAlbumId = line.id
     this.setState({
       detailPageNo: 1,
@@ -577,7 +577,7 @@ class MainAlbum extends Component {
   }
 
   async singleTagOk(nowChoosedTagsIds) {
-    console.log(nowChoosedTagsIds)
+    // console.log(nowChoosedTagsIds)
     try {
       this.refs.mask.show()
       const options = {

@@ -2,7 +2,7 @@
  * @Author: John.Guan
  * @Date: 2018-07-24 15:01:37
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-19 20:32:42
+ * @Last Modified time: 2018-09-21 10:02:26
  */
 import axios from 'axios'
 import qs from 'qs'
@@ -14,7 +14,7 @@ import { noLoginCode } from '@Constants'
 // import { Toast } from 'antd-mobile'
 
 const DEV = process.env.NODE_ENV !== 'production'
-console.log(process.env.NODE_ENV)
+// console.log(process.env.NODE_ENV)
 let baseURL
 if (DEV) {
   baseURL = BASEURL.dev
