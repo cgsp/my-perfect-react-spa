@@ -169,7 +169,7 @@ class MainClassfiyAddOrEdit extends Component {
         onOk={(e) => this.handleSubmit(e)}
         width={800}
       >
-        <div style={{ maxHeight: 550, overflowY: 'scroll', paddingRight: 40 }}>
+        <div style={{ maxHeight: 550, overflowY: 'auto', paddingRight: 40 }}>
           <Form
             onSubmit={this.handleSubmit}
           >

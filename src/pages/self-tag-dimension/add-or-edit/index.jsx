@@ -132,7 +132,7 @@ class SelfTagDimensionAddOrEdit extends Component {
         zIndex={10000}
         className="self-tag-dimension-modal"
       >
-        <div style={{ maxHeight: 550, overflowY: 'scroll', paddingRight: 40 }}>
+        <div style={{ maxHeight: 550, overflowY: 'auto', paddingRight: 40 }}>
           <Form
             onSubmit={this.handleSubmit}
           >

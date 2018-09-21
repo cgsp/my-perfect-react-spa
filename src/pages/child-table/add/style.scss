@@ -62,13 +62,13 @@
         top: 0;
         .left {
           flex: 3;
-          overflow-y: scroll;
+          overflow-y: auto;
           margin-right: 5px;
           padding-right: 10px;
         }
         .right {
           flex: 4;
-          overflow-y: scroll;
+          overflow-y: auto;
           margin-left: 5px;
           padding-left: 10px;
           .no-module {

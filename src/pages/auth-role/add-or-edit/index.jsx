@@ -71,7 +71,7 @@ class AddOrEditRole extends Component {
         destroyOnClose={true}
         width={600}
       >
-        <div style={{ maxHeight: 550, overflowY: 'scroll' }}>
+        <div style={{ maxHeight: 550, overflowY: 'auto' }}>
           <Form
             onSubmit={this.handleSubmit}
           >
@@ -139,7 +139,7 @@ class AddOrEditRole extends Component {
               {...formItemLayout}
               label="权限设置"
             >
-              <div style={{ height: 300, maxHeight: 300, overflowX: 'scroll' }}>
+              <div style={{ height: 300, maxHeight: 300, overflowX: 'auto' }}>
                 <Tree
                   checkable
                   autoExpandParent={true}

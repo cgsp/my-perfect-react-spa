@@ -308,7 +308,7 @@ class SelfTagDimensionAddOrEdit extends Component {
         destroyOnClose={true}
         width={600}
       >
-        <div style={{ maxHeight: 550, overflowY: 'scroll' }}>
+        <div style={{ maxHeight: 550, overflowY: 'auto' }}>
           <Form
             onSubmit={this.handleSubmit}
           >

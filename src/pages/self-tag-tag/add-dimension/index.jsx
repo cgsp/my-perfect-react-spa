@@ -51,7 +51,7 @@ class SelfAddDimension extends Component {
         destroyOnClose={true}
         zIndex={1000}
       >
-        <div style={{ maxHeight: 550, overflowY: 'scroll' }}>
+        <div style={{ maxHeight: 550, overflowY: 'auto' }}>
           <Form
             onSubmit={this.handleSubmit}
           >
