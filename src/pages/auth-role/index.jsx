@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-19 11:57:21
+ * @Last Modified time: 2018-09-21 17:51:03
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Modal, message } from 'antd'
@@ -110,6 +110,7 @@ class AuthRole extends Component {
         that.refs.mask.show()
         authRoleDelete(line.roleId)
           .then(res => {
+            that.refs.mask.hide()
             if (res.code !== ERR_OK) {
               message.error(res.message)
               return
@@ -242,6 +243,7 @@ class AuthRole extends Component {
     try {
       // 获取被勾选的数据
       const res = await authRoleGetAllAndOne(line.roleId)
+      this.refs.mask.hide()
       if (res.code !== ERR_OK) {
         message.error(res.message)
         return
@@ -249,7 +251,7 @@ class AuthRole extends Component {
 
       // 获取权限树
       const authTreeRes = await apiAuthTree()
-      this.refs.mask.hide()
+
       if (authTreeRes.code !== ERR_OK) {
         message.error(authTreeRes.message)
         return
@@ -373,8 +375,10 @@ class AuthRole extends Component {
       }
       const options = { ...values, ...{ resourceIds: checkedNodes } }
       if (title === '新增角色') {
+        this.refs.mask.show()
         authRoleAdd(options)
           .then(res => {
+            this.refs.mask.hide()
             if (res.code !== ERR_OK) {
               message.error(res.message)
               return
@@ -397,9 +401,11 @@ class AuthRole extends Component {
         options.unbindResourcesIds = myCompareArr(oldChecked, newChecked).unbindResourcesIds
         delete options.resourceIds
         options.roleId = this.roleId
-        console.log(options)
+        // console.log(options)
+        this.refs.mask.show()
         authRoleEdit(options)
           .then(res => {
+            this.refs.mask.hide()
             if (res.code !== ERR_OK) {
               message.error(res.message)
               return

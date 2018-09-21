@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-21 09:54:05
+ * @Last Modified time: 2018-09-21 17:52:23
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, message, Select, Modal } from 'antd'
@@ -351,8 +351,10 @@ class AuthMenu extends Component {
           values.sort = maxSort + 1
 
           // 新增的api
+          this.refs.mask.show()
           apiAuthMenuAddMenu(values)
             .then(res => {
+              this.refs.mask.hide()
               if (res.code !== ERR_OK) {
                 message.error(res.message)
                 return

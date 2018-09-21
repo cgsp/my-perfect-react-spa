@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-21 17:31:11
+ * @Last Modified time: 2018-09-21 17:46:24
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, message, Select, Modal } from 'antd'
@@ -250,9 +250,11 @@ class AuthAccount extends Component {
   }
 
   handleSelfTagAddOrEdit(values, callback) {
+    this.refs.mask.show()
     // 编辑的api
     apiAuthAccountUpdateRole(values)
       .then(res => {
+        this.refs.mask.hide()
         if (res.code !== ERR_OK) {
           message.error(res.message)
           return
