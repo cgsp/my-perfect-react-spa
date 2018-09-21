@@ -118,13 +118,13 @@ class ModuleCommon extends Component {
                 getPopupContainer={trigger => trigger.parentNode}
                 placeholder="请选择内容类型"
               >
-                <Option value={3}>听单</Option>
+                <Option value={3}>单个听单</Option>
                 <Option value={9}>多个听单</Option>
-                <Option value={6}>分类</Option>
-                <Option value={7}>自运营标签</Option>
+                <Option value={6}>分类对应的专辑</Option>
+                <Option value={7}>自运营标签对应的专辑</Option>
                 <Option value={4}>主站榜单</Option>
-                <Option value={2}>专辑</Option>
-                <Option value={1}>声音</Option>
+                <Option value={2}>单个专辑</Option>
+                <Option value={1}>单个声音</Option>
               </Select>
             )}
           </FormItem>

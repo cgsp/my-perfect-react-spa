@@ -60,9 +60,9 @@ export function getNavBarData(callBack) {
         }]
         // 如果正常
         if (res.code === ERR_OK) {
-          // console.log(JSON.parse(res.data))
+          console.log(JSON.parse(res.data))
           let resNav
-          if (res.data.menuTree) {
+          if (JSON.parse(res.data).menuTree) {
             resNav = JSON.parse(JSON.parse(res.data).menuTree).childResources
           }
           else {

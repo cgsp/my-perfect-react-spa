@@ -55,8 +55,6 @@ class ChildAlbum extends Component {
               }}
               getPopupContainer={trigger => trigger.parentNode}
             >
-              <Option value={4}>平铺</Option>
-              <Option value={5}>列表</Option>
               <Option value={7}>单品</Option>
             </Select>
           )}

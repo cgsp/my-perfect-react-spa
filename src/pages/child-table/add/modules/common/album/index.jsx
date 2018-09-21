@@ -40,7 +40,7 @@ class ChildAlbum extends Component {
           label="展示形式"
         >
           {getFieldDecorator(`${moduleSymbol}~moduleType`, {
-            initialValue: 4,
+            initialValue: 7,
             rules: [
               {
                 required: true, message: '请选择展示形式',
@@ -55,8 +55,6 @@ class ChildAlbum extends Component {
               }}
               getPopupContainer={trigger => trigger.parentNode}
             >
-              <Option value={4}>平铺</Option>
-              <Option value={5}>列表</Option>
               <Option value={7}>单品</Option>
             </Select>
           )}
