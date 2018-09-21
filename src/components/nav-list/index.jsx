@@ -22,7 +22,8 @@ export default class NavList extends Component {
   constructor() {
     super()
     this.state = {
-      currentKey: 'index'
+      currentKey: 'index',
+      openKeys: []
     }
     this.handleClick = this.handleClick.bind(this)
   }
@@ -30,6 +31,27 @@ export default class NavList extends Component {
   handleClick = (e) => {
     this.setState({
       currentKey: e.key
+    })
+  }
+
+  onOpenChange = (e) => {
+    // if (e.length === 2) {
+    //   return
+    // }
+    console.log(e)
+    let arr
+    const length = e.length
+    if (!e.length) {
+      arr = []
+    } else {
+      arr = [e[length - 1]]
+    }
+
+    if (e[length - 1] === 'self-tag') {
+      arr = ['self', 'self-tag']
+    }
+    this.setState({
+      openKeys: arr
     })
   }
 
@@ -53,6 +75,8 @@ export default class NavList extends Component {
         ]}
         defaultOpenKeys={[nav1]}
         mode="inline"
+        onOpenChange={this.onOpenChange}
+        openKeys={this.state.openKeys}
       >
         {
           this.props.navListData.map(item => {
