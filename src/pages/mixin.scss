@@ -1,7 +1,7 @@
 @mixin search() {
   .search-list {
     padding-left: 10px;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     .form-item {
       margin-top: 10px;
       margin-bottom: 10px;
@@ -14,12 +14,13 @@
     .search-btn {
       text-align: left;
       .searchBtn {
-        margin-top: 14px;
+        margin-top: 5px;
+        margin-bottom: 10px;
       }
     }
   }
   .handle-buttons {
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     .line {
       text-align: left;
       .btn {
