@@ -50,6 +50,9 @@ export default class NavList extends Component {
     if (e[length - 1] === 'self-tag') {
       arr = ['self', 'self-tag']
     }
+    if (e[length - 1] === 'self-tag' && e.length === 1) {
+      arr = []
+    }
     this.setState({
       openKeys: arr
     })
