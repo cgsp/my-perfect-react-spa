@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-21 09:59:17
+ * @Last Modified time: 2018-09-21 17:35:06
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -548,8 +548,10 @@ class SelfAlbum extends Component {
       name: value
     }
     this.timeout = setTimeout(() => {
+      this.refs.mask.show()
       apiSelfTagTagList(options)
         .then(res => {
+          this.refs.mask.hide()
           if (this.currentTag === value) {
             if (res.code !== ERR_OK) {
               message.error(res.msg)

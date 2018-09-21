@@ -223,8 +223,10 @@ class ChildTableAdd extends Component {
       appName: value
     }
     this.timeout = setTimeout(() => {
+      this.refs.mask.show()
       apiChildParter(options)
         .then(res => {
+          this.refs.mask.hide()
           if (this.currentAccount === value) {
             if (res.code !== ERR_OK) {
               message.error(res.msg)
@@ -296,7 +298,7 @@ class ChildTableAdd extends Component {
         }
       }
       // console.log(newState.columns['column-1']
-        // .taskIds)
+      // .taskIds)
       // console.log(newState)
       this.setState({
         dragData: newState

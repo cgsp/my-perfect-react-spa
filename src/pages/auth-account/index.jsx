@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-20 16:01:14
+ * @Last Modified time: 2018-09-21 17:31:11
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, message, Select, Modal } from 'antd'
@@ -293,8 +293,10 @@ class AuthAccount extends Component {
       realName: value
     }
     this.timeout = setTimeout(() => {
+      this.refs.mask.show()
       apiAuthAllUser(options)
         .then(res => {
+          this.refs.mask.hide()
           if (this.currentAccount === value) {
             if (res.code !== ERR_OK) {
               message.error(res.msg)
@@ -333,8 +335,10 @@ class AuthAccount extends Component {
       roleName: value
     }
     this.timeout = setTimeout(() => {
+      this.refs.mask.show()
       apiAuthAllRole(options)
         .then(res => {
+          this.refs.mask.hide()
           if (this.currentRole === value) {
             if (res.code !== ERR_OK) {
               message.error(res.msg)

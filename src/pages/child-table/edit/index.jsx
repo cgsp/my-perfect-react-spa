@@ -148,7 +148,7 @@ class ChildTableEdit extends Component {
               type: values.toastWhenTrackPlayingType,
               startInMs: toastWhenTrackPlayingStartInMs
             },
-            dockTab:values.dockTab
+            dockTab: values.dockTab
           }
         }
         const { taskIds } = this.state.dragData.columns['column-1']
@@ -267,8 +267,10 @@ class ChildTableEdit extends Component {
       appName: value
     }
     this.timeout = setTimeout(() => {
+      this.refs.mask.show()
       apiChildParter(options)
         .then(res => {
+          this.refs.mask.hide()
           if (this.currentAccount === value) {
             if (res.code !== ERR_OK) {
               message.error(res.msg)
@@ -372,7 +374,7 @@ class ChildTableEdit extends Component {
             content: taskContent,
             // moduleValue: {}
           }
-          
+
           newDragData.columns['column-1'].taskIds.unshift(taskId)
           console.log(newDragData)
           // debugger

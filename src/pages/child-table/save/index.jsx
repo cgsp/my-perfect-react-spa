@@ -3,6 +3,7 @@ import { Modal, Form, Input, message, Select } from 'antd'
 import { ERR_OK } from '@Constants'
 import { PropTypes } from 'prop-types'
 import { apiChildParter } from '@Api/child-table'
+import MaskLoading from '@Components/mask-loading'
 
 const Option = Select.Option
 const FormItem = Form.Item
@@ -72,8 +73,10 @@ class ChildTablesave extends Component {
       appName: value
     }
     this.timeout = setTimeout(() => {
+      this.refs.mask.show()
       apiChildParter(options)
         .then(res => {
+          this.refs.mask.hide()
           if (this.currentAccount === value) {
             if (res.code !== ERR_OK) {
               message.error(res.msg)
@@ -194,6 +197,7 @@ class ChildTablesave extends Component {
               )}
             </FormItem>
           </Form>
+          <MaskLoading ref="mask" />
         </div>
       </Modal >
     )

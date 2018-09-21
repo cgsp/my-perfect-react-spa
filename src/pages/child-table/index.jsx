@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-21 10:08:41
+ * @Last Modified time: 2018-09-21 17:34:16
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -323,8 +323,10 @@ class ChildTable extends Component {
       appName: value
     }
     this.timeout = setTimeout(() => {
+      this.refs.mask.show()
       apiChildParter(options)
         .then(res => {
+          this.refs.mask.hide()
           if (this.currentAccount === value) {
             if (res.code !== ERR_OK) {
               message.error(res.msg)
