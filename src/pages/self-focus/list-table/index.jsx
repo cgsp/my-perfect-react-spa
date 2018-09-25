@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Table, Pagination } from 'antd'
 import { myGetStrTime } from '@Utils/myGetTime'
 import { PropTypes } from 'prop-types'
+import { hasThisButton } from '@Utils/getButton'
 
 export default class SelfFocusListTable extends Component {
   static propTypes = {
@@ -14,7 +15,7 @@ export default class SelfFocusListTable extends Component {
   }
 
   render() {
-    const columns = [
+    let columns = [
       {
         title: 'ID',
         dataIndex: 'id',
@@ -139,6 +140,9 @@ export default class SelfFocusListTable extends Component {
             </span>)
         },
       }]
+    if (!hasThisButton('self-focus', '编辑')) {
+      columns.pop(columns.length - 1)
+    }
     return (
       <div>
         <Table
