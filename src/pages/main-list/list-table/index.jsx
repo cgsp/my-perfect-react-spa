@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Table, Pagination } from 'antd'
 import { myGetStrTime } from '@Utils/myGetTime'
 import { PropTypes } from 'prop-types'
+// import { hasThisButton } from '@Utils/getButton'
 
 export default class MainListTable extends Component {
   static propTypes = {
@@ -78,6 +79,9 @@ export default class MainListTable extends Component {
           )
         },
       }]
+    // if (!hasThisButton('main-list', '另存为')) {
+    //   columns.pop(columns.length - 1)
+    // }
     return (
       <div>
         <Table

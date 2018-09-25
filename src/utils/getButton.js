@@ -22,7 +22,7 @@ const handleAppButtons = (arr) => {
 // 判断按钮是否存在
 const hasThisButton = (path, buttonName) => {
   const obj = mySessionStorageGet('app-button-list', {})
-  if (!obj[path].children) {
+  if (!obj[path]) {
     return false
   }
   return (obj[path].children.indexOf(buttonName) > -1)
