@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Table, Pagination } from 'antd'
 import { myGetStrTime } from '@Utils/myGetTime'
 import { PropTypes } from 'prop-types'
+import { hasThisButton } from '@Utils/getButton'
 
 export default class MainFocusListTable extends Component {
   static propTypes = {
@@ -124,7 +125,11 @@ export default class MainFocusListTable extends Component {
         render: (text, record) => {
           return (
             <span>
-              <i style={{ color: 'green', cursor: 'pointer' }} onClick={() => this.props.tableLineSave(record)}>另存为</i>
+              {
+                hasThisButton('main-focus', '另存为') ?
+                  <i style={{ color: 'green', cursor: 'pointer' }} onClick={() => this.props.tableLineSave(record)}>另存为</i> :
+                  null
+              }
             </span>)
         },
       }]
