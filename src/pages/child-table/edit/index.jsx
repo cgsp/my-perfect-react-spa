@@ -480,7 +480,7 @@ class ChildTableEdit extends Component {
                     <Select
                       showSearch
                       placeholder="请输入合作方"
-                      allowClear={true}
+                      disabled
                       value={this.state.appKey}
                       onSearch={this.handleParterSelectSearch}
                       onChange={this.handleParterSelectChange}
