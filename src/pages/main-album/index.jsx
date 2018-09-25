@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-21 10:08:54
+ * @Last Modified time: 2018-09-25 11:26:31
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -20,6 +20,8 @@ import { connect } from 'react-redux'
 import { getCommonDimesions, getCommonDimesionsAndTags } from '@Redux/commonTagAndDimesion'
 
 import { apiMainAlbumList, apiMainAlbumDetail, apiMainAlbumMakeTag, apiMainAlbumAddOrEdit, apiAlbumGetMainPeople } from '@Api/main-album'
+
+import { hasThisButton } from '@Utils/getButton'
 
 import { commonSmallTypes } from '@Api'
 
@@ -885,9 +887,18 @@ class MainAlbum extends Component {
         <List className="handle-buttons">
           <Row>
             <Col span={24} className="line">
-              <Button className="btn" type="primary" onClick={() => this.export('专辑批量导出')}>专辑批量导出</Button>
-              <Button className="btn" type="primary" onClick={() => this.export('声音批量导出')}>声音批量导出</Button>
-              <Button className="btn" type="primary" onClick={() => this.allTag()}>批量打标签</Button>
+              {
+                hasThisButton('main-album', '专辑批量导出') ?
+                  <Button className="btn" type="primary" onClick={() => this.export('专辑批量导出')}>专辑批量导出</Button> : null
+              }
+              {
+                hasThisButton('main-album', '声音批量导出') ?
+                  <Button className="btn" type="primary" onClick={() => this.export('声音批量导出')}>声音批量导出</Button> : null
+              }
+              {
+                hasThisButton('main-album', '批量打标签') ?
+                  <Button className="btn" type="primary" onClick={() => this.allTag()}>批量打标签</Button> : null
+              }
               <div className="sort-box">
                 <span className="sort-title">排序方式：</span>
                 <SortList clickSort={this.clickSort} sortNameArr={['创建时间', '更新时间', '播放数']} />

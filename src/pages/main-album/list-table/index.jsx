@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Table, Pagination, Divider } from 'antd'
 import { SONG_URL } from '@Constants'
 import { myGetStrTime } from '@Utils/myGetTime'
+import { hasThisButton } from '@Utils/getButton'
 import { PropTypes } from 'prop-types'
 
 const DEV = process.env.NODE_ENV !== 'production'
@@ -153,9 +154,19 @@ export default class SelfAlbumListTable extends Component {
         render: (text, record) => {
           return (
             <span>
-              <i style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.props.tableLineTag(record)}>打标签</i>
-              <Divider type="vertical" />
-              <i style={{ color: 'green', cursor: 'pointer' }} onClick={() => this.props.tableLineSave(record)}>另存为</i>
+              {
+                hasThisButton('main-album', '打标签') ?
+                  <span>
+                    <i style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.props.tableLineTag(record)}>打标签</i>
+                    <Divider type="vertical" />
+                  </span>
+                  : null
+              }
+              {
+                hasThisButton('main-album', '另存为') ?
+                  <i style={{ color: 'green', cursor: 'pointer' }} onClick={() => this.props.tableLineSave(record)}>另存为</i>
+                  : null
+              }
             </span>)
         },
       }]
