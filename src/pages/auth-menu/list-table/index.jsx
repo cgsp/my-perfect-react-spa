@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Table, Pagination, Divider } from 'antd'
 import { myGetStrTime } from '@Utils/myGetTime'
 import { PropTypes } from 'prop-types'
+import { hasThisButton } from '@Utils/getButton'
 
 export default class AuthAccountListTable extends Component {
   static propTypes = {
@@ -15,7 +16,7 @@ export default class AuthAccountListTable extends Component {
   }
 
   render() {
-    const columns = [{
+    let columns = [{
       title: '父节点名称',
       dataIndex: 'parentName',
       key: 'parentName'
@@ -95,20 +96,33 @@ export default class AuthAccountListTable extends Component {
       key: 'action',
       render: (text, record) => {
         return (<span>
-          <i style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.props.tableLineAddOrEdit(record, '编辑')}>编辑</i>
-          <Divider type="vertical" />
           {
-            !record.level ? null : (
+            hasThisButton('auth-menu', '编辑') ?
+              <span>
+                <i style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.props.tableLineAddOrEdit(record, '编辑')}>编辑</i>
+                <Divider type="vertical" />
+              </span> :
+              null
+          }
+          {
+            (record.type === 4 || !hasThisButton('auth-menu', '新增节点')) ? null : (
               <span>
                 <i style={{ color: 'green', cursor: 'pointer' }} onClick={() => this.props.tableLineAddOrEdit(record, '新增')}>新增节点</i>
                 <Divider type="vertical" />
               </span>
             )
           }
-          <i style={{ color: 'red', cursor: 'pointer' }} onClick={() => this.props.tableLineDelete(record)}>删除</i>
+          {
+            hasThisButton('auth-menu', '删除') ?
+              <i style={{ color: 'red', cursor: 'pointer' }} onClick={() => this.props.tableLineDelete(record)}>删除</i> :
+              null
+          }
         </span>)
       },
     }]
+    if (!hasThisButton('auth-menu', '编辑') && !hasThisButton('auth-menu', '新增节点') && !hasThisButton('auth-menu', '删除')) {
+      columns.pop(columns.length - 1)
+    }
     return (
       <div>
         <Table columns={columns} dataSource={this.props.tableData} pagination={false} scroll={{ x: 1200 }} />

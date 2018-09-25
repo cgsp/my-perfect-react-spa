@@ -2,13 +2,14 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-21 17:52:23
+ * @Last Modified time: 2018-09-25 15:45:53
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, message, Select, Modal } from 'antd'
 
 import { myTrim } from '@Utils/myTrim'
 import { ERR_OK } from '@Constants'
+import { hasThisButton } from '@Utils/getButton'
 
 import MaskLoading from '@Components/mask-loading'
 import SortList from '@Components/sort-list'
@@ -448,72 +449,84 @@ class AuthMenu extends Component {
     return (
       <div className="auth-menu">
         {/* 搜索 */}
-        <List className="search-list" bordered>
-          <Form
-            className="ant-advanced-search-form"
-            onSubmit={this.handleSearch}
-            layout="inline"
-          >
-            <Col span={8}>
-              <FormItem label="父节点名称" style={{ marginBottom: 10, marginTop: 10 }}>
-                <Input placeholder="请输入父节点名称" onChange={e => this.setState({ searchPName: e.target.value })} />
-              </FormItem>
-            </Col>
-            <Col span={8}>
-              <FormItem label="节点名称" style={{ marginBottom: 10, marginTop: 10 }}>
-                <Input placeholder="请输入节点名称" onChange={e => this.setState({ searchName: e.target.value })} />
-              </FormItem>
-            </Col>
-            <Col span={8}>
-              <FormItem label="节点类型" style={{ marginBottom: 10, marginTop: 10 }}>
-                <Select
-                  placeholder="请选择节点类型"
-                  style={{ width: 200 }}
-                  allowClear
-                  onChange={value => {
-                    let searchType
-                    let searchLevel
-                    if (!value) {
-                      searchType = undefined
-                      searchLevel = undefined
-                    } else if (value === '1级菜单') {
-                      searchType = 3
-                      searchLevel = 1
-                    } else if (value === '2级菜单') {
-                      searchType = 3
-                      searchLevel = 2
-                    } else if (value === '3级菜单') {
-                      searchType = 3
-                      searchLevel = 2
-                    } else if (value === '按钮') {
-                      searchType = 4
-                      searchLevel = 1
-                    }
-                    this.setState({
-                      searchType,
-                      searchLevel
-                    })
-                  }}
-                  getPopupContainer={trigger => trigger.parentNode}
-                >
-                  <Option value="1级菜单">1级菜单</Option>
-                  <Option value="2级菜单">2级菜单</Option>
-                  <Option value="3级菜单">3级菜单</Option>
-                  <Option value="按钮">按钮</Option>
-                </Select>
-              </FormItem>
-            </Col>
-            <Col span={8} className="search-btn">
-              <Button className="searchBtn" type="primary" htmlType="submit">查询</Button>
-            </Col>
-          </Form>
-        </List>
+        {
+          hasThisButton('auth-menu', '查询') ?
+            <List className="search-list" bordered>
+              <Form
+                className="ant-advanced-search-form"
+                onSubmit={this.handleSearch}
+                layout="inline"
+              >
+                <Col span={8}>
+                  <FormItem label="父节点名称" style={{ marginBottom: 10, marginTop: 10 }}>
+                    <Input placeholder="请输入父节点名称" onChange={e => this.setState({ searchPName: e.target.value })} />
+                  </FormItem>
+                </Col>
+                <Col span={8}>
+                  <FormItem label="节点名称" style={{ marginBottom: 10, marginTop: 10 }}>
+                    <Input placeholder="请输入节点名称" onChange={e => this.setState({ searchName: e.target.value })} />
+                  </FormItem>
+                </Col>
+                <Col span={8}>
+                  <FormItem label="节点类型" style={{ marginBottom: 10, marginTop: 10 }}>
+                    <Select
+                      placeholder="请选择节点类型"
+                      style={{ width: 200 }}
+                      allowClear
+                      onChange={value => {
+                        let searchType
+                        let searchLevel
+                        if (!value) {
+                          searchType = undefined
+                          searchLevel = undefined
+                        } else if (value === '1级菜单') {
+                          searchType = 3
+                          searchLevel = 1
+                        } else if (value === '2级菜单') {
+                          searchType = 3
+                          searchLevel = 2
+                        } else if (value === '3级菜单') {
+                          searchType = 3
+                          searchLevel = 2
+                        } else if (value === '按钮') {
+                          searchType = 4
+                          searchLevel = 1
+                        }
+                        this.setState({
+                          searchType,
+                          searchLevel
+                        })
+                      }}
+                      getPopupContainer={trigger => trigger.parentNode}
+                    >
+                      <Option value="1级菜单">1级菜单</Option>
+                      <Option value="2级菜单">2级菜单</Option>
+                      <Option value="3级菜单">3级菜单</Option>
+                      <Option value="按钮">按钮</Option>
+                    </Select>
+                  </FormItem>
+                </Col>
+                <Col span={8} className="search-btn">
+                  <Button className="searchBtn" type="primary" htmlType="submit">查询</Button>
+                </Col>
+              </Form>
+            </List>
+            : null
+        }
         {/* 表头功能按钮 */}
         <List className="handle-buttons">
           <Row>
             <Col span={24} className="line">
-              <Button style={{ marginRight: 20 }} type="primary" onClick={() => this.addLevel1Menu()}>新增一级菜单节点</Button>
-              <Button type="primary" onClick={() => this.look()}>菜单与按钮树形预览</Button>
+              {
+                hasThisButton('auth-menu', '新增一级菜单节点') ?
+                  <Button style={{ marginRight: 20 }} type="primary" onClick={() => this.addLevel1Menu()}>新增一级菜单节点</Button> :
+                  null
+              }
+              {
+                hasThisButton('auth-menu', '菜单与按钮树形预览') ?
+                  <Button type="primary" onClick={() => this.look()}>菜单与按钮树形预览</Button> :
+                  null
+              }
               <div className="sort-box">
                 <span className="sort-title">排序方式：</span>
                 <SortList clickSort={this.clickSort} />
