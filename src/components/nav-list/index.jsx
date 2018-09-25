@@ -38,7 +38,7 @@ export default class NavList extends Component {
     // if (e.length === 2) {
     //   return
     // }
-    console.log(e)
+    // console.log(e)
     let arr
     const length = e.length
     if (!e.length) {

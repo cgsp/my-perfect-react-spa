@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-25 15:35:15
+ * @Last Modified time: 2018-09-25 16:57:06
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Modal, message } from 'antd'
@@ -128,7 +128,7 @@ class AuthRole extends Component {
 
 
   onSizeAndPageChange(current, pageSize) {
-    console.log(current, pageSize)
+    // console.log(current, pageSize)
     this.setState({
       page: current,
       pageSize
@@ -158,7 +158,7 @@ class AuthRole extends Component {
           return
         }
         const data = JSON.parse(res.data)
-        console.log(data)
+        // console.log(data)
         let tableData
         if (data.total === 0) {
           tableData = []
@@ -186,7 +186,7 @@ class AuthRole extends Component {
           return
         }
         const authData = JSON.parse(res.data).childResources
-        console.log(authData)
+        // console.log(authData)
         this.setState({
           addOrEditTitle: '新增角色',
           addOrEditVisible: true,
@@ -258,14 +258,14 @@ class AuthRole extends Component {
         return
       }
       const authData = JSON.parse(authTreeRes.data).childResources
-      console.log(authData)
+      // console.log(authData)
 
       const resDataResources = JSON.parse(res.data).resources
       const resDataChecked = JSON.parse(res.data).selectIds
       this.oldChecked = resDataChecked
       this.roleId = line.roleId
-      console.log(resDataResources)
-      console.log(resDataChecked)
+      // console.log(resDataResources)
+      // console.log(resDataChecked)
       let checked = []
       let checkedAndHalf = []
       for (let i = 0; i < resDataResources.length; i++) {
@@ -433,8 +433,8 @@ class AuthRole extends Component {
   }
 
   addOrEditOnCheck(checkedKeys, e) {
-    console.log('onCheck', checkedKeys)
-    console.log('halfChecked', e.halfCheckedKeys)
+    // console.log('onCheck', checkedKeys)
+    // console.log('halfChecked', e.halfCheckedKeys)
     this.setState(
       {
         checkedKeys,

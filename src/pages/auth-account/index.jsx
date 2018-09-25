@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-25 15:28:28
+ * @Last Modified time: 2018-09-25 16:56:13
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, message, Select, Modal } from 'antd'
@@ -160,7 +160,7 @@ class AuthAccount extends Component {
           return
         }
         const data = JSON.parse(res.data)
-        console.log(data)
+        // console.log(data)
         let tableData
         if (data.total === 0) {
           tableData = []
