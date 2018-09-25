@@ -3,6 +3,7 @@ import { Table, Pagination } from 'antd'
 import { SONG_URL } from '@Constants'
 import { myGetStrTime } from '@Utils/myGetTime'
 import { PropTypes } from 'prop-types'
+import { hasThisButton } from '@Utils/getButton'
 
 const DEV = process.env.NODE_ENV !== 'production'
 // console.log(process.env.NODE_ENV)
@@ -31,7 +32,7 @@ export default class SelfAlbumListTable extends Component {
       selectedRowKeys: this.props.selectedRowKeys,
       onChange: this.props.tableSelect,
     }
-    const columns = [
+    let columns = [
       {
         title: 'ID',
         dataIndex: 'id',
@@ -154,6 +155,9 @@ export default class SelfAlbumListTable extends Component {
             </span>)
         },
       }]
+    if (!hasThisButton('self-album', '编辑')) {
+      columns.pop(columns.length - 1)
+    }
     return (
       <div>
         <Table columns={columns} rowSelection={rowSelection} dataSource={this.props.tableData} pagination={false} scroll={{ x: 1600 }} />
