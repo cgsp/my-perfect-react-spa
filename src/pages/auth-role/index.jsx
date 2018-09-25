@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-21 17:51:03
+ * @Last Modified time: 2018-09-25 15:35:15
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Modal, message } from 'antd'
@@ -15,6 +15,7 @@ import { connect } from 'react-redux'
 import { getNavBarData } from '@Redux/navBar'
 import { apiAuthRoleList, apiAuthTree, authRoleAdd, authRoleDelete, authRoleGetAllAndOne, authRoleEdit } from '@Api/auth-role'
 import { ERR_OK } from '@Constants'
+import { hasThisButton } from '@Utils/getButton'
 import SortList from '@Components/sort-list'
 import './style'
 
@@ -466,29 +467,37 @@ class AuthRole extends Component {
     return (
       <div className="auth-role">
         {/* 搜索 */}
-        <List bordered style={{ paddingLeft: 10, marginBottom: 30 }}>
-          <Form
-            className="ant-advanced-search-form"
-            onSubmit={this.handleSearch}
-            layout="inline"
-          >
-            <Row>
-              <Col span={8}>
-                <FormItem label="角色名称" style={{ marginBottom: 10, marginTop: 10 }}>
-                  <Input placeholder="请输入角色名称" onChange={e => this.setState({ rolename: e.target.value })} />
-                </FormItem>
-              </Col>
-              <Col span={8} style={{ textAlign: 'left' }}>
-                <Button style={{ marginTop: 14 }} type="primary" htmlType="submit">查询</Button>
-              </Col>
-            </Row>
-          </Form>
-        </List>
+        {
+          hasThisButton('auth-role', '查询') ?
+            <List bordered style={{ paddingLeft: 10, marginBottom: 30 }}>
+              <Form
+                className="ant-advanced-search-form"
+                onSubmit={this.handleSearch}
+                layout="inline"
+              >
+                <Row>
+                  <Col span={8}>
+                    <FormItem label="角色名称" style={{ marginBottom: 10, marginTop: 10 }}>
+                      <Input placeholder="请输入角色名称" onChange={e => this.setState({ rolename: e.target.value })} />
+                    </FormItem>
+                  </Col>
+                  <Col span={8} style={{ textAlign: 'left' }}>
+                    <Button style={{ marginTop: 14 }} type="primary" htmlType="submit">查询</Button>
+                  </Col>
+                </Row>
+              </Form>
+            </List>
+            : null
+        }
         {/* 表头功能按钮 */}
         <List className="handle-buttons">
           <Row>
             <Col span={24} className="line">
-              <Button className="btn" type="primary" onClick={() => this.addRole()}>新建角色</Button>
+              {
+                hasThisButton('auth-role', '新建角色') ?
+                  <Button className="btn" type="primary" onClick={() => this.addRole()}>新建角色</Button>
+                  : null
+              }
               <div className="sort-box">
                 <span className="sort-title">排序方式：</span>
                 <SortList clickSort={this.clickSort} />
