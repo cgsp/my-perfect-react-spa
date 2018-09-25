@@ -15,7 +15,7 @@ export default class MainFocusListTable extends Component {
   }
 
   render() {
-    const columns = [
+    let columns = [
       {
         title: 'ID',
         dataIndex: 'id',
@@ -48,7 +48,7 @@ export default class MainFocusListTable extends Component {
             )
           } else {
             img = (
-              <a href={text} target="_blank" style={{ width: 50, height: 50, display: 'inline-block', cursor: 'pointer' }}>
+              <a href={text} target="_blank" style={{ cursor: 'pointer' }}>
                 <img width={50} height={50} src={text} alt="焦点图" />
               </a>
             )
@@ -133,6 +133,9 @@ export default class MainFocusListTable extends Component {
             </span>)
         },
       }]
+    if (!hasThisButton('main-focus', '另存为')) {
+      columns.pop(columns.length - 1)
+    }
     return (
       <div>
         <Table

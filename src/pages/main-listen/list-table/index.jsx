@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Table, Pagination } from 'antd'
 import { myGetStrTime } from '@Utils/myGetTime'
 import { PropTypes } from 'prop-types'
+import { hasThisButton } from '@Utils/getButton'
 
 export default class MainListenListTable extends Component {
   static propTypes = {
@@ -28,7 +29,7 @@ export default class MainListenListTable extends Component {
       selectedRowKeys: this.props.selectedRowKeys,
       onChange: this.props.tableSelect,
     }
-    const columns = [
+    let columns = [
       {
         title: 'ID',
         dataIndex: 'syncColumnId',
@@ -154,6 +155,9 @@ export default class MainListenListTable extends Component {
           </span>)
         },
       }]
+    if (!hasThisButton('main-listen', '另存为')) {
+      columns.pop(columns.length - 1)
+    }
     return (
       <div>
         <Table
