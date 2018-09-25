@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-20 15:28:53
+ * @Last Modified time: 2018-09-25 13:25:30
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal, message, InputNumber } from 'antd'
@@ -774,14 +774,14 @@ class SelfListen extends Component {
               </Col>
             </Row>
             <Row>
-              <Col span={8} style={{ textAlign: 'left' }}>
-                <Button style={{ marginTop: 14 }} type="primary" htmlType="submit">查询</Button>
+              <Col span={8} className="search-btn">
+                <Button className="searchBtn" type="primary" htmlType="submit">查询</Button>
               </Col>
             </Row>
           </Form>
         </List>
         {/* 表头功能按钮 */}
-        <List style={{ marginBottom: 30 }}>
+        <List style={{ marginBottom: 10 }}>
           <Row>
             <Col span={24} style={{ textAlign: 'left' }}>
               <Button type="primary" onClick={() => this.addListen()}>新增听单</Button>

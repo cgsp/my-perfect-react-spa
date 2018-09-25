@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-21 09:59:07
+ * @Last Modified time: 2018-09-25 13:22:21
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal, message, InputNumber } from 'antd'
@@ -730,7 +730,7 @@ class SelfListen extends Component {
           </Form>
         </List>
         {/* 表头功能按钮 */}
-        <List style={{ marginBottom: 30 }}>
+        <List style={{ marginBottom: 10 }}>
           <Row>
             <Col span={24} style={{ textAlign: 'left' }}>
               <Button type="primary" onClick={() => this.exportListen()}>听单批量导出</Button>
