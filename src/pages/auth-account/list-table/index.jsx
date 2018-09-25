@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Table, Pagination, Divider } from 'antd'
 import { myGetStrTime } from '@Utils/myGetTime'
 import { PropTypes } from 'prop-types'
+import { hasThisButton } from '@Utils/getButton'
 
 export default class AuthAccountListTable extends Component {
   static propTypes = {
@@ -15,7 +16,7 @@ export default class AuthAccountListTable extends Component {
   }
 
   render() {
-    const columns = [
+    let columns = [
       {
         title: '用户名',
         dataIndex: 'userName',
@@ -75,12 +76,25 @@ export default class AuthAccountListTable extends Component {
         render: (text, record) => {
           return (
             <span>
-              <i style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.props.tableLineEdit(record)}>编辑</i>
-              <Divider type="vertical" />
-              <i style={{ color: 'red', cursor: 'pointer' }} onClick={() => this.props.tableLineDelete(record)}>删除</i>
+              {
+                hasThisButton('auth-account', '编辑') ?
+                  <span>
+                    <i style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.props.tableLineEdit(record)}>编辑</i>
+                    <Divider type="vertical" />
+                  </span>
+                  : null
+              }
+              {
+                hasThisButton('auth-account', '删除') ?
+                  <i style={{ color: 'red', cursor: 'pointer' }} onClick={() => this.props.tableLineDelete(record)}>删除</i>
+                  : null
+              }
             </span>)
         },
       }]
+    if (!hasThisButton('auth-account', '编辑') && !hasThisButton('auth-account', '删除')) {
+      columns.pop(columns.length - 1)
+    }
     return (
       <div>
         <Table columns={columns} dataSource={this.props.tableData} pagination={false} scroll={{ x: 1000 }} />

@@ -2,13 +2,14 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-21 17:46:24
+ * @Last Modified time: 2018-09-25 15:28:28
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, message, Select, Modal } from 'antd'
 
 import { myTrim } from '@Utils/myTrim'
 import { ERR_OK } from '@Constants'
+import { hasThisButton } from '@Utils/getButton'
 
 import MaskLoading from '@Components/mask-loading'
 import SortList from '@Components/sort-list'
@@ -409,82 +410,86 @@ class AuthAccount extends Component {
     return (
       <div className="auth-account">
         {/* 搜索 */}
-        <List className="search-list" bordered>
-          <Form
-            className="ant-advanced-search-form"
-            onSubmit={this.handleSearch}
-            layout="inline"
-          >
-            <Col span={8}>
-              <FormItem
-                className="form-item"
-                label={<span className="form-label">角色姓名:</span>}
-                colon={false}
+        {
+          hasThisButton('auth-account', '查询') ?
+            <List className="search-list" bordered>
+              <Form
+                className="ant-advanced-search-form"
+                onSubmit={this.handleSearch}
+                layout="inline"
               >
-                <Select
-                  showSearch
-                  style={{ width: 190 }}
-                  placeholder="请输入真实姓名"
-                  allowClear={true}
-                  value={this.state.roleId}
-                  onSearch={this.handleRoleSelectSearch}
-                  onChange={this.handleRoleSelectChange}
-                  defaultActiveFirstOption={false}
-                  showArrow={false}
-                  filterOption={false}
-                  notFoundContent={'根据此关键字，无法搜索'}
-                  getPopupContainer={trigger => trigger.parentNode}
-                >
-                  {
-                    this.state.roleSelectData.map(item => (
-                      <Option key={item.value}>{item.text}</Option>
-                    ))
-                  }
-                </Select>
-              </FormItem>
-            </Col>
-            <Col span={8}>
-              <FormItem
-                className="form-item"
-                label={<span className="form-label">用户名:</span>}
-                colon={false}
-              >
-                <Input style={{ width: 190 }} placeholder="请输入用户名" onChange={e => this.setState({ userName: e.target.value })} />
-              </FormItem>
-            </Col>
-            <Col span={8}>
-              <FormItem
-                className="form-item"
-                label={<span className="form-label">真实姓名:</span>}
-                colon={false}
-              >
-                <Select
-                  showSearch
-                  style={{ width: 190 }}
-                  placeholder="请输入真实姓名"
-                  allowClear={true}
-                  value={this.state.userIdAndName}
-                  onSearch={this.handleAccountSelectSearch}
-                  onChange={this.handleAccountSelectChange}
-                  defaultActiveFirstOption={false}
-                  showArrow={false}
-                  filterOption={false}
-                  notFoundContent={'根据此关键字，无法搜索'}
-                  getPopupContainer={trigger => trigger.parentNode}
-                >
-                  {
-                    this.state.userSelectData.map(item => (
-                      <Option key={`${item.value}~~~~++++${item.text}`}>{item.text}</Option>
-                    ))
-                  }
-                </Select>
-              </FormItem>
-            </Col>
-            <Col span={8} className="search-btn">
-              <Button className="searchBtn" type="primary" htmlType="submit">查询</Button>
-            </Col>
-          </Form>
-        </List>
+                <Col span={8}>
+                  <FormItem
+                    className="form-item"
+                    label={<span className="form-label">角色姓名:</span>}
+                    colon={false}
+                  >
+                    <Select
+                      showSearch
+                      style={{ width: 190 }}
+                      placeholder="请输入真实姓名"
+                      allowClear={true}
+                      value={this.state.roleId}
+                      onSearch={this.handleRoleSelectSearch}
+                      onChange={this.handleRoleSelectChange}
+                      defaultActiveFirstOption={false}
+                      showArrow={false}
+                      filterOption={false}
+                      notFoundContent={'根据此关键字，无法搜索'}
+                      getPopupContainer={trigger => trigger.parentNode}
+                    >
+                      {
+                        this.state.roleSelectData.map(item => (
+                          <Option key={item.value}>{item.text}</Option>
+                        ))
+                      }
+                    </Select>
+                  </FormItem>
+                </Col>
+                <Col span={8}>
+                  <FormItem
+                    className="form-item"
+                    label={<span className="form-label">用户名:</span>}
+                    colon={false}
+                  >
+                    <Input style={{ width: 190 }} placeholder="请输入用户名" onChange={e => this.setState({ userName: e.target.value })} />
+                  </FormItem>
+                </Col>
+                <Col span={8}>
+                  <FormItem
+                    className="form-item"
+                    label={<span className="form-label">真实姓名:</span>}
+                    colon={false}
+                  >
+                    <Select
+                      showSearch
+                      style={{ width: 190 }}
+                      placeholder="请输入真实姓名"
+                      allowClear={true}
+                      value={this.state.userIdAndName}
+                      onSearch={this.handleAccountSelectSearch}
+                      onChange={this.handleAccountSelectChange}
+                      defaultActiveFirstOption={false}
+                      showArrow={false}
+                      filterOption={false}
+                      notFoundContent={'根据此关键字，无法搜索'}
+                      getPopupContainer={trigger => trigger.parentNode}
+                    >
+                      {
+                        this.state.userSelectData.map(item => (
+                          <Option key={`${item.value}~~~~++++${item.text}`}>{item.text}</Option>
+                        ))
+                      }
+                    </Select>
+                  </FormItem>
+                </Col>
+                <Col span={8} className="search-btn">
+                  <Button className="searchBtn" type="primary" htmlType="submit">查询</Button>
+                </Col>
+              </Form>
+            </List>
+            : null
+        }
         {/* 表头功能按钮 */}
         <List className="handle-buttons">
           <Row>
