@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Table, Pagination, Divider } from 'antd'
 import { myGetStrTime } from '@Utils/myGetTime'
 import { PropTypes } from 'prop-types'
+import { hasThisButton } from '@Utils/getButton'
 
 export default class SelfTagDimensionListTable extends Component {
   static propTypes = {
@@ -108,14 +109,33 @@ export default class SelfTagDimensionListTable extends Component {
       render: (text, record) => {
         return (
           <span>
-            <i style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.props.tableLineEdit(record)}>编辑</i>
-            <Divider type="vertical" />
-            <i style={{ color: '#71986a', cursor: 'pointer' }} onClick={() => this.props.tableLineAdd(record)}>添加标签</i>
-            <Divider type="vertical" />
-            <i style={{ color: 'red', cursor: 'pointer' }} onClick={() => this.props.tableLineDelete(record)}>删除</i>
+            {
+              hasThisButton('self-tag-dimension', '编辑') ?
+                <span>
+                  <i style={{ color: '#1890ff', cursor: 'pointer' }} onClick={() => this.props.tableLineEdit(record)}>编辑</i>
+                  <Divider type="vertical" />
+                </span>
+                : null
+            }
+            {
+              hasThisButton('self-tag-dimension', '添加标签') ?
+                <span>
+                  <i style={{ color: '#71986a', cursor: 'pointer' }} onClick={() => this.props.tableLineAdd(record)}>添加标签</i>
+                  <Divider type="vertical" />
+                </span>
+                : null
+            }
+            {
+              hasThisButton('self-tag-dimension', '删除') ?
+                <i style={{ color: 'red', cursor: 'pointer' }} onClick={() => this.props.tableLineDelete(record)}>删除</i>
+                : null
+            }
           </span>)
       },
     }]
+    if (!hasThisButton('self-tag-dimension', '编辑') && !hasThisButton('self-tag-dimension', '删除') && !hasThisButton('self-tag-dimension', '添加标签')) {
+      columns.pop(columns.length - 1)
+    }
     return (
       <div>
         <Table columns={columns} rowSelection={rowSelection} dataSource={this.props.tableData} pagination={false} scroll={{ x: 1200 }} />
