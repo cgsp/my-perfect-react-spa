@@ -45,7 +45,7 @@ export default class MainClassfiyListTable extends Component {
             )
           } else {
             img = (
-              <a href={text} target="_blank" style={{ width: 50, height: 50, display: 'inline-block', cursor: 'pointer' }}>
+              <a href={text} target="_blank" style={{ cursor: 'pointer' }}>
                 <img width={50} height={50} src={text} alt="分类封面" />
               </a>
             )
