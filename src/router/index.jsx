@@ -3,7 +3,7 @@ import MainFrame from '../dashboard/main-frame'
 import { Route, withRouter, Switch, Redirect } from 'react-router-dom'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
-import { asyncComponent } from './asyncComponent'
+// import { asyncComponent } from './asyncComponent'
 
 // 让路由对应的组件都是异步加载
 // const NoMatch404 = asyncComponent(() => import('@Pages/no-match-404'))

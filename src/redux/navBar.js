@@ -1,26 +1,28 @@
 import { apiGetNavList } from '@Api'
 import { ERR_OK, noAuthCode } from '@Constants'
 import { mySessionStorageGet, mySessionStorageSet } from '@Utils/myStorages'
+import { handleAppButtons } from '@Utils/getButton'
 import { message } from 'antd'
 
 const NAV_BAR_SUCCESS = 'NAV_BAR_SUCCESS'
 const initState = {
   appNavListData: mySessionStorageGet('app-nav-list', []),
   appRoutesList: mySessionStorageGet('app-route-list', []),
+  appButtonList: mySessionStorageGet('app-button-list', {}),
 }
 
 export function navBarReducer(state = initState, action) {
   switch (action.type) {
     case NAV_BAR_SUCCESS:
-      return { ...state, appNavListData: action.payload, appRoutesList: screenRoutesList(action.payload) }
+      return { ...state, appNavListData: action.menuTree, appRoutesList: screenRoutesList(action.menuTree), appButtonList: action.buttonList }
     default:
       return state
   }
 }
 
 
-function getSuccess(data) {
-  return { type: NAV_BAR_SUCCESS, payload: data }
+function getSuccess(menuTree, buttonList) {
+  return { type: NAV_BAR_SUCCESS, menuTree, buttonList }
 }
 
 // 根据获取的导航数据，筛选出前端的路由列表
@@ -58,6 +60,8 @@ export function getNavBarData(callBack) {
           routePath: 'index',
           icon: 'laptop'
         }]
+
+        let buttonList = []
         // 如果正常
         if (res.code === ERR_OK) {
           // console.log(JSON.parse(res.data))
@@ -69,10 +73,19 @@ export function getNavBarData(callBack) {
             resNav = undefined
           }
           menuTree = menuTree.concat(resNav || [])
+
+          if (JSON.parse(res.data).functionList) {
+            buttonList = JSON.parse(res.data).functionList
+          }
+          else {
+            buttonList = undefined
+          }
+
         }
-        dispatch(getSuccess(menuTree))
+        dispatch(getSuccess(menuTree, handleAppButtons(buttonList)))
         mySessionStorageSet('app-nav-list', menuTree)
         mySessionStorageSet('app-route-list', screenRoutesList(menuTree))
+        mySessionStorageSet('app-button-list', handleAppButtons(buttonList))
         callBack && callBack(res)
       })
   }
