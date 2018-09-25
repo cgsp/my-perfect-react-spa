@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-25 16:57:06
+ * @Last Modified time: 2018-09-25 18:04:25
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Modal, message } from 'antd'
@@ -244,7 +244,7 @@ class AuthRole extends Component {
     try {
       // 获取被勾选的数据
       const res = await authRoleGetAllAndOne(line.roleId)
-      this.refs.mask.hide()
+
       if (res.code !== ERR_OK) {
         message.error(res.message)
         return
@@ -352,7 +352,7 @@ class AuthRole extends Component {
 
       // console.log(checked)
 
-
+      this.refs.mask.hide()
       this.setState({
         addOrEditTitle: '编辑角色',
         addOrEditVisible: true,
@@ -361,6 +361,7 @@ class AuthRole extends Component {
         checkedNodes: checkedAndHalf,
         authData
       })
+
     } catch (error) {
       console.log(error)
     }
