@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Table, Pagination, Divider } from 'antd'
 import { myGetStrTime } from '@Utils/myGetTime'
 import { PropTypes } from 'prop-types'
+import { hasThisButton } from '@Utils/getButton'
 
 export default class MainClassfiyListTable extends Component {
   static propTypes = {
@@ -15,12 +16,11 @@ export default class MainClassfiyListTable extends Component {
   }
 
   render() {
-    const columns = [
+    let columns = [
       {
         title: 'ID',
         dataIndex: 'id',
         key: 'id',
-        width: 60
       },
       {
         title: '子站名称',
@@ -41,13 +41,11 @@ export default class MainClassfiyListTable extends Component {
           }
           return aurl
         },
-        width: 200
       },
       {
         title: '合作方',
         dataIndex: 'appName',
         key: 'appName',
-        width: 200
       },
       {
         title: '创建时间',
@@ -59,7 +57,6 @@ export default class MainClassfiyListTable extends Component {
             <span>{str}</span>
           )
         },
-        width: 150
       },
       {
         title: '更新时间',
@@ -71,7 +68,6 @@ export default class MainClassfiyListTable extends Component {
             <span>{str}</span>
           )
         },
-        width: 150
       },
       {
         title: '操作',
@@ -79,13 +75,25 @@ export default class MainClassfiyListTable extends Component {
         render: (text, record) => {
           return (
             <span>
-              <i style={{ color: '#1585ff', cursor: 'pointer' }} onClick={() => this.props.tableLineEdit(record)}>编辑</i>
-              <Divider type="vertical" />
-              <i style={{ color: 'green', cursor: 'pointer' }} onClick={() => this.props.tableLineSave(record)}>另存为</i>
+              {
+                hasThisButton('child-table', '编辑') ?
+                  <span>
+                    <i style={{ color: '#1585ff', cursor: 'pointer' }} onClick={() => this.props.tableLineEdit(record)}>编辑</i>
+                    <Divider type="vertical" />
+                  </span>
+                  : null
+              }
+              {
+                hasThisButton('child-table', '另存为') ?
+                  <i style={{ color: 'green', cursor: 'pointer' }} onClick={() => this.props.tableLineSave(record)}>另存为</i>
+                  : null
+              }
             </span>)
         },
-        width: 100
       }]
+    if (!hasThisButton('child-table', '编辑') && !hasThisButton('child-table', '另存为')) {
+      columns.pop(columns.length - 1)
+    }
     return (
       <div>
         <Table columns={columns} dataSource={this.props.tableData} pagination={false} />
