@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Table, Pagination } from 'antd'
 import { myGetStrTime } from '@Utils/myGetTime'
 import { PropTypes } from 'prop-types'
+import { hasThisButton } from '@Utils/getButton'
 
 export default class SelfListenListTable extends Component {
   static propTypes = {
@@ -28,7 +29,7 @@ export default class SelfListenListTable extends Component {
       selectedRowKeys: this.props.selectedRowKeys,
       onChange: this.props.tableSelect,
     }
-    const columns = [{
+    let columns = [{
       title: '自运营Id',
       dataIndex: 'id',
       key: 'id',
@@ -155,6 +156,9 @@ export default class SelfListenListTable extends Component {
         </span>)
       },
     }]
+    if (!hasThisButton('self-listen', '编辑')) {
+      columns.pop(columns.length - 1)
+    }
     return (
       <div>
         <Table columns={columns} rowSelection={rowSelection} dataSource={this.props.tableData} pagination={false} scroll={{ x: 1300 }} />
