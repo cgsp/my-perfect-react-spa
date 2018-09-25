@@ -33,7 +33,7 @@ export default class SelfAlbumListTable extends Component {
       selectedRowKeys: this.props.selectedRowKeys,
       onChange: this.props.tableSelect,
     }
-    const columns = [
+    let columns = [
       {
         title: 'ID',
         dataIndex: 'id',
@@ -170,6 +170,10 @@ export default class SelfAlbumListTable extends Component {
             </span>)
         },
       }]
+
+    if (!hasThisButton('main-album', '打标签') && !hasThisButton('main-album', '另存为')) {
+      columns.pop(columns.length - 1)
+    }
     return (
       <div>
         <Table columns={columns} rowSelection={rowSelection} dataSource={this.props.tableData} pagination={false} scroll={{ x: 1600 }} />
