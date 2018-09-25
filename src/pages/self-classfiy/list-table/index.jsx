@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Table, Pagination } from 'antd'
 import { myGetStrTime } from '@Utils/myGetTime'
 import { PropTypes } from 'prop-types'
+import { hasThisButton } from '@Utils/getButton'
 
 export default class MainClassfiyListTable extends Component {
   static propTypes = {
@@ -15,7 +16,7 @@ export default class MainClassfiyListTable extends Component {
   }
 
   render() {
-    const columns = [
+    let columns = [
       {
         title: 'ID',
         dataIndex: 'id',
@@ -107,6 +108,9 @@ export default class MainClassfiyListTable extends Component {
             </span>)
         },
       }]
+    if (!hasThisButton('self-classfiy', '编辑')) {
+      columns.pop(columns.length - 1)
+    }
     return (
       <div>
         <Table columns={columns} dataSource={this.props.tableData} pagination={false} scroll={{ x: 1200 }} />
