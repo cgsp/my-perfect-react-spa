@@ -43,7 +43,7 @@ export default class MainClassfiyListTable extends Component {
         },
       },
       {
-        title: '合作方',
+        title: '合作方应用',
         dataIndex: 'appName',
         key: 'appName',
       },

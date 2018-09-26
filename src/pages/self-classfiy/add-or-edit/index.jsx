@@ -228,6 +228,7 @@ class MainClassfiyAddOrEdit extends Component {
                 <Select
                   getPopupContainer={trigger => trigger.parentNode}
                   allowClear
+                  disabled
                 >
                   <Option value={1}>专辑</Option>
                   <Option value={2}>声音</Option>

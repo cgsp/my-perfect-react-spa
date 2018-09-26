@@ -39,7 +39,8 @@ class ChildTableAdd extends Component {
           }
         },
         columnOrder: ['column-1']
-      }
+      },
+      toastWhenTrackPlayingStartInMsSecond: 10
     }
 
     // 最终表单的数据
@@ -414,13 +415,13 @@ class ChildTableAdd extends Component {
                   <FormItem
                     {...formItemLayout}
                     label={
-                      <label className="ant-form-item-required">合作方:</label>
+                      <label className="ant-form-item-required">合作方应用:</label>
                     }
                     colon={false}
                   >
                     <Select
                       showSearch
-                      placeholder="请输入合作方"
+                      placeholder="请输入合作方应用"
                       allowClear={true}
                       value={this.state.appKey}
                       onSearch={this.handleParterSelectSearch}
@@ -665,6 +666,7 @@ class ChildTableAdd extends Component {
                             <Input
                               className="input"
                               type="number"
+                              defaultValue={10}
                               onChange={(e) => {
                                 this.setState({
                                   toastWhenTrackPlayingStartInMsSecond: e.target.value

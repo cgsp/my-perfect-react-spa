@@ -473,13 +473,13 @@ class ChildTableEdit extends Component {
                   <FormItem
                     {...formItemLayout}
                     label={
-                      <label className="ant-form-item-required">合作方:</label>
+                      <label className="ant-form-item-required">合作方应用:</label>
                     }
                     colon={false}
                   >
                     <Select
                       showSearch
-                      placeholder="请输入合作方"
+                      placeholder="请输入合作方应用"
                       disabled
                       value={this.state.appKey}
                       onSearch={this.handleParterSelectSearch}
