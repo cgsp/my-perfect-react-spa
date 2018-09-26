@@ -58,7 +58,7 @@ export function getNavBarData(callBack) {
         let menuTree = [{
           name: '首页',
           routePath: 'index',
-          icon: 'laptop'
+          icon: 'home'
         }]
 
         let buttonList = []
