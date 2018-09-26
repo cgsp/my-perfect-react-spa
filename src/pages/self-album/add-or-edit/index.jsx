@@ -195,7 +195,7 @@ class SelfTagDimensionAddOrEdit extends Component {
         priceType,
         intro,
         trackIds,
-        people: peopleRes.data
+        people: peopleRes.data.name
       })
 
       this.tags = tags

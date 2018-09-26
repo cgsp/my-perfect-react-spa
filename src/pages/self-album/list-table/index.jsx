@@ -55,6 +55,26 @@ export default class SelfAlbumListTable extends Component {
         key: 'title',
       },
       {
+        title: '封面图',
+        dataIndex: 'coverUrlSmall',
+        key: 'coverUrlSmall',
+        render: (text, record) => {
+          let img
+          if (!text) {
+            img = (
+              <span />
+            )
+          } else {
+            img = (
+              <a href={text} target="_blank" style={{ cursor: 'pointer' }}>
+                <img width={50} height={50} src={text} alt="封面图" />
+              </a>
+            )
+          }
+          return img
+        }
+      },
+      {
         title: '是否付费',
         dataIndex: 'isPaid',
         key: 'isPaid',
