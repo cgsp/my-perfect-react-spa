@@ -62,7 +62,7 @@ export const apiAlbumGetMain = (sourceId) => {
 export const apiAlbumGetMainPeople = (sourceId) => {
   return myAxios(
     {
-      url: '/openapi/albums/uname',
+      url: '/openapi/albums/user',
       method: 'get',
       params: { albumId: sourceId },
       data: {},

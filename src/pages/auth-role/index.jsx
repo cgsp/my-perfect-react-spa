@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-25 18:04:25
+ * @Last Modified time: 2018-09-26 10:19:17
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Modal, message } from 'antd'
@@ -116,10 +116,13 @@ class AuthRole extends Component {
               message.error(res.message)
               return
             }
-            that.searchList(() => {
-              message.success('删除角色成功')
+            that.refs.mask.show()
+            that.props.getNavBarData(() => {
+              that.refs.mask.hide()
+              that.searchList(() => {
+                message.success('删除角色成功')
+              })
             })
-            that.props.getNavBarData()
           })
       },
       onCancel() { },
@@ -412,13 +415,17 @@ class AuthRole extends Component {
               message.error(res.message)
               return
             }
-            this.searchList(() => {
-              message.success('编辑角色成功')
+            this.refs.mask.show()
+            this.props.getNavBarData(() => {
+              this.refs.mask.hide()
+              this.searchList(() => {
+                message.success('编辑角色成功')
+              })
+              this.setState({
+                addOrEditVisible: false
+              })
             })
-            this.props.getNavBarData()
-            this.setState({
-              addOrEditVisible: false
-            })
+
             this.oldChecked = null
           })
       }

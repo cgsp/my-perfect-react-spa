@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-25 16:56:13
+ * @Last Modified time: 2018-09-26 10:03:37
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, message, Select, Modal } from 'antd'
@@ -13,6 +13,8 @@ import { hasThisButton } from '@Utils/getButton'
 
 import MaskLoading from '@Components/mask-loading'
 import SortList from '@Components/sort-list'
+import { connect } from 'react-redux'
+import { getNavBarData } from '@Redux/navBar'
 
 import { apiAuthAccountList, apiAuthAllUser, apiAuthAccountGetRoles, apiAuthAccountDeleteRole, apiAuthAccountUpdateRole, apiAuthAllRole } from '@Api/auth-account'
 
@@ -24,6 +26,10 @@ const FormItem = Form.Item
 const Option = Select.Option
 const confirm = Modal.confirm
 
+@connect(
+  state => state.navBarReducer,
+  { getNavBarData }
+)
 class AuthAccount extends Component {
   constructor() {
     super()
@@ -231,7 +237,11 @@ class AuthAccount extends Component {
               message.error(res.message)
               return
             }
-            that.searchList('删除用户')
+            that.refs.mask.show()
+            that.props.getNavBarData(() => {
+              that.refs.mask.hide()
+              that.searchList('删除用户')
+            })
           })
       },
       onCancel() { },
@@ -242,11 +252,15 @@ class AuthAccount extends Component {
   addOrEditOk(values) {
     values.userId = this.editUserId
     this.handleSelfTagAddOrEdit(values, () => {
-      this.setState({
-        addOrEditVisible: false
+      this.refs.mask.show()
+      this.props.getNavBarData(() => {
+        this.refs.mask.hide()
+        this.setState({
+          addOrEditVisible: false
+        })
+        // 刷新维度列表页面
+        this.searchList('编辑')
       })
-      // 刷新维度列表页面
-      this.searchList('编辑')
     })
   }
 

@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-25 14:30:01
+ * @Last Modified time: 2018-09-26 10:12:08
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -400,7 +400,7 @@ class SelfAlbum extends Component {
             message.error(res.msg)
             return
           }
-          line.people = res.data
+          line.people = res.data.name
           this.setState({
             addOrEditTitle: '编辑自运营专辑',
             addOrEditVisible: true,

@@ -108,7 +108,8 @@ export default class SelfAlbumListTable extends Component {
         key: 'ctagNames',
         render: (text, record) => {
           return <span>{text.join()}</span>
-        }
+        },
+        width: 200
       },
       {
         title: '状态',
@@ -160,7 +161,7 @@ export default class SelfAlbumListTable extends Component {
     }
     return (
       <div>
-        <Table columns={columns} rowSelection={rowSelection} dataSource={this.props.tableData} pagination={false} scroll={{ x: 1600 }} />
+        <Table columns={columns} rowSelection={rowSelection} dataSource={this.props.tableData} pagination={false} scroll={{ x: 2000 }} />
         <div style={{ textAlign: 'right', marginTop: 30 }}>
           <Pagination
             showSizeChanger

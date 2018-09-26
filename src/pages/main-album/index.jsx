@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-25 17:55:40
+ * @Last Modified time: 2018-09-26 10:11:42
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -404,7 +404,7 @@ class MainAlbum extends Component {
             message.error(res.msg)
             return
           }
-          line.people = res.data
+          line.people = res.data.name
           this.setState({
             addOrEditTitle: '另存为自运营专辑',
             addOrEditVisible: true,

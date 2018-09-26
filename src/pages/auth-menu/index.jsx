@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-25 15:45:53
+ * @Last Modified time: 2018-09-26 10:05:29
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, message, Select, Modal } from 'antd'
@@ -215,8 +215,11 @@ class AuthMenu extends Component {
               message.error(res.message)
               return
             }
-            that.searchList('删除节点')
-            that.props.getNavBarData()
+            that.refs.mask.show()
+            that.props.getNavBarData(() => {
+              that.refs.mask.hide()
+              that.searchList('删除节点')
+            })
           })
       },
       onCancel() { },
@@ -273,12 +276,15 @@ class AuthMenu extends Component {
   // 新增或者编辑自运营专辑，添加标签，点击弹框的确定
   addOrEditOk(values, type) {
     this.handleSelfTagAddOrEdit(values, type, () => {
-      this.setState({
-        addOrEditVisible: false
-      })
       // 刷新维度列表页面
-      this.searchList(type)
-      this.props.getNavBarData()
+      this.refs.mask.show()
+      this.props.getNavBarData(() => {
+        this.refs.mask.hide()
+        this.searchList(type)
+        this.setState({
+          addOrEditVisible: false
+        })
+      })
     })
   }
 

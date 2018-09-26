@@ -109,7 +109,7 @@ export default class SelfAlbumListTable extends Component {
         render: (text, record) => {
           return <span>{text}</span>
         },
-        // width: 100
+        width: 200
       },
       {
         title: '播放数',
@@ -176,7 +176,7 @@ export default class SelfAlbumListTable extends Component {
     }
     return (
       <div>
-        <Table columns={columns} rowSelection={rowSelection} dataSource={this.props.tableData} pagination={false} scroll={{ x: 1600 }} />
+        <Table columns={columns} rowSelection={rowSelection} dataSource={this.props.tableData} pagination={false} scroll={{ x: 2000 }} />
         <div style={{ textAlign: 'right', marginTop: 30 }}>
           <Pagination
             showSizeChanger
