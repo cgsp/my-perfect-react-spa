@@ -4,8 +4,6 @@ import { SONG_URL } from '@Constants'
 import { myGetStrTime } from '@Utils/myGetTime'
 import { PropTypes } from 'prop-types'
 import { hasThisButton } from '@Utils/getButton'
-import RMB from './rmb.png'
-import FREE from './free.png'
 
 const DEV = process.env.NODE_ENV !== 'production'
 // console.log(process.env.NODE_ENV)
@@ -68,12 +66,11 @@ export default class SelfAlbumListTable extends Component {
             )
           } else {
             img = (
-              <a href={text} target="_blank" style={{ cursor: 'pointer', position: 'relative', left: 0, top: 0,display:'inline-block',width:50,height:50}}>
+              <a href={text} target="_blank" style={{ cursor: 'pointer', position: 'relative', left: 0, top: 0, display: 'inline-block', width: 50, height: 50 }}>
                 <img width={50} height={50} src={text} alt="封面图" />
                 {
                   record.isPaid === 1 ?
-                    <img width={30} height={30} src={RMB} alt="icon" style={{ cursor: 'pointer', position: 'absolute', right: 0, top:0 }} /> :
-                    <img width={30} height={30} src={FREE} alt="icon" style={{ cursor: 'pointer', position: 'absolute', right: 0, top:0 }} />
+                    <span style={{ display: 'inline-block', width: 30, height: 20, position: 'absolute', bottom: 0, right: 0, backgroundColor: 'red', textAlign: 'center', lineHeight: '20px', color: '#fff' }}>付费</span> : null
                 }
               </a>
             )

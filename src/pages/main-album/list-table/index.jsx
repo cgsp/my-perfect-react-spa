@@ -4,8 +4,6 @@ import { SONG_URL } from '@Constants'
 import { myGetStrTime } from '@Utils/myGetTime'
 import { hasThisButton } from '@Utils/getButton'
 import { PropTypes } from 'prop-types'
-import RMB from './rmb.png'
-import FREE from './free.png'
 
 const DEV = process.env.NODE_ENV !== 'production'
 // console.log(process.env.NODE_ENV)

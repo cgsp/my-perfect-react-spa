@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-26 10:11:42
+ * @Last Modified time: 2018-09-26 19:08:20
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -641,7 +641,8 @@ class MainAlbum extends Component {
     const allTagOptions = {
       allTagVisible: this.state.allTagVisible,
       allTagCancel: this.allTagCancel,
-      allTagOk: this.allTagOk
+      allTagOk: this.allTagOk,
+      selectedRowKeys: this.state.selectedRowKeys
     }
 
     const singleTagOptions = {

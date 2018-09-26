@@ -18,6 +18,7 @@ class MainAllTag extends Component {
     allTagVisible: PropTypes.bool,
     allTagOk: PropTypes.func,
     allTagCancel: PropTypes.func,
+    selectedRowKeys: PropTypes.array,
   }
 
   constructor(props) {
@@ -172,6 +173,7 @@ class MainAllTag extends Component {
               label="专辑ID"
             >
               {getFieldDecorator('albumIds', {
+                initialValue: this.props.selectedRowKeys.length > 0 ? this.props.selectedRowKeys.join('\n') : undefined,
                 rules: [
                   {
                     required: true, message: '请输入专辑ID',
