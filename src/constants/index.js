@@ -73,7 +73,7 @@ const UP_IMG_ACTION = {
   pro: 'http://cms.test.9nali.com/openapi-content-admin-app/upload/cover',
 }
 
-// 焦点图上传
+// 焦点图上传1111
 const UP_FOCUS_IMG_ACTION = {
   dev: 'http://cms.test.9nali.com/openapi-content-admin-app/upload/pic',
   // 生产的必须加上http或者https
