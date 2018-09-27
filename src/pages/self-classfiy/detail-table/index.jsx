@@ -17,6 +17,7 @@ if (DEV) {
 export default class MainClassfiyDimensionDetailTable extends Component {
   static propTypes = {
     detailTitle: PropTypes.string,
+    detailTitleObj: PropTypes.object,
     detailVisible: PropTypes.bool,
     detailCancel: PropTypes.func,
     detailTotal: PropTypes.number,
@@ -145,7 +146,7 @@ export default class MainClassfiyDimensionDetailTable extends Component {
 
     return (
       <Modal
-        title={this.props.detailTitle}
+        title={`${this.props.detailTitle}（分类名称：${this.props.detailTitleObj.title}，分类ID：${this.props.detailTitleObj.id}）`}
         visible={this.props.detailVisible}
         onCancel={this.props.detailCancel}
         width={1100}

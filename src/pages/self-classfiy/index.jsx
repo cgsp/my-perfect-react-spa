@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-25 14:58:43
+ * @Last Modified time: 2018-09-27 14:19:46
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber, Modal } from 'antd'
@@ -355,7 +355,11 @@ class MainAlbum extends Component {
     this.setState({
       detailPageNo: 1,
       detailPageSize: 10,
-      detailTitle
+      detailTitle,
+      detailTitleObj: {
+        id: line.id,
+        title: line.name
+      }
     })
     this.getDetailData({
       pageNo: 1,
@@ -425,6 +429,7 @@ class MainAlbum extends Component {
     }
 
     const detailTableOptions = {
+      detailTitleObj: this.state.detailTitleObj,
       detailTitle: this.state.detailTitle,
       detailVisible: this.state.detailVisible,
       detailPageNo: this.state.detailPageNo,
