@@ -16,6 +16,7 @@ if (DEV) {
 
 export default class SelfTagDimensionDetailTable extends Component {
   static propTypes = {
+    detailTitle: PropTypes.object,
     detailVisible: PropTypes.bool,
     detailCancel: PropTypes.func,
     detailTotal: PropTypes.number,
@@ -79,7 +80,7 @@ export default class SelfTagDimensionDetailTable extends Component {
       }]
     return (
       <Modal
-        title="声音列表"
+        title={`声音列表（专辑名称：${this.props.detailTitle.title}，专辑ID：${this.props.detailTitle.id}）`}
         visible={this.props.detailVisible}
         onCancel={this.props.detailCancel}
         width={1100}

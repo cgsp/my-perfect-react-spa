@@ -29,7 +29,17 @@ export default class MainFocusListTable extends Component {
       {
         title: '焦点图名称',
         dataIndex: 'title',
-        key: 'title'
+        key: 'title',
+        render: (text, record) => {
+          const old = text
+          let newtext
+          if (text.length > 15) {
+            newtext = text.substr(0, 14) + '...'
+          } else {
+            newtext = text
+          }
+          return <span style={{ cursor: 'pointer' }} title={old}>{newtext}</span>
+        }
       },
       {
         title: '分类',
