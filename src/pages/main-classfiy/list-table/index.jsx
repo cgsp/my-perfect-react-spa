@@ -31,7 +31,17 @@ export default class MainClassfiyListTable extends Component {
       {
         title: '分类名称',
         dataIndex: 'name',
-        key: 'name'
+        key: 'name',
+        render: (text, record) => {
+          const old = text
+          let newtext
+          if (text.length > 15) {
+            newtext = text.substr(0, 14) + '...'
+          } else {
+            newtext = text
+          }
+          return <span style={{ cursor: 'pointer' }} title={old}>{newtext}</span>
+        }
       },
       {
         title: '分类封面',
