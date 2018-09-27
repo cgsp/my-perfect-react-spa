@@ -394,19 +394,23 @@ class ChildTableAdd extends Component {
     }
     return (
       <div className="child-table-add">
-        <div className="title">
-          <div className="text">子站管理/</div>
-          <div className="function">新建子站</div>
-          <div className="back">
-            <Button type="primary" onClick={this.goBack}>返回</Button>
-          </div>
-        </div>
+
         <div className="content">
           <Form
             onSubmit={this.handleSubmit}
             className="form"
           >
             <div className="body">
+              <div className="title">
+                <div className="text">子站管理/</div>
+                <div className="function">新建子站</div>
+                <div className="back">
+                  <Button type="primary" onClick={this.goBack}>返回</Button>
+                </div>
+                <div className="submit">
+                  <Button type="primary" htmlType="submit">保存</Button>
+                </div>
+              </div>
               <div className="left">
                 <div className="basic">
                   <div className="content-title">
@@ -707,11 +711,6 @@ class ChildTableAdd extends Component {
                       }
                     </DragDropContext>
                 }
-              </div>
-              <div className="submit">
-                <FormItem className="submit-button">
-                  <Button type="primary" htmlType="submit">保存</Button>
-                </FormItem>
               </div>
             </div>
           </Form>

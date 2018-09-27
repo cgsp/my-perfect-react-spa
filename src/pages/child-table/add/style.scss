@@ -8,7 +8,7 @@
   left: 0;
   right: 0;
   background-color: #f0f2f5;
-  padding: 10px 30px 30px;
+  padding: 10px 30px 20px;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -16,37 +16,11 @@
   .ant-form-item-label {
     text-align: left !important;
   }
-  .title {
-    margin: 0 auto;
-    width: 98%;
-    height: 40px;
-    line-height: 40px;
-    box-sizing: border-box;
-    border-bottom: 1px solid #dddddd;
-    color: #A1A1A1;
-    font-size: 16px;
-    font-weight: bold;
-    .text {
-      float: left;
-      font-size: 16px;
-      font-weight: bold;
-    }
-    .function {
-      float: left;
-      color: #1585ff;
-      font-size: 16px;
-      font-weight: bold;
-    }
-    .back {
-      float: right;
-      position: relative;
-      bottom: 2px;
-    }
-  }
   .content {
-    margin-top: 10px;
     flex: 1;
     overflow: hidden;
+    border-bottom: 1px solid #dddddd;
+    padding-bottom: 10px;
     .form {
       width: 100%;
       height: 100%;
@@ -57,11 +31,47 @@
         flex-direction: row;
         width: 100%;
         height: 100%;
-        padding-bottom: 40px;
+        padding-top: 40px;
         box-sizing: border-box;
         position: relative;
         left: 0;
         top: 0;
+        .title {
+          position: absolute;
+          left: 0;
+          top: 0;
+          margin: 0 auto;
+          width: 98%;
+          height: 40px;
+          line-height: 40px;
+          box-sizing: border-box;
+          border-bottom: 1px solid #dddddd;
+          color: #A1A1A1;
+          font-size: 16px;
+          font-weight: bold;
+          .text {
+            float: left;
+            font-size: 16px;
+            font-weight: bold;
+          }
+          .function {
+            float: left;
+            color: #1585ff;
+            font-size: 16px;
+            font-weight: bold;
+          }
+          .submit {
+            float: right;
+            margin-right: 10px;
+            position: relative;
+            bottom: 2px;
+          }
+          .back {
+            float: right;
+            position: relative;
+            bottom: 2px;
+          }
+        }
         .left {
           flex: 3;
           overflow-y: auto;
@@ -79,18 +89,6 @@
             letter-spacing: 2px;
             font-size: 24px;
             font-weight: bold;
-          }
-        }
-        .submit {
-          position: absolute;
-          right: 1%;
-          bottom: 0;
-          height: 40px;
-          width: 98%;
-          border-top: 1px solid #dddddd;
-          box-sizing: border-box;
-          .submit-button {
-            float: right;
           }
         }
         .content-title {
