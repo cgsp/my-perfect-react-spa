@@ -8,6 +8,7 @@ import img3 from './loading3.gif'
 import img4 from './loading4.gif'
 import img5 from './loading5.gif'
 import img6 from './loading6.gif'
+import img7 from './loading7.gif'
 
 export default class MaskLoading extends Component {
   static propTypes = {
@@ -28,7 +29,7 @@ export default class MaskLoading extends Component {
 
   show() {
     let num = 0
-    num = Math.floor(Math.random() * 7)
+    num = Math.floor(Math.random() * 8)
     console.log(num)
     this.setState({
       visible: true,
@@ -67,8 +68,11 @@ export default class MaskLoading extends Component {
       case 6:
         imgsrc = img6
         break
+      case 7:
+        imgsrc = img7
+        break
       default:
-        imgsrc = img6
+        imgsrc = img7
         break
     }
     const content = (
