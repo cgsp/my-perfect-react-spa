@@ -79,7 +79,7 @@ export default class MaskLoading extends Component {
       <div className="mask-loading">
         <div className="loading">
           {
-            num === 1 || num === 0 ?
+            num === 7 || num === 1 || num === 0 ?
               <img className="img" src={imgsrc} alt="" style={{ width: '50px', height: 'auto' }} /> :
               <img className="img" src={imgsrc} alt="" style={{ width: '150px', height: 'auto' }} />
           }
