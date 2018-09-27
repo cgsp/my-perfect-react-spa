@@ -91,7 +91,7 @@ const SONG_URL = {
     track: 'http://test.ximalaya.com/tracks'
   },
 }
-const name = 222
+
 
 const noLoginCode = 399
 
