@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-18 22:25:36 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-25 14:01:10
+ * @Last Modified time: 2018-09-27 13:41:23
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, Select, DatePicker, Modal, message, InputNumber } from 'antd'
@@ -63,6 +63,7 @@ class SelfListen extends Component {
         msg: '',
         type: 'success'
       },
+      modalTableTitileObj: {}
     }
     this.onTableShowSizeChange = this.onTableShowSizeChange.bind(this)
     this.onTablePageChange = this.onTablePageChange.bind(this)
@@ -226,12 +227,20 @@ class SelfListen extends Component {
     if (line.contentType === 2) {
       this.type = '声音'
       this.setState({
-        modalTableTitile: '声音列表'
+        modalTableTitile: '声音列表',
+        modalTableTitileObj: {
+          title: line.title,
+          id: line.syncColumnId
+        }
       })
     } else {
       this.type = '专辑'
       this.setState({
-        modalTableTitile: '专辑列表'
+        modalTableTitile: '专辑列表',
+        modalTableTitileObj: {
+          title: line.title,
+          id: line.syncColumnId
+        }
       })
     }
     this.id = line.id
@@ -512,7 +521,8 @@ class SelfListen extends Component {
       modalTableOnShowSizeChange: this.modalTableOnShowSizeChange,
       modalTableOnChange: this.modalTableOnChange,
       modalTableShowTotal: this.modalTableShowTotal,
-      modalTableTitile: this.state.modalTableTitile
+      modalTableTitile: this.state.modalTableTitile,
+      modalTableTitileObj: this.state.modalTableTitileObj,
     }
 
     const addOrEditOptions = {
