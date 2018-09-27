@@ -30,7 +30,7 @@ export default class SelfListenListTable extends Component {
       onChange: this.props.tableSelect,
     }
     let columns = [{
-      title: '自运营Id',
+      title: 'ID',
       dataIndex: 'id',
       key: 'id',
     },

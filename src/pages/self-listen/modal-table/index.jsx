@@ -13,7 +13,8 @@ export default class SelfListenModalTable extends Component {
     modalTableOnChange: PropTypes.func,
     modalTableShowTotal: PropTypes.func,
     modalTableData: PropTypes.array,
-    modalTableTitile: PropTypes.string
+    modalTableTitile: PropTypes.string,
+    modalTableTitileObj: PropTypes.object,
   }
 
 
@@ -151,7 +152,7 @@ export default class SelfListenModalTable extends Component {
 
     return (
       <Modal
-        title={this.props.modalTableTitile}
+        title={`${this.props.modalTableTitile}（听单名称：${this.props.modalTableTitileObj.title}，听单ID：${this.props.modalTableTitileObj.id}）`}
         visible={this.props.modalTableVisible}
         onCancel={this.props.modalTableCancel}
         width={1100}
