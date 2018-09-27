@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Button, Icon } from 'antd'
 import './style.scss'
 import fullScreen from './full-screen.png'
 import fullScreenExit from './full-screen-exit.png'
