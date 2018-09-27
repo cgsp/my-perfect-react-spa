@@ -80,7 +80,7 @@ const UP_FOCUS_IMG_ACTION = {
   pro: 'http://cms.test.9nali.com/openapi-content-admin-app/upload/pic',
 }
 
-// 专辑和声音的跳转地址
+// 专辑和声音的跳转地址11www
 const SONG_URL = {
   dev: {
     album: 'http://test.ximalaya.com/album',
@@ -91,6 +91,7 @@ const SONG_URL = {
     track: 'http://test.ximalaya.com/tracks'
   },
 }
+const name = 111
 
 const noLoginCode = 399
 
