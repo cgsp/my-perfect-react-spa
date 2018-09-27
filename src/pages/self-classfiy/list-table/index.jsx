@@ -25,7 +25,7 @@ export default class MainClassfiyListTable extends Component {
       {
         title: '分类名称',
         dataIndex: 'name',
-        key: 'name'
+        key: 'name',
       },
       {
         title: '分类封面',
