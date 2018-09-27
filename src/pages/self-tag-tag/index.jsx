@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-25 15:03:08
+ * @Last Modified time: 2018-09-27 14:24:50
  */
 
 
@@ -385,7 +385,11 @@ class SelfTagTag extends Component {
     this.setState({
       detailPageNo: 1,
       detailPageSize: 10,
-      detailTitle: type
+      detailTitle: type,
+      detailTitleObj: {
+        id: line.id,
+        title: line.name
+      }
     })
     this.getDetailData({
       pageNo: 1,
@@ -469,6 +473,7 @@ class SelfTagTag extends Component {
       detailShowTotal: this.detailShowTotal,
       detailLineEditOrDelete: this.detailLineEditOrDelete,
       detailTitle: this.state.detailTitle,
+      detailTitleObj: this.state.detailTitleObj,
     }
 
     const addOrEditOptions = {

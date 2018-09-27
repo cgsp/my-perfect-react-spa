@@ -62,7 +62,7 @@ export default class SelfTagDimensionDetailTable extends Component {
     }]
     return (
       <Modal
-        title="标签列表"
+        title={`标签列表（维度名称：${this.props.detailTitleObj.title}）`}
         visible={this.props.detailVisible}
         onCancel={this.props.detailCancel}
         width={1100}

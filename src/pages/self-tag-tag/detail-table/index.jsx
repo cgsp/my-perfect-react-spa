@@ -14,6 +14,7 @@ export default class SelfTagDimensionDetailTable extends Component {
     detailShowTotal: PropTypes.func,
     detailData: PropTypes.array,
     detailLineEditOrDelete: PropTypes.func,
+    detailTitleObj: PropTypes.object,
   }
 
 
@@ -73,7 +74,7 @@ export default class SelfTagDimensionDetailTable extends Component {
             )
           }
         }]
-    }else{
+    } else {
       columns = [
         {
           title: '主站专辑Id',
@@ -142,7 +143,7 @@ export default class SelfTagDimensionDetailTable extends Component {
     // console.log(this.props.detailTitle)
     return (
       <Modal
-        title="专辑列表"
+        title={`专辑列表（标签名称：${this.props.detailTitleObj.title}，标签ID：${this.props.detailTitleObj.id}）`}
         visible={this.props.detailVisible}
         onCancel={this.props.detailCancel}
         width={1100}
