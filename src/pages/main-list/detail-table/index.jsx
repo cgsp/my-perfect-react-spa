@@ -5,6 +5,7 @@ import { PropTypes } from 'prop-types'
 
 export default class MainListDetailTable extends Component {
   static propTypes = {
+    detailTitle: PropTypes.object,
     detailVisible: PropTypes.bool,
     detailCancel: PropTypes.func,
     detailTotal: PropTypes.number,
@@ -70,7 +71,7 @@ export default class MainListDetailTable extends Component {
       }]
     return (
       <Modal
-        title="专辑列表"
+        title={`内容列表（榜单标题：${this.props.detailTitle.title}，榜单ID：${this.props.detailTitle.id}）`}
         visible={this.props.detailVisible}
         onCancel={this.props.detailCancel}
         width={1100}

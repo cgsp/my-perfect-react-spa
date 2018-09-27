@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-08-25 21:41:03 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-25 14:12:02
+ * @Last Modified time: 2018-09-27 13:54:08
  */
 import React, { Component } from 'react'
 import { List, Form, Row, Col, Button, Input, DatePicker, message, Select, InputNumber } from 'antd'
@@ -231,6 +231,10 @@ class SelfTagTag extends Component {
     this.setState({
       detailPageNo: 1,
       detailPageSize: 10,
+      detailTitle: {
+        title: line.rankTitle,
+        id: line.id
+      }
     })
     this.getDetailData({
       pageNo: 1,
@@ -299,6 +303,7 @@ class SelfTagTag extends Component {
     }
 
     const detailTableOptions = {
+      detailTitle: this.state.detailTitle,
       detailVisible: this.state.detailVisible,
       detailPageNo: this.state.detailPageNo,
       detailTotal: this.state.detailTotal,

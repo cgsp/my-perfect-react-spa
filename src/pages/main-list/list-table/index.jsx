@@ -30,11 +30,31 @@ export default class MainListTable extends Component {
         title: '榜单标题',
         dataIndex: 'rankTitle',
         key: 'rankTitle',
+        render: (text, record) => {
+          const old = text
+          let newtext
+          if (text.length > 15) {
+            newtext = text.substr(0, 14) + '...'
+          } else {
+            newtext = text
+          }
+          return <span style={{ cursor: 'pointer' }} title={old}>{newtext}</span>
+        }
       },
       {
         title: '榜单副标题',
         dataIndex: 'rankSubTitle',
         key: 'rankSubTitle',
+        render: (text, record) => {
+          const old = text
+          let newtext
+          if (text.length > 15) {
+            newtext = text.substr(0, 14) + '...'
+          } else {
+            newtext = text
+          }
+          return <span style={{ cursor: 'pointer' }} title={old}>{newtext}</span>
+        }
       },
       {
         title: '周期类型',
