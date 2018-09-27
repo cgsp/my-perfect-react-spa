@@ -70,7 +70,7 @@ export default class SelfAlbumListTable extends Component {
                 <img width={50} height={50} src={text} alt="封面图" />
                 {
                   record.isPaid === 1 ?
-                    <span style={{ display: 'inline-block', width: 30, height: 20, position: 'absolute', bottom: 0, right: 0, backgroundColor: 'red', textAlign: 'center', lineHeight: '20px', color: '#fff' }}>付费</span> : null
+                    <span style={{ display: 'inline-block', width: 30, height: 20, position: 'absolute', bottom: 0, right: 0, backgroundColor: '#f50', textAlign: 'center', lineHeight: '20px', color: '#fff' }}>付费</span> : null
                 }
               </a>
             )
