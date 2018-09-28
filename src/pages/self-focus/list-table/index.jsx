@@ -70,7 +70,7 @@ export default class SelfFocusListTable extends Component {
           } else {
             img = (
               <a href={text} target="_blank" style={{ cursor: 'pointer' }}>
-                <img width={50} height={50} src={text} alt="焦点图" />
+                <img width={80} height={50} src={text} alt="焦点图" />
               </a>
             )
           }
