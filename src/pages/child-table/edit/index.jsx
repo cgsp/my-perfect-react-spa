@@ -93,6 +93,22 @@ class ChildTableEdit extends Component {
     this.deleteModule = this.deleteModule.bind(this)
   }
 
+  componentDidMount() {
+    const site = this.state.originData.site
+    const extendConfigJson = JSON.parse(site.extendConfigJson)
+    const turnon = extendConfigJson.toastWhenTrackPlaying.turnon
+    // console.log(turnon)
+    if (!turnon) {
+      this.props.form.setFieldsValue({
+        toastWhenTrackPlayingTurnon: false
+      })
+    } else {
+      this.props.form.setFieldsValue({
+        toastWhenTrackPlayingTurnon: true
+      })
+    }
+  }
+
   // 左侧表单的提交
   handleSubmit = (e) => {
     e.preventDefault()
@@ -558,7 +574,7 @@ class ChildTableEdit extends Component {
                     {getFieldDecorator('enableCopyrightFilter',
                       {
                         valuePropName: 'checked',
-                        initialValue: site.enableCopyrightFilter,
+                        initialValue: site.enableCopyrightFilter ? true : false,
                         rules: [
                           {
                             required: true,
@@ -609,7 +625,7 @@ class ChildTableEdit extends Component {
                     {getFieldDecorator('dockTab',
                       {
                         valuePropName: 'checked',
-                        initialValue: extendConfigJson.dockTab,
+                        initialValue: extendConfigJson.dockTab ? true : false,
                         rules: [
                           {
                             required: true,
@@ -628,7 +644,7 @@ class ChildTableEdit extends Component {
                     {getFieldDecorator('soundPatch',
                       {
                         valuePropName: 'checked',
-                        initialValue: extendConfigJson.soundPatch,
+                        initialValue: extendConfigJson.soundPatch ? true : false,
                         rules: [
                           {
                             required: true,
@@ -647,7 +663,7 @@ class ChildTableEdit extends Component {
                     {getFieldDecorator('toastInAlbumDetailPage',
                       {
                         valuePropName: 'checked',
-                        initialValue: extendConfigJson.toastInAlbumDetailPage,
+                        initialValue: extendConfigJson.toastInAlbumDetailPage ? true : false,
                         rules: [
                           {
                             required: true,
@@ -666,7 +682,7 @@ class ChildTableEdit extends Component {
                     {getFieldDecorator('toastWhenTrackPlayingTurnon',
                       {
                         valuePropName: 'checked',
-                        initialValue: extendConfigJson.toastWhenTrackPlaying.turnon,
+                        initialValue: extendConfigJson.toastWhenTrackPlaying.turnon ? true : false,
                         rules: [
                           {
                             required: true,
