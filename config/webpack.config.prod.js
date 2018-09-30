@@ -41,7 +41,7 @@ const cssFilename = 'static/css/[name].[chunkhash:8].css'
 // To have this structure working with relative paths, we have to use custom options.
 const extractTextPluginOptions = shouldUseRelativeAssetPaths
   ? // Making sure that the publicPath goes back to to build folder.
-    { publicPath: Array(cssFilename.split('/').length).join('../') }
+  { publicPath: Array(cssFilename.split('/').length).join('../') }
   : {}
 
 // This is the production configuration.
@@ -55,7 +55,31 @@ module.exports = {
   // devtool: shouldUseSourceMap ? 'source-map' : false,
   devtool: false,
   // In production, we only want to load the polyfills and the app code.
-  entry: [require.resolve('./polyfills'), paths.appIndexJs],
+  // entry: [require.resolve('./polyfills'), paths.appIndexJs],
+  entry: {
+    vendor: [
+      'antd',
+      'axios',
+      'fetch-jsonp',
+      'good-storage',
+      'js-cookie',
+      'moment',
+      'qs',
+      'querystring',
+      'react',
+      'react-dom',
+      'react-router',
+      'react-router-dom',
+      'react-redux',
+      'redux-thunk',
+      'react-beautiful-dnd',
+      'styled-components'
+    ],
+    app: [
+      require.resolve('./polyfills'),
+      paths.appIndexJs,
+    ],
+  },
   output: {
     // The build folder.
     path: paths.appBuild,
@@ -351,7 +375,16 @@ module.exports = {
     // solution that requires the user to opt into importing specific locales.
     // https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
     // You can remove this if you don't use Moment.js:
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      filename: 'static/js/vendor.[chunkhash:8].js',
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'common',
+      filename: 'static/js/common.[chunkhash:8].js',
+      minChunks: 2
+    })
   ],
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.

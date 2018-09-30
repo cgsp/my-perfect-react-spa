@@ -1,11 +1,13 @@
 {
-  "main.css": "static/css/main.e38819e7.css",
-  "main.js": "static/js/main.e38819e7.js",
+  "app.css": "static/css/app.3ca56d85.css",
+  "app.js": "static/js/app.3ca56d85.js",
+  "common.js": "static/js/common.20cfba86.js",
   "static/media/loading1.gif": "static/media/loading1.gif",
   "static/media/loading3.gif": "static/media/loading3.gif",
   "static/media/loading4.gif": "static/media/loading4.gif",
   "static/media/loading5.gif": "static/media/loading5.gif",
   "static/media/loading6.gif": "static/media/loading6.gif",
   "static/media/loading7.gif": "static/media/loading7.gif",
-  "static/media/logo.png": "static/media/logo.png"
+  "static/media/logo.png": "static/media/logo.png",
+  "vendor.js": "static/js/vendor.c83b39b7.js"
 }
