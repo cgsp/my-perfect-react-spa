@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { hot } from 'react-hot-loader'
 // import { BrowserRouter as Router } from 'react-router-dom'
 import { HashRouter as Router } from 'react-router-dom'
 import { LocaleProvider } from 'antd'
@@ -64,6 +63,6 @@ class App extends Component {
   }
 }
 
-export default hot(module)(App)
+export default App
 
 

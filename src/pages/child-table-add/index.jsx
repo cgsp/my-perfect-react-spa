@@ -402,7 +402,7 @@ class ChildTableAdd extends Component {
           >
             <div className="body">
               <div className="title">
-                <div className="text">子站管理/</div>
+                <div className="text">子站管理11/</div>
                 <div className="function">新建子站</div>
                 <div className="back">
                   <Button type="primary" onClick={this.goBack}>返回</Button>

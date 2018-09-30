@@ -3,8 +3,28 @@ import 'babel-polyfill'
 import 'raf/polyfill'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import App from './App'
+import { AppContainer } from 'react-hot-loader'
+import App from './App.jsx'
 import registerServiceWorker from './registerServiceWorker'
 
-ReactDOM.render(<App />, document.getElementById('root'))
+const root = document.getElementById('root')
+const render = (Component) => {
+  ReactDOM.render(
+    <AppContainer warnings={false}>
+      <Component />
+    </AppContainer>,
+    root,
+  )
+}
+
+render(App)
+
+// 如果有需要热更新的代码的话
+if (module.hot) {
+  module.hot.accept('./App', () => {
+    const NextApp = require('./App').default
+    render(NextApp)
+  })
+}
+
 registerServiceWorker()
