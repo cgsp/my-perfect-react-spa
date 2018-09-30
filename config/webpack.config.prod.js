@@ -382,11 +382,12 @@ module.exports = {
       name: 'vendor',
       filename: 'static/js/[name].[chunkhash:8].js',
     }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'common',
-      filename: 'static/js/[name].[chunkhash:8].js',
-      minChunks: 2
-    })
+    // 下面这个common，其实更加适合多页应用时候的打包，spa其实用的很少，也起不到什么作用，反而会分散请求
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   name: 'common',
+    //   filename: 'static/js/[name].[chunkhash:8].js',
+    //   minChunks: 2
+    // })
   ],
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.
