@@ -1,9 +1,0 @@
-@import '../mixin.scss';
-.main-list {
-  @include search;
-}
-
-
-.ant-message {
-  z-index: 200000 !important;
-}

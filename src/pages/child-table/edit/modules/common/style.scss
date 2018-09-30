@@ -1,7 +1,0 @@
-@import '../mixin.scss';
-.common-module {
-  @include module-title;
-  .module-content {
-    height: auto;
-  }
-}

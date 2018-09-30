@@ -24,8 +24,8 @@ export default class MainFrame extends Component {
   }
 
   componentDidMount() {
-    if (this.props.appNavListData.length <=1) {
-      this.refs.mask.show()
+    if (this.props.appNavListData.length <= 1) {
+      // this.refs.mask.show()
       this.props.getNavBarData(
         () => {
           // console.log(res)
@@ -34,18 +34,6 @@ export default class MainFrame extends Component {
       )
     }
   }
-
-  // componentWillUpdate() {
-  //   console.log(this.props.appNavListData)
-  // }
-
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   // console.log(nextProps)
-  //   if (nextProps.appNavListData.length > 1) {
-  //     this.refs.mask.hide()
-  //   }
-  //   return true
-  // }
 
   render() {
     const { children } = this.props
