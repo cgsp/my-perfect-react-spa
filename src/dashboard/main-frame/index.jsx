@@ -23,18 +23,29 @@ export default class MainFrame extends Component {
     location: PropTypes.object
   }
 
+  constructor(props) {
+    super(props)
+    this.timer = null
+  }
+
   componentDidMount() {
     if (this.props.appNavListData.length <= 1) {
-      // this.refs.mask.show()
+      this.refs.mask.show()
       this.props.getNavBarData(
         () => {
-          // console.log(res)
-          this.refs.mask.hide()
+          if (this.timer) {
+            clearTimeout(this.timer)
+          }
+          this.timer = setTimeout(() => {
+            this.refs.mask.hide()
+          }, 1000)
         }
       )
     }
   }
-
+  componentWillUnmount() {
+    clearTimeout(this.timer)
+  }
   render() {
     const { children } = this.props
     // const { isLogin } = this.props.index

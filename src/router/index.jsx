@@ -6,13 +6,13 @@ import { connect } from 'react-redux'
 import { asyncComponent } from './asyncComponent'
 
 // 让路由对应的组件都是异步加载
-// const NoMatch404 = asyncComponent(() => import('@Pages/no-match-404'))
-// const Index = asyncComponent(() => import('@Pages/index'))
-// const ChildTableAdd = asyncComponent(() => import('@Pages/child-table-add'))
+const NoMatch404 = asyncComponent(() => import('@Pages/no-match-404'))
+const Index = asyncComponent(() => import('@Pages/index'))
+const ChildTableAdd = asyncComponent(() => import('@Pages/child-table-add'))
 
-import NoMatch404 from '@Pages/no-match-404'
-import Index from '@Pages/index'
-import ChildTableAdd from '@Pages/child-table-add'
+// import NoMatch404 from '@Pages/no-match-404'
+// import Index from '@Pages/index'
+// import ChildTableAdd from '@Pages/child-table-add'
 
 @withRouter
 @connect(

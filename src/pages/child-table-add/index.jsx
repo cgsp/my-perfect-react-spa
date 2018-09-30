@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Button, Form, Input, message, Select, Switch, Modal } from 'antd'
 import { apiChildParter } from '@Api/child-table'
 import { ERR_OK } from '@Constants'
-import { moduleNameList } from '../config'
+import { moduleNameList } from './config'
 import { DragDropContext } from 'react-beautiful-dnd'
 import Column from './drag/column'
 import './style.scss'
@@ -262,7 +262,7 @@ class ChildTableAdd extends Component {
   // 返回
   goBack = () => {
     this.props.history.push({
-      pathname: '/child-table',
+      pathname: '/index',
     })
   }
 

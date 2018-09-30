@@ -1,18 +1,10 @@
 import React, { Component } from 'react'
-import { Form, Input, Select, message } from 'antd'
+import { Form, Input, Select } from 'antd'
 import { PropTypes } from 'prop-types'
-import { ERR_OK } from '@Constants'
-import { getCommonDimesions } from '@Redux/commonTagAndDimesion'
-import { apiSelfTagTagList } from '@Api/self-tag-tag'
-import { connect } from 'react-redux'
 
 const FormItem = Form.Item
 const Option = Select.Option
 
-@connect(
-  state => state.commonTagAndDimesionsReducer,
-  { getCommonDimesions }
-)
 class ChildTag extends Component {
   static propTypes = {
     deleteModule: PropTypes.func
@@ -20,97 +12,10 @@ class ChildTag extends Component {
 
   constructor(props) {
     super(props)
-    // console.log(props)
     this.state = {
       moduleType: 4,
-      tags: []
-    }
-    this.dimensionChange = this.dimensionChange.bind(this)
-    // 获取公用的维度数据
-    this.props.getCommonDimesions()
-  }
-
-  dimensionChange(v) {
-    const { taskId, content
-    } = this.props.task
-    const moduleSymbol = `${taskId}~${content}`
-    this.props.form.setFieldsValue({
-      [`${moduleSymbol}~resourceId`]: undefined
-    })
-    if (!v) {
-      this.setState({
-        tags: []
-      })
-      return
-    }
-    this.getTags(v)
-  }
-
-  getTags = async (source) => {
-    try {
-      const options = {
-        dimensionId: source,
-        paged: false
-      }
-      const tagsRes = await apiSelfTagTagList(options)
-      if (tagsRes.code !== ERR_OK) {
-        message.error(tagsRes.msg)
-        return
-      }
-      this.setState({
-        tags: tagsRes.data.dataList
-      })
-    } catch (error) {
-      console.log(error)
     }
   }
-  // <FormItem
-  //         {...formItemLayout}
-  //         label={
-  //           <label className="ant-form-item-required">维度:</label>
-  //         }
-  //         colon={false}
-  //       >
-  //         <Select
-  //           placeholder="请选择维度"
-  //           allowClear
-  //           defaultValue={undefined}
-  //           onChange={(v) => this.dimensionChange(v)}
-  //           getPopupContainer={trigger => trigger.parentNode}
-  //         >
-  //           {
-  //             this.props.commonDimesions.map((item) => (
-  //               <Option key={item.id} value={item.id}>{item.dimensionName}</Option>
-  //             ))
-  //           }
-  //         </Select>
-  //       </FormItem>
-  // <FormItem
-  //         {...formItemLayout}
-  //         label="自运营标签"
-  //       >
-  //         {getFieldDecorator(`${moduleSymbol}~resourceId`, {
-  //           initialValue: undefined,
-  //           rules: [
-  //             {
-  //               required: true, message: '请选择自运营标签',
-  //             }
-  //           ],
-  //         })(
-  //           <Select
-  //             allowClear
-  //             getPopupContainer={trigger => trigger.parentNode}
-  //             placeholder="请选择自运营标签"
-  //             notFoundContent="请先选择维度"
-  //           >
-  //             {
-  //               this.state.tags.map((item) => (
-  //                 <Option key={item.id} value={item.id}>{item.name}</Option>
-  //               ))
-  //             }
-  //           </Select>
-  //         )}
-  //       </FormItem>
 
   render() {
     const getFieldDecorator = this.props.getFieldDecorator
