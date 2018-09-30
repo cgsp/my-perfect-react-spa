@@ -380,11 +380,11 @@ module.exports = {
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      filename: 'static/js/vendor.[chunkhash:8].js',
+      filename: 'static/js/[name].[chunkhash:8].js',
     }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'common',
-      filename: 'static/js/common.[chunkhash:8].js',
+      filename: 'static/js/[name].[chunkhash:8].js',
       minChunks: 2
     })
   ],
