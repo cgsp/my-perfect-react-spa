@@ -120,5 +120,14 @@
     "output": "build/",
     "te_prebuild": "node scripts/te-build.js",
     "pe_prebuild": "node scripts/build.js"
+  },
+  "proxy": {
+    "/api": {
+      "target": "http://localhost:8888",
+      "changeOrigin": true,
+      "pathRewrite": {
+        "^/api": ""
+      }
+    }
   }
 }
