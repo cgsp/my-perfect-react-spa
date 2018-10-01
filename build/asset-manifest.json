@@ -1,10 +1,9 @@
 {
-  "app.css": "static/css/app.57a2e63b.css",
-  "app.js": "static/js/app.57a2e63b.js",
-  "common.js": "static/js/common.b2d4dec2.js",
-  "static/js/0.2e04037e.chunk.js": "static/js/0.2e04037e.chunk.js",
-  "static/js/1.1954c7b0.chunk.js": "static/js/1.1954c7b0.chunk.js",
-  "static/js/2.4c728cb0.chunk.js": "static/js/2.4c728cb0.chunk.js",
+  "app.css": "static/css/app.76abf92d.css",
+  "app.js": "static/js/app.76abf92d.js",
+  "static/js/0.671f91a4.chunk.js": "static/js/0.671f91a4.chunk.js",
+  "static/js/1.ce21f622.chunk.js": "static/js/1.ce21f622.chunk.js",
+  "static/js/2.a3cfb3ff.chunk.js": "static/js/2.a3cfb3ff.chunk.js",
   "static/media/loading1.gif": "static/media/loading1.gif",
   "static/media/loading3.gif": "static/media/loading3.gif",
   "static/media/loading4.gif": "static/media/loading4.gif",
@@ -12,5 +11,5 @@
   "static/media/loading6.gif": "static/media/loading6.gif",
   "static/media/loading7.gif": "static/media/loading7.gif",
   "static/media/logo.png": "static/media/logo.png",
-  "vendor.js": "static/js/vendor.c964d4b2.js"
+  "vendor.js": "static/js/vendor.9a59ee44.js"
 }

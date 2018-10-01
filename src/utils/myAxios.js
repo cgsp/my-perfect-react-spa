@@ -2,7 +2,7 @@
  * @Author: John.Guan
  * @Date: 2018-07-24 15:01:37
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-09-21 15:18:05
+ * @Last Modified time: 2018-10-01 10:01:46
  */
 import axios from 'axios'
 import qs from 'qs'
@@ -11,15 +11,22 @@ import { BASEURL } from '@Constants'
 import { mySessionStorageClear } from '@Utils/myStorages'
 import { noLoginCode, noAuthCode } from '@Constants'
 // import { message } from 'antd'
-// import { Toast } from 'antd-mobile'
 
-const DEV = process.env.NODE_ENV !== 'production'
-// console.log(process.env.NODE_ENV)
+const REACT_APP_BUILD_ENV = process.env.REACT_APP_BUILD_ENV
+// console.log(REACT_APP_BUILD_ENV)
 let baseURL
-if (DEV) {
-  baseURL = BASEURL.dev
-} else {
-  baseURL = BASEURL.pro
+switch (REACT_APP_BUILD_ENV) {
+  case 'development':
+    baseURL = BASEURL.dev
+    break
+  case 'production':
+    baseURL = BASEURL.pro
+    break
+  case 'test-production':
+    baseURL = BASEURL.testPro
+    break
+  default:
+    break
 }
 /*
  * 全局baseURL的设置

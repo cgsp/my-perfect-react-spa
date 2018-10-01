@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
+    "te-build": "node scripts/te-build.js",
     "test": "node scripts/test.js --env=jsdom",
     "dev": "npm start"
   },
@@ -117,7 +118,7 @@
   "xpm3": {
     "rep": "xpm",
     "output": "build/",
-    "te_prebuild": "node scripts/build.js",
+    "te_prebuild": "node scripts/te-build.js",
     "pe_prebuild": "node scripts/build.js"
   }
 }
