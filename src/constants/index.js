@@ -10,4 +10,4 @@ const noAuthCode = 377
 
 const ERR_OK = 0
 
-export { BASEURL, ROUTE_BASE, ERR_OK, DOWN_LOAD_URL, UP_IMG_ACTION, SONG_URL, UP_FOCUS_IMG_ACTION, noLoginCode, noAuthCode }
+export { BASEURL, ERR_OK, noLoginCode, noAuthCode }

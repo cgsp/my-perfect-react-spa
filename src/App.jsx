@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 // import { BrowserRouter as Router } from 'react-router-dom'
 import { HashRouter as Router } from 'react-router-dom'
 import { LocaleProvider } from 'antd'
-import { ROUTE_BASE } from '@Constants'
 import zhCN from 'antd/lib/locale-provider/zh_CN'
 import moment from 'moment'
 import 'moment/locale/zh-cn'
@@ -43,9 +42,9 @@ import RootRoutes from './router'
 const DEV = process.env.NODE_ENV !== 'production'
 let basename
 if (DEV) {
-  basename = ROUTE_BASE.dev
+  basename = ''
 } else {
-  basename = ROUTE_BASE.pro
+  basename = ''
 }
 // basename="openapi-content-admin-app"
 
