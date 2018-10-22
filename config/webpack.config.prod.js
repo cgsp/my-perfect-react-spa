@@ -33,7 +33,8 @@ if (env.stringified['process.env'].NODE_ENV !== '"production"') {
 }
 
 // Note: defined here because it will be used more than once.
-const cssFilename = 'static/css/[name].[chunkhash:8].css'
+// const cssFilename = 'static/css/[name].[chunkhash:8].css'
+const cssFilename = 'static/css/[name].[contenthash:8].css'
 
 // ExtractTextPlugin expects the build output to be flat.
 // (See https://github.com/webpack-contrib/extract-text-webpack-plugin/issues/27)
@@ -379,9 +380,12 @@ module.exports = {
     // You can remove this if you don't use Moment.js:
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      filename: 'static/js/[name].[chunkhash:8].js',
+      // name: 'vendor',
+      // filename: 'static/js/[name].[chunkhash:8].js',
+      name: ['vendor', 'manifest'],
+      minChunks: Infinity,
     }),
+    new webpack.HashedModuleIdsPlugin(),
     // 下面这个common，其实更加适合多页应用时候的打包，spa其实用的很少，也起不到什么作用，反而会分散请求
     // new webpack.optimize.CommonsChunkPlugin({
     //   name: 'common',
