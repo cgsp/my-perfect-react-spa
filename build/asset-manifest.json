@@ -1,9 +1,9 @@
 {
-  "app.css": "static/css/app.fd22235b.css",
-  "app.js": "static/js/app.447d0a35.js",
-  "manifest.js": "static/js/manifest.768c8883.js",
-  "static/js/0.c72676ea.chunk.js": "static/js/0.c72676ea.chunk.js",
-  "static/js/1.a0aedfd2.chunk.js": "static/js/1.a0aedfd2.chunk.js",
+  "app.css": "static/css/app.b290630b.css",
+  "app.js": "static/js/app.50f66cca.js",
+  "manifest.js": "static/js/manifest.12e581a4.js",
+  "static/js/0.179dc46f.chunk.js": "static/js/0.179dc46f.chunk.js",
+  "static/js/1.779928ac.chunk.js": "static/js/1.779928ac.chunk.js",
   "static/js/2.62484429.chunk.js": "static/js/2.62484429.chunk.js",
   "static/media/loading1.gif": "static/media/loading1.gif",
   "static/media/loading3.gif": "static/media/loading3.gif",
@@ -12,5 +12,5 @@
   "static/media/loading6.gif": "static/media/loading6.gif",
   "static/media/loading7.gif": "static/media/loading7.gif",
   "static/media/logo.png": "static/media/logo.png",
-  "vendor.js": "static/js/vendor.a842d671.js"
+  "vendor.js": "static/js/vendor.c88cca9d.js"
 }
