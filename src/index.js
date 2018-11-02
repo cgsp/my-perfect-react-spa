@@ -19,7 +19,7 @@ const render = (Component) => {
 
 render(App)
 
-//如果有需要热更新的代码的话
+// 如果有需要热更新的代码的话
 if (module.hot) {
   module.hot.accept('./App', () => {
     const NextApp = require('./App').default

@@ -1,6 +1,6 @@
-import axios from "axios"
-import config from "@Service/axios-config/config"
-import store from "@Store"
+import axios from 'axios'
+import config from '@Service/axios-config/config'
+import store from '@Store'
 import { mySessionStorageClear } from '@Utils/my-storages'
 import { noLoginCode, noAuthCode } from '@Constants'
 import jsDownload from 'js-file-download'
@@ -17,7 +17,7 @@ service.interceptors.request.use(
     // 在发送请求之前做些什么
     // 启动全局的loading
     store.Loading.changeDownPercentLoading(true, 0)
-    return config;
+    return config
   },
   error => {
     // 对请求错误做些什么
@@ -72,21 +72,21 @@ const removeUndefinedAndNullAndEmptyString = (options) => {
 const httpInstance = {
   get(url, params, config) {
     params = removeUndefinedAndNullAndEmptyString(params)
-    return service.get(url, { params, ...config });
+    return service.get(url, { params, ...config })
   },
   post(url, data, config) {
     data = removeUndefinedAndNullAndEmptyString(data)
-    return service.post(url, data, config);
+    return service.post(url, data, config)
   },
   put(url, data, config) {
     data = removeUndefinedAndNullAndEmptyString(data)
-    return service.put(url, data, config);
+    return service.put(url, data, config)
   },
   delete(url, params, config) {
     params = removeUndefinedAndNullAndEmptyString(params)
-    return service.delete(url, { params, ...config });
+    return service.delete(url, { params, ...config })
   }
-};
+}
 
 
 let downIngCallBack = null
@@ -132,7 +132,7 @@ downIngCallBack = (progressEvent) => {
       // 为了一个迟缓的效果
       timer = setTimeout(() => {
         store.Loading.changeDownPercentLoading(false, 100)
-      }, 250);
+      }, 250)
     } else {
       store.Loading.changeDownPercentLoading(true, percentCompleted)
     }
