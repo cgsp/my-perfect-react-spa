@@ -1,5 +1,6 @@
 // 控制时间插件的hoc高阶组件
 import React, { Component } from 'react'
+import moment from 'moment'
 
 export default function TimeControlHoc(Comp) {
   return class extends Component {
@@ -25,6 +26,8 @@ export default function TimeControlHoc(Comp) {
       this.onUpdateBeginDateAndTimeChange = this.onUpdateBeginDateAndTimeChange.bind(this)
       this.onCreateEndDateAndTimeChange = this.onCreateEndDateAndTimeChange.bind(this)
       this.onUpdateEndDateAndTimeChange = this.onUpdateEndDateAndTimeChange.bind(this)
+      this.clearAllTime = this.clearAllTime.bind(this)
+      this.resetTime = this.resetTime.bind(this)
     }
 
     // 控制时间插件的函数
@@ -71,6 +74,37 @@ export default function TimeControlHoc(Comp) {
           disabledSeconds: () => []
         }
       }
+
+      if (!searchCreateTimeBegin) {
+        return {
+          disabledHours: () => [],
+          disabledMinutes: () => [],
+          disabledSeconds: () => []
+        }
+      }
+      if (searchCreateTimeBegin.year() < searchCreateTimeEnd.year()) {
+        return {
+          disabledHours: () => [],
+          disabledMinutes: () => [],
+          disabledSeconds: () => []
+        }
+      }
+      if (searchCreateTimeBegin.year() === searchCreateTimeEnd.year() && searchCreateTimeBegin.month() < searchCreateTimeEnd.month()) {
+        return {
+          disabledHours: () => [],
+          disabledMinutes: () => [],
+          disabledSeconds: () => []
+        }
+      }
+      if (searchCreateTimeBegin.year() === searchCreateTimeEnd.year() && searchCreateTimeBegin.month() === searchCreateTimeEnd.month() && searchCreateTimeBegin.date() < searchCreateTimeEnd.date()) {
+        return {
+          disabledHours: () => [],
+          disabledMinutes: () => [],
+          disabledSeconds: () => []
+        }
+      }
+
+
       const endhour = searchCreateTimeEnd.hour() - 0
       const endminute = searchCreateTimeEnd.minute() - 0
       const endseconds = searchCreateTimeEnd.seconds() - 0
@@ -122,6 +156,36 @@ export default function TimeControlHoc(Comp) {
           disabledSeconds: () => []
         }
       }
+
+      if (!searchUpdateTimeBegin) {
+        return {
+          disabledHours: () => [],
+          disabledMinutes: () => [],
+          disabledSeconds: () => []
+        }
+      }
+      if (searchUpdateTimeEnd.year() > searchUpdateTimeBegin.year()) {
+        return {
+          disabledHours: () => [],
+          disabledMinutes: () => [],
+          disabledSeconds: () => []
+        }
+      }
+      if (searchUpdateTimeEnd.year() === searchUpdateTimeBegin.year() && searchUpdateTimeEnd.month() > searchUpdateTimeBegin.month()) {
+        return {
+          disabledHours: () => [],
+          disabledMinutes: () => [],
+          disabledSeconds: () => []
+        }
+      }
+      if (searchUpdateTimeEnd.year() === searchUpdateTimeBegin.year() && searchUpdateTimeEnd.month() === searchUpdateTimeBegin.month() && searchUpdateTimeEnd.date() > searchUpdateTimeBegin.date()) {
+        return {
+          disabledHours: () => [],
+          disabledMinutes: () => [],
+          disabledSeconds: () => []
+        }
+      }
+
       const endhour = searchUpdateTimeEnd.hour() - 0
       const endminute = searchUpdateTimeEnd.minute() - 0
       const endseconds = searchUpdateTimeEnd.seconds() - 0
@@ -173,6 +237,35 @@ export default function TimeControlHoc(Comp) {
           disabledSeconds: () => []
         }
       }
+      if (!searchCreateTimeEnd) {
+        return {
+          disabledHours: () => [],
+          disabledMinutes: () => [],
+          disabledSeconds: () => []
+        }
+      }
+      if (searchCreateTimeEnd.year() > searchCreateTimeBegin.year()) {
+        return {
+          disabledHours: () => [],
+          disabledMinutes: () => [],
+          disabledSeconds: () => []
+        }
+      }
+      if (searchCreateTimeEnd.year() === searchCreateTimeBegin.year() && searchCreateTimeEnd.month() > searchCreateTimeBegin.month()) {
+        return {
+          disabledHours: () => [],
+          disabledMinutes: () => [],
+          disabledSeconds: () => []
+        }
+      }
+      if (searchCreateTimeEnd.year() === searchCreateTimeBegin.year() && searchCreateTimeEnd.month() === searchCreateTimeBegin.month() && searchCreateTimeEnd.date() > searchCreateTimeBegin.date()) {
+        return {
+          disabledHours: () => [],
+          disabledMinutes: () => [],
+          disabledSeconds: () => []
+        }
+      }
+
       const endhour = searchCreateTimeEnd ? searchCreateTimeEnd.hour() - 0 : 0
       const endminute = searchCreateTimeEnd ? searchCreateTimeEnd.minute() - 0 : 0
       // const endseconds = searchCreateTimeEnd ? searchCreateTimeEnd.seconds() - 0 : 0
@@ -224,6 +317,37 @@ export default function TimeControlHoc(Comp) {
           disabledSeconds: () => []
         }
       }
+      if (!searchUpdateTimeEnd) {
+        return {
+          disabledHours: () => [],
+          disabledMinutes: () => [],
+          disabledSeconds: () => []
+        }
+      }
+      if (searchUpdateTimeEnd.year() > searchUpdateTimeBegin.year()) {
+        return {
+          disabledHours: () => [],
+          disabledMinutes: () => [],
+          disabledSeconds: () => []
+        }
+      }
+      if (searchUpdateTimeEnd.year() === searchUpdateTimeBegin.year() && searchUpdateTimeEnd.month() > searchUpdateTimeBegin.month()) {
+        return {
+          disabledHours: () => [],
+          disabledMinutes: () => [],
+          disabledSeconds: () => []
+        }
+      }
+      if (searchUpdateTimeEnd.year() === searchUpdateTimeBegin.year() && searchUpdateTimeEnd.month() === searchUpdateTimeBegin.month() && searchUpdateTimeEnd.date() > searchUpdateTimeBegin.date()) {
+        return {
+          disabledHours: () => [],
+          disabledMinutes: () => [],
+          disabledSeconds: () => []
+        }
+      }
+      // console.log(typeof searchUpdateTimeBegin.year())
+      // console.log(typeof searchUpdateTimeBegin.month())
+      // console.log(typeof searchUpdateTimeBegin.date())
       const endhour = searchUpdateTimeEnd ? searchUpdateTimeEnd.hour() - 0 : 0
       const endminute = searchUpdateTimeEnd ? searchUpdateTimeEnd.minute() - 0 : 0
       // const endseconds = searchUpdateTimeEnd ? searchUpdateTimeEnd.seconds() - 0 : 0
@@ -289,6 +413,22 @@ export default function TimeControlHoc(Comp) {
       this.onDateAndTimeChange('searchUpdateTimeEnd', value)
     }
 
+    // 清空所有的时间
+    clearAllTime = () => {
+      this.setState({
+        searchCreateTimeBegin: null,
+        searchCreateTimeEnd: null,
+        searchUpdateTimeBegin: null,
+        searchUpdateTimeEnd: null
+      })
+    }
+
+    resetTime = (key, timeStamp) => {
+      this.setState({
+        [key]: moment(timeStamp)
+      })
+    }
+
     render() {
       return (
         <Comp
@@ -307,6 +447,8 @@ export default function TimeControlHoc(Comp) {
           onUpdateBeginDateAndTimeChange={this.onUpdateBeginDateAndTimeChange}
           onCreateEndDateAndTimeChange={this.onCreateEndDateAndTimeChange}
           onUpdateEndDateAndTimeChange={this.onUpdateEndDateAndTimeChange}
+          clearAllTime={this.clearAllTime}
+          resetTime={this.resetTime}
         />
       )
     }
