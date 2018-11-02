@@ -19,7 +19,7 @@ const render = (Component) => {
 
 render(App)
 
-// 如果有需要热更新的代码的话
+//如果有需要热更新的代码的话
 if (module.hot) {
   module.hot.accept('./App', () => {
     const NextApp = require('./App').default
@@ -30,4 +30,6 @@ if (module.hot) {
 registerServiceWorker()
 
 console.log(process.env.NODE_ENV)
+// 用下面这个变量作为环境变量
+// 分别是development,test-production,production
 console.log(process.env.REACT_APP_BUILD_ENV)

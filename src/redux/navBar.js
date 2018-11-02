@@ -62,48 +62,4 @@ export function getNavBarData(callBack) {
   }
 }
 
-// export function getNavBarData(callBack) {
-//   return (dispatch) => {
-//     // 发送请求
-//     apiGetNavList()
-//       .then((res) => {
-//         if (res.code !== ERR_OK && res.code !== noAuthCode) {
-//           message.error(res.message)
-//           return
-//         }
-//         let menuTree = [{
-//           name: '首页',
-//           routePath: 'index',
-//           icon: 'home'
-//         }]
-
-//         // 如果正常
-//         if (res.code === ERR_OK) {
-//           // console.log(JSON.parse(res.data))
-//           let resNav
-//           if (JSON.parse(res.data).menuTree) {
-//             resNav = JSON.parse(JSON.parse(res.data).menuTree).childResources
-//           }
-//           else {
-//             resNav = undefined
-//           }
-//           menuTree = menuTree.concat(resNav || [])
-
-//           if (JSON.parse(res.data).functionList) {
-//             buttonList = JSON.parse(res.data).functionList
-//           }
-//           else {
-//             buttonList = undefined
-//           }
-
-//         }
-//         dispatch(getSuccess(menuTree, handleAppButtons(buttonList)))
-//         mySessionStorageSet('app-nav-list', menuTree)
-//         mySessionStorageSet('app-route-list', screenRoutesList(menuTree))
-//         mySessionStorageSet('app-button-list', handleAppButtons(buttonList))
-//         callBack && callBack(res)
-//       })
-//   }
-// }
-
 
