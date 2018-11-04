@@ -3,7 +3,7 @@ import qs from 'qs'
 import { config, headers, responseType } from './config'
 import Store from '@Store'
 import { mySessionStorageClear } from '@Utils/my-storages'
-import { noLoginCode, noAuthCode } from '@Constants'
+import { NO_LOGIN_CODE, NO_AUTH_CODE } from '@Constants'
 
 
 let defaultConfig = config
@@ -37,13 +37,13 @@ Service.interceptors.response.use((response) => {
     Store.AppLoading.changeAppLoading(false)
   }
 
-  if (response && response.data && response.data.code === noLoginCode) {
+  if (response && response.data && response.data.code === NO_LOGIN_CODE) {
     // const str = JSON.stringify(response.data)
     // alert('后端给前端399了,具体信息是-------' + str)
     mySessionStorageClear()
     window.location = response.data.data
   }
-  else if (response && response.data && response.data.code === noAuthCode) {
+  else if (response && response.data && response.data.code === NO_AUTH_CODE) {
     // const str = JSON.stringify(response.data)
     // alert('后端给前端377了,具体信息是-------' + str)
     mySessionStorageClear()

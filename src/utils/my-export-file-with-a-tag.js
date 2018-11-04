@@ -1,5 +1,5 @@
 import { message } from 'antd'
-import { BASEAPIURL } from '@Constants'
+import { BASE_API_URL } from '@Constants'
 
 export const myExportFile = (url, paramsObj) => {
   if (!url) {
@@ -11,13 +11,13 @@ export const myExportFile = (url, paramsObj) => {
   let base_down_load_api_url = ''
   switch (process.env.REACT_APP_BUILD_ENV) {
     case 'development':
-      base_down_load_api_url = BASEAPIURL.dev
+      base_down_load_api_url = BASE_API_URL.dev
       break
     case 'test-production':
-      base_down_load_api_url = BASEAPIURL.test
+      base_down_load_api_url = BASE_API_URL.test
       break
     case 'production':
-      base_down_load_api_url = BASEAPIURL.pro
+      base_down_load_api_url = BASE_API_URL.pro
       break
     default:
       break
@@ -41,6 +41,6 @@ export const myExportFile = (url, paramsObj) => {
   document.body.appendChild(a)
   a.setAttribute('style', 'display:none')
   a.setAttribute('href', str)
-  a.setAttribute('download', '列表')
+  a.setAttribute('download', '导出文件')
   a.click()
 }
