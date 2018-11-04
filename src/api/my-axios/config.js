@@ -6,7 +6,7 @@ let base_api_url = ''
 let headers = {
   'Content-Type': 'application/json;charset=UTF-8',
 }
-let responseType = 'text'
+const responseType = 'text'
 switch (process.env.REACT_APP_BUILD_ENV) {
   case 'development':
     base_api_url = BASEAPIURL.dev
