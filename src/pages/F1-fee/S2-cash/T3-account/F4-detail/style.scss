@@ -1,0 +1,59 @@
+.cashDetail-check-container{
+  background-color: #fff;
+  .cashDetail-title{
+
+    margin: 25px 0px 10px 0px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  .cashDetail-basic-info{
+    background-color: #fff;
+
+
+
+    .title1{
+      border: solid 1px rgb(202, 201, 202);
+      background-color: rgb(238,240,243);
+      color: #000000;
+      line-height: 50px;
+      padding-left: 15px;
+    }
+    .cashDetail-form{
+      padding: 20px 0;
+      .second-title{
+        .cashDetail-form-mark{
+          display: inline-block;
+          background: rgb(89, 138, 234);
+          width:5px;
+          height:20px;
+          float: left;
+          margin-right: 10px;
+        }
+      }
+    }
+    .search_show{
+      padding-left: 30px;
+    }
+    .table{
+      //margin-left: -20px;
+    }
+
+  }
+  .colum1{
+    margin-top: 20px;
+    border-bottom: 0px solid rgb(202, 201, 202);
+    .title1{
+      .title1-value{
+        color: cornflowerblue;
+        margin-right: 100px;
+      }
+    }
+  }
+  .colum3{
+    margin-top: 20px;
+  }
+  .cashDetail-button{
+    margin: 25px 50px;
+    text-align: center;
+  }
+}

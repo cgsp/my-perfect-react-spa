@@ -1,37 +1,31 @@
 {
   "extends": "react-app",
   "rules": {
-    "quotes": [
-      "error",
-      "single",
-      {
-        "allowTemplateLiterals": true
-      }
+    "react/self-closing-comp": [
+      "error"
     ],
-    "semi": [
-      "error",
-      "never"
-    ],
-    "spaced-comment": [
-      "error",
-      "always",
-      {
-        "block": {
-          "exceptions": [
-            "-+"
-          ]
-        }
-      }
+    "react/jsx-no-bind": 0,
+    "react/jsx-pascal-case": [
+      "error"
     ],
     "import/first": 0,
     "react/jsx-boolean-value": 0,
     "react/no-string-refs": 0,
     "react/jsx-closing-bracket-location": 0,
-    "no-mixed-operators": 0,
-    "no-useless-escape": 0,
+    "no-mixed-operators": [
+      "error"
+    ],
+    "no-useless-escape": [
+      "error"
+    ],
     "no-fallthrough": [
       "error"
     ],
+    "spaced-comment": [
+      "error"
+    ],
+    "quotes": 0,
+    "semi": 0,
     "no-restricted-globals": 0,
     "no-unused-vars": [
       "error"

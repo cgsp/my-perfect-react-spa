@@ -9,38 +9,25 @@ import img4 from './loading4.gif'
 import img5 from './loading5.gif'
 import img6 from './loading6.gif'
 import img7 from './loading7.gif'
+import img8 from './loading8.gif'
+import img9 from './loading9.gif'
 
 export default class MaskLoading extends Component {
   static propTypes = {
-    msg: PropTypes.string
+    msg: PropTypes.string,
   }
 
   static defaultProps = {
-    msg: ''
+    msg: '',
   }
 
-  constructor() {
-    super()
-    this.state = {
-      visible: false,
-      num: 0
-    }
-  }
-
-  show() {
+  constructor(props) {
+    super(props)
     let num = 0
-    num = Math.floor(Math.random() * 8)
-    console.log(num)
-    this.setState({
-      visible: true,
+    num = Math.floor(Math.random() * 10)
+    this.state = {
       num
-    })
-  }
-
-  hide() {
-    this.setState({
-      visible: false
-    })
+    }
   }
 
   render() {
@@ -71,8 +58,14 @@ export default class MaskLoading extends Component {
       case 7:
         imgsrc = img7
         break
+      case 8:
+        imgsrc = img8
+        break
+      case 9:
+        imgsrc = img9
+        break
       default:
-        imgsrc = img7
+        imgsrc = img8
         break
     }
     const content = (
@@ -92,6 +85,6 @@ export default class MaskLoading extends Component {
       </div>
 
     )
-    return (this.state.visible ? content : null)
+    return content
   }
 }

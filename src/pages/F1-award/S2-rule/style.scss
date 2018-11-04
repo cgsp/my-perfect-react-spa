@@ -1,0 +1,91 @@
+.award-rule {
+  background: #fff;
+  &>p {
+    font-size: 20px;
+  }
+  .detail-box {
+    width: 80%;
+    max-width: 1000px;
+    margin: 0 auto;
+    .awards {
+      border: 1px solid #ddd;
+      margin-bottom: 30px;
+      &>.title {
+        display: flex;
+        background: #eee;
+        padding: 0 20px;
+        justify-content: space-between;
+        align-items: center;
+        height: 50px;
+        .up-status {
+          color: green;
+        }
+        .down-status {
+          color: #aaaaaa;
+        }
+        .type {
+          font-size: 20px;
+        }
+        .up-down {
+          display: inline-block;
+          padding: 10px;
+          margin-right: 12px;
+          cursor: pointer;
+          &:last-child {
+            margin-right: 0;
+          }
+          &.up {
+            color: red;
+          }
+          &.down {
+            color: #1585ff;
+          }
+        }
+      }
+      .num-title {
+        height: 30px;
+        line-height: 30px;
+      }
+      .policy-title {
+        position: relative;
+        top: 3px;
+      }
+      .content {
+        padding: 20px 0 10px;
+        li {
+          display: flex;
+          margin-bottom: 10px;
+          .title {
+            width: 130px;
+            text-align: right;
+          }
+          .detail {
+            flex: 1;
+            padding: 0 10px;
+            .num-big-0 {
+              padding-right: 20px;
+              cursor: pointer;
+              color: #1585ff;
+              display: inline-block;
+              line-height: 30px;
+            }
+            .num-small-0 {
+              padding-right: 20px;
+              cursor: pointer;
+              color: #aaaaaa;
+              display: inline-block;
+              line-height: 30px;
+            }
+          }
+          .num {
+            height: 30px;
+          }
+          .policy {
+            line-height: 20px;
+            letter-spacing: 1px;
+          }
+        }
+      }
+    }
+  }
+}

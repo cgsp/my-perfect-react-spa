@@ -1,0 +1,55 @@
+.RechargeDetail-check-container-audit{
+  background-color: #fff;
+  .progress{
+    margin: 30px 50px 30px 50px;
+    width:80%;
+  }
+  .RechargeDetail-title{
+
+    margin: 25px 0px 25px 0px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  .RechargeDetail-basic-info{
+    background-color: #fff;
+    .apply-content{
+      border:solid 1px rgb(202, 201, 202);
+      margin: 0px 40px 40px 40px;
+      .title1{
+        border-bottom: solid 1px rgb(202, 201, 202);
+        background-color: rgb(238,240,243);
+        color: #000000;
+        line-height: 50px;
+        padding-left: 15px;
+      }
+      .recharge-table{
+        .ant-table-thead > tr > th{
+          background-color: #fff;
+        }
+      }
+    }
+
+  }
+
+ .recharge-button{
+    margin: 25px 50px;
+    text-align: center;
+  }
+  .colum1{
+    margin-top: 20px;
+    border-bottom: 0px solid rgb(202, 201, 202);
+    .title1{
+      .title1-value{
+        color: cornflowerblue;
+        margin-right: 100px;
+      }
+    }
+  }
+  .colum3{
+    margin-top: 20px;
+  }
+  .RechargeDetail-button{
+    margin: 25px 50px;
+    text-align: center;
+  }
+}

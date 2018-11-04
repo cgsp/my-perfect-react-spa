@@ -90,23 +90,9 @@ video {
 
 /* HTML5 display-role reset for older browsers */
 
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-menu,
-nav,
-section {
-  display: block;
-}
-
-body {
-  line-height: 1;
-}
+// body {
+//   line-height: 1 !important;
+// }
 
 ol,
 ul {
@@ -132,7 +118,7 @@ table {
 }
 
 a {
-  text-decoration: none;
+  text-decoration: none !important;
 }
 
 .ant-input {
@@ -163,4 +149,16 @@ a {
   lable {
     font-size: 1.2rem !important;
   }
+}
+
+:focus {
+  outline: none;
+}
+
+i {
+  font-style: normal;
+}
+
+tr {
+  font-size: 1.3rem !important;
 }

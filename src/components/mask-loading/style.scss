@@ -5,15 +5,15 @@
   bottom: 0;
   right: 0;
   z-index: 1000000;
-  background-color: rgba(0, 0, 0, 0.5);
-  .loading{
+  background-color: rgba(0, 0, 0, 0.9);
+  .loading {
     position: absolute;
     width: 100%;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
-    .desc{
+    .desc {
       margin-top: 10px;
       color: #000;
     }

@@ -2,38 +2,93 @@
   width: 100%;
   height: 100%;
   color: #fff;
-  .main-nav {
-    max-width: 100%;
-    height: 100%;
-    margin: 0 auto;
-    padding-right: 40px;
-    h1 {
+  background-color: #4c9edf;
+  .left {
+    color: #fff;
+    float: left;
+    margin-bottom: 0;
+    width: 170px;
+    height: 64px;
+    text-align: center;
+    background-color: #428ec1;
+    span {
       color: #fff;
-      float: left;
-      margin-bottom: 0;
-      background-color: #428ec1;
-      width: 200px;
-      text-align: center;
-      font-size: 16px !important;
+      font-size: 18px;
       letter-spacing: 2px;
     }
   }
-  .user-panel {
+  .first-menu {
+    line-height: 64px;
     height: 64px;
-    float: right;
-    .fullscreen {
-      height: 30px;
-      width: 30px;
-      font-size: 30px;
-      margin-top: 18px;
+    box-sizing: border-box;
+    float: left;
+    background-color: #4c9edf;
+    .ant-menu-item {
+      top: 0;
+      border-bottom: none;
+    }
+    .item {
+      &:before {
+        bottom: 0;
+      }
       color: #fff;
-      line-height: 30px;
-      text-align: center;
-      img {
-        display: block;
-        width: 100%;
-        height: 100%;
+      font-size: 16px !important;
+      padding-top: 0px;
+      box-sizing: border-box;
+    }
+    .ant-menu-item-selected {
+      background-color: #243A63;
+      top: -1px !important;
+      .item {
+        color: #fff;
+      }
+    }
+  }
+  .ant-menu-horizontal>.ant-menu-item:hover,
+  .ant-menu-horizontal>.ant-menu-submenu:hover,
+  .ant-menu-horizontal>.ant-menu-item-active,
+  .ant-menu-horizontal>.ant-menu-submenu-active,
+  .ant-menu-horizontal>.ant-menu-item-open,
+  .ant-menu-horizontal>.ant-menu-submenu-open,
+  .ant-menu-horizontal>.ant-menu-item-selected,
+  .ant-menu-horizontal>.ant-menu-submenu-selected {
+    border-bottom: none;
+  }
+  .ant-menu-horizontal>.ant-menu-item>a:hover {
+    color: #fff !important;
+  }
+  .ant-menu-horizontal {
+    border-bottom: none;
+  }
+  .user-panel {
+    &>a {
+      margin-left: 20px;
+    }
+    float: right;
+    margin-right: 20px;
+    .right-handdle {
+      .account-name {
+        float: left;
+        position: relative;
+        top: -1px;
+      }
+      .account-logout {
+        color: #fff;
+        margin-left: 30px;
+        float: left;
         cursor: pointer;
+      }
+      .fullscreen {
+        cursor: pointer;
+        margin-left: 30px;
+        width: 30px;
+        height: 64px;
+        float: left;
+        img {
+          width: 25px;
+          height: 25px;
+          margin-bottom: 5px;
+        }
       }
     }
   }

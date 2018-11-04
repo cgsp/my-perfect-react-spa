@@ -1,12 +1,16 @@
-#root {
-  height: 100%;
-  width: 100%;
-  .ant-layout-header {
-    background-color: #56a8dc;
-    padding: 0;
-    
+.app-layout {
+  .app-nav {
+    margin-bottom: 0px;
+    padding-bottom: 15px;
   }
-  .ant-layout-sider-children{
-    background-color:#393e4a;
+  .app-content {
+    margin: 5px 0 5px 5px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color: #fff;
+    padding: 15px;
+    position: relative;
+    left: 0;
+    top: 0;
   }
 }

@@ -1,0 +1,59 @@
+.withdraw-check-container{
+  background-color: #fff;
+  .withdraw-title{
+
+    margin: 25px 0px 10px 0px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  .withdraw-basic-info{
+    background-color: #fff;
+    .withdraw-form{
+      padding: 20px 0;
+      .second-title{
+        .withdraw-form-mark{
+          display: inline-block;
+          background: blue;
+          width:5px;
+          height:20px;
+          float: left;
+          margin-right: 10px;
+        }
+      }
+    }
+    .apply-content{
+      border:solid 1px rgb(202, 201, 202);
+      margin: 0px 40px 40px 40px;
+      .title1{
+        border-bottom: solid 1px rgb(202, 201, 202);
+        background-color: rgb(238,240,243);
+        color: #000000;
+        line-height: 50px;
+        padding-left: 15px;
+      }
+      .widthdraw-table{
+        .ant-table-thead > tr > th{
+          background-color: #fff;
+        }
+      }
+    }
+
+  }
+  .colum1{
+    margin-top: 20px;
+    border-bottom: 0px solid rgb(202, 201, 202);
+    .title1{
+      .title1-value{
+        color: cornflowerblue;
+        margin-right: 100px;
+      }
+    }
+  }
+  .colum3{
+    margin-top: 20px;
+  }
+  .withdraw-button{
+    margin: 25px 50px;
+    text-align: center;
+  }
+}

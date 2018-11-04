@@ -61,20 +61,16 @@ module.exports = {
     vendor: [
       'antd',
       'axios',
-      'fetch-jsonp',
-      'good-storage',
       'js-cookie',
+      'good-storage',
+      'mobx',
+      'mobx-react',
       'moment',
       'qs',
       'querystring',
       'react',
       'react-dom',
-      'react-router',
       'react-router-dom',
-      'react-redux',
-      'redux-thunk',
-      'react-beautiful-dnd',
-      'styled-components'
     ],
     app: [
       require.resolve('./polyfills'),
@@ -125,13 +121,14 @@ module.exports = {
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
       'react-native': 'react-native-web',
-      '@Utils': path.join(__dirname, '..', 'src/utils'),
-      '@Constants': path.join(__dirname, '..', 'src/constants'),
-      '@Api': path.join(__dirname, '..', 'src/api'),
-      '@Pages': path.join(__dirname, '..', 'src/pages'),
-      '@Components': path.join(__dirname, '..', 'src/components'),
-      '@Redux': path.join(__dirname, '..', 'src/redux'),
       '@Assets': path.join(__dirname, '..', 'src/assets'),
+      '@Components': path.join(__dirname, '..', 'src/components'),
+      '@Constants': path.join(__dirname, '..', 'src/constants'),
+      '@Pages': path.join(__dirname, '..', 'src/pages'),
+      '@Router': path.join(__dirname, '..', 'src/router'),
+      '@Service': path.join(__dirname, '..', 'src/service'),
+      '@Store': path.join(__dirname, '..', 'src/store'),
+      '@Utils': path.join(__dirname, '..', 'src/utils'),
     },
     plugins: [
       // Prevents users from importing files from outside of src/ (or node_modules/).
@@ -315,7 +312,7 @@ module.exports = {
       compress: {
         warnings: false,
         drop_debugger: true,  // 去除debugger
-        drop_console: true,   // 去除console
+        // drop_console: true,   // 去除console
         // Disabled because of an issue with Uglify breaking seemingly valid code:
         // https://github.com/facebookincubator/create-react-app/issues/2376
         // Pending further investigation:
