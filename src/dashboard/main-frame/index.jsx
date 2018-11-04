@@ -3,7 +3,7 @@ import { inject, observer } from 'mobx-react'
 import HeadNav from '../head-nav'
 import SiderMenu from '../side-menu'
 import MaskLoading from '@Components/mask-loading'
-import DownPercent from '@Components/down-percent'
+import DownPercent from '@Components/down-percent-process-bar'
 import { Layout } from 'antd'
 import './style'
 const { Header, Sider, Content } = Layout
