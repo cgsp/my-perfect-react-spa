@@ -3,18 +3,18 @@ import { inject, observer } from 'mobx-react'
 import HeadNav from '../head-nav'
 import SiderMenu from '../side-menu'
 import MaskLoading from '@Components/mask-loading'
-import DownPercent from '@Components/down-percent-process-bar'
+import DownPercentProcessBar from '@Components/down-percent-process-bar'
 import { Layout } from 'antd'
 import './style'
 const { Header, Sider, Content } = Layout
 
-@inject('Loading')
+@inject('AppLoadingStore')
 @observer
 export default class MainFrame extends Component {
   render() {
     // 路由插座
     const { children } = this.props
-    let { loading, downPercentLoading, downPercentLoadingPercent } = this.props.Loading
+    let { appLoading, appDownPercentLoading, appDownPercentLoadingPercent } = this.props.AppLoadingStore
     return (
       <Layout className="app-layout">
         <Header className="app-header">
@@ -27,11 +27,11 @@ export default class MainFrame extends Component {
           <Content className="app-content">
             {/* 全局的loading */}
             {
-              loading ? <MaskLoading /> : null
+              appLoading ? <MaskLoading /> : null
             }
             {/* 全局的下载loading进度条 */}
             {
-              downPercentLoading ? <DownPercent percent={downPercentLoadingPercent} /> : null
+              appDownPercentLoading ? <DownPercentProcessBar percent={appDownPercentLoadingPercent} /> : null
             }
             {children}
           </Content>

@@ -3,7 +3,7 @@ import { Progress } from 'antd'
 import { PropTypes } from 'prop-types'
 import './style'
 
-export default class DownPercent extends Component {
+export default class DownPercentProcessBar extends Component {
   static propTypes = {
     percent: PropTypes.number,
     msg: PropTypes.string,

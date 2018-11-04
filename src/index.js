@@ -1,11 +1,11 @@
 // 兼容性处理，兼容低版本浏览器
 import 'babel-polyfill'
 import 'raf/polyfill'
-import React from "react";
-import ReactDOM from "react-dom";
+import React from 'react'
+import ReactDOM from 'react-dom'
 import { AppContainer } from 'react-hot-loader'
-import App from "./App";
-import registerServiceWorker from "./registerServiceWorker";
+import App from './App'
+import registerServiceWorker from './registerServiceWorker'
 
 const root = document.getElementById('root')
 const render = (Component) => {
@@ -29,7 +29,6 @@ if (module.hot) {
 
 registerServiceWorker()
 
-// console.log(process.env.NODE_ENV)
 // 用下面这个变量作为环境变量
 // 分别是development,test-production,production
 console.log(process.env.REACT_APP_BUILD_ENV)

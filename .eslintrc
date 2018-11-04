@@ -24,8 +24,17 @@
     "spaced-comment": [
       "error"
     ],
-    "quotes": 0,
-    "semi": 0,
+    "quotes": [
+      "error",
+      "single",
+      {
+        "allowTemplateLiterals": true
+      }
+    ],
+    "semi": [
+      "error",
+      "never"
+    ],
     "no-restricted-globals": 0,
     "no-unused-vars": [
       "error"
