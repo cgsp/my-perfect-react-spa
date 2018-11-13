@@ -5,6 +5,10 @@ process.env.BABEL_ENV = 'development';
 process.env.NODE_ENV = 'development';
 // 所有自定义环境变量均以REACT_APP_开头
 process.env.REACT_APP_BUILD_ENV = 'development';
+// 配置静态资源url,最终影响output下的publicPath(开发环境不需要配置).--这个东西相当于homepage，PUBLIC_URL||homepage--有了这个东西，就会覆盖homepage
+process.env.PUBLIC_URL = '';
+// 允许通过代理host访问
+process.env.DANGEROUSLY_DISABLE_HOST_CHECK = true;
 
 // Makes the script crash on unhandled rejections instead of silently
 // ignoring them. In the future, promise rejections that are not handled will
@@ -94,8 +98,8 @@ choosePort(HOST, DEFAULT_PORT)
       openBrowser(urls.localUrlForBrowser);
     });
 
-    ['SIGINT', 'SIGTERM'].forEach(function(sig) {
-      process.on(sig, function() {
+    ['SIGINT', 'SIGTERM'].forEach(function (sig) {
+      process.on(sig, function () {
         devServer.close();
         process.exit();
       });
