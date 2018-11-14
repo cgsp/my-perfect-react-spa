@@ -5,12 +5,15 @@ class SonSon extends Component {
   // 子组件必须这么声明，不然获取的this.context是个空对象
   static contextTypes = {
     topA: PropTypes.string,
+    sonA: PropTypes.string,
     topMethodA: PropTypes.func
   }
 
   render() {
-    const { topA, topMethodA } = this.context
+    console.error(this.context)
+    const { topA, topMethodA, sonA } = this.context
     console.log('孙子组件打印topA:', topA)
+    console.log('孙子组件打印sonA:', sonA)
     console.log('孙子组件打印topMethodA:', topMethodA())
     return (
       <div className="son-son">

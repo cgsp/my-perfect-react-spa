@@ -10,6 +10,17 @@ class Son extends Component {
     topMethodA: PropTypes.func
   }
 
+  static childContextTypes = {
+    sonA: PropTypes.string
+  }
+
+  getChildContext() {
+    return {
+      sonA: 'sonA'
+    }
+  }
+
+
   render() {
     const { topA, topMethodA } = this.context
     console.log('儿子组件打印topA:', topA)
