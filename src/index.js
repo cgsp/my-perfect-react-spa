@@ -7,7 +7,7 @@ import { AppContainer } from 'react-hot-loader'
 import App from './App'
 import registerServiceWorker from './registerServiceWorker'
 // import fastclick from 'fastclick'
-import vConsole from 'vconsole'
+// import vConsole from 'vconsole'
 
 // 手机端fastclick事件注册
 // if ('addEventListener' in document) {
@@ -17,9 +17,9 @@ import vConsole from 'vconsole'
 // }
 
 // 本地开发环境，vConsole注册
-if (process.env.REACT_APP_BUILD_ENV === 'development') {
-  new vConsole()
-}
+// if (process.env.REACT_APP_BUILD_ENV === 'development') {
+//   new vConsole()
+// }
 
 const root = document.getElementById('root')
 const render = (Component) => {

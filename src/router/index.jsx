@@ -9,6 +9,11 @@ import { Route, withRouter, Switch, Redirect } from 'react-router-dom'
 import Index from '@Pages/index'
 
 /**
+ *  测试
+ */
+import Test from '@Pages/test'
+
+/**
  *  404模块
  */
 import NoMatch404 from '@Pages/no-match-404'
@@ -26,6 +31,12 @@ export default class Routes extends Component {
       {
         path: '/index',
         component: Index,
+        show: true
+      },
+      // 测试模块
+      {
+        path: '/test',
+        component: Test,
         show: true
       },
       // 404模块
