@@ -68,9 +68,7 @@
     "no-unused-labels": [
       "error"
     ],
-    "no-unused-expressions": [
-      "error"
-    ],
+    "no-unused-expressions": 0,
     "jsx-a11y/alt-text": 0,
     "react/jsx-space-before-closing": 0
   }
