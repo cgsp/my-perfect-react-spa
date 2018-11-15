@@ -1,7 +1,10 @@
 {
-  "app.css": "static/css/app.b94a23b5.css",
-  "app.js": "static/js/app.6d1a73d9.js",
-  "manifest.js": "static/js/manifest.b25ee0a2.js",
+  "app.css": "static/css/app.943dd001.css",
+  "app.js": "static/js/app.c7514b50.js",
+  "manifest.js": "static/js/manifest.afa0bf8e.js",
+  "static/js/0.a47266fb.chunk.js": "static/js/0.a47266fb.chunk.js",
+  "static/js/1.4e2012a0.chunk.js": "static/js/1.4e2012a0.chunk.js",
+  "static/js/2.dc497ce3.chunk.js": "static/js/2.dc497ce3.chunk.js",
   "static/media/loading1.gif": "static/media/loading1.gif",
   "static/media/loading3.gif": "static/media/loading3.gif",
   "static/media/loading4.gif": "static/media/loading4.gif",
@@ -10,5 +13,5 @@
   "static/media/loading7.gif": "static/media/loading7.gif",
   "static/media/loading8.gif": "static/media/loading8.gif",
   "static/media/loading9.gif": "static/media/loading9.gif",
-  "vendor.js": "static/js/vendor.208cebb8.js"
+  "vendor.js": "static/js/vendor.8d960838.js"
 }

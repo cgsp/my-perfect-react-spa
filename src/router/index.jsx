@@ -2,21 +2,15 @@ import React, { Component } from 'react'
 import MainFrame from '../dashboard/main-frame'
 import { Route, withRouter, Switch, Redirect } from 'react-router-dom'
 // import { inject, observer } from 'mobx-react'
-
-/**
- *  首页
- */
-import Index from '@Pages/index'
-
-/**
- *  测试
- */
-import Test from '@Pages/test'
+import { asyncComponent } from './asyncComponent'
 
 /**
  *  404模块
  */
-import NoMatch404 from '@Pages/no-match-404'
+// 直接引入模块
+// import NoMatch404 from '@Pages/no-match-404'
+// 懒加载引入模块
+const NoMatch404 = asyncComponent(() => import('@Pages/no-match-404'))
 
 
 @withRouter
@@ -30,13 +24,13 @@ export default class Routes extends Component {
       // 首页模块
       {
         path: '/index',
-        component: Index,
+        component: asyncComponent(() => import('@Pages/index')),
         show: true
       },
       // 测试模块
       {
         path: '/test',
-        component: Test,
+        component: asyncComponent(() => import('@Pages/test')),
         show: true
       },
       // 404模块
