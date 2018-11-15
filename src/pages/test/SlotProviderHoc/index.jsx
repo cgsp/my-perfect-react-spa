@@ -10,7 +10,7 @@ export default function SlotProviderHoc(Comp) {
     static displayName = `SlotProvider(${getDisplayName(Comp)})`
 
     static childContextTypes = {
-      requestAddOnRenderer: PropTypes.func
+      addOnRenderers: PropTypes.object,
     }
 
     constructor(props) {
@@ -20,16 +20,8 @@ export default function SlotProviderHoc(Comp) {
     }
 
     getChildContext() {
-      const requestAddOnRenderer = (name) => {
-        if (!this.addOnRenderers[name]) {
-          return undefined
-        }
-        return () => {
-          this.addOnRenderers[name]
-        }
-      }
       return {
-        requestAddOnRenderer
+        addOnRenderers: this.addOnRenderers
       }
     }
 
@@ -40,6 +32,7 @@ export default function SlotProviderHoc(Comp) {
         const arr = React.Children.toArray(children)
         const nameChecked = []
         this.addOnRenderers = {}
+        console.log(arr)
         arr.forEach(item => {
           const itemType = item.type
           if (itemType.displayName === 'AddOn') {
@@ -52,10 +45,10 @@ export default function SlotProviderHoc(Comp) {
             nameChecked.push(slotName)
           }
         })
-        return (
-          <Comp {...restProps} />
-        )
       }
+      return (
+        <Comp {...restProps} />
+      )
     }
   }
 }
