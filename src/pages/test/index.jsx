@@ -1,13 +1,16 @@
 import React, { Component } from 'react'
-import AppLayout from './AppLayout'
-import AddOn from './AddOn'
+import { Provider, AddOn } from '@Components/slot-provider'
+import { myGetLocationSearchObj } from '@Utils'
 
 export default class Test extends Component {
-  state = {};
+  constructor(props) {
+    super(props)
+    console.log(myGetLocationSearchObj())
+  }
 
   render() {
     return (
-      <AppLayout>
+      <Provider>
         <AddOn slot="header">
           <h1 style={{ color: 'red' }}>这里可能是一个页面标题</h1>
         </AddOn>
@@ -18,7 +21,7 @@ export default class Test extends Component {
         <AddOn slot="footer">
           <p>这里有一些联系信息</p>
         </AddOn>
-      </AppLayout >
+      </Provider >
     )
   }
 }

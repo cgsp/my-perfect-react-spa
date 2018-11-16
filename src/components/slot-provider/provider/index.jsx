@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
-import SlotProviderHoc from '../SlotProviderHoc'
-import Slot from '../Slot'
+import ProviderHoc from '../provider-hoc'
+import Slot from '../slot'
 
-@SlotProviderHoc
-class AppLayout extends Component {
-  static displayName = 'AppLayout'
+@ProviderHoc
+class Provider extends Component {
+  static displayName = 'Provider'
   render() {
     return (
-      <div className="app-lay-out">
+      <div className="provider-container">
         <header>
           <Slot name="header" />
         </header>
@@ -22,4 +22,4 @@ class AppLayout extends Component {
   }
 }
 
-export default AppLayout
+export default Provider

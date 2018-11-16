@@ -5,7 +5,7 @@ function getDisplayName(component) {
   return component.displayName || component.name || 'component'
 }
 
-export default function SlotProviderHoc(Comp) {
+export default function ProviderHoc(Comp) {
   return class extends Component {
     static displayName = `SlotProvider(${getDisplayName(Comp)})`
 
@@ -19,6 +19,7 @@ export default function SlotProviderHoc(Comp) {
       this.addOnRenderers = {}
     }
 
+    // 旧版本的API是这么提供的，16.4版本之后，采用新的API(但是，同时兼容旧版本的API)
     getChildContext() {
       return {
         addOnRenderers: this.addOnRenderers

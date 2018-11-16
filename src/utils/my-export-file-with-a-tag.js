@@ -1,7 +1,7 @@
 import { message } from 'antd'
 import { BASE_API_URL } from '@Constants'
 
-export const myExportFile = (url, paramsObj) => {
+export const myExportFileWithATag = (url, paramsObj) => {
   if (!url) {
     // url
     message.error('请输入导出url')
