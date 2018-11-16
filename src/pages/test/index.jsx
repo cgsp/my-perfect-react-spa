@@ -1,13 +1,7 @@
 import React, { Component } from 'react'
 import { Provider, AddOn } from '@Components/slot-provider'
-import { myGetLocationSearchObj } from '@Utils'
 
 export default class Test extends Component {
-  constructor(props) {
-    super(props)
-    console.log(myGetLocationSearchObj())
-  }
-
   render() {
     return (
       <Provider>

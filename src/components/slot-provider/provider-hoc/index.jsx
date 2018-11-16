@@ -1,17 +1,23 @@
 import React, { Component } from 'react'
-import { PropTypes } from 'prop-types'
+// import { PropTypes } from 'prop-types'
 
 function getDisplayName(component) {
   return component.displayName || component.name || 'component'
 }
 
+// 新版本的API是这么提供的
+export const ProviderHocContext = React.createContext({
+  addOnRenderers: {}
+})
+
 export default function ProviderHoc(Comp) {
   return class extends Component {
     static displayName = `SlotProvider(${getDisplayName(Comp)})`
 
-    static childContextTypes = {
-      addOnRenderers: PropTypes.object,
-    }
+    // 旧版本的API是这么提供的，16.4版本之后，采用新的API， 就不再需要这个了(但是，同时兼容旧版本的API)
+    // static childContextTypes = {
+    //   addOnRenderers: PropTypes.object,
+    // }
 
     constructor(props) {
       super(props)
@@ -20,11 +26,11 @@ export default function ProviderHoc(Comp) {
     }
 
     // 旧版本的API是这么提供的，16.4版本之后，采用新的API(但是，同时兼容旧版本的API)
-    getChildContext() {
-      return {
-        addOnRenderers: this.addOnRenderers
-      }
-    }
+    // getChildContext() {
+    //   return {
+    //     addOnRenderers: this.addOnRenderers
+    //   }
+    // }
 
     render() {
       const { children, ...restProps } = this.props
@@ -48,7 +54,14 @@ export default function ProviderHoc(Comp) {
         })
       }
       return (
-        <Comp {...restProps} />
+        // 新版本的API
+        <ProviderHocContext.Provider
+          value={{
+            addOnRenderers: this.addOnRenderers
+          }}
+        >
+          <Comp {...restProps} />
+        </ProviderHocContext.Provider>
       )
     }
   }
