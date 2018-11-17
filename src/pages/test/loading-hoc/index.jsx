@@ -10,6 +10,35 @@ export default function LoadingHoc(Comp) {
       id: PropTypes.number,
     }
 
+    constructor(props) {
+      super(props)
+      this.state = {
+        a: 11111
+      }
+    }
+
+    componentWillReceiveProps(nextProps) {
+      console.log('componentWillReceiveProps', nextProps)
+      this.setState({
+        a: 22222
+      })
+    }
+
+    shouldComponentUpdate(nextProps, nextState, context) {
+      console.log('shouldComponentUpdate', nextProps)
+      // this.setState({
+      //   a: 3333
+      // })
+      return true
+    }
+
+    componentWillUpdate() {
+      console.log('componentWillUpdate')
+      // this.setState({
+      //   a: 33333
+      // })
+    }
+
     render() {
       console.log('装饰器自身打印', this.props)
       if (!this.props.data) {
@@ -18,7 +47,10 @@ export default function LoadingHoc(Comp) {
         )
       }
       return (
-        <Comp {...this.props} />
+        <div>
+          {this.state.a}
+          <Comp {...this.props} />
+        </div>
       )
     }
   }
