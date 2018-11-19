@@ -8,20 +8,26 @@ export default class Test extends Component {
       data: 100
     }
   }
+
   componentDidMount() {
-    setTimeout(() => {
-      this.setState({
-        data: 200
-      })
-    }, 1000)
+    // console.log(this.staticGsp)
+  }
+
+
+  staticGsp() {
+    console.log(this.staticGsp)
   }
 
   render() {
     const { data } = this.state
     return (
       <div>
-        <TestContainer data={data} {...this.props} />
+        <TestContainer
+          data={data}
+        />
       </div>
     )
   }
 }
+
+console.log(Test.staticGsp)

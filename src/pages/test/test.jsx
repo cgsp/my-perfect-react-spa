@@ -11,6 +11,10 @@ class TestContainer extends Component {
     cname: PropTypes.string
   }
 
+  callName() {
+    return '组件自身callname'
+  }
+
   render() {
     console.log('组件自身打印', this.props)
     return (

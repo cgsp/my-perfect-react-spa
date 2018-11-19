@@ -1,43 +1,22 @@
 import React, { Component } from 'react'
-import { PropTypes } from 'prop-types'
+// import { PropTypes } from 'prop-types'
 
 export default function LoadingHoc(Comp) {
   return class extends Component {
-    static defaultProps = {
-      id: 12,
-    }
-    static propTypes = {
-      id: PropTypes.number,
+    callName() {
+      return '装饰器自身callname'
     }
 
-    constructor(props) {
-      super(props)
-      this.state = {
-        a: 11111
-      }
-    }
+    // getWrappedInstance = () => {
+    //   if (this.props.withRef) {
+    //     return this.wrappedInstance
+    //   }
+    // }
 
-    componentWillReceiveProps(nextProps) {
-      console.log('componentWillReceiveProps', nextProps)
-      this.setState({
-        a: 22222
-      })
-    }
-
-    shouldComponentUpdate(nextProps, nextState, context) {
-      console.log('shouldComponentUpdate', nextProps)
-      // this.setState({
-      //   a: 3333
-      // })
-      return true
-    }
-
-    componentWillUpdate() {
-      console.log('componentWillUpdate')
-      // this.setState({
-      //   a: 33333
-      // })
-    }
+    // setWrappedInstance = (ref) => {
+    //   this.wrappedInstance = ref
+    //   // console.log(ref)
+    // }
 
     render() {
       console.log('装饰器自身打印', this.props)
@@ -46,9 +25,9 @@ export default function LoadingHoc(Comp) {
           <div>加载中...</div>
         )
       }
+
       return (
         <div>
-          {this.state.a}
           <Comp {...this.props} />
         </div>
       )
