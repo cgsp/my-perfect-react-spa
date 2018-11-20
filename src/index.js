@@ -21,6 +21,9 @@ if (process.env.REACT_APP_BUILD_ENV === 'development') {
   new vConsole()
 }
 
+// 引入一些没办法进行Npm安装的库，和script脚本(如browser.js和rem.js)
+import '@Utils/libraries/browser'
+
 const root = document.getElementById('root')
 const render = (Component) => {
   ReactDOM.render(

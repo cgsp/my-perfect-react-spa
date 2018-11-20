@@ -8,9 +8,8 @@ import moment from 'moment'
 import 'moment/locale/zh-cn'
 moment.locale('zh-cn')
 
-import '@Assets/style/reset-pc'
-import '@Assets/style/main-frame'
-import '@Assets/style/app'
+// 引入全局的scss
+import '@Assets/style/index'
 
 import RootRoutes from '@Router'
 import Stores from '@Store'
