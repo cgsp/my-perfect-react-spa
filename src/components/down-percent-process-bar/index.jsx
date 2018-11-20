@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Progress } from 'antd'
 import { PropTypes } from 'prop-types'
-import './style'
+import style from './style'
 
 export default class DownPercentProcessBar extends Component {
   static propTypes = {
@@ -25,8 +25,8 @@ export default class DownPercentProcessBar extends Component {
   render() {
     const { percent } = this.props
     const content = (
-      <div className="app-down-percent">
-        <div className="loading">
+      <div className={style['app-down-percent']}>
+        <div className={style.loading}>
           <Progress type="circle" percent={percent} />
         </div>
       </div>

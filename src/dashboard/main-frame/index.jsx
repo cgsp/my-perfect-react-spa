@@ -5,7 +5,7 @@ import SiderMenu from '../side-menu'
 import MaskLoading from '@Components/mask-loading'
 import DownPercentProcessBar from '@Components/down-percent-process-bar'
 import { Layout } from 'antd'
-import css from './style'
+import style from './style'
 const { Header, Sider, Content } = Layout
 
 @inject('AppLoadingStore')
@@ -16,15 +16,15 @@ export default class MainFrame extends Component {
     const { children } = this.props
     let { appLoading, appDownPercentLoading, appDownPercentLoadingPercent } = this.props.AppLoadingStore
     return (
-      <Layout className={css['app-layout']}>
-        <Header className={css['app-header']}>
+      <Layout className={style['app-layout']}>
+        <Header className={style['app-header']}>
           <HeadNav />
         </Header>
         <Layout>
-          <Sider className={css['app-nav']} width={170}>
+          <Sider className={style['app-nav']} width={170}>
             <SiderMenu />
           </Sider>
-          <Content className={css['app-content']}>
+          <Content className={style['app-content']}>
             {/* 全局的loading */}
             {
               appLoading ? <MaskLoading /> : null

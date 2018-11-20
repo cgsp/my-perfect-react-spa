@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { PropTypes } from 'prop-types'
-import './style'
+import style from './style'
 import img0 from './loading0.gif'
 import img1 from './loading1.gif'
 import img2 from './loading2.gif'
@@ -69,16 +69,16 @@ export default class MaskLoading extends Component {
         break
     }
     const content = (
-      <div className="mask-loading">
-        <div className="loading">
+      <div className={style['mask-loading']}>
+        <div className={style.loading}>
           {
             num === 7 || num === 1 || num === 0 ?
-              <img className="img" src={imgsrc} alt="" style={{ width: '50px', height: 'auto' }} /> :
-              <img className="img" src={imgsrc} alt="" style={{ width: '150px', height: 'auto' }} />
+              <img className={style.img} src={imgsrc} alt="" style={{ width: '50px', height: 'auto' }} /> :
+              <img className={style.img} src={imgsrc} alt="" style={{ width: '150px', height: 'auto' }} />
           }
           {
             this.props.msg ?
-              <p className="desc">{this.props.msg}</p>
+              <p className={style.desc}>{this.props.msg}</p>
               : null
           }
         </div>

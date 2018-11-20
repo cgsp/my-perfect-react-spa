@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import TestContainer from './test'
-import style from './style.scss'
+import style from './style'
 import { Button } from 'antd'
 
 export default class Test extends Component {
@@ -22,7 +22,13 @@ export default class Test extends Component {
           />
         </div>
         <div className={style.box}> 因使用了WebKit的CSS扩展属性，该方法适用于WebKit浏览器及移动端；</div>
-        <Button type="primary">antdbtn</Button>
+        <div style={{ margin: 10 }}>
+          <Button>antdbtn</Button>
+        </div>
+        <div className={style.test}>
+          1111
+        <div className={style.name}>name</div>
+        </div>
       </div >
     )
   }
