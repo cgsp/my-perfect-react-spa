@@ -67,6 +67,8 @@
     "fs-extra": "3.0.1",
     "html-webpack-plugin": "2.29.0",
     "jest": "20.0.4",
+    "less": "^3.8.1",
+    "less-loader": "^4.1.0",
     "node-sass": "4.9.0",
     "postcss-flexbugs-fixes": "3.2.0",
     "postcss-loader": "2.0.8",
@@ -138,7 +140,6 @@
     }
   },
   "antTheme": {
-    "hd": "2px",
-    "color-text-base": "#333"
+    "@primary-color": "#1DA57A"
   }
 }

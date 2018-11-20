@@ -13,6 +13,9 @@ const paths = require('./paths')
 // 覆盖ant-mobile主题
 const antTheme = paths.appPackageJson.antTheme
 
+// console.error(antTheme)
+// debugger
+
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
 const publicPath = '/'
@@ -170,7 +173,7 @@ module.exports = {
                 'react-hot-loader/babel',
                 [
                   'import',
-                  { libraryName: 'antd', libraryDirectory: 'es', style: 'css' }
+                  { libraryName: 'antd', libraryDirectory: 'es', style: true }
                 ]
               ]
             }
@@ -230,7 +233,6 @@ module.exports = {
           {
             test: /\.(css|scss)$/,
             include: [
-              /node_modules/,
               /src\/assets/,
             ],  // 只处理node_modules和assets目录
             use: [
@@ -263,8 +265,59 @@ module.exports = {
               },
               {
                 loader: require.resolve('sass-loader'),
+                // options: {
+                //   modifyVars: antTheme, // 覆盖ant-mobile主题
+                //   include: /node_modules/,
+                //   javascriptEnabled: true,
+                // },
+              }
+            ],
+          },
+          /**
+           * node_modules和assets目录专用,
+           * 如:ant-mobile,单独开启css/less编译,不带css模块化;
+           * 配置覆盖ant-mobile主题.
+           */
+          {
+            test: /\.(css|less)$/,
+            include: [
+              /node_modules/,
+            ],  // 只处理node_modules和assets目录
+            use: [
+              require.resolve('style-loader'),
+              {
+                loader: require.resolve('css-loader'),
                 options: {
-                  modifyVars: antTheme, // 覆盖ant-mobile主题
+                  importLoaders: 1,
+                },
+              },
+              {
+                loader: require.resolve('postcss-loader'),
+                options: {
+                  // Necessary for external CSS imports to work
+                  // https://github.com/facebookincubator/create-react-app/issues/2677
+                  ident: 'postcss',
+                  plugins: () => [
+                    require('postcss-flexbugs-fixes'),
+                    autoprefixer({
+                      browsers: [
+                        '>1%',
+                        'last 4 versions',
+                        'Firefox ESR',
+                        'not ie < 9', // React doesn't support IE8 anyway
+                      ],
+                      flexbox: 'no-2009',
+                    }),
+                  ],
+                },
+              },
+              {
+                loader: require.resolve('less-loader'),
+                options: {
+                  // 覆盖ant-mobile主题
+                  modifyVars: {
+                    "@primary-color": "#1DA57A"
+                  },
                   include: /node_modules/,
                   javascriptEnabled: true,
                 },

@@ -23,7 +23,7 @@ export default class Test extends Component {
         </div>
         <div className={style.box}> 因使用了WebKit的CSS扩展属性，该方法适用于WebKit浏览器及移动端；</div>
         <div style={{ margin: 10 }}>
-          <Button>antdbtn</Button>
+          <Button type="primary">antdbtn</Button>
         </div>
         <div className={style.test}>
           1111
