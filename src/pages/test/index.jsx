@@ -1,45 +1,31 @@
 import React, { Component } from 'react'
 import TestContainer from './test'
+import { myJudgeDeviceAndBrowserFromBrowserJs } from '@Utils/my-judge-device-and-browser-from-browser-library'
 
 export default class Test extends Component {
-  static gsp() {
-    console.log(this.props)
-    console.log(this.state)
-    return 'gsp'
-  }
-
-  static displayName = 'test'
-
   constructor(props) {
     super(props)
-    console.log(super.displayName)
     this.state = {
       data: 100
     }
   }
 
   componentDidMount() {
-    // this.gsp()
-    // console.log(displayName)
-    // console.log(gsp)
+    console.log(myJudgeDeviceAndBrowserFromBrowserJs())
   }
 
-
-  staticGsp() {
-    console.log(this.staticGsp)
-  }
 
   render() {
     const { data } = this.state
     return (
-      <div>
-        <TestContainer
-          data={data}
-        />
+      <div className="div2" id="gFather">
+        <div className="div1" id="father">
+          <TestContainer
+            data={data}
+            className="div1"
+          />
+        </div>
       </div>
     )
   }
 }
-
-console.log(Test.displayName)
-console.log(Test.gsp())
