@@ -1,10 +1,10 @@
 {
-  "app.css": "static/css/app.943dd001.css",
-  "app.js": "static/js/app.c7514b50.js",
-  "manifest.js": "static/js/manifest.afa0bf8e.js",
-  "static/js/0.a47266fb.chunk.js": "static/js/0.a47266fb.chunk.js",
-  "static/js/1.4e2012a0.chunk.js": "static/js/1.4e2012a0.chunk.js",
-  "static/js/2.dc497ce3.chunk.js": "static/js/2.dc497ce3.chunk.js",
+  "app.css": "static/css/app.86efd793.css",
+  "app.js": "static/js/app.f12c106c.js",
+  "manifest.js": "static/js/manifest.2f504187.js",
+  "static/js/0.3cca2ba3.chunk.js": "static/js/0.3cca2ba3.chunk.js",
+  "static/js/1.bc321259.chunk.js": "static/js/1.bc321259.chunk.js",
+  "static/js/2.81ea642d.chunk.js": "static/js/2.81ea642d.chunk.js",
   "static/media/loading1.gif": "static/media/loading1.gif",
   "static/media/loading3.gif": "static/media/loading3.gif",
   "static/media/loading4.gif": "static/media/loading4.gif",
@@ -13,5 +13,11 @@
   "static/media/loading7.gif": "static/media/loading7.gif",
   "static/media/loading8.gif": "static/media/loading8.gif",
   "static/media/loading9.gif": "static/media/loading9.gif",
-  "vendor.js": "static/js/vendor.8d960838.js"
+  "static/media/music-icon.eot?2qevqt": "static/media/music-icon.eot",
+  "static/media/music-icon.svg?2qevqt": "static/media/music-icon.svg",
+  "static/media/music-icon.ttf?2qevqt": "static/media/music-icon.ttf",
+  "static/media/music-icon.woff?2qevqt": "static/media/music-icon.woff",
+  "static/media/page_bg@2x.png": "static/media/page_bg@2x.png",
+  "static/media/page_bg@3x.png": "static/media/page_bg@3x.png",
+  "vendor.js": "static/js/vendor.d48cfceb.js"
 }

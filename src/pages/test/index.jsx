@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import TestContainer from './test'
-import { myJudgeDeviceAndBrowserFromBrowserJs } from '@Utils/my-judge-device-and-browser-from-browser-library'
+import './style.scss'
 
 export default class Test extends Component {
   constructor(props) {
@@ -9,11 +9,6 @@ export default class Test extends Component {
       data: 100
     }
   }
-
-  componentDidMount() {
-    console.log(myJudgeDeviceAndBrowserFromBrowserJs())
-  }
-
 
   render() {
     const { data } = this.state
@@ -25,6 +20,7 @@ export default class Test extends Component {
             className="div1"
           />
         </div>
+        <div className="box">因使用了WebKit的CSS扩展属性，该方法适用于WebKit浏览器及移动端；</div>
       </div>
     )
   }
