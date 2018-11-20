@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-11-20 14:32:34 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-11-20 14:47:29
+ * @Last Modified time: 2018-11-20 15:41:56
  */
 
 /* 入口的scss */
@@ -17,3 +17,5 @@
 @import "./common.scss";
 // 字体图标
 @import "./icon.scss";
+// 覆盖antd的样式
+@import "./reset-antd.scss"

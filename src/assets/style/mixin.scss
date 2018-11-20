@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-11-20 14:34:54 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-11-20 15:22:18
+ * @Last Modified time: 2018-11-20 15:29:17
  */
 
 // 用法1
@@ -35,16 +35,6 @@
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-}
-
-// 多行省略
-@mixin text-lines($line) {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: $line;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-break: break-all;
 }
 
 // 扩展点击区域
