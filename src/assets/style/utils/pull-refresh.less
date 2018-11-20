@@ -1,0 +1,172 @@
+/* 
+ * @Desc: PullRefresh组件
+ * @Author: Eleven 
+ * @Date: 2018-11-10 17:37:29 
+ * @Last Modified by: Eleven
+ * @Last Modified time: 2018-11-19 11:11:36
+ */
+
+// 容器
+.pull-load {
+  position: relative;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+.pull-load-head {
+  position: absolute;
+  transform: translate3d(0px, -100%, 0px);
+  width: 100%;
+}
+.state-refreshing .pull-load-head,
+.state-refreshed .pull-load-head {
+  position: relative;
+  transform: none;
+}
+.pull-load-body {
+  position: relative;
+}
+.state-refreshing .pull-load-body {
+  transition: transform 0.2s;
+}
+.state-reset .pull-load-body {
+  transition: transform 0.2s;
+}
+
+// HeadNode 
+.pull-load-head-default {
+  display: flex;
+  margin-top: .3rem;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: .26rem;
+  line-height: .9rem;
+  color: #7676a1;
+}
+.state-pulling .pull-load-head-default:after {
+  content: '下拉刷新';
+}
+.state-pulling.enough .pull-load-head-default:after {
+  content: '松开刷新';
+}
+.state-refreshing .pull-load-head-default:after {
+  content: '正在刷新';
+}
+.state-refreshed .pull-load-head-default:after {
+  content: '刷新成功';
+}
+.state-pulling .pull-load-head-default {
+  opacity: 1;
+}
+// 下拉未释放时 图标
+.state-pulling .pull-load-head-default i {
+  display: none;
+  // display: inline-block;
+  margin-right: .3rem;
+  height: 22px;
+  border-left: 1px solid;
+  position: relative;
+  transition: transform .3s ease;
+}
+.state-pulling .pull-load-head-default i:before,
+.state-pulling .pull-load-head-default i:after {
+  content: '';
+  position: absolute;
+  font-size: .5em;
+  width: 1em;
+  bottom: 0px;
+  border-top: 1px solid;
+}
+.state-pulling .pull-load-head-default i:before {
+  right: 1px;
+  transform: rotate(50deg);
+  transform-origin: right;
+}
+.state-pulling .pull-load-head-default i:after {
+  left: 0px;
+  transform: rotate(-50deg);
+  transform-origin: left;
+}
+.state-pulling.enough .pull-load-head-default i {
+  transform: rotate(180deg);
+}
+// 正在刷新 图标
+.state-refreshing .pull-load-head-default i {
+  margin-right: .2rem;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #9494b6;
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: circle 1s infinite linear;
+  box-sizing: border-box;
+}
+.state-refreshed .pull-load-head-default {
+  opacity: 1;
+  transition: opacity 1s;
+}
+// 刷新完成 图标
+.state-refreshed .pull-load-head-default i {
+  position: relative;
+  margin-right: .2rem;
+  height: 20px;
+  width: 20px;
+  border: 1px solid;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+.state-refreshed .pull-load-head-default i:before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 6px;
+  height: 11px;
+  width: 5px;
+  border: solid;
+  border-width: 0 1px 1px 0;
+  transform: rotate(40deg);
+}
+
+// FooterNode
+.pull-load-footer-default {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: .2rem;
+  margin-bottom: .5rem;
+  text-align: center;
+  font-size: .26rem;
+  line-height: .4rem;
+  color: #7676a1;
+  &.nomore {
+    // 临时性的处理措施,无更多内容时,容器高度不够高,下拉时内容会被容器切掉.
+    // margin-bottom: 3rem;
+  }
+}
+.state-loading .pull-load-footer-default:after {
+  content: '正在加载 ...';
+}
+.pull-load-footer-default.nomore:after {
+  // content: '更多福利，敬请期待';
+  content: '没有更多了';
+  color: #FF8764;
+  font-size: .28rem;
+}
+// 加载中 图标
+.state-loading .pull-load-footer-default i {
+  margin-right: .2rem;
+  width:  20px;
+  height: 20px;
+  border: 2px solid #9494b6;
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: circle 1s infinite linear;
+  box-sizing: border-box;
+}
+
+// 旋转动画
+@keyframes circle {
+  100% {
+    transform: rotate(360deg);
+  }
+}
