@@ -10,6 +10,9 @@ const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin')
 const getClientEnvironment = require('./env')
 const paths = require('./paths')
 
+// 覆盖ant-mobile主题
+const antTheme = paths.appPackageJson.antTheme
+
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
 const publicPath = '/'
@@ -180,7 +183,7 @@ module.exports = {
           {
             test: /\.(css|scss)$/,
             exclude: [
-              /node_modules/, 
+              /node_modules/,
               /src\/assets/,
             ], // 不处理node_modules和assets目录
             use: [
@@ -191,7 +194,7 @@ module.exports = {
                   importLoaders: 1,
                   // 改动
                   modules: true,   // 新增对css modules的支持
-                  localIdentName: '[name]__[local]__[hash:base64:5]', //
+                  localIdentName: '[name]__[local]__[hash:base64:12]', //
                 },
               },
               {
@@ -218,6 +221,55 @@ module.exports = {
                 loader: require.resolve('sass-loader')
               }
             ]
+          },
+          /**
+           * node_modules和assets目录专用,
+           * 如:ant-mobile,单独开启css/less编译,不带css模块化;
+           * 配置覆盖ant-mobile主题.
+           */
+          {
+            test: /\.(css|scss)$/,
+            include: [
+              /node_modules/,
+              /src\/assets/,
+            ],  // 只处理node_modules和assets目录
+            use: [
+              require.resolve('style-loader'),
+              {
+                loader: require.resolve('css-loader'),
+                options: {
+                  importLoaders: 1,
+                },
+              },
+              {
+                loader: require.resolve('postcss-loader'),
+                options: {
+                  // Necessary for external CSS imports to work
+                  // https://github.com/facebookincubator/create-react-app/issues/2677
+                  ident: 'postcss',
+                  plugins: () => [
+                    require('postcss-flexbugs-fixes'),
+                    autoprefixer({
+                      browsers: [
+                        '>1%',
+                        'last 4 versions',
+                        'Firefox ESR',
+                        'not ie < 9', // React doesn't support IE8 anyway
+                      ],
+                      flexbox: 'no-2009',
+                    }),
+                  ],
+                },
+              },
+              {
+                loader: require.resolve('sass-loader'),
+                options: {
+                  modifyVars: antTheme, // 覆盖ant-mobile主题
+                  include: /node_modules/,
+                  javascriptEnabled: true,
+                },
+              }
+            ],
           },
           // "file" loader makes sure those assets get served by WebpackDevServer.
           // When you `import` an asset, you get its (virtual) filename.

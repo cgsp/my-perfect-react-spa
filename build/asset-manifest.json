@@ -1,10 +1,10 @@
 {
-  "app.css": "static/css/app.0b7d4ca3.css",
-  "app.js": "static/js/app.2acd3499.js",
-  "manifest.js": "static/js/manifest.0f1483ea.js",
-  "static/js/0.904294ae.chunk.js": "static/js/0.904294ae.chunk.js",
-  "static/js/1.bc321259.chunk.js": "static/js/1.bc321259.chunk.js",
-  "static/js/2.81ea642d.chunk.js": "static/js/2.81ea642d.chunk.js",
+  "app.css": "static/css/app.60d390f9.css",
+  "app.js": "static/js/app.3c9a2dbd.js",
+  "manifest.js": "static/js/manifest.50b27300.js",
+  "static/js/0.9f137cf4.chunk.js": "static/js/0.9f137cf4.chunk.js",
+  "static/js/1.e7ca499a.chunk.js": "static/js/1.e7ca499a.chunk.js",
+  "static/js/2.a1f8d71d.chunk.js": "static/js/2.a1f8d71d.chunk.js",
   "static/media/loading1.gif": "static/media/loading1.gif",
   "static/media/loading3.gif": "static/media/loading3.gif",
   "static/media/loading4.gif": "static/media/loading4.gif",
@@ -17,5 +17,7 @@
   "static/media/music-icon.svg?2qevqt": "static/media/music-icon.svg",
   "static/media/music-icon.ttf?2qevqt": "static/media/music-icon.ttf",
   "static/media/music-icon.woff?2qevqt": "static/media/music-icon.woff",
-  "vendor.js": "static/js/vendor.26610571.js"
+  "static/media/page_bg@2x.png": "static/media/page_bg@2x.png",
+  "static/media/page_bg@3x.png": "static/media/page_bg@3x.png",
+  "vendor.js": "static/js/vendor.d48cfceb.js"
 }

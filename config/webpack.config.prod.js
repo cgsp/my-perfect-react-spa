@@ -11,6 +11,9 @@ const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin')
 const paths = require('./paths')
 const getClientEnvironment = require('./env')
 
+// 覆盖ant-mobile主题
+const antTheme = paths.appPackageJson.antTheme
+
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
 const publicPath = paths.servedPath
@@ -231,7 +234,7 @@ module.exports = {
                         sourceMap: shouldUseSourceMap,
                         // 改动
                         modules: true,   // 新增对css modules的支持
-                        localIdentName: '[name]__[local]__[hash:base64:5]', //
+                        localIdentName: '[name]__[local]__[hash:base64:12]', //
                       }
                     },
                     {
@@ -262,6 +265,70 @@ module.exports = {
                 extractTextPluginOptions
               )
             )
+            // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.
+          },
+          /**
+           * node_modules和assets目录专用,
+           * 如:ant-mobile,单独开启css/less编译,不带css模块化;
+           * 配置覆盖ant-mobile主题;
+           */
+          {
+            test: /\.(css|scss)$/,
+            include: [
+              /node_modules/,
+              /src\/assets/,
+            ],  // 只处理node_modules和assets目录
+            loader: ExtractTextPlugin.extract(
+              Object.assign(
+                {
+                  fallback: {
+                    loader: require.resolve('style-loader'),
+                    options: {
+                      hmr: false,
+                    },
+                  },
+                  use: [
+                    {
+                      loader: require.resolve('css-loader'),
+                      options: {
+                        importLoaders: 1,
+                        minimize: true,
+                        sourceMap: shouldUseSourceMap,
+                      },
+                    },
+                    {
+                      loader: require.resolve('postcss-loader'),
+                      options: {
+                        // Necessary for external CSS imports to work
+                        // https://github.com/facebookincubator/create-react-app/issues/2677
+                        ident: 'postcss',
+                        plugins: () => [
+                          require('postcss-flexbugs-fixes'),
+                          autoprefixer({
+                            browsers: [
+                              '>1%',
+                              'last 4 versions',
+                              'Firefox ESR',
+                              'not ie < 9', // React doesn't support IE8 anyway
+                            ],
+                            flexbox: 'no-2009',
+                          }),
+                        ],
+                      },
+                    },
+                    {
+                      loader: require.resolve('sass-loader'),
+                      options: {
+                        modifyVars: antTheme, // 覆盖ant-mobile主题
+                        include: /node_modules/,
+                        javascriptEnabled: true,
+                      },
+                    }
+                  ],
+                },
+                extractTextPluginOptions
+              )
+            ),
             // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.
           },
           // "file" loader makes sure assets end up in the `build` folder.
