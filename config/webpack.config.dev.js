@@ -179,13 +179,20 @@ module.exports = {
           // in development "style" loader enables hot editing of CSS.
           {
             test: /\.(css|scss)$/,
+            exclude: [
+              /node_modules/, 
+              /src\/assets/,
+            ], // 不处理node_modules和assets目录
             use: [
               require.resolve('style-loader'),
               {
                 loader: require.resolve('css-loader'),
                 options: {
-                  importLoaders: 1
-                }
+                  importLoaders: 1,
+                  // 改动
+                  modules: true,   // 新增对css modules的支持
+                  localIdentName: '[name]__[local]__[hash:base64:5]', //
+                },
               },
               {
                 loader: require.resolve('postcss-loader'),

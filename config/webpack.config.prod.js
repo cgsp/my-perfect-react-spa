@@ -209,6 +209,10 @@ module.exports = {
           // in the main CSS file.
           {
             test: /\.(css|scss)$/,
+            exclude: [
+              /node_modules/,
+              /src\/assets/,
+            ],  // 不处理node_modules和assets目录
             loader: ExtractTextPlugin.extract(
               Object.assign(
                 {
@@ -224,7 +228,10 @@ module.exports = {
                       options: {
                         importLoaders: 1,
                         minimize: true,
-                        sourceMap: shouldUseSourceMap
+                        sourceMap: shouldUseSourceMap,
+                        // 改动
+                        modules: true,   // 新增对css modules的支持
+                        localIdentName: '[name]__[local]__[hash:base64:5]', //
                       }
                     },
                     {
