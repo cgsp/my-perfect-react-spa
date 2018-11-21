@@ -268,15 +268,13 @@ module.exports = {
             // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.
           },
           /**
-           * node_modules和assets目录专用,
-           * 如:ant-mobile,单独开启css/less编译,不带css模块化;
-           * 配置覆盖ant-mobile主题;
+           * assets目录专用,
            */
           {
             test: /\.(css|scss)$/,
             include: [
               /src\/assets/,
-            ],  // 只处理node_modules和assets目录
+            ],  // 只处理assets目录
             loader: ExtractTextPlugin.extract(
               Object.assign(
                 {
@@ -317,11 +315,6 @@ module.exports = {
                     },
                     {
                       loader: require.resolve('sass-loader'),
-                      // options: {
-                      //   modifyVars: antTheme, // 覆盖ant-mobile主题
-                      //   include: /node_modules/,
-                      //   javascriptEnabled: true,
-                      // },
                     }
                   ],
                 },
@@ -331,7 +324,8 @@ module.exports = {
             // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.
           },
           /**
-           * node_modules和assets目录专用,
+           * node_modules目录专用,
+           * 其实下面，需要具体到node_modules下面的antd的具体的包，但是cnpm安装和npm安装，这个包的位置不太一样
            * 如:ant-mobile,单独开启css/less编译,不带css模块化;
            * 配置覆盖ant-mobile主题;
            */
@@ -339,7 +333,7 @@ module.exports = {
             test: /\.(css|less)$/,
             include: [
               /node_modules/,
-            ],  // 只处理node_modules和assets目录
+            ],  // 只处理node_modules目录
             loader: ExtractTextPlugin.extract(
               Object.assign(
                 {
