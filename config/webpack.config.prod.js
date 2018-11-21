@@ -12,7 +12,7 @@ const paths = require('./paths')
 const getClientEnvironment = require('./env')
 
 // 覆盖ant-mobile主题
-const antTheme = paths.appPackageJson.antTheme
+const resetAntdTheme = require('../reset-antd-theme.json')
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -376,9 +376,7 @@ module.exports = {
                       loader: require.resolve('less-loader'),
                       options: {
                         // 覆盖ant-mobile主题
-                        modifyVars: {
-                          "@primary-color": "#1DA57A"
-                        },
+                        modifyVars: resetAntdTheme,
                         include: /node_modules/,
                         javascriptEnabled: true,
                       },
