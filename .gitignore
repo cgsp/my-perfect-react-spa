@@ -4,6 +4,7 @@
 /node_modules
 
 /cros_mini_server
+/mini_server
 
 # testing
 /coverage
