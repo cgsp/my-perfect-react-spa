@@ -11,6 +11,11 @@ export default class Test extends Component {
     }
   }
 
+  componentDidMount() {
+    console.log(window.devicePixelRatio)
+  }
+
+
   render() {
     const { data } = this.state
     return (
