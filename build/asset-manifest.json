@@ -1,10 +1,10 @@
 {
-  "app.css": "static/css/app.60d390f9.css",
-  "app.js": "static/js/app.3c9a2dbd.js",
-  "manifest.js": "static/js/manifest.50b27300.js",
-  "static/js/0.9f137cf4.chunk.js": "static/js/0.9f137cf4.chunk.js",
-  "static/js/1.e7ca499a.chunk.js": "static/js/1.e7ca499a.chunk.js",
-  "static/js/2.a1f8d71d.chunk.js": "static/js/2.a1f8d71d.chunk.js",
+  "app.css": "static/css/app.ec1bab18.css",
+  "app.js": "static/js/app.e5a2fc85.js",
+  "manifest.js": "static/js/manifest.e41ccaff.js",
+  "static/js/0.1ff13049.chunk.js": "static/js/0.1ff13049.chunk.js",
+  "static/js/1.8c5c5434.chunk.js": "static/js/1.8c5c5434.chunk.js",
+  "static/js/2.487811f3.chunk.js": "static/js/2.487811f3.chunk.js",
   "static/media/loading1.gif": "static/media/loading1.gif",
   "static/media/loading3.gif": "static/media/loading3.gif",
   "static/media/loading4.gif": "static/media/loading4.gif",
@@ -19,5 +19,5 @@
   "static/media/music-icon.woff?2qevqt": "static/media/music-icon.woff",
   "static/media/page_bg@2x.png": "static/media/page_bg@2x.png",
   "static/media/page_bg@3x.png": "static/media/page_bg@3x.png",
-  "vendor.js": "static/js/vendor.d48cfceb.js"
+  "vendor.js": "static/js/vendor.fba3b02f.js"
 }

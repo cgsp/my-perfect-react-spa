@@ -26,8 +26,8 @@ export default class Test extends Component {
           <Button type="primary">antdbtn</Button>
         </div>
         <div className={style.test}>
-          1111
-        <div className={style.name}>name</div>
+          <span className="icon-ok">1111</span>
+          <div className={style.name}>name</div>
         </div>
       </div >
     )
