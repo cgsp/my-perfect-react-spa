@@ -16,6 +16,7 @@
       } else {
         // 设计稿，按照宽度750px来算
         // 这样保证1rem，就是100px
+        // 如果width=7.5rem，就代表的是当前屏幕的100%
         docEl.style.fontSize = 100 * (clientWidth / 750) + 'px'
       }
     }
