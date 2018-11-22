@@ -2,12 +2,18 @@
  * @Author: John.Guan 
  * @Date: 2018-11-20 12:03:24 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-11-20 14:39:38
+ * @Last Modified time: 2018-11-22 13:58:59
  */
 
 @import "./variable.scss";
+html,
+body {
+  background-color: #fde6ca !important;
+}
+
 #root {
-  width: 100%;
+  width: 7.5rem;
+  margin: 0 auto;
   height: 100%;
   line-height: 1; // 鹅厂推荐的移动端最佳字体(https://github.com/AlloyTeam/Mars/blob/master/solutions/font-family.md)
   font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", STHeiti, "Microsoft Yahei", Tahoma, Simsun, sans-serif;

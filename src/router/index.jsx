@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
-import MainFrame from '../dashboard/main-frame'
+// pc端的骨架
+// import MainFrame from '../dashboard-pc/main-frame'
+// mobile端的骨架
+import MainFrame from '../dashboard-mobile/main-frame'
 import { Route, withRouter, Switch, Redirect } from 'react-router-dom'
 // import { inject, observer } from 'mobx-react'
 import { asyncComponent } from './asyncComponent'
@@ -53,9 +56,12 @@ export default class Routes extends Component {
               )
             )
           }
+          {/* 
           <Route path="/no-match-404" component={NoMatch404} />
           <Redirect to="/no-match-404" />
-          <Redirect to={toDefaultUrl} />
+          */}
+          {/* 这样写也可以 */}
+          <Route component={NoMatch404} />
         </Switch>
       </MainFrame>
     )
