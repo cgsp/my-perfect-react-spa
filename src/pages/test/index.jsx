@@ -1,13 +1,16 @@
 /*
  * @Author: John.Guan 
  * @Date: 2018-11-22 11:36:22 
- * @Last Modified by:   John.Guan 
- * @Last Modified time: 2018-11-22 11:36:22 
+ * @Last Modified by: John.Guan
+ * @Last Modified time: 2018-11-22 15:53:34
  */
 import React, { Component } from 'react'
-import TestContainer from './test'
+import LazyLoad from 'react-lazyLoad'
+// import TestContainer from './test'
 import style from './style'
-import { Button } from 'antd'
+// import { Button } from 'antd'
+// import { myDataType } from '@Utils/my-data-type'
+import ImgPlaceHolder from '@Components/img-placeHolder'
 
 export default class Test extends Component {
   constructor(props) {
@@ -17,30 +20,39 @@ export default class Test extends Component {
     }
   }
 
-  componentDidMount() {
-    console.log(window.devicePixelRatio)
-  }
-
+  // componentDidMount() {
+  //   console.log(window.devicePixelRatio)
+  //   console.log(myDataType(1))
+  // }
 
   render() {
-    const { data } = this.state
     return (
-      <div className="div2" id="gFather">
-        <div className="div1" id="father">
-          <TestContainer
-            data={data}
-            className="div1"
-          />
-        </div>
-        <div className={style.box}> 因使用了WebKit的CSS扩展属性，该方法适用于WebKit浏览器及移动端；</div>
-        <div style={{ margin: 10 }}>
-          <Button type="primary">antdbtn</Button>
-        </div>
-        <div className={style.test}>
-          <span className="icon-ok">1111</span>
-          <div className={style.name}>name</div>
-        </div>
-      </div >
+      <div className={style['test']}>
+        <LazyLoad throttle={200} placeholder={<ImgPlaceHolder />}>
+          <img src="http://ww3.sinaimg.cn/mw690/62aad664jw1f2nxvya0u2j20u01hc16p.jpg" />
+        </LazyLoad>
+        <LazyLoad throttle={200} placeholder={<ImgPlaceHolder />} >
+          <img src="http://ww1.sinaimg.cn/mw690/62aad664jw1f2nxvyo52qj20u01hcqeq.jpg" />
+        </LazyLoad>
+        <LazyLoad throttle={200} placeholder={<ImgPlaceHolder />} >
+          <img src="http://ww2.sinaimg.cn/mw690/62aad664jw1f2nxvz2cj6j20u01hck1o.jpg" />
+        </LazyLoad>
+        <LazyLoad throttle={200} placeholder={<ImgPlaceHolder />}>
+          <img src="http://ww1.sinaimg.cn/mw690/62aad664jw1f2nxvzfjv6j20u01hc496.jpg" />
+        </LazyLoad>
+        <LazyLoad throttle={200} placeholder={<ImgPlaceHolder />}>
+          <img src="http://ww1.sinaimg.cn/mw690/62aad664jw1f2nxw0e1mlj20u01hcgvs.jpg" />
+        </LazyLoad>
+        <LazyLoad throttle={200} placeholder={<ImgPlaceHolder />}>
+          <img src="http://ww4.sinaimg.cn/mw690/62aad664jw1f2nxw0p95dj20u01hc7d8.jpg" />
+        </LazyLoad>
+        <LazyLoad throttle={200} placeholder={<ImgPlaceHolder />}>
+          <img src="http://ww2.sinaimg.cn/mw690/62aad664jw1f2nxw134xqj20u01hcqjg.jpg" />
+        </LazyLoad>
+        <LazyLoad throttle={200} placeholder={<ImgPlaceHolder />}>
+          <img src="1111" />
+        </LazyLoad>
+      </div>
     )
   }
 }

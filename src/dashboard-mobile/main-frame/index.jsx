@@ -14,15 +14,13 @@ export default class MainFrame extends Component {
     let { appLoading } = this.props.AppLoadingStore
     return (
       <Layout className={style['app-layout']}>
-        <Layout>
-          <Content className={style['app-content']}>
-            {/* 全局的loading */}
-            {
-              appLoading ? <MaskLoading /> : null
-            }
-            {children}
-          </Content>
-        </Layout>
+        <Content className={style['app-content']}>
+          {/* 全局的loading */}
+          {
+            appLoading ? <MaskLoading /> : null
+          }
+          {children}
+        </Content>
       </Layout>
     )
   }

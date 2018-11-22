@@ -24,6 +24,8 @@ if (process.env.REACT_APP_BUILD_ENV === 'development') {
 // 引入一些没办法进行Npm安装的库，和script脚本(如browser.js和rem.js)
 import '@Utils/libraries/browser'
 import '@Utils/libraries/rem-resize'
+import '@Utils/libraries/handle-error-img'
+
 
 const root = document.getElementById('root')
 const render = (Component) => {

@@ -1,15 +1,17 @@
-@import "@Assets/style/mixin.scss";
-.box {
-  @include bg-image('./page_bg');
-  background-size: 50px 50px;
-  width: 50px;
-  height: 50px;
-  overflow: hidden;
-}
-
+// @import "@Assets/style/mixin.scss";
+// .box {
+//   @include bg-image('./page_bg');
+//   background-size: 50px 50px;
+//   width: 50px;
+//   height: 50px;
+//   overflow: hidden;
+// }
 .test {
-  color: red;
-  .name {
-    color: green;
+  width: 100%;
+  height: 100%;
+  img {
+    width: 100%;
+    height: 100%;
+    margin-bottom: 50px;
   }
 }
