@@ -3,7 +3,7 @@
  * @Author: John.Guan 
  * @Date: 2018-11-22 15:52:15 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-11-22 16:11:03
+ * @Last Modified time: 2018-11-22 16:22:57
  */
 import React from 'react'
 import defalutImg from '@Assets/images/defaultImg.jpg'
@@ -28,11 +28,15 @@ export default ImgPlaceholder
 //   render() {
 //     return (
 //       <div className={style['test']}>
+//         {/* 不影响跳转 */}
 //         <LazyLoad throttle={200} placeholder={<ImgPlaceHolder />}>
-//           <img src="http://ww3.sinaimg.cn/mw690/62aad664jw1f2nxvya0u2j20u01hc16p.jpg" />
+//           <a href="http://ww3.sinaimg.cn/mw690/62aad664jw1f2nxvya0u2j20u01hc16p.jpg" target="_blank">
+//             <img src="http://ww3.sinaimg.cn/mw690/62aad664jw1f2nxvya0u2j20u01hc16p.jpg" />
+//           </a>
 //         </LazyLoad>
+//         {/* 不影响点击事件 */}
 //         <LazyLoad throttle={200} placeholder={<ImgPlaceHolder />} >
-//           <img src="http://ww1.sinaimg.cn/mw690/62aad664jw1f2nxvyo52qj20u01hcqeq.jpg" />
+//           <img src="http://ww1.sinaimg.cn/mw690/62aad664jw1f2nxvyo52qj20u01hcqeq.jpg" onClick={this.imgOnclick} />
 //         </LazyLoad>
 //         <LazyLoad throttle={200} placeholder={<ImgPlaceHolder />} >
 //           <img src="http://ww2.sinaimg.cn/mw690/62aad664jw1f2nxvz2cj6j20u01hck1o.jpg" />
