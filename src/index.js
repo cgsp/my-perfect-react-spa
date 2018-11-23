@@ -7,7 +7,7 @@ import { AppContainer } from 'react-hot-loader'
 import App from './App'
 import registerServiceWorker from './registerServiceWorker'
 import fastclick from 'fastclick'
-import vConsole from 'vconsole'
+// import vConsole from 'vconsole'
 
 // 手机端fastclick事件注册
 if ('addEventListener' in document) {
@@ -17,9 +17,9 @@ if ('addEventListener' in document) {
 }
 
 // 本地开发环境，vConsole注册
-if (process.env.REACT_APP_BUILD_ENV === 'development') {
-  new vConsole()
-}
+// if (process.env.REACT_APP_BUILD_ENV === 'development') {
+//   new vConsole()
+// }
 
 // 引入一些没办法进行Npm安装的库，和script脚本(如browser.js和rem.js)
 import '@Utils/libraries/browser'

@@ -1,3 +1,11 @@
+/* 
+ * @Desc: 如果不做路由切换的转场动画的话
+ * @Author: John.Guan 
+ * @Date: 2018-11-23 15:12:36 
+ * @Last Modified by: John.Guan
+ * @Last Modified time: 2018-11-23 15:12:59
+ */
+
 import React, { Component } from 'react'
 // pc端的骨架
 // import MainFrame from '../dashboard-pc/main-frame'
