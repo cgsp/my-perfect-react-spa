@@ -193,7 +193,8 @@ module.exports = {
                 'babel-plugin-transform-decorators-legacy',
                 [
                   'import',
-                  { libraryName: 'antd', libraryDirectory: 'es', style: true }
+                  // { libraryName: 'antd', libraryDirectory: 'es', style: true },
+                  { libraryName: 'antd-mobile', libraryDirectory: 'es', style: true },
                 ]
               ]
             }

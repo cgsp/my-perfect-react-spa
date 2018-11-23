@@ -170,7 +170,8 @@ module.exports = {
                 'react-hot-loader/babel',
                 [
                   'import',
-                  { libraryName: 'antd', libraryDirectory: 'es', style: true }
+                  // { libraryName: 'antd', libraryDirectory: 'es', style: true },
+                  { libraryName: 'antd-mobile', libraryDirectory: 'es', style: true },
                 ]
               ]
             }

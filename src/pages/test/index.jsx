@@ -3,11 +3,11 @@
  * @Author: John.Guan 
  * @Date: 2018-11-23 15:10:43 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-11-23 16:15:04
+ * @Last Modified time: 2018-11-23 17:12:59
  */
 import React, { Component } from 'react'
 import style from './style.scss'
-import QueueAnim from 'rc-queue-anim'
+// import QueueAnim from 'rc-queue-anim'
 
 export default class Test extends Component {
   constructor(props) {
@@ -20,13 +20,13 @@ export default class Test extends Component {
   render() {
     const items = this.state.arr.map(item => {
       return (
-        <div key={item} className={style.line}>item</div>
+        <div key={item} className={style.line}>{item}</div>
       )
     })
     return (
-      <QueueAnim>
+      <div>
         {items}
-      </QueueAnim>
+      </div>
     )
   }
 }

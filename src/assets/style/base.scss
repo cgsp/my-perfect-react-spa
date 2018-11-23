@@ -2,13 +2,15 @@
  * @Author: John.Guan 
  * @Date: 2018-11-20 12:03:24 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-11-22 13:58:59
+ * @Last Modified time: 2018-11-23 17:16:11
  */
 
 @import "./variable.scss";
 html,
 body {
-  background-color: #fde6ca !important;
+  background-color: #cccccc !important;
+  width: 100% !important;
+  height: 100% !important;
 }
 
 #root {
@@ -21,4 +23,5 @@ body {
   -webkit-tap-highlight-color: transparent;
   background: $color-background;
   color: $color-text;
+  font-size: .3rem;
 }
