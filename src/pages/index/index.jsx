@@ -2,11 +2,9 @@ import React, { Component } from 'react'
 
 class Index extends Component {
   render() {
-    const arr = [[1, 2]].map(([a, b], index) => {
-      console.log(index)
-      return a + b
-    })
-    console.log(arr)
+    var a = '12'
+    console.log(a.padStart(2, '0'))
+    console.log(a)
     return (
       <div>首页</div>
     )
