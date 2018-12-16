@@ -2,11 +2,14 @@ import React, { Component } from 'react'
 
 class Index extends Component {
   render() {
-    var a = '12'
-    console.log(a.padStart(2, '0'))
-    console.log(a)
+    const fn = (a, ...rest) => {
+      console.log(a)
+      console.log(rest)
+    }
+    fn(1, { a: 12 }, { b: 13 }, 4)
+    const obi = { a: 111 }
     return (
-      <div>首页</div>
+      <div>{`${obi}`}</div>
     )
   }
 }
