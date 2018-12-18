@@ -9,6 +9,12 @@ import registerServiceWorker from './registerServiceWorker'
 import fastclick from 'fastclick'
 // import vConsole from 'vconsole'
 
+// 引入一些没办法进行Npm安装的库，和script脚本(如browser.js和rem.js)
+import '@Utils/libraries/browser'
+// rem.js这个最好在index.html的head部位引入，不然加载速度可能没APP的主模块的速度快
+// import '@Utils/libraries/rem-resize'
+import '@Utils/libraries/handle-error-img'
+
 // 手机端fastclick事件注册
 if ('addEventListener' in document) {
   document.addEventListener('DOMContentLoaded', function () {
@@ -21,11 +27,15 @@ if ('addEventListener' in document) {
 //   new vConsole()
 // }
 
-// 引入一些没办法进行Npm安装的库，和script脚本(如browser.js和rem.js)
-import '@Utils/libraries/browser'
-// rem.js这个最好在index.html的head部位引入，不然加载速度可能没APP的主模块的速度快
-// import '@Utils/libraries/rem-resize'
-import '@Utils/libraries/handle-error-img'
+/**
+ * 移动端页面返回时,刷新页面,不从缓存里取.
+ */
+window.addEventListener('pageshow', function (event) {
+  // event.persisted属性为true时，表示当前文档是从往返缓存中获取
+  if (event.persisted) {
+    window.location.reload()
+  }
+})
 
 
 const root = document.getElementById('root')
