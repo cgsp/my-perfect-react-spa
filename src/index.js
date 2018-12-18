@@ -23,7 +23,8 @@ if ('addEventListener' in document) {
 
 // 引入一些没办法进行Npm安装的库，和script脚本(如browser.js和rem.js)
 import '@Utils/libraries/browser'
-import '@Utils/libraries/rem-resize'
+// rem.js这个最好在index.html的head部位引入，不然加载速度可能没APP的主模块的速度快
+// import '@Utils/libraries/rem-resize'
 import '@Utils/libraries/handle-error-img'
 
 
