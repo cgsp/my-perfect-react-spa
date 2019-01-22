@@ -28,7 +28,7 @@ if ('addEventListener' in document) {
 // }
 
 /**
- * 移动端页面返回时,刷新页面,不从缓存里取.
+ * 移动端页面返回时,刷新页面,不从缓存里取.有些手机浏览器会从缓存中取
  */
 window.addEventListener('pageshow', function (event) {
   // event.persisted属性为true时，表示当前文档是从往返缓存中获取
