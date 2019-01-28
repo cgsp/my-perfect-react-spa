@@ -126,6 +126,8 @@ function myAxios(options) {
     data = qs.stringify(optionsData) || qs.stringify({})
   }
 
+  method = method.toUpperCase()
+
   // 9--onUploadProgress--上传的进度事件
   const onUploadProgress = options.onUploadProgress || function (progressEvent) {
     console.log('上传进度事件:', progressEvent)
