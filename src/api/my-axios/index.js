@@ -64,7 +64,7 @@ Service.interceptors.response.use((response) => {
 */
 function myAxios(options) {
   // 1--method设置
-  const method = options.method || 'get'
+  let method = options.method || 'get'
 
   // 2--url设置
   const url = options.url || ''
@@ -113,6 +113,8 @@ function myAxios(options) {
       }
     }
   }
+
+  method = method.toLowerCase()
 
   if (method === 'get' || method === 'delete' || method === 'head') {
     data = null
