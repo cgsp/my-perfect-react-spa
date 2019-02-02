@@ -3,7 +3,7 @@
  * @Author: John.Guan 
  * @Date: 2018-11-23 15:10:43 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-11-23 17:12:59
+ * @Last Modified time: 2019-01-31 15:00:44
  */
 import React, { Component } from 'react'
 import style from './style.scss'
@@ -15,6 +15,10 @@ export default class Test extends Component {
     this.state = {
       arr: ['关赛鹏', '常慧', '妈妈', '爸爸', '爷爷', '奶奶', '爸爸1', '爷爷1', '奶奶1']
     }
+  }
+
+  call() {
+    console.log('text')
   }
 
   render() {
