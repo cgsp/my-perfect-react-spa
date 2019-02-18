@@ -7,7 +7,8 @@ import { AppContainer } from 'react-hot-loader'
 import App from './App'
 import registerServiceWorker from './registerServiceWorker'
 import fastclick from 'fastclick'
-// import vConsole from 'vconsole'
+import vConsole from 'vconsole'
+import { isProd, isDev, isTest } from '@Utils/judge-env'
 
 // 引入一些没办法进行Npm安装的库，和script脚本(如browser.js和rem.js)
 import '@Utils/libraries/browser'
@@ -22,10 +23,14 @@ if ('addEventListener' in document) {
   }, false)
 }
 
-// 本地开发环境，vConsole注册
-// if (process.env.REACT_APP_BUILD_ENV === 'development') {
-//   new vConsole()
-// }
+// 本地开发环境和测试环境，vConsole注册
+if (!isProd) {
+  new vConsole()
+}
+
+console.log('本地', isDev)
+console.log('测试', isTest)
+console.log('生产', isProd)
 
 /**
  * 移动端页面返回时,刷新页面,不从缓存里取.有些手机浏览器会从缓存中取
@@ -59,7 +64,3 @@ if (module.hot) {
 }
 
 registerServiceWorker()
-
-// 用下面这个变量作为环境变量
-// 分别是development,test-production,production
-console.log(process.env.REACT_APP_BUILD_ENV)

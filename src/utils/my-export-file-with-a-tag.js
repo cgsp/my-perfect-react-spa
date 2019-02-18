@@ -1,5 +1,6 @@
 import { message } from 'antd'
-import { BASE_API_URL } from '@Constants'
+import { BASE_DOWN_LOAD_URL } from '@Constants'
+import { isDev, isTest, isProd } from '@Utils/judge-env'
 
 export const myExportFileWithATag = (url, paramsObj) => {
   if (!url) {
@@ -9,18 +10,30 @@ export const myExportFileWithATag = (url, paramsObj) => {
   }
 
   let base_down_load_api_url = ''
-  switch (process.env.REACT_APP_BUILD_ENV) {
-    case 'development':
-      base_down_load_api_url = BASE_API_URL.dev
-      break
-    case 'test-production':
-      base_down_load_api_url = BASE_API_URL.test
-      break
-    case 'production':
-      base_down_load_api_url = BASE_API_URL.pro
-      break
-    default:
-      break
+  // switch (process.env.REACT_APP_BUILD_ENV) {
+  //   case 'development':
+  //     base_down_load_api_url = BASE_DOWN_LOAD_URL.dev
+  //     break
+  //   case 'test-production':
+  //     base_down_load_api_url = BASE_DOWN_LOAD_URL.test
+  //     break
+  //   case 'production':
+  //     base_down_load_api_url = BASE_DOWN_LOAD_URL.pro
+  //     break
+  //   default:
+  //     break
+  // }
+
+  if (isDev) {
+    base_down_load_api_url = BASE_DOWN_LOAD_URL.dev
+  }
+
+  if (isTest) {
+    base_down_load_api_url = BASE_DOWN_LOAD_URL.test
+  }
+
+  if (isProd) {
+    base_down_load_api_url = BASE_DOWN_LOAD_URL.pro
   }
 
   let str

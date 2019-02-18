@@ -1,7 +1,7 @@
 import Store from '@Store'
 import jsDownload from 'js-file-download'
 import { message } from 'antd'
-import { myAxios } from '@Api/my-axios'
+import { reinForceAxios } from '@Api/rein-force-axios'
 
 // 处理导出进度条的函数
 let timer = null
@@ -36,7 +36,7 @@ export const myExportFile = (url, paramsObj) => {
 
   paramsObj = paramsObj || {}
 
-  myAxios(
+  reinForceAxios(
     {
       url,
       method: 'POST',

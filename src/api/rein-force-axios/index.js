@@ -60,9 +60,9 @@ Service.interceptors.response.use((response) => {
 })
 
 /*
-* 封装myAxios
+* 封装reinForceAxios
 */
-function myAxios(options) {
+function reinForceAxios(options) {
   // 1--method设置
   let method = options.method || 'get'
 
@@ -165,7 +165,7 @@ function myAxios(options) {
   })
 }
 
-export { myAxios }
+export { reinForceAxios }
 
 /*
  * 注意点
@@ -182,7 +182,7 @@ export { myAxios }
 /*
  * 使用示范
  */
-// myAxios({
+// reinForceAxios({
 //   url: 'ddw-exchange-show/item-data',
 //   method: 'get',
 //   headers: {

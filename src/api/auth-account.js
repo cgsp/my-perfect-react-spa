@@ -1,8 +1,8 @@
-import { myAxios } from '@Api/my-axios'
+import { reinForceAxios } from '@Api/rein-force-axios'
 
 // 获取列表数据
 export const apiAuthAccountList = (options) => {
-  return myAxios(
+  return reinForceAxios(
     {
       url: '/user/list-users',
       method: 'GET',
@@ -14,7 +14,7 @@ export const apiAuthAccountList = (options) => {
 
 // 编辑
 export const apiAuthAccountUpdateRole = (options) => {
-  return myAxios(
+  return reinForceAxios(
     {
       url: '/user/user-bind-role',
       method: 'POST',
@@ -26,7 +26,7 @@ export const apiAuthAccountUpdateRole = (options) => {
 
 // 删除
 export const apiAuthAccountDeleteRole = (id) => {
-  return myAxios(
+  return reinForceAxios(
     {
       url: '/user/clean-roles-under-user',
       method: 'POST',
