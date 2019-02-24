@@ -32,7 +32,8 @@
   }
 }
 
-// 横屏时提示用户使用竖屏浏览
+// 横屏时提示用户使用竖屏浏览+ 小于等于1200px
+// 因为如果不加，and (max-width:1200px)，在pc上会自动认为是横屏
 @media all and (orientation: landscape) and (max-width:1200px) {
   .orientation-wrapper {
     display: block !important;
