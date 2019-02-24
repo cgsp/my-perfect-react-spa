@@ -1,36 +1,52 @@
-/* 
- * @Desc: 组件级的进入进出，动画，适用于列表的循环
- * @Author: John.Guan 
- * @Date: 2018-11-23 15:10:43 
- * @Last Modified by: John.Guan
- * @Last Modified time: 2019-01-31 15:00:44
- */
 import React, { Component } from 'react'
-import style from './style.scss'
-// import QueueAnim from 'rc-queue-anim'
+import { PropTypes } from 'prop-types'
+import Child from './child'
 
-export default class Test extends Component {
+class MiddleComponent extends Component {
+  render() {
+    return (
+      <Child />
+    )
+  }
+}
+
+export default class Parent extends Component {
+  // 必须声明
+  // 注意是复数
+  static childContextTypes = {
+    propA: PropTypes.string,
+    methodA: PropTypes.func
+  }
+
   constructor(props) {
     super(props)
     this.state = {
-      arr: ['关赛鹏', '常慧', '妈妈', '爸爸', '爷爷', '奶奶', '爸爸1', '爷爷1', '奶奶1']
+      propA: 'propA'
     }
   }
 
-  call() {
-    console.log('text')
+  // 必须用这个默认方法，返回一个plain object
+  getChildContext() {
+    return {
+      propA: this.state.propA,
+      methodA: () => {
+        console.log('this is methodA')
+      }
+    }
   }
 
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({
+        propA: 'hahahahhaha'
+      })
+    }, 2000)
+  }
+
+
   render() {
-    const items = this.state.arr.map(item => {
-      return (
-        <div key={item} className={style.line}>{item}</div>
-      )
-    })
     return (
-      <div>
-        {items}
-      </div>
+      <MiddleComponent />
     )
   }
 }
