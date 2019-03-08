@@ -19,7 +19,6 @@ Service.interceptors.request.use(
     // 在发送请求之前做些什么
     // 启动全局的loading
     Store.AppLoadingStore.changeAppLoading(true)
-    console.log('openAjaxNum', openAjaxNum)
     openAjaxNum += 1
     return config
   },
@@ -131,12 +130,12 @@ function reinForceAxios(options) {
 
   // 9--onUploadProgress--上传的进度事件
   const onUploadProgress = options.onUploadProgress || function (progressEvent) {
-    console.log('上传进度事件:', progressEvent)
+    // console.log('上传进度事件:', progressEvent)
   }
 
   // 10--onDownloadProgress--上传的进度事件
   const onDownloadProgress = options.onDownloadProgress || function (progressEvent) {
-    console.log('导出进度事件:', progressEvent)
+    // console.log('导出进度事件:', progressEvent)
   }
 
   // 11--return什么出去
@@ -154,7 +153,7 @@ function reinForceAxios(options) {
       onDownloadProgress,
     })
       .then((res) => {
-        console.log('请求axios')
+        // console.log('请求axios')
         if (options.returnAll) {
           resolve(res)
         } else {

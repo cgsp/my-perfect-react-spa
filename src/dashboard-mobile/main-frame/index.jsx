@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
 import MaskLoading from '@Components/mask-loading'
 import style from './style'
-import Nav from '../nav'
+// import Nav from '../nav'
 
 @inject('AppLoadingStore')
 @observer
@@ -20,9 +20,11 @@ export default class MainFrame extends Component {
         <div className={style['app-content']}>
           {children}
         </div>
-        <div className={style['app-nav']}>
+        {/* 
+         <div className={style['app-nav']}>
           <Nav />
         </div>
+        */}
       </div>
     )
   }

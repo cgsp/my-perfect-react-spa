@@ -61,6 +61,7 @@ export default class Index extends Component {
       }
 
       if (downOrUp === 'up') {
+        console.log(res)
         // 如果是上拉加载的话
         this.setState({}, () => {
           let oldData = this.state.listData.slice()
@@ -94,6 +95,7 @@ export default class Index extends Component {
 
   render() {
     const { listData } = this.state
+    console.log(listData)
     return (
       <div className={style.index}>
         <div className={style.header}>
@@ -104,7 +106,7 @@ export default class Index extends Component {
             <div className={`${style['minirefresh-scroll']} minirefresh-scroll`}>
               <ul className={style['data-list']} id="listdata">
                 {
-                  listData.map((item) => {
+                  listData.map(item =>
                     <li className={style['list-item']} key={item.id}>
                       <a href="javascript:;" className={style['news-link']}>
                         <span className={style['news-title']}>
@@ -115,7 +117,7 @@ export default class Index extends Component {
                         </span>
                       </a>
                     </li>
-                  })
+                  )
                 }
               </ul>
             </div>
