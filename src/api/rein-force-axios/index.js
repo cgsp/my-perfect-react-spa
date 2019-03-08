@@ -18,7 +18,8 @@ Service.interceptors.request.use(
   config => {
     // 在发送请求之前做些什么
     // 启动全局的loading
-    Store.AppLoading.changeAppLoading(true)
+    Store.AppLoadingStore.changeAppLoading(true)
+    console.log('openAjaxNum', openAjaxNum)
     openAjaxNum += 1
     return config
   },
@@ -34,7 +35,7 @@ Service.interceptors.response.use((response) => {
   openAjaxNum -= 1
   // 判断全部的请求都回来了，才关闭
   if (openAjaxNum === 0) {
-    Store.AppLoading.changeAppLoading(false)
+    Store.AppLoadingStore.changeAppLoading(false)
   }
 
   if (response && response.data && response.data.code === NO_LOGIN_CODE) {
@@ -140,7 +141,7 @@ function reinForceAxios(options) {
 
   // 11--return什么出去
   // 默认resolve(res.data)，如果options.returnAll=true的话，就resolve(res)
-
+  
   return new Promise((resolve, reject) => {
     Service({
       method,
@@ -153,6 +154,7 @@ function reinForceAxios(options) {
       onDownloadProgress,
     })
       .then((res) => {
+        console.log('请求axios')
         if (options.returnAll) {
           resolve(res)
         } else {

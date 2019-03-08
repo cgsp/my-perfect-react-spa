@@ -24,7 +24,7 @@ export default class MaskLoading extends Component {
   constructor(props) {
     super(props)
     let num = 0
-    num = Math.floor(Math.random() * 10)
+    // num = Math.floor(Math.random() * 10)
     this.state = {
       num
     }

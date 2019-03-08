@@ -28,6 +28,7 @@
     "js-file-download": "^0.4.4",
     "jsonp": "^0.2.1",
     "mars-detect": "^1.0.0",
+    "minirefresh": "^2.0.2",
     "mobx": "^4.3.0",
     "mobx-react": "^5.1.2",
     "moment": "2.22.2",
@@ -140,7 +141,7 @@
   },
   "proxy": {
     "/api": {
-      "target": "http://localhost:8888",
+      "target": "http://localhost:9999",
       "changeOrigin": true,
       "pathRewrite": {
         "^/api": "api"

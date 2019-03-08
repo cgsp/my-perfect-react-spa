@@ -2,7 +2,7 @@
  * @Author: John.Guan 
  * @Date: 2018-11-20 14:32:34 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2018-11-23 17:18:18
+ * @Last Modified time: 2019-03-07 16:50:34
  */
 
 /* 入口的scss */
@@ -21,3 +21,5 @@
 // @import "./reset-antd.scss"; 
 // 覆盖antd-mobile的样式
 @import "./reset-antd-mobile.scss";
+// 引入minirefresh.css
+@import "./minirefresh/minirefresh.css";

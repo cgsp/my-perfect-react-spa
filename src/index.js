@@ -7,7 +7,7 @@ import { AppContainer } from 'react-hot-loader'
 import App from './App'
 import registerServiceWorker from './registerServiceWorker'
 import fastclick from 'fastclick'
-import vConsole from 'vconsole'
+// import vConsole from 'vconsole'
 import { isProd, isDev, isTest } from '@Utils/judge-env'
 
 // 引入一些没办法进行Npm安装的库，和script脚本(如browser.js和rem.js)
@@ -24,9 +24,9 @@ if ('addEventListener' in document) {
 }
 
 // 本地开发环境和测试环境，vConsole注册
-if (!isProd) {
-  new vConsole()
-}
+// if (!isProd) {
+//   new vConsole()
+// }
 
 console.log('本地', isDev)
 console.log('测试', isTest)
