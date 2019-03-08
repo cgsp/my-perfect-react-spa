@@ -5,7 +5,8 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 
   <!-- 强制各类双核浏览器, 自动webkit核加载网页 -->
   <meta name="renderer" content="webkit">
@@ -24,7 +25,8 @@
   <!-- 添加到主屏幕后，全屏显示。 -->
   <meta name="apple-touch-fullscreen" content="yes">
   <!-- 在iPhone 手机上默认值是（电话号码显示为拨号的超链接） -->
-  <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+  <meta name="format-detection"
+    content="telephone=no,email=no,date=no,address=no">
 
   <!-- seo -->
   <meta name="keywords" content="gsp">
@@ -33,7 +35,8 @@
 
   <!-- 不缓存html -->
   <!-- 禁用缓存,移动端返回键,需要去取最新. -->
-  <meta http-equiv="Cache-control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Cache-control"
+    content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
@@ -54,9 +57,9 @@
   <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
   <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
 
-  <!-- rem.js -->
+  <!-- rem,375设计稿计算公式:量图的大小*1 / 100 => rem数值  -->
   <script>
-    eval(function (p, a, c, k, e, r) { e = function (c) { return c.toString(a) }; if (!''.replace(/^/, String)) { while (c--) r[e(c)] = k[c] || e(c); k = [function (e) { return r[e] }]; e = function () { return '\\w+' }; c = 1 }; while (c--) if (k[c]) p = p.replace(new RegExp('\\b' + e(c) + '\\b', 'g'), k[c]); return p }('(6(b,c){4 d=b.o,9=\'e\'n c?\'e\':\'h\',1=6(){4 a=d.l;2(!a){3}2(a>=g){d.8.5=\'i\'}j{d.8.5=k*(a/f)+\'m\'}};2(!b.0){3}c.0(9,1,7);b.0(\'p\',1,7)})(q,r);', 28, 28, 'addEventListener|resetRootFontSize|if|return|var|fontSize|function|false|style|resizeEvent|||||orientationchange|750|1080|resize|100px|else|100|clientWidth|px|in|documentElement|DOMContentLoaded|document|window'.split('|'), 0, {}))
+    (function (b, a) { var c = b.documentElement; b = "orientationchange" in a ? "orientationchange" : "resize"; var d = function () { var a = c.clientWidth; a && (c.style.fontSize = 1080 <= a ? "200px" : a / 375 * 100 + "px") }, e = function () { if (a.devicePixelRatio) { var b = 3 <= a.devicePixelRatio ? 3 : 2; c.setAttribute("data-dpr", a.devicePixelRatio); c.setAttribute("data-img-rate", b) } }; d(); e(); a.addEventListener && a.addEventListener(b, function () { d(); e() }, !1) })(document, window);
   </script>
 </head>
 

@@ -1,7 +1,8 @@
 import axios from 'axios'
 import qs from 'qs'
 import { config, headers, responseType } from './config'
-import Store from '@Store'
+// 移动端的话，一般不需要全局loading
+// import Store from '@Store'
 import { mySessionStorageClear } from '@Utils/my-storages'
 import { NO_LOGIN_CODE, NO_AUTH_CODE } from '@Constants'
 
@@ -18,7 +19,8 @@ Service.interceptors.request.use(
   config => {
     // 在发送请求之前做些什么
     // 启动全局的loading
-    Store.AppLoadingStore.changeAppLoading(true)
+    // 移动端的话，一般不需要全局loading
+    // Store.AppLoadingStore.changeAppLoading(true)
     openAjaxNum += 1
     return config
   },
@@ -33,8 +35,9 @@ Service.interceptors.response.use((response) => {
   // 关闭全局的loading
   openAjaxNum -= 1
   // 判断全部的请求都回来了，才关闭
+  // 移动端的话，一般不需要全局loading
   if (openAjaxNum === 0) {
-    Store.AppLoadingStore.changeAppLoading(false)
+    // Store.AppLoadingStore.changeAppLoading(false)
   }
 
   if (response && response.data && response.data.code === NO_LOGIN_CODE) {

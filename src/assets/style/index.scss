@@ -2,15 +2,15 @@
  * @Author: John.Guan 
  * @Date: 2018-11-20 14:32:34 
  * @Last Modified by: John.Guan
- * @Last Modified time: 2019-03-07 16:50:34
+ * @Last Modified time: 2019-03-08 11:41:02
  */
 
 /* 入口的scss */
 
 // 手机端重置样式
-// @import "./reset-mobile.scss";
+@import "./reset-mobile.scss";
 // pc端重置样式
-@import "./reset-pc.scss";
+// @import "./reset-pc.scss";
 // 基础样式
 @import "./base.scss";
 // 通用样式
